@@ -1,0 +1,179 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "routes": [
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "丽江古城",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJ4eyIRRfKIDcRsgL6QmA0_kw",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "丽江古城",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "ChIJu01Shw3JIDcRXMDy1v0jXTQ",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      }
+    ]
+  },
+  "provider": "google_directions",
+  "sanitized": true,
+  "state": "unavailable"
+}

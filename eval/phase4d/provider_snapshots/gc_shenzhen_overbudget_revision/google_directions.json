@@ -1,0 +1,151 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "routes": [
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJu10dDCDyAzQRvAUbPAje2X8",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 9565
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 8834
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJAQAAQHL0AzQRPJEi6CI0wUE",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJ2YyRXlfvAzQRhTk-X1ToHMY",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 5968
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 5087
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJu10dDCDyAzQRvAUbPAje2X8",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "ChIJbXa-NsdyBDQRrQ-f4Ojdi9A",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJk07HD9jxAzQRDHJXk8G2YOw",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 10330
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 8820
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJaf_p3bnxAzQRjAjFZvKTg2s",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJq6qqq37uAzQRCV1PBnASqvc",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 4573
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 4009
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "leg_type": "intra_city_poi_leg",
+        "origin_stable_id": "ChIJk07HD9jxAzQRDHJXk8G2YOw",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "validation_pass_id": "validation.initial",
+        "validation_phase": "initial",
+        "verification_status": "verified"
+      }
+    ]
+  },
+  "provider": "google_directions",
+  "sanitized": true,
+  "state": "partial"
+}

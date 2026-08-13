@@ -1,0 +1,14 @@
+{
+  "artifact": "gc_nanjing_local_patch.json",
+  "artifact_hash": "sha256:efc1f7a9bea35e121b6b9b0b50ce0886f0812f5cfd4ec1089dd7a870b1ea3c22",
+  "capture_status": "complete",
+  "case_id": "gc_nanjing_local_patch",
+  "snapshot_hashes": {
+    "amap": "sha256:48b1db7934c1f713ed43c2a9b0231fbb0de697504b081e8357ccfddc9eeb5e21",
+    "google_directions": "sha256:38646423527723f74dffcb16fd275f4661b12481e3035113f3a3893639a1610c",
+    "google_places": "sha256:48ae72ab7541461a7409bcf57d576bb917fe9c1969a6f0ecf9f45b62460749b0",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:b60fd78a4a076951292adbf2bbfd5410e27df04848d5573a03d0d997f55c111e",
+    "xhs": "sha256:3f9438219d32c578947afab09fd6584e98e21b8f9be7de8bdee2ed7d09dbbc43"
+  }
+}

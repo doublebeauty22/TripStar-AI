@@ -1,0 +1,83 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 26.887715999999998,
+          "longitude": 100.2361806
+        },
+        "match_status": "verified",
+        "name": "黑龙潭公园",
+        "place_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "丽江古城",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 27.0983333,
+          "longitude": 100.175
+        },
+        "match_status": "verified",
+        "name": "玉龙雪山",
+        "place_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ"
+      },
+      {
+        "location": {
+          "latitude": 27.114732,
+          "longitude": 100.218927
+        },
+        "match_status": "verified",
+        "name": "云杉坪",
+        "place_id": "ChIJLxt0CePAIDcRZ066OVmCLPM"
+      },
+      {
+        "location": {
+          "latitude": 27.125833,
+          "longitude": 100.244686
+        },
+        "match_status": "verified",
+        "name": "蓝月谷",
+        "place_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q"
+      },
+      {
+        "location": {
+          "latitude": 26.915079,
+          "longitude": 100.207049
+        },
+        "match_status": "verified",
+        "name": "束河古镇",
+        "place_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc"
+      },
+      {
+        "location": {
+          "latitude": 26.923918999999998,
+          "longitude": 100.203865
+        },
+        "match_status": "verified",
+        "name": "九鼎龙潭",
+        "place_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg"
+      },
+      {
+        "location": {
+          "latitude": 27.012895999999998,
+          "longitude": 100.213571
+        },
+        "match_status": "verified",
+        "name": "玉湖村",
+        "place_id": "ChIJG60FYTXGIDcRWcYn9quWLek"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

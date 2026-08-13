@@ -1,0 +1,161 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "routes": [
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2516
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2159
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJh9AxxnzxAzQR8WHcMFkDZhk",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJkVFRdt3xAzQRDh8egHyeL3s",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2305
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 1903
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "水贝",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "东门老街",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "水贝",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJVcYUDIlqBDQRWy0Q68RI-fI",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "ChIJqfYjeYdABDQREK4OzOLFERA",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "verification_status": "unavailable"
+      }
+    ]
+  },
+  "provider": "google_directions",
+  "sanitized": true,
+  "state": "partial"
+}

@@ -5,10 +5,15 @@ import asyncio
 import os
 from typing import Dict, Any, List, Callable, Awaitable, Optional
 from hello_agents import SimpleAgent
-from hello_agents.tools import MCPTool
-from ..services.llm_service import get_llm
-from ..models.schemas import TripRequest, TripPlan, DayPlan, Attraction, Meal, WeatherInfo, Location, Hotel
-from ..config import get_settings
+from ..services.llm_service import (
+    LLMCallBudgetExceeded,
+    TaskScopedLLM,
+    create_chat_completion,
+    get_llm,
+    record_application_retry,
+)
+from ..models.schemas import TripRequest, TripPlan, DayPlan, Attraction, Meal, WeatherResult, XHSResearchResult, Location, Hotel, has_valid_verified_coordinates
+from ..config import get_google_maps_server_api_key, get_settings
 
 # ============ Agent提示词 (动态模版化，支持 amap / google 双供应商) ============
 
@@ -74,6 +79,12 @@ ATTRACTION_AGENT_PROMPT = ""  # 已弃用，景点改走小红书
 WEATHER_AGENT_PROMPT = _build_weather_agent_prompt("amap")
 HOTEL_AGENT_PROMPT = _build_hotel_agent_prompt("amap")
 
+BASELINE_PLANNER_VERSION = "planner_baseline_v1"
+BASELINE_PLANNER_PROMPT_VERSION = "planner_prompt_v1"
+PLANNER_VERSION = "planner_pacing_v1"
+PLANNER_PROMPT_VERSION = "planner_prompt_pacing_v1"
+
+
 PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点信息和天气信息,生成详细的旅行计划。支持单城市和多城市行程。
 
 请严格按照以下JSON格式返回旅行计划:
@@ -87,6 +98,7 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
     {
       "date": "YYYY-MM-DD",
       "day_index": 0,
+      "start_time": "09:30",
       "city": "当天所在城市",
       "is_transfer_day": false,
       "transfer_info": "",
@@ -158,6 +170,7 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
 1. weather_info数组必须包含每一天的天气信息，每条记录必须包含 city 字段标明该天所在城市
 2. 温度必须是纯数字(不要带°C等单位)
 3. 每天安排2-3个景点(城际移动日可减少为1-2个)
+   - start_time 表示当天第一个主要活动预计开始时间，不是起床或早餐时间，格式必须为 HH:MM
 4. 考虑景点之间的距离和游览时间
 5. 每天必须包含早中晚三餐
 6. 提供实用的旅行建议
@@ -167,7 +180,7 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
    - 酒店预估费用(estimated_cost)
    - 预算汇总(budget)包含各项总费用
 8. **预约信息透传**: 如果景点搜索数据中包含 reservation_required 和 reservation_tips 字段，请务必将它们完整保留在对应景点的JSON中。需要预约的景点请在 description 中也提醒游客提前预约
-9. **景点图片**: 不需要在JSON中填写 image_url 字段，图片由前端根据景点名称自动从小红书获取。
+9. **景点图片与地图事实**: 不要填写 image_url、place_id、poi_match_status 或 map_data_source；这些字段由系统通过地图 API 确定性补全，禁止编造。
 10. **多城市行程要求**:
     - 每个 day 对象中必须包含 "city" 字段标明当天所在城市
     - 城市切换当天设置 "is_transfer_day": true，并在 "transfer_info" 中**仅给出交通方式建议和大致时长**（如"建议乘坐高铁，约2-3小时"），**禁止编造具体车次、班次号、出发时间、到达时间等不可验证的信息**
@@ -200,42 +213,12 @@ class MultiAgentTripPlanner:
                 tool_prefix = "amap"
                 self._init_amap_tools(settings)
 
-            # ---------- 构建动态提示词 ----------
-            weather_prompt = _build_weather_agent_prompt(tool_prefix)
-            hotel_prompt = _build_hotel_agent_prompt(tool_prefix)
-
-            # 取消高德景点 Agent,改用原生小红书服务
-            # print("  - 创建景点搜索Agent...")
-
-            # 创建天气查询Agent
-            print("  - 创建天气查询Agent...")
-            self.weather_agent = SimpleAgent(
-                name="天气查询专家",
-                llm=self.llm,
-                system_prompt=weather_prompt
-            )
-            self.weather_agent.add_tool(self._active_tool)
-
-            # 创建酒店推荐Agent
-            print("  - 创建酒店推荐Agent...")
-            self.hotel_agent = SimpleAgent(
-                name="酒店推荐专家",
-                llm=self.llm,
-                system_prompt=hotel_prompt
-            )
-            self.hotel_agent.add_tool(self._active_tool)
-
-            # 创建行程规划Agent(不需要工具)
-            print("  - 创建行程规划Agent...")
-            self.planner_agent = SimpleAgent(
-                name="行程规划专家",
-                llm=self.llm,
-                system_prompt=PLANNER_AGENT_PROMPT
-            )
+            # Weather and hotel retrieval are deterministic. Planner agents are
+            # created per plan_trip call so no conversation history is shared.
+            self.planner_agent_name = "行程规划专家"
 
             print(f"✅ 多智能体系统初始化成功 (供应商={self.map_provider})")
-            print(f"   天气查询Agent: {len(self.weather_agent.list_tools())} 个工具")
-            print(f"   酒店推荐Agent: {len(self.hotel_agent.list_tools())} 个工具")
+            print("   天气/酒店: 确定性直连工具（LLM calls=0）")
 
         except Exception as e:
             print(f"❌ 多智能体系统初始化失败: {str(e)}")
@@ -244,17 +227,13 @@ class MultiAgentTripPlanner:
             raise
 
     def _init_amap_tools(self, settings):
-        """初始化高德地图 MCP 工具。"""
-        print("  - 创建高德 MCP 工具...")
-        self.amap_tool = MCPTool(
-            name="amap",
-            description="高德地图服务",
-            server_command=["uvx", "amap-mcp-server"],
-            env={"AMAP_MAPS_API_KEY": settings.vite_amap_web_key},
-            auto_expand=True
-        )
-        self.amap_tool.expandable = True
-        self._active_tool = self.amap_tool
+        """初始化无 MCP/uvx 依赖的高德 REST 适配器。"""
+        print("  - 创建高德 REST 适配器...")
+        from ..services.amap_service import get_amap_service
+
+        self._amap_service = get_amap_service()
+        self.amap_tool = None  # deprecated compatibility marker
+        self._active_tool = None
 
     def _init_google_tools(self, settings):
         """初始化 Google Maps 本地适配器工具。"""
@@ -262,7 +241,11 @@ class MultiAgentTripPlanner:
         from ..services.google_map_service import GoogleMapService
 
         # 创建一个轻量级的本地工具适配器
-        google_svc = GoogleMapService(api_key=settings.google_maps_api_key, proxy=settings.google_maps_proxy)
+        google_svc = GoogleMapService(
+            api_key=get_google_maps_server_api_key(),
+            proxy=settings.google_maps_proxy,
+        )
+        self._google_service = google_svc
 
         class GoogleMapsNativeTool:
             """将 Google Maps API 封装为 hello_agents 可注册的工具。
@@ -346,10 +329,7 @@ class MultiAgentTripPlanner:
                     elif tool_name == "google_maps_weather":
                         city = arguments.get("city", "")
                         results = self._google_svc.get_weather(city)
-                        return _json.dumps(
-                            [r.model_dump() for r in results],
-                            ensure_ascii=False,
-                        )
+                        return _json.dumps(results.model_dump(mode="json"), ensure_ascii=False)
                     elif tool_name == "google_maps_geo":
                         address = arguments.get("address", "")
                         city = arguments.get("city", "")
@@ -365,6 +345,101 @@ class MultiAgentTripPlanner:
         self._google_tool = GoogleMapsNativeTool()
         self._active_tool = self._google_tool
 
+    def _new_planner_agent(self) -> SimpleAgent:
+        """Create a history-empty planner for exactly one Trip task."""
+        return SimpleAgent(
+            name=self.planner_agent_name,
+            llm=TaskScopedLLM(self.llm, "planner"),
+            system_prompt=PLANNER_AGENT_PROMPT,
+        )
+
+    @staticmethod
+    def _compact_json(value: Any, limit: int = 5000) -> str:
+        def serialize(item: Any) -> Any:
+            if hasattr(item, "model_dump"):
+                return item.model_dump(mode="json")
+            raise TypeError(f"Unsupported context value: {type(item).__name__}")
+
+        text = json.dumps(
+            value,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            default=serialize,
+        )
+        return text if len(text) <= limit else text[:limit] + "..."
+
+    async def _retrieve_weather_context(self, city: str) -> str:
+        """Retrieve weather facts directly, without an LLM tool-selection hop."""
+        if not hasattr(self, "_weather_results"):
+            self._weather_results = {}
+        try:
+            if self.map_provider == "google":
+                result = await asyncio.to_thread(self._google_service.get_weather, city)
+                from ..services.planner_observation import observe_weather
+                observe_weather("google_weather", city, result)
+                if isinstance(result, WeatherResult) and result.data_available:
+                    result.city = city
+                    self._weather_results[city] = result
+                    return self._compact_json(result)
+                # Compatibility for test doubles only.
+                if isinstance(result, list) and result:
+                    return self._compact_json(result)
+                fallback = await self._fallback_amap_weather(city)
+                fallback.city = city
+                self._weather_results[city] = fallback
+                return self._compact_json(fallback)
+
+            result = await self._fallback_amap_weather(city)
+            result.city = city
+            self._weather_results[city] = result
+            return self._compact_json(result)
+        except Exception as exc:
+            print(f"⚠️ [WEATHER_DEGRADED] {city}: {exc}")
+            if self.map_provider == "google":
+                from ..services.planner_observation import observe_weather
+                observe_weather("google_weather", city, WeatherResult(
+                    provider="google_weather", city=city, request_success=False,
+                    data_available=False, degraded=True, reason="network_error",
+                ))
+                fallback = await self._fallback_amap_weather(city)
+                fallback.city = city
+                self._weather_results[city] = fallback
+                return self._compact_json(fallback)
+            unavailable = WeatherResult(provider="unavailable", city=city, request_success=False, data_available=False, degraded=True, reason="network_error")
+            self._weather_results[city] = unavailable
+            return self._compact_json(unavailable)
+
+    async def _retrieve_hotel_context(self, city: str, accommodation: str) -> str:
+        """Retrieve and compact bounded hotel candidates without an LLM."""
+        from ..services.planner_observation import observe_hotel
+
+        keywords = f"{accommodation}酒店" if accommodation else "酒店"
+        try:
+            if self.map_provider == "google":
+                candidates = await asyncio.to_thread(
+                    self._google_service.search_poi, keywords, city
+                )
+                observe_hotel("hotel_google_places", city,
+                              status="success" if candidates else "unavailable",
+                              candidate_count=min(len(candidates or []), 5),
+                              reason=None if candidates else "no_hotel_candidates")
+                return self._compact_json(candidates[:5]) if candidates else "酒店候选暂不可用"
+
+            result = await asyncio.to_thread(
+                self._amap_service.search_poi, keywords, city, True,
+            )
+            observe_hotel("hotel_amap", city,
+                          status=("degraded" if result.data_available and result.degraded else
+                                  "success" if result.data_available else "unavailable"),
+                          candidate_count=min(len(result.data or []), 5),
+                          reason=str(result.reason) if not result.data_available else None)
+            return self._compact_json(result.data[:5]) if result.data_available else "酒店候选暂不可用"
+        except Exception as exc:
+            print(f"⚠️ [HOTEL_DEGRADED] {city}: {exc}")
+            observe_hotel(f"hotel_{self.map_provider}", city, status="unavailable",
+                          candidate_count=0, reason="provider_execution_error")
+            return "酒店候选暂不可用，请使用保守安排。"
+
     async def _emit_progress(
         self,
         progress_callback: Optional[Callable[[str, str, int], Awaitable[None] | None]],
@@ -379,42 +454,70 @@ class MultiAgentTripPlanner:
         if asyncio.iscoroutine(result):
             await result
 
-    async def _fallback_amap_weather(self, city: str) -> str:
-        """使用高德天气 HTTP REST API 直接获取天气, 作为 Google Weather 的降级备选。
+    async def _fallback_amap_weather(self, city: str) -> WeatherResult:
+        """Use the shared typed AMap REST adapter as Google weather fallback."""
+        from ..services.amap_service import get_amap_service
 
-        跳过 MCP Agent 调用, 直接用 httpx 请求高德天气 API。
+        service = getattr(self, "_amap_service", None) or get_amap_service()
+        result = await asyncio.to_thread(service.get_weather, city, degraded=True)
+        from ..services.planner_observation import observe_weather
+        observe_weather("amap", city, result)
+        return result
+
+    async def _search_attractions_with_xhs_fallback(
+        self,
+        city: str,
+        keywords: str,
+        language: str,
+        progress_callback: Optional[Callable[[str, str, int], Awaitable[None] | None]],
+        progress: int,
+        search_func: Optional[Callable[[str, str, str], str]] = None,
+    ) -> str:
+        """执行 XHS 景点研究；任何不可用状态都降级为空研究上下文继续规划。
+
+        ``search_func`` 仅作为测试接缝；生产环境保持调用现有
+        ``search_xhs_attractions``，不修改其正常逻辑。
         """
-        import httpx
-        settings = get_settings()
-        amap_key = settings.vite_amap_web_key
-        if not amap_key:
-            return "高德 Web Key 未配置，无法降级查询天气"
+        if search_func is None:
+            from ..services.xhs_service import search_xhs_attractions
+            search_func = search_xhs_attractions
 
-        # 很多时候 request.city 会带有国家/省份前缀，例如 "中国-北京"
-        # 高德天气 API 严格要求城市名或 adcode，所以我们提取最后一段
-        clean_city = city.split("-")[-1].strip()
+        fallback_message = "小红书数据不可用，已使用降级方案继续生成。"
+        fallback_context = (
+            "小红书研究数据不可用，本次没有来自小红书的景点候选或真实评价。"
+            "请结合当前可用的地图、酒店、天气信息和保守的通用旅行知识继续规划；"
+            "不得声称候选来自小红书，不得编造小红书热度、评价或预约依据。"
+        )
+        if not hasattr(self, "_xhs_results"):
+            self._xhs_results = {}
 
-        # 高德天气 REST API: https://lbs.amap.com/api/webservice/guide/api/weatherinfo
-        url = "https://restapi.amap.com/v3/weather/weatherInfo"
-        params = {"key": amap_key, "city": clean_city, "extensions": "all", "output": "JSON"}
         try:
-            async with httpx.AsyncClient(timeout=10) as client:
-                resp = await client.get(url, params=params)
-                data = resp.json()
-            forecasts = data.get("forecasts", [])
-            if not forecasts:
-                return f"高德天气 API 无预报数据: {json.dumps(data, ensure_ascii=False)}"
-            casts = forecasts[0].get("casts", [])
-            result_lines = []
-            for c in casts:
-                result_lines.append(
-                    f"{c.get('date','')}: 白天{c.get('dayweather','')} {c.get('daytemp','')}°C, "
-                    f"夜间{c.get('nightweather','')} {c.get('nighttemp','')}°C, "
-                    f"{c.get('daywind','')}风 {c.get('daypower','')}"
+            response = await asyncio.to_thread(search_func, city, keywords, language)
+            if isinstance(response, XHSResearchResult):
+                self._xhs_results[city] = response
+                if response.status == "unavailable" or not response.evidence or not response.context:
+                    raise RuntimeError(response.reason or "小红书研究不可用")
+                return response.context
+            # xhs_service 的 LLM 提纯失败目前会返回说明文本而不是抛异常。
+            # 将该已知失败信号也纳入 fail-open，避免把失败文本当作研究证据。
+            if not response or response.startswith("尝试提取小红书结构化数据失败"):
+                raise RuntimeError(response or "小红书研究返回空结果")
+            return response
+        except Exception as exc:
+            if city not in self._xhs_results:
+                self._xhs_results[city] = XHSResearchResult(
+                    status="unavailable", verification_status="unavailable", degraded=True,
+                    reason=getattr(exc, "reason", None) or "request_failed",
+                    evidence=[], context="",
                 )
-            return "\n".join(result_lines) if result_lines else json.dumps(data, ensure_ascii=False)
-        except Exception as e:
-            return f"高德天气降级 HTTP 请求失败: {e}"
+            print(f"⚠️ [XHS_FALLBACK] {city}: {fallback_message} 原因: {exc}")
+            await self._emit_progress(
+                progress_callback,
+                "attraction_search",
+                fallback_message,
+                progress,
+            )
+            return fallback_context
     
     async def plan_trip(
         self,
@@ -447,7 +550,6 @@ class MultiAgentTripPlanner:
             print(f"偏好: {', '.join(request.preferences) if request.preferences else '无'}")
             print(f"{'='*60}\n")
 
-            from ..services.xhs_service import search_xhs_attractions
             keywords = request.preferences[0] if request.preferences else "景点"
             _lang = (getattr(request, 'language', 'zh') or 'zh').strip().lower().split('-')[0]
             _lang_hint = "" if _lang == "zh" else f" Please respond in {'English' if _lang == 'en' else _lang}."
@@ -456,6 +558,8 @@ class MultiAgentTripPlanner:
             all_attractions: Dict[str, str] = {}
             all_weather: Dict[str, str] = {}
             all_hotels: Dict[str, str] = {}
+            self._weather_results: Dict[str, WeatherResult] = {}
+            self._xhs_results: Dict[str, XHSResearchResult] = {}
 
             for idx, city_stay in enumerate(cities):
                 city = city_stay.city
@@ -471,8 +575,12 @@ class MultiAgentTripPlanner:
                     f"正在搜索 {city} 的景点...{city_label}",
                     progress_base
                 )
-                attraction_response = await asyncio.to_thread(
-                    search_xhs_attractions, city, keywords, _lang
+                attraction_response = await self._search_attractions_with_xhs_fallback(
+                    city,
+                    keywords,
+                    _lang,
+                    progress_callback,
+                    progress_base,
                 )
                 all_attractions[city] = attraction_response
                 print(f"📍 {city} 景点搜索结果: {attraction_response[:150]}...")
@@ -484,19 +592,8 @@ class MultiAgentTripPlanner:
                     f"正在查询 {city} 的天气...{city_label}",
                     progress_base + progress_step
                 )
-                weather_query = f"请查询{city}的天气信息{_lang_hint}"
-                weather_response = await asyncio.to_thread(self.weather_agent.run, weather_query)
+                weather_response = await self._retrieve_weather_context(city)
                 print(f"🌤️  {city} 天气查询结果: {weather_response[:150]}...")
-
-                # Google 天气降级
-                _weather_fail_keywords = ("无法", "失败", "错误", "error", "unknown", "抱歉", "sorry")
-                if self.map_provider == "google" and any(kw in weather_response.lower() for kw in _weather_fail_keywords):
-                    print(f"  ⚠️ {city} Google 天气查询失败，降级到高德天气 API...")
-                    try:
-                        weather_response = await self._fallback_amap_weather(city)
-                        print(f"  ✅ {city} 高德天气降级成功: {weather_response[:150]}...")
-                    except Exception as _wb_err:
-                        print(f"  ❌ {city} 高德天气降级也失败: {_wb_err}")
                 all_weather[city] = weather_response
 
                 # [3] 酒店搜索
@@ -506,8 +603,7 @@ class MultiAgentTripPlanner:
                     f"正在搜索 {city} 的酒店...{city_label}",
                     progress_base + progress_step * 2
                 )
-                hotel_query = f"请搜索{city}的{request.accommodation}酒店{_lang_hint}"
-                hotel_response = await asyncio.to_thread(self.hotel_agent.run, hotel_query)
+                hotel_response = await self._retrieve_hotel_context(city, request.accommodation)
                 all_hotels[city] = hotel_response
                 print(f"🏨 {city} 酒店搜索结果: {hotel_response[:150]}...")
 
@@ -528,6 +624,26 @@ class MultiAgentTripPlanner:
 
             # 解析最终计划
             trip_plan = self._parse_response(planner_response, request)
+            trip_plan = self._sanitize_external_facts(trip_plan)
+            trip_plan.xhs_research = [
+                self._xhs_results.get(city, XHSResearchResult(
+                    status="unavailable", verification_status="unavailable", degraded=True,
+                    reason="request_failed", evidence=[], context="",
+                ))
+                for city in city_names
+            ]
+            trip_plan.weather_results = [
+                self._weather_results.get(city, WeatherResult(
+                    provider="unavailable", request_success=False, data_available=False,
+                    degraded=True, reason="empty_forecast",
+                ))
+                for city in city_names
+            ]
+            trip_plan.weather_info = [
+                day
+                for city in city_names
+                for day in trip_plan.weather_results[city_names.index(city)].days
+            ]
 
             # 补全 cities 字段（LLM 可能遗漏）
             if not trip_plan.cities:
@@ -537,6 +653,242 @@ class MultiAgentTripPlanner:
                 for day in trip_plan.days:
                     if not day.city:
                         day.city = city_names[0]
+
+            # Phase 1.5: Planner 完成后用 Google Places 确定性补全地图事实。
+            # 此步骤 fail-open，不改变景点选择，也不让地图故障阻断既有 Planner。
+            trip_plan = await self._enrich_trip_plan_pois(trip_plan)
+
+            # Phase 2A: deterministic validation only. Fail-open preserves the
+            # existing Planner result when validation infrastructure is unavailable.
+            try:
+                from ..services.trip_validator_service import get_trip_validator_service
+
+                await self._emit_progress(
+                    progress_callback,
+                    "validating",
+                    "正在检查行程约束、计划预算估算和地图路线...",
+                    92,
+                )
+                from ..services.planner_observation import observe_revision, validation_pass
+                with validation_pass("validation.initial", "initial"):
+                    validation = await get_trip_validator_service().validate(request, trip_plan)
+                trip_plan.risks = validation.risks
+                trip_plan.validation_status = validation.status
+                trip_plan.pacing_policy_version = validation.pacing_policy_version
+                trip_plan.daily_load_assessments = validation.daily_load_assessments
+                observe_revision(
+                    "initial_validation",
+                    plan=trip_plan.model_copy(deep=True),
+                    validation_result=validation.model_dump(mode="json"),
+                    risks=[risk.model_copy(deep=True) for risk in validation.risks],
+                )
+                print(
+                    "✅ [VALIDATOR_COMPLETED] "
+                    f"status={validation.status}, risks={len(validation.risks)}, "
+                    f"route_api_calls={validation.route_api_calls}"
+                )
+
+                # Phase 2B: deterministic trigger -> optional critic -> at most
+                # one revision -> fresh enrichment -> Validator #2 -> STOP.
+                from ..services.trip_revision_service import (
+                    filter_actionable_risks,
+                    get_trip_revision_service,
+                )
+                from ..services.pacing_revision_service import (
+                    get_pacing_revision_service, select_pacing_revision_risks,
+                )
+
+                actionable_risks = filter_actionable_risks(validation.risks)
+                pacing_risks = select_pacing_revision_risks(validation.risks)
+                pacing_attempted = False
+                if trip_plan.revision_count == 0 and pacing_risks:
+                    pacing_attempted = True
+                    pacing_service = get_pacing_revision_service()
+                    before_pacing = trip_plan.model_copy(deep=True)
+                    try:
+                        await self._emit_progress(
+                            progress_callback, "pacing_revision",
+                            "检测到单日节奏过载，正在进行受影响日期内的调整...", 95,
+                        )
+                        proposal = await pacing_service.propose(
+                            request, trip_plan, pacing_risks
+                        )
+                        observe_revision(
+                            "pacing_revision_proposal",
+                            target_risk_ids=list(proposal.target_risk_ids),
+                            affected_day_indices=list(proposal.affected_day_indices),
+                            protected_day_indices=list(proposal.protected_day_indices),
+                            revision_instructions=[
+                                item.model_dump(mode="json") for item in proposal.operations
+                            ],
+                        )
+
+                        async def enrich_affected(candidate, affected):
+                            partial = candidate.model_copy(deep=True)
+                            partial.days = [candidate.days[index].model_copy(deep=True) for index in affected]
+                            partial = await self._enrich_trip_plan_pois(partial)
+                            enriched = candidate.model_copy(deep=True)
+                            for position, day_index in enumerate(affected):
+                                enriched.days[day_index] = partial.days[position]
+                            return enriched
+
+                        async def revalidate(req, candidate):
+                            with validation_pass("validation.post_pacing_revision", "post_revision"):
+                                return await get_trip_validator_service().validate(req, candidate)
+
+                        outcome = await pacing_service.execute(
+                            request, trip_plan, validation.risks, proposal,
+                            enricher=enrich_affected, validator=revalidate,
+                        )
+                        observe_revision(
+                            "pacing_revision_result", before=before_pacing,
+                            candidate=outcome.candidate_plan,
+                            after=outcome.committed_plan.model_copy(deep=True),
+                            status=outcome.status, failure_reason=outcome.failure_reason,
+                            target_risk_ids=outcome.target_risk_ids,
+                            affected_day_indices=outcome.affected_day_indices,
+                            protected_day_indices=outcome.protected_day_indices,
+                            protected_day_equality=outcome.protected_day_equality,
+                            post_validation=outcome.post_validation,
+                            post_pacing_risk_ids=outcome.post_pacing_risk_ids,
+                            resolution_outcome=outcome.resolution_outcome,
+                            metrics=outcome.metrics,
+                            pacing_policy_version=outcome.pacing_policy_version,
+                        )
+                        trip_plan = outcome.committed_plan
+                        if outcome.status != "success":
+                            print(
+                                "⚠️ [PACING_REVISION_REJECTED] "
+                                f"status={outcome.status} reason={outcome.failure_reason}; 保留原计划"
+                            )
+                        else:
+                            print(
+                                "✅ [PACING_REVISION_COMPLETED] affected_days="
+                                f"{outcome.affected_day_indices} protected_preserved=true"
+                            )
+                    except Exception as exc:
+                        observe_revision(
+                            "pacing_revision_result", before=before_pacing, candidate=None,
+                            after=before_pacing, status="rejected",
+                            failure_reason="invalid_revision_output",
+                            target_risk_ids=[risk.id for risk in pacing_risks],
+                            affected_day_indices=sorted({risk.day_index for risk in pacing_risks if risk.day_index is not None}),
+                            protected_day_indices=[index for index in range(len(trip_plan.days))
+                                                   if index not in {risk.day_index for risk in pacing_risks}],
+                            protected_day_equality={}, post_validation=None,
+                            post_pacing_risk_ids=[risk.id for risk in pacing_risks],
+                            resolution_outcome="rejected", metrics={},
+                            pacing_policy_version=trip_plan.pacing_policy_version,
+                        )
+                        print(f"⚠️ [PACING_REVISION_FAILED_CLOSED] 保留原计划: {exc}")
+
+                if trip_plan.revision_count == 0 and actionable_risks and not pacing_attempted:
+                    revision_service = get_trip_revision_service()
+                    try:
+                        await self._emit_progress(
+                            progress_callback, "critic",
+                            "发现可优化问题，正在分析...", 94,
+                        )
+                        critic = await revision_service.run_critic(
+                            request, trip_plan, actionable_risks
+                        )
+                        observe_revision(
+                            "critic",
+                            target_risk_ids=[
+                                risk_id for risk_id in critic.target_risk_ids
+                                if risk_id in {risk.id for risk in actionable_risks}
+                            ],
+                            protected_elements=list(critic.protected_elements),
+                            revision_instructions=list(critic.revision_instructions),
+                        )
+                        if critic.should_revise:
+                            await self._emit_progress(
+                                progress_callback, "revising",
+                                "正在进行一次针对性调整...", 96,
+                            )
+                            compact_research = {
+                                "attractions": {
+                                    city: self._compact_json(value, limit=1500)
+                                    for city, value in all_attractions.items()
+                                },
+                                "weather": {
+                                    city: self._compact_json(value, limit=600)
+                                    for city, value in all_weather.items()
+                                },
+                                "hotels": {
+                                    city: self._compact_json(value, limit=600)
+                                    for city, value in all_hotels.items()
+                                },
+                            }
+                            revised_plan = await revision_service.run_revision(
+                                request,
+                                trip_plan,
+                                actionable_risks,
+                                critic,
+                                compact_research,
+                            )
+                            # Weather/XHS provenance comes from deterministic
+                            # connectors, never from the revision model.
+                            revised_plan.weather_results = [
+                                item.model_copy(deep=True) for item in trip_plan.weather_results
+                            ]
+                            revised_plan.weather_info = [
+                                item.model_copy(deep=True) for item in trip_plan.weather_info
+                            ]
+                            revised_plan.xhs_research = [
+                                item.model_copy(deep=True) for item in trip_plan.xhs_research
+                            ]
+                            # Never reuse old map facts: the parsed revision has
+                            # deterministic fields stripped and is fully enriched again.
+                            revised_plan = await self._enrich_trip_plan_pois(revised_plan)
+                            observe_revision(
+                                "post_revision_enrichment",
+                                state="complete",
+                                plan=revised_plan.model_copy(deep=True),
+                            )
+                            await self._emit_progress(
+                                progress_callback, "revalidating",
+                                "正在重新验证调整后的行程...", 98,
+                            )
+                            with validation_pass("validation.post_revision", "post_revision"):
+                                validation_2 = await get_trip_validator_service().validate(
+                                    request, revised_plan
+                                )
+                            revised_plan.risks = validation_2.risks
+                            revised_plan.validation_status = validation_2.status
+                            revised_plan.pacing_policy_version = validation_2.pacing_policy_version
+                            revised_plan.daily_load_assessments = validation_2.daily_load_assessments
+                            observe_revision(
+                                "post_revision_validation",
+                                plan=revised_plan.model_copy(deep=True),
+                                validation_result=validation_2.model_dump(mode="json"),
+                                risks=[risk.model_copy(deep=True) for risk in validation_2.risks],
+                            )
+                            trip_plan = revised_plan
+                            print(
+                                "✅ [REVISION_COMPLETED] revision_count=1 "
+                                f"status={validation_2.status}, risks={len(validation_2.risks)}"
+                            )
+                            # Deliberately no trigger after Validator #2.
+                    except Exception as exc:
+                        # Phase 2B is an enhancement. Critic/revision/quota/parse/
+                        # timeout failures all preserve the original plan and risks.
+                        print(f"⚠️ [PHASE_2B_FAIL_OPEN] 保留原计划和首次验证结果: {exc}")
+            except Exception as exc:
+                from ..models.schemas import RiskItem
+
+                print(f"⚠️ [VALIDATOR_DEGRADED] 基础行程检查不可用，保留原计划: {exc}")
+                trip_plan.validation_status = "degraded"
+                trip_plan.risks = [RiskItem(
+                    id="validation_unavailable:service",
+                    type="validation_unavailable",
+                    severity="info",
+                    title="基础行程检查暂不可用",
+                    message="行程已经生成，但本次未能完成约束、计划预算估算和地图路线检查。",
+                    evidence={},
+                    suggestion="稍后可重新生成或手动核对关键约束。",
+                    revisable=False,
+                )]
 
             print(f"{'='*60}")
             print(f"✅ 旅行计划生成完成!")
@@ -549,6 +901,101 @@ class MultiAgentTripPlanner:
             import traceback
             traceback.print_exc()
             raise RuntimeError(f"旅行计划生成失败: {str(e)}") from e
+
+    async def _enrich_trip_plan_pois(self, trip_plan: TripPlan) -> TripPlan:
+        """Attach verified Google Place IDs, addresses and coordinates.
+
+        Only a high-confidence name match may replace LLM-provided map fields.
+        Partial and unverified matches retain the original display data and are
+        explicitly marked so downstream route logic cannot treat them as facts.
+        """
+        try:
+            from ..services.google_map_service import get_google_map_service
+
+            service = get_google_map_service()
+            if service is None:
+                return trip_plan
+
+            cache: Dict[tuple[str, str], Dict[str, Any]] = {}
+            verified_count = 0
+            partial_count = 0
+            unverified_count = 0
+
+            for day in trip_plan.days:
+                city = day.city or trip_plan.city
+                for attraction in day.attractions:
+                    cache_key = (city.strip().casefold(), attraction.name.strip().casefold())
+                    if cache_key not in cache:
+                        cache[cache_key] = await asyncio.to_thread(
+                            service.match_poi,
+                            attraction.name,
+                            city,
+                            attraction.address,
+                            attraction.category or "",
+                        )
+
+                    match = cache[cache_key]
+                    status = match.get("status", "unverified")
+                    poi = match.get("poi")
+                    attraction.poi_match_status = status
+
+                    if (
+                        status == "verified"
+                        and poi is not None
+                        and poi.id
+                        and has_valid_verified_coordinates(poi.location)
+                    ):
+                        attraction.place_id = poi.id
+                        attraction.poi_id = poi.id  # existing compatibility field
+                        attraction.address = poi.address
+                        attraction.location = poi.location
+                        attraction.map_data_source = "google_places"
+                        if poi.rating is not None:
+                            attraction.rating = poi.rating
+                        verified_count += 1
+                    elif status == "partial_match":
+                        attraction.place_id = ""
+                        attraction.poi_id = ""
+                        attraction.rating = None
+                        attraction.map_data_source = "llm_unverified"
+                        partial_count += 1
+                    else:
+                        attraction.poi_match_status = "unverified"
+                        attraction.place_id = ""
+                        attraction.poi_id = ""
+                        attraction.rating = None
+                        attraction.map_data_source = "llm_unverified"
+                        unverified_count += 1
+
+            print(
+                "🗺️ [POI_ENRICHMENT] "
+                f"Google Places calls={len(cache)}, verified={verified_count}, "
+                f"partial={partial_count}, unverified={unverified_count}"
+            )
+        except Exception as exc:
+            print(f"⚠️ [POI_ENRICHMENT] 地图事实补全失败，保留原计划继续: {exc}")
+
+        return trip_plan
+
+    @staticmethod
+    def _sanitize_external_facts(trip_plan: TripPlan) -> TripPlan:
+        """Strip every external-looking fact emitted by the initial Planner.
+
+        Textual addresses remain useful as unverified match hints. Coordinates are
+        legacy-required by the schema, so a zero sentinel is used until a verified
+        connector replaces it.
+        """
+        for day in trip_plan.days:
+            for attraction in day.attractions:
+                attraction.place_id = ""
+                attraction.poi_id = ""
+                attraction.poi_match_status = "unverified"
+                attraction.map_data_source = "llm_unverified"
+                attraction.location = Location(longitude=0.0, latitude=0.0)
+                attraction.rating = None
+                attraction.photos = []
+                attraction.image_url = None
+        return trip_plan
     
     def _build_attraction_query(self, request: TripRequest) -> str:
         """构建景点搜索查询 - 直接包含工具调用"""
@@ -580,13 +1027,15 @@ class MultiAgentTripPlanner:
         """
         timeout = int(os.getenv("TRIP_PLANNER_TIMEOUT", "180"))
         planner_query = self._build_planner_query(request, attractions, weather, hotels)
+        planner_agent = self._new_planner_agent()
 
         try:
             return await asyncio.to_thread(
-                self.planner_agent.run,
+                planner_agent.run,
                 planner_query,
                 timeout=timeout,
                 temperature=0.2,
+                max_tokens=6000,
             )
         except Exception as exc:
             err_text = str(exc).lower()
@@ -594,15 +1043,17 @@ class MultiAgentTripPlanner:
                 raise
 
             print("⚠️  首次行程规划超时，正在重试一次...")
+            record_application_retry()
             planner_query += (
                 "\n\n**补充要求:** 如果部分辅助信息不足，请使用保守、常见、可执行的建议补齐，"
                 "但必须输出完整合法的 JSON，不要输出解释性文字。"
             )
             return await asyncio.to_thread(
-                self.planner_agent.run,
+                planner_agent.run,
                 planner_query,
                 timeout=timeout,
                 temperature=0.2,
+                max_tokens=6000,
             )
 
     def _build_planner_query(
@@ -649,6 +1100,46 @@ class MultiAgentTripPlanner:
 - 住宿: {request.accommodation}
 - 偏好: {', '.join(request.preferences) if request.preferences else '无'}
 """
+        profile = getattr(request, "preference_profile", None)
+        if profile:
+            party_labels = {
+                "solo": "独自旅行", "couple": "情侣", "friends": "朋友",
+                "family": "家庭", "with_parents": "带父母", "with_children": "带儿童",
+            }
+            pace_labels = {"intensive": "特种兵", "balanced": "适中", "relaxed": "松弛度假"}
+            effective_interests = list(dict.fromkeys(profile.interests + profile.inferred_interests))
+            profile_lines = [
+                f"- 同行: {party_labels.get(profile.party_type, profile.party_type)}，共 {profile.party_size} 人",
+                (
+                    f"- 目的地旅行期间当地消费总预算: {profile.budget_cny} 元人民币"
+                    "（不包含往返目的地的大交通）"
+                    if profile.budget_cny is not None
+                    else "- 目的地旅行期间当地消费总预算: 未设置（不包含往返目的地的大交通）"
+                ),
+                f"- 旅行节奏: {pace_labels.get(profile.pace, profile.pace)}",
+                f"- 兴趣: {', '.join(effective_interests) if effective_interests else '无'}",
+            ]
+            constraints = profile.constraints
+            if constraints.avoid_early_start:
+                if constraints.earliest_start_time:
+                    profile_lines.append(f"- 不早起约束: 每天主要行程不早于 {constraints.earliest_start_time}")
+                else:
+                    profile_lines.append("- 不早起偏好: 用户不希望过早出发，但未指定具体最早时间")
+            if constraints.mobility_notes:
+                profile_lines.append(f"- 行动需求: {'；'.join(constraints.mobility_notes)}")
+            if constraints.food_notes:
+                profile_lines.append(f"- 饮食需求: {'；'.join(constraints.food_notes)}")
+            if constraints.other_notes:
+                profile_lines.append(f"- 其他要求: {'；'.join(constraints.other_notes)}")
+            query += "\n**已由用户确认的 Preference Profile:**\n" + "\n".join(profile_lines) + "\n"
+            from ..services.pacing_policy import compact_planner_contract
+            pacing_contract = compact_planner_contract(profile.pace)
+            query += (
+                "\n**Pacing Contract（proposed product policy）:**\n"
+                + json.dumps(pacing_contract, ensure_ascii=False, separators=(",", ":"))
+                + "\n生成每天安排时同时为景点、移动、用餐、出入口和休息留出容量；"
+                  "未知路线必须保守预留时间，不得按零分钟处理。\n"
+            )
         # 为每个城市附上搜集到的信息
         for cs in cities:
             city = cs.city
@@ -677,12 +1168,13 @@ class MultiAgentTripPlanner:
         query += """
 **要求:**
 1. 每天安排2-3个景点(城际移动日可减少为1-2个)
+   - 每个 day 必须提供 start_time（HH:MM），表示当天第一个主要活动预计开始时间，不是起床或早餐时间
 2. 每天必须包含早中晚三餐
 3. 每天推荐一个具体的酒店(从酒店信息中选择)
 4. 考虑景点之间的距离和交通方式
 5. 返回完整的JSON格式数据
 6. 景点的经纬度坐标要真实准确
-7. 如果天气或酒店信息不足，请基于保守、通用的旅行建议补齐，但不要输出"无法查询"之类的解释文字
+7. 只有 data_available=true 的 external weather 才能写入 weather_info；若 provider=unavailable，weather_info 必须为空。可在 overall_suggestions 中提供 source=llm_general 的季节性建议，但禁止编造具体温度、逐日晴雨、风速或实时天气
 """
         if is_multi_city:
             query += """
@@ -908,9 +1400,11 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
 {tail}
 """
         try:
-            response = llm._client.chat.completions.create(
+            response = create_chat_completion(
+                stage="json_repair",
                 model=llm.model,
                 messages=[{"role": "user", "content": repair_prompt}],
+                llm_instance=llm,
                 temperature=0.0,
                 max_tokens=1500,
             )
@@ -931,6 +1425,9 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
             if match:
                 return match.group()
             return content
+        except LLMCallBudgetExceeded:
+            print("⚠️  LLM 调用预算已用尽，跳过 JSON repair")
+            return broken_json
         except Exception as e:
             print(f"⚠️  LLM 修复 JSON 失败: {e}")
             return broken_json
@@ -1110,4 +1607,3 @@ def reset_trip_planner_agent() -> None:
     """重置旅行规划多智能体实例（用于运行时配置更新后热生效）。"""
     global _multi_agent_planner
     _multi_agent_planner = None
-

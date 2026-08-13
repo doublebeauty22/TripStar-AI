@@ -176,7 +176,7 @@ sequenceDiagram
 推荐通过 docker-compose 一键启动项目（包含前端和后端环境），在运行之前，确保填补 `.env` 文件相关的环境变量：
 
 * 容器启动时不再读取项目目录里的 `backend/.env`，请确保将配置以环境变量的形式传入。
-* `docker-compose.yaml` 中显式配置了必要的运行时代理和 API keys，支持传入 `GOOGLE_MAPS_API_KEY` 与 `GOOGLE_MAPS_PROXY` 等变量。
+* `docker-compose.yaml` 区分服务端与浏览器 Key：后端使用 `GOOGLE_MAPS_SERVER_API_KEY`、`AMAP_WEB_SERVICE_KEY`，前端构建使用 `VITE_GOOGLE_MAPS_BROWSER_KEY`、`VITE_AMAP_WEB_JS_KEY`。
 * 前端构建期变量 `VITE_AMAP_WEB_JS_KEY` 会通过 `build.args` 自动注入前端。
 
 
@@ -207,9 +207,9 @@ uv pip install -r requirements.txt
 # 复制配置文件并填入相应的 API KEY
 cp .env.example .env
 # [必填] LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_ID（选择有结构化输出能力的模型）
-# [必填] VITE_AMAP_WEB_KEY (高德地图 web服务 类型的key)
+# [必填] AMAP_WEB_SERVICE_KEY (高德地图 Web 服务类型的 Key)
 # [必填] XHS_COOKIE（小红书网页端登录后的Cookie）
-# [选填] GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_PROXY（如果需要支持 Google 地图引擎）
+# [选填] GOOGLE_MAPS_SERVER_API_KEY, GOOGLE_MAPS_PROXY（如果需要支持 Google 地图引擎）
 
 # 启动 FastAPI (推荐通过 uvicorn)
 uvicorn app.api.main:app --host 0.0.0.0 --port 8000 --reload
@@ -228,8 +228,8 @@ npm install
 
 # 复制配置文件并填入相应的 Key
 cp .env.example .env
-# [必填] VITE_AMAP_WEB_KEY 与后端保持一致
 # [必填] VITE_AMAP_WEB_JS_KEY 必须是 Web端(JS API) 类型的key
+# [选填] VITE_GOOGLE_MAPS_BROWSER_KEY（浏览器地图 Key，需配置 referrer/API restriction）
 # 另外，由于 JS API 2.0 政策要求，**还需要在 index.html 注入你的安全密钥(securityJsCode)**
 
 # 启动 Vite 开发服务器
@@ -308,4 +308,3 @@ TripStar/
 ## 🙏 致谢
 感谢 [linuxdo](https://linux.do/) 社区的交流、分享与反馈，让 TripStar 的迭代更高效，同时欢迎大家进群交流反馈
 <img width="431" height="411" alt="image" src="https://github.com/user-attachments/assets/118d46c0-a8e9-42fb-8110-c233fc4f6277" />
-

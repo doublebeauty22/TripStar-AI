@@ -38,10 +38,40 @@
             <button type="button" class="chat-close-btn btn-round btn-danger" @click.stop="closeChatPanel">×</button>
             <div class="chat">
               <div class="chat-bot">
+                <div class="chat-mode-switch" role="tablist" :aria-label="t('result.chat.modeLabel')">
+                  <button
+                    type="button"
+                    role="tab"
+                    class="chat-mode-tab"
+                    :class="{ active: !patchMode }"
+                    :aria-selected="!patchMode"
+                    :disabled="chatLoading"
+                    @click="selectMode(false)"
+                  >
+                    {{ t('result.chat.qaMode') }}
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    class="chat-mode-tab"
+                    :class="{ active: patchMode }"
+                    :aria-selected="patchMode"
+                    :disabled="chatLoading || !canPatch"
+                    @click="selectMode(true)"
+                  >
+                    {{ t('result.chat.patchMode') }}
+                  </button>
+                </div>
+                <div v-if="patchUnavailableReason" class="chat-edit-unavailable" role="status">
+                  {{ patchUnavailableReason }}
+                </div>
+                <div v-else-if="patchMode" class="chat-plan-version">
+                  {{ t('result.chat.currentVersion', { version: tripPlan?.plan_version }) }}
+                </div>
                 <div class="chat-history" ref="chatMessagesRef">
                   <div v-if="chatHistory.length === 0" class="chat-empty">
-                    <p>{{ t('result.chat.welcome') }}</p>
-                    <div class="chat-suggestions">
+                    <p>{{ patchMode ? t('result.chat.editWelcome') : t('result.chat.welcome') }}</p>
+                    <div v-if="!patchMode" class="chat-suggestions">
                       <button
                         v-for="question in quickQuestions"
                         :key="question.labelKey"
@@ -63,9 +93,12 @@
                     {{ msg.content }}
                   </div>
                   <div v-if="chatLoading" class="chat-msg assistant typing">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
+                    <span v-if="patchStatusText">{{ patchStatusText }}</span>
+                    <template v-else>
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                      <span class="dot"></span>
+                    </template>
                   </div>
                 </div>
                 <textarea
@@ -73,7 +106,7 @@
                   :placeholder="chatPlaceholder"
                   name="chat_bot"
                   id="chat_bot"
-                  :disabled="chatLoading || !tripPlan"
+                  :disabled="chatLoading || !tripPlan || (patchMode && !canPatch)"
                   @keydown.enter.exact.prevent="sendChatMessage"
                 ></textarea>
               </div>
@@ -130,7 +163,7 @@
                 <button
                   type="button"
                   class="btn-submit"
-                  :disabled="chatLoading || !chatInput.trim() || !tripPlan"
+                  :disabled="chatLoading || !chatInput.trim() || !tripPlan || (patchMode && !canPatch)"
                   @click="sendChatMessage"
                 >
                   <i>
@@ -156,10 +189,16 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import type { ChatMessage, TripPlan } from '@/types'
-import { getRuntimeApiBaseUrl } from '@/services/api'
+import type { KnowledgeGraphData } from '@/types'
+import { getRuntimeApiBaseUrl, patchTripPlan } from '@/services/api'
 
 const props = defineProps<{
   tripPlan: TripPlan | null
+  planId: string
+}>()
+
+const emit = defineEmits<{
+  (event: 'plan-updated', plan: TripPlan, graph?: KnowledgeGraphData | null): void
 }>()
 
 const { t } = useI18n()
@@ -168,6 +207,24 @@ const chatInput = ref('')
 const chatHistory = ref<ChatMessage[]>([])
 const chatLoading = ref(false)
 const chatMessagesRef = ref<HTMLElement | null>(null)
+const patchMode = ref(false)
+const patchStatusText = ref('')
+
+const canPatch = computed(() => Boolean(
+  props.tripPlan
+  && props.planId.trim()
+  && Number.isInteger(props.tripPlan.plan_version)
+  && Number(props.tripPlan.plan_version) >= 1
+))
+
+const patchUnavailableReason = computed(() => {
+  if (!props.tripPlan) return ''
+  if (!props.planId.trim()) return t('result.chat.missingTaskInfo')
+  if (!Number.isInteger(props.tripPlan.plan_version) || Number(props.tripPlan.plan_version) < 1) {
+    return t('result.chat.missingVersionInfo')
+  }
+  return ''
+})
 
 const quickQuestions = [
   {
@@ -186,8 +243,14 @@ const quickQuestions = [
 
 const chatPlaceholder = computed(() => {
   if (!props.tripPlan) return t('result.noTripPlanDesc')
+  if (patchMode.value) return t('result.chat.editPlaceholder')
   return t('result.chat.placeholder')
 })
+
+const newPatchRequestId = () => {
+  if (typeof globalThis.crypto?.randomUUID === 'function') return globalThis.crypto.randomUUID()
+  return `patch-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`
+}
 
 const scrollChatToBottom = () => {
   nextTick(() => {
@@ -211,6 +274,12 @@ const closeChatPanel = () => {
   chatOpen.value = false
 }
 
+const selectMode = (edit: boolean) => {
+  if (edit && !canPatch.value) return
+  patchMode.value = edit
+  chatInput.value = ''
+}
+
 const sendQuickQuestion = (q: string) => {
   chatInput.value = q
   void sendChatMessage()
@@ -218,7 +287,7 @@ const sendQuickQuestion = (q: string) => {
 
 const sendChatMessage = async () => {
   const text = chatInput.value.trim()
-  if (!text || chatLoading.value || !props.tripPlan) return
+  if (!text || chatLoading.value || !props.tripPlan || (patchMode.value && !canPatch.value)) return
 
   chatHistory.value.push({ role: 'user', content: text })
   chatInput.value = ''
@@ -226,6 +295,34 @@ const sendChatMessage = async () => {
   scrollChatToBottom()
 
   try {
+    if (patchMode.value) {
+      patchStatusText.value = t('result.chat.understandingEdit')
+      const result = await patchTripPlan(
+        props.planId,
+        text,
+        Number(props.tripPlan.plan_version),
+        newPatchRequestId(),
+      )
+      if (result.requires_regeneration) {
+        chatHistory.value.push({
+          role: 'assistant',
+          content: result.regeneration_reason || t('result.chat.requiresRegeneration'),
+        })
+      } else if (result.success && result.updated_plan) {
+        patchStatusText.value = t('result.chat.revalidatingEdit')
+        emit('plan-updated', result.updated_plan, result.graph_data)
+        const summary = result.change_summary?.length
+          ? result.change_summary.join('\n')
+          : t('result.chat.patchSuccess')
+        chatHistory.value.push({ role: 'assistant', content: summary })
+      } else {
+        chatHistory.value.push({
+          role: 'assistant',
+          content: result.error || t('result.chat.patchFailed'),
+        })
+      }
+      return
+    }
     const apiBase = getRuntimeApiBaseUrl()
     const res = await axios.post(`${apiBase}/api/chat/ask`, {
       message: text,
@@ -240,8 +337,14 @@ const sendChatMessage = async () => {
     }
   } catch (err) {
     console.error('Chat error:', err)
-    chatHistory.value.push({ role: 'assistant', content: t('result.chat.networkError') })
+    chatHistory.value.push({
+      role: 'assistant',
+      content: patchMode.value && err instanceof Error
+        ? err.message
+        : t('result.chat.networkError'),
+    })
   } finally {
+    patchStatusText.value = ''
     chatLoading.value = false
     scrollChatToBottom()
   }
@@ -255,6 +358,55 @@ const sendChatMessage = async () => {
   bottom: 8px;
   z-index: 1000;
   transform: scale(0.3);
+}
+
+.chat-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.chat-mode-tab {
+  min-height: 72px;
+  padding: 10px 18px;
+  border: 2px solid rgba(91, 143, 249, 0.45);
+  border-radius: 18px;
+  background: #f3f6fd;
+  color: #2c2c2c;
+  font-size: 38px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chat-mode-tab.active {
+  color: #fff;
+  background: #5b8ff9;
+  border-color: #5b8ff9;
+}
+
+.chat-mode-tab:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.chat-edit-unavailable,
+.chat-plan-version {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 32px;
+  line-height: 1.4;
+}
+
+.chat-edit-unavailable {
+  color: #9f3a26;
+  background: #fff1ed;
+}
+
+.chat-plan-version {
+  color: #4263a3;
+  background: #eef4ff;
 }
 
 .container-ai-input {

@@ -1,0 +1,110 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 30.65557,
+          "longitude": 104.077
+        },
+        "match_status": "verified",
+        "name": "春熙路",
+        "place_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "成都国际金融中心IFS",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "太古里",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 30.732969,
+          "longitude": 104.14581
+        },
+        "match_status": "verified",
+        "name": "成都大熊猫繁育研究基地",
+        "place_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM"
+      },
+      {
+        "location": {
+          "latitude": 30.663611099999997,
+          "longitude": 104.0525
+        },
+        "match_status": "verified",
+        "name": "宽窄巷子",
+        "place_id": "ChIJRxJWE9jE7zYRZVJ_scoyS4M"
+      },
+      {
+        "location": {
+          "latitude": 30.663751999999995,
+          "longitude": 104.04461800000001
+        },
+        "match_status": "verified",
+        "name": "成都博物馆",
+        "place_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o"
+      },
+      {
+        "location": {
+          "latitude": 30.65949,
+          "longitude": 104.026538
+        },
+        "match_status": "verified",
+        "name": "杜甫草堂",
+        "place_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk"
+      },
+      {
+        "location": {
+          "latitude": 30.645802,
+          "longitude": 104.04942899999999
+        },
+        "match_status": "verified",
+        "name": "武侯祠",
+        "place_id": "ChIJHSK0oePE7zYRKcnSiomj91k"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "都江堰熊猫谷",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 30.99324,
+          "longitude": 103.62312
+        },
+        "match_status": "verified",
+        "name": "仰天窝广场",
+        "place_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o"
+      },
+      {
+        "location": {
+          "latitude": 30.995642999999998,
+          "longitude": 103.61584099999999
+        },
+        "match_status": "verified",
+        "name": "都江堰景区",
+        "place_id": "ChIJQyMeYrUG8DYRgurVUgr8Ogs"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

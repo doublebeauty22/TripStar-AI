@@ -1,0 +1,209 @@
+{
+  "baseline_run_id": "eval_demo_baseline",
+  "blocking_reasons": [],
+  "candidate_run_id": "eval_demo_investigate",
+  "case_id": "gc_beijing_baseline",
+  "comparison_id": "comparison_demo_investigate",
+  "improvements": [],
+  "investigation_reasons": [
+    "non-hard regression: total_tokens"
+  ],
+  "metric_deltas": [
+    {
+      "baseline_status": "known",
+      "baseline_value": 1.0,
+      "candidate_status": "known",
+      "candidate_value": 1.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "schema_valid"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 1.0,
+      "candidate_status": "known",
+      "candidate_value": 1.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "date_day_consistency"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "explicit_constraint_satisfaction_rate"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "earliest_start_satisfaction"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 1.0,
+      "candidate_status": "known",
+      "candidate_value": 1.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "budget_arithmetic_consistency"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "budget_limit_satisfaction"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 1.0,
+      "candidate_status": "known",
+      "candidate_value": 1.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "grounded_poi_rate"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 0.0,
+      "candidate_status": "known",
+      "candidate_value": 0.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "unverified_poi_rate"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 1.0,
+      "candidate_status": "known",
+      "candidate_value": 1.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "provenance_coverage"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "route_check_coverage"
+    },
+    {
+      "baseline_status": "unknown",
+      "baseline_value": null,
+      "candidate_status": "unknown",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "route_feasibility_rate"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 0.0,
+      "candidate_status": "known",
+      "candidate_value": 0.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "actionable_risk_count"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "revision_risk_resolution_rate"
+    },
+    {
+      "baseline_status": "not_applicable",
+      "baseline_value": null,
+      "candidate_status": "not_applicable",
+      "candidate_value": null,
+      "classification": "unchanged",
+      "delta": null,
+      "metric": "unaffected_day_preservation_rate"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 2.0,
+      "candidate_status": "known",
+      "candidate_value": 2.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "logical_llm_calls"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 100.0,
+      "candidate_status": "known",
+      "candidate_value": 100.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "prompt_tokens"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 50.0,
+      "candidate_status": "known",
+      "candidate_value": 50.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "completion_tokens"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 150.0,
+      "candidate_status": "known",
+      "candidate_value": 151.0,
+      "classification": "regression",
+      "delta": 1.0,
+      "metric": "total_tokens"
+    },
+    {
+      "baseline_status": "known",
+      "baseline_value": 500.0,
+      "candidate_status": "known",
+      "candidate_value": 500.0,
+      "classification": "unchanged",
+      "delta": 0.0,
+      "metric": "latency_ms"
+    }
+  ],
+  "regressions": [
+    "total_tokens"
+  ],
+  "release_decision": "INVESTIGATE",
+  "thresholds_provisional": true,
+  "unchanged": [
+    "schema_valid",
+    "date_day_consistency",
+    "explicit_constraint_satisfaction_rate",
+    "earliest_start_satisfaction",
+    "budget_arithmetic_consistency",
+    "budget_limit_satisfaction",
+    "grounded_poi_rate",
+    "unverified_poi_rate",
+    "provenance_coverage",
+    "route_check_coverage",
+    "route_feasibility_rate",
+    "actionable_risk_count",
+    "revision_risk_resolution_rate",
+    "unaffected_day_preservation_rate",
+    "logical_llm_calls",
+    "prompt_tokens",
+    "completion_tokens",
+    "latency_ms"
+  ]
+}

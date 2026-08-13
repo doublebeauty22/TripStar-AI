@@ -1,0 +1,184 @@
+{
+  "capture_mode": "dry-run",
+  "final_trip_plan": {
+    "reason": "dry-run does not execute Planner",
+    "status": "unknown",
+    "value": null
+  },
+  "final_validation_result": {
+    "reason": "dry-run does not execute Validator",
+    "status": "unknown",
+    "value": null
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_beijing_baseline",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase3d1_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": "model is not known before execution",
+      "status": "unknown",
+      "value": null
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "case is not a patch scenario",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [],
+  "provider_statuses_state": {
+    "reason": "dry-run does not call providers",
+    "status": "unknown",
+    "value": null
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "case does not require revision",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": "dry-run does not execute Validator",
+    "status": "unknown",
+    "value": null
+  },
+  "route_checks": [],
+  "route_checks_state": {
+    "reason": "dry-run does not execute route checks",
+    "status": "unknown",
+    "value": null
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "multi_interest",
+    "zh_input"
+  ],
+  "snapshot_hashes": {},
+  "stage_latency_ms": {
+    "reason": "dry-run performs no Planner stages",
+    "status": "not_applicable",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": "dry-run performs no Planner execution",
+    "status": "not_applicable",
+    "value": null
+  },
+  "trip_request": {
+    "accommodation": "舒适型酒店",
+    "cities": [
+      {
+        "city": "北京",
+        "days": 3
+      }
+    ],
+    "city": "北京",
+    "end_date": "2026-10-14",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "历史文化",
+      "博物馆"
+    ],
+    "start_date": "2026-10-12",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": "dry-run does not call an LLM",
+      "status": "unknown",
+      "value": null
+    },
+    "logical_llm_calls": {
+      "reason": "dry-run does not call an LLM",
+      "status": "unknown",
+      "value": null
+    },
+    "prompt_tokens": {
+      "reason": "dry-run does not call an LLM",
+      "status": "unknown",
+      "value": null
+    },
+    "retries": {
+      "reason": "dry-run does not call an LLM",
+      "status": "unknown",
+      "value": null
+    },
+    "stages": [],
+    "total_tokens": {
+      "reason": "dry-run does not call an LLM",
+      "status": "unknown",
+      "value": null
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": "dry-run does not call XHS",
+    "status": "unknown",
+    "value": null
+  }
+}

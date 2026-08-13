@@ -1,0 +1,14 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "facts": [
+      {
+        "id": "mock-google_places"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "available"
+}

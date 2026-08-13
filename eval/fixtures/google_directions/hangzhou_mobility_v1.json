@@ -1,0 +1,1 @@
+{"fixture_version":"v1","provider":"google_directions","state":"available","sanitized":true,"payload":{"routes":[{"origin":"A","destination":"B","duration_s":600,"distance_m":600}]}}

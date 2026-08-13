@@ -1,5 +1,7 @@
 """POI相关API路由"""
 
+import asyncio
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional
@@ -72,9 +74,14 @@ async def search_poi(keywords: str, city: str = "北京"):
         result = amap_service.search_poi(keywords, city)
 
         return {
-            "success": True,
-            "message": "搜索成功",
-            "data": result
+            "success": result.data_available,
+            "message": "搜索成功" if result.data_available else f"搜索数据暂不可用 ({result.reason})",
+            "data": result.data,
+            "provider": result.provider,
+            "request_success": result.request_success,
+            "data_available": result.data_available,
+            "degraded": result.degraded,
+            "reason": result.reason,
         }
 
     except Exception as e:
@@ -88,9 +95,13 @@ async def search_poi(keywords: str, city: str = "北京"):
 @router.get(
     "/photo",
     summary="获取景点图片",
-    description="根据景点名称从小红书获取图片"
+    description="按 Google Places → 小红书 → 前端本地占位图的顺序获取图片"
 )
-async def get_attraction_photo(name: str, city: Optional[str] = None):
+async def get_attraction_photo(
+    name: str,
+    city: Optional[str] = None,
+    place_id: Optional[str] = None,
+):
     """
     获取景点图片
 
@@ -101,32 +112,94 @@ async def get_attraction_photo(name: str, city: Optional[str] = None):
     Returns:
         图片URL
     """
+    # Never echo or trust a client-provided Place ID. Only a value returned by
+    # the server-side matcher/photo lookup may cross this trust boundary.
+    resolved_place_id = ""
+
+    # 1. Google Places 是首选图片事实源。
+    try:
+        from ...services.google_map_service import get_google_map_service
+
+        google_service = get_google_map_service()
+        if google_service is not None:
+            trusted_place_id = ""
+            match = await asyncio.to_thread(google_service.match_poi, name, city or "")
+            matched_poi = match.get("poi")
+            server_match_status = match.get("status", "unverified")
+            from ...models.schemas import has_valid_verified_coordinates
+            if (
+                match.get("status") == "verified"
+                and matched_poi is not None
+                and matched_poi.id
+                and has_valid_verified_coordinates(matched_poi.location)
+            ):
+                # A client-supplied place_id is only a hint. The server-side
+                # deterministic matcher is the trust boundary.
+                trusted_place_id = matched_poi.id
+            elif server_match_status == "verified":
+                # A defensive boundary for malformed/custom matcher results:
+                # a verified label without a valid server-side coordinate is
+                # not sufficient to start a second Google lookup.
+                server_match_status = "unverified"
+            if server_match_status in {"verified", "partial_match"}:
+                google_photo = await asyncio.to_thread(
+                    google_service.get_place_photo,
+                    place_id=trusted_place_id,
+                    name="" if trusted_place_id else name,
+                    city=city or "",
+                )
+            else:
+                google_photo = {"photo_url": "", "place_id": "", "attributions": [], "match_status": "unverified"}
+            resolved_place_id = google_photo.get("place_id") or ""
+            if google_photo.get("photo_url"):
+                return {
+                    "success": True,
+                    "message": "Google Places 图片获取成功",
+                    "degraded": google_photo.get("match_status") != "verified",
+                    "data": {
+                        "name": name,
+                        "place_id": resolved_place_id,
+                        "photo_url": google_photo["photo_url"],
+                        "source": "google_places",
+                        "match_status": google_photo.get("match_status") or "unverified",
+                        "attributions": google_photo.get("attributions") or [],
+                    },
+                }
+    except Exception as exc:
+        print(f"⚠️ [PHOTO_FALLBACK] Google Places 图片不可用 ({name}): {exc}")
+
+    # 2. XHS 仅作为可选的用户经验图片增强源。
     try:
         from ...services.xhs_service import get_photo_from_xhs
-        
-        # 为了避免同名的流行歌曲（如许嵩的《断桥残雪》）、小说或人名干扰
-        # 强制带上前缀“景点”，能够绝对限定搜索范围在旅游打卡贴内
-        query_kw = f"{name} 风景"
-        photo_url = await get_photo_from_xhs(query_kw)
 
-        if not photo_url:
-            # 兜底：交由前端展示默认占位图
-            print(f"⚠️ 无法为 {name} 找到对应的小红书景点图片，返回空")
-            photo_url = ""
-            
-        return {
-            "success": True,
-            "message": "获取图片成功",
-            "data": {
-                "name": name,
-                "photo_url": photo_url
+        photo_url = await get_photo_from_xhs(f"{name} 风景")
+        if photo_url:
+            return {
+                "success": True,
+                "message": "已使用小红书图片降级方案",
+                "degraded": True,
+                "data": {
+                    "name": name,
+                    "place_id": resolved_place_id,
+                    "photo_url": photo_url,
+                    "source": "xhs",
+                    "attributions": [],
+                },
             }
-        }
+    except Exception as exc:
+        print(f"⚠️ [PHOTO_FALLBACK] XHS 图片不可用 ({name}): {exc}")
 
-    except Exception as e:
-        print(f"❌ 获取景点图片失败: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"获取景点图片失败: {str(e)}"
-        )
-
+    # 3. placeholder 由前端本地渲染；这里不伪造真实 photo_url。
+    print(f"⚠️ [PHOTO_FALLBACK] {name}: 无真实图片，使用前端本地 placeholder")
+    return {
+        "success": True,
+        "message": "没有可用的真实图片，使用本地占位图",
+        "degraded": True,
+        "data": {
+            "name": name,
+            "place_id": resolved_place_id,
+            "photo_url": "",
+            "source": "placeholder",
+            "attributions": [],
+        },
+    }

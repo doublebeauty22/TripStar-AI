@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_beijing_baseline_v1",
+  "case_id": "gc_beijing_baseline",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d2_pilot3/gc_beijing_baseline/gc_beijing_baseline.json",
+  "artifact_sha256": "sha256:0c0fe5d1422518a1e7dfc2d826d1c0840b3b5dc89f345b448d95bbfab53c525a",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-12T15:28:52Z",
+  "reviewed_at": "2026-08-12T15:28:52Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 4,
+    "pacing_quality": 4,
+    "usefulness": 3,
+    "explanation_quality": 3
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "行程高度围绕历史文化和博物馆兴趣展开，故宫、国家博物馆、天坛等核心安排与用户偏好直接匹配，三天整体没有明显偏离主题；每天约 3 个主要景点，也基本符合 balanced pace。但个性化仍主要停留在兴趣类别层面，对情侣出行以及更细粒度历史偏好的体现有限。",
+    "itinerary_coherence": "三天主题划分清晰，景点之间具有明显的历史文化逻辑，而不是随机组合；Day 2 的故宫—景山—什刹海尤其连贯。整体也形成从核心历史地标到博物馆、街区体验的自然结构。但缺少逐段交通和时间安排，且 Day 3 路线未被完整验证，因此执行层面的连贯性仍存在一定不确定性。",
+    "pacing_quality": "每天约 3 个主要景点，没有明显过度堆叠，整体符合 balanced pace。三天的主题和景点数量也较均衡。不过故宫、国家博物馆、天坛等本身游览耗时和步行量较大，目前又缺少具体停留时间、交通时间及休息缓冲，因此尚不足以判断为接近完美的节奏安排。",
+    "usefulness": "行程已经能够提供清晰的三日游览框架和核心 POI 选择，用户可以据此规划旅行；但若作为“明天即可执行”的计划，仍缺少逐段交通、交通耗时、餐饮、预约/购票提示以及更细的停留时间。Day 3 路线也未完整验证。预算虽然加总正确，但酒店占总预算比例很高，且当前材料没有说明价格来源，因此整体属于基本可用但执行细节存在明显缺口。",
+    "explanation_quality": "计划能够解释每天的主题，并对 Day 1 因周一而调整场馆安排给出原因，因此并非单纯罗列景点。但推荐理由仍以主题概括为主，缺少对 POI 选择、顺序、路线权衡和用户偏好匹配的进一步说明；同时没有清楚向用户解释 Day 3 路线验证不完整、预算来源等不确定性，因此解释能力基本可用但仍有明显提升空间。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "当前行程中的主要 POI 均具有完整 grounding/provenance，但 Day 1 关于故宫、国家博物馆和恭王府“因周一闭馆而不安排”的说法属于具体外部运营事实。现有人工评审材料没有展示该 claim 对应的官方或其他可靠 evidence，因此无法确认其是否已被充分支持。除此之外，暂未从当前摘要中发现明显将 XHS 单篇经验泛化为平台共识的情况。",
+  "additional_notes": null
+}

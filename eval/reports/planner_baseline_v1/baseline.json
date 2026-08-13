@@ -1,0 +1,250 @@
+{
+  "aggregate_metrics": [],
+  "automatic_badcase_frequency": {},
+  "cases_evaluated": 0,
+  "cases_failed": 0,
+  "cases_total": 16,
+  "cases_unknown": 0,
+  "city_scope_breakdown": [],
+  "human_required_frequency": {},
+  "human_reviews": [
+    {
+      "case_id": "gc_beijing_baseline",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_shanghai_relaxed",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_tokyo_intensive_en",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_kyoto_no_early_start",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_chengdu_budget",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_hangzhou_mobility",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_beijing_xhs_unavailable",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_osaka_places_partial",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_lijiang_places_unavailable",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_guangzhou_route_unavailable",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_sydney_weather_fallback_en",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_beijing_xian_multi_city",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_seoul_food_constraint_en",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_nanjing_local_patch",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_shenzhen_overbudget_revision",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    },
+    {
+      "case_id": "gc_hongkong_multi_interest_en",
+      "planner_version": "planner_baseline_v1",
+      "rationale": null,
+      "reviewer": null,
+      "scores": {},
+      "status": "pending",
+      "timestamp": null
+    }
+  ],
+  "language_breakdown": [],
+  "manifest": {
+    "baseline_id": "planner_baseline_v1",
+    "baseline_status": "not_established",
+    "case_ids": [],
+    "code_revision": "worktree:96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "fixture_hashes_by_case": {},
+    "fixture_set_version": "fixtures.v1",
+    "generated_at": "2026-08-12T11:33:09.170138+00:00",
+    "golden_case_version": "golden.v1",
+    "metric_policy_version": "metrics.v1",
+    "model": "runtime-configured-not-captured",
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "production-unversioned@96b9c5e-dirty",
+    "reason": "real controlled Planner artifacts are missing for one or more Golden Cases",
+    "runner_version": "runner.v1"
+  },
+  "not_evaluated_frequency": {},
+  "scenario_breakdown": [
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "pace_relaxed",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "pace_intensive",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "budget_constrained",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "budget_unconstrained",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "mobility",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "mobility_normal",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "food_constraint",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "food_normal",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "provider_degraded",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "provider_normal",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "revision_trigger",
+      "metrics": []
+    },
+    {
+      "automatic_badcase_frequency": {},
+      "case_ids": [],
+      "group": "no_revision_trigger",
+      "metrics": []
+    }
+  ],
+  "top_automatic_badcases": []
+}

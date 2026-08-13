@@ -1,0 +1,46 @@
+{
+  "automatic_badcases": {
+    "provenance_missing": 5,
+    "route_unavailable": 6,
+    "ungrounded_poi": 5
+  },
+  "eight_case_baseline": "not_established",
+  "failure_artifacts": [
+    {
+      "case_id": "gc_nanjing_local_patch",
+      "failure_type": "planner_execution_error",
+      "reference": "eval/pilots/phase3d42/gc_nanjing_local_patch_base/gc_nanjing_local_patch_base.failure.json",
+      "stage": "base_capture"
+    }
+  ],
+  "failure_count": 1,
+  "human_required_pending": {
+    "overpacked": 6,
+    "preference_miss": 6,
+    "underpacked": 6,
+    "unnecessary_revision": 6,
+    "unsupported_fact": 6
+  },
+  "initial_planning_controlled_artifacts": [
+    "gc_beijing_baseline",
+    "gc_kyoto_no_early_start",
+    "gc_osaka_places_partial",
+    "gc_shenzhen_overbudget_revision",
+    "gc_chengdu_budget",
+    "gc_lijiang_places_unavailable"
+  ],
+  "initial_planning_count": 6,
+  "metric_integrity_failures": [],
+  "metric_policy_version": "metrics.v2",
+  "not_attempted_due_stop_rule": [
+    "gc_beijing_xian_multi_city"
+  ],
+  "not_evaluated": {
+    "excessive_cost": 6,
+    "excessive_latency": 6
+  },
+  "patch_controlled_artifacts": [],
+  "patch_count": 0,
+  "status": "partial_baseline",
+  "summary_id": "phase3d42_partial_evidence_v1"
+}

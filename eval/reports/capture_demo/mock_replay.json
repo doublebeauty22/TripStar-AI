@@ -1,0 +1,309 @@
+{
+  "capture_mode": "replay",
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 0,
+        "total_attractions": 0,
+        "total_hotels": 0,
+        "total_inter_city_transport": 0,
+        "total_meals": 0,
+        "total_transportation": 0
+      },
+      "cities": [
+        "北京"
+      ],
+      "city": "北京",
+      "days": [
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [],
+          "city": "北京",
+          "date": "2026-10-12",
+          "day_index": 0,
+          "description": "mock",
+          "hotel": null,
+          "is_transfer_day": false,
+          "meals": [],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "公共交通"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [],
+          "city": "北京",
+          "date": "2026-10-13",
+          "day_index": 1,
+          "description": "mock",
+          "hotel": null,
+          "is_transfer_day": false,
+          "meals": [],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "公共交通"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [],
+          "city": "北京",
+          "date": "2026-10-14",
+          "day_index": 2,
+          "description": "mock",
+          "hotel": null,
+          "is_transfer_day": false,
+          "meals": [],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "公共交通"
+        }
+      ],
+      "end_date": "2026-10-14",
+      "overall_suggestions": "mock",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [],
+      "start_date": "2026-10-12",
+      "validation_status": "passed",
+      "weather_info": [],
+      "weather_results": [],
+      "xhs_research": []
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "passed"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_beijing_baseline",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_mock_replay",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "mock-model"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "not a patch case",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 1,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "facts": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 1,
+      "provider": "google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "facts": 1
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "not triggered",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": []
+  },
+  "route_checks": [
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "poi-b",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1200
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 900
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "poi-a",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "multi_interest",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "google_places": "sha256:8016332b58bb32dc2ff09841db8a7d65670f56788791339aa843d749b020e89b",
+    "xhs": "sha256:9e3ce5c5e5778334bc0d302c876a0fb2cbc3520082a3567db4dea35098845434"
+  },
+  "stage_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "planning": 200
+    }
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 321
+  },
+  "trip_request": {
+    "accommodation": "舒适型酒店",
+    "cities": [
+      {
+        "city": "北京",
+        "days": 3
+      }
+    ],
+    "city": "北京",
+    "end_date": "2026-10-14",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "历史文化",
+      "博物馆"
+    ],
+    "start_date": "2026-10-12",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 50
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 100
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 150
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "evidence_count": 0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "cities": [
+      {
+        "evidence": [
+          {
+            "note_id": "6a7420ef00000000250143fd",
+            "source_url": "https://www.xiaohongshu.com/explore/6a7420ef00000000250143fd",
+            "status": "detail_available"
+          },
+          {
+            "note_id": "6a4f60040000000022008d69",
+            "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+            "status": "detail_available"
+          },
+          {
+            "note_id": "6a69d08d000000000e036f2e",
+            "source_url": "https://www.xiaohongshu.com/explore/6a69d08d000000000e036f2e",
+            "status": "detail_available"
+          },
+          {
+            "note_id": "6a7734af0000000033009832",
+            "source_url": "https://www.xiaohongshu.com/explore/6a7734af0000000033009832",
+            "status": "detail_available"
+          }
+        ],
+        "reason": null,
+        "status": "available",
+        "verification_status": "verified"
+      }
+    ]
+  },
+  "provider": "xhs",
+  "sanitized": true,
+  "state": "available"
+}

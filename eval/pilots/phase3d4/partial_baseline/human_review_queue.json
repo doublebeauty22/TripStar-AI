@@ -1,0 +1,85 @@
+{
+  "cases": [
+    {
+      "artifact_reference": "eval/pilots/phase3d2_pilot3/gc_beijing_baseline/gc_beijing_baseline.json",
+      "case_id": "gc_beijing_baseline",
+      "questions": [
+        "preference satisfaction",
+        "itinerary coherence",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d3/gc_kyoto_no_early_start/gc_kyoto_no_early_start.json",
+      "case_id": "gc_kyoto_no_early_start",
+      "questions": [
+        "preference satisfaction",
+        "itinerary coherence",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d3/gc_osaka_places_partial/gc_osaka_places_partial.json",
+      "case_id": "gc_osaka_places_partial",
+      "questions": [
+        "preference satisfaction",
+        "itinerary coherence",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d4/gc_chengdu_budget/gc_chengdu_budget.json",
+      "case_id": "gc_chengdu_budget",
+      "questions": [
+        "preference satisfaction",
+        "food constraint semantic satisfaction",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d4/gc_shenzhen_overbudget_revision/gc_shenzhen_overbudget_revision.json",
+      "case_id": "gc_shenzhen_overbudget_revision",
+      "questions": [
+        "preference satisfaction",
+        "itinerary coherence",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d4/gc_lijiang_places_unavailable/gc_lijiang_places_unavailable.json",
+      "case_id": "gc_lijiang_places_unavailable",
+      "questions": [
+        "preference satisfaction",
+        "itinerary coherence",
+        "pacing",
+        "usefulness",
+        "explanation quality",
+        "unsupported prose claims"
+      ],
+      "review_status": "pending"
+    }
+  ],
+  "queue_version": "human_review_queue.phase3d4.v1",
+  "review_status": "pending",
+  "rubric_version": "human.v1"
+}

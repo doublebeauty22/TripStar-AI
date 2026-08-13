@@ -1,0 +1,10 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "results": []
+  },
+  "provider": "google_weather",
+  "sanitized": true,
+  "state": "unavailable"
+}

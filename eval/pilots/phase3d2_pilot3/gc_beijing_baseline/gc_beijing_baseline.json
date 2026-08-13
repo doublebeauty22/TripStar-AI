@@ -1,0 +1,1878 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:17:14.685356+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:15:29.049550+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 7216,
+        "total_attractions": 136,
+        "total_hotels": 5400,
+        "total_inter_city_transport": 0,
+        "total_meals": 1440,
+        "total_transportation": 240
+      },
+      "cities": [
+        "北京"
+      ],
+      "city": "北京",
+      "days": [
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国北京市东城区前门 邮政编码: 100051",
+              "category": "历史文化地标",
+              "description": "参观北京中轴线南端的重要历史空间,适合拍摄天安门城楼、人民英雄纪念碑等地标。大人小孩都需要预约,务必携带身份证原件并预留安检时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.9054895,
+                "longitude": 116.39763169999999
+              },
+              "map_data_source": "google_places",
+              "name": "天安门广场",
+              "photos": [],
+              "place_id": "ChIJ2XRD3Jh2YzYRE1lUrcku6io",
+              "poi_id": "ChIJ2XRD3Jh2YzYRE1lUrcku6io",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": true,
+              "reservation_tips": "大人小孩都要预约,务必带身份证原件",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国北京市东城区东交民巷WC35+3G7 邮政编码: 100051",
+              "category": "历史街区",
+              "description": "漫步北京老城历史街区,欣赏复古西洋建筑与胡同风貌,适合拍照和了解近代北京城市历史。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.9026706,
+                "longitude": 116.40879689999998
+              },
+              "map_data_source": "google_places",
+              "name": "东交民巷",
+              "photos": [],
+              "place_id": "ChIJuWdhSbdS8DURdMlBxuUEfuM",
+              "poi_id": "ChIJuWdhSbdS8DURdMlBxuUEfuM",
+              "poi_match_status": "verified",
+              "rating": 4.1,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国北京市西城区西长安街2号 邮政编码: 100031",
+              "category": "文化建筑",
+              "description": "参观国家大剧院外观及公共空间,感受现代建筑与天安门区域历史建筑群的对比。参观项目建议提前预约,相关笔记提示需提前3天预约。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.904799,
+                "longitude": 116.38967120000001
+              },
+              "map_data_source": "google_places",
+              "name": "国家大剧院",
+              "photos": [],
+              "place_id": "ChIJc6LnIo5S8DURh6oaL1vsdIs",
+              "poi_id": "ChIJc6LnIo5S8DURh6oaL1vsdIs",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": true,
+              "reservation_tips": "建议提前3天预约,具体开放区域以官方公告为准",
+              "ticket_price": 40,
+              "visit_duration": 90
+            }
+          ],
+          "city": "北京",
+          "date": "2026-10-12",
+          "day_index": 0,
+          "description": "以天安门广场及东交民巷历史建筑为主,下午参观国家大剧院。当天为周一,故宫博物院、国家博物馆和恭王府闭馆,安排户外历史街区与建筑参观。",
+          "hotel": {
+            "address": "北京市东城区王府井大街269号",
+            "distance": "距天安门广场约1.5公里,距国家博物馆约1.3公里",
+            "estimated_cost": 1800,
+            "location": {
+              "latitude": 39.912174,
+              "longitude": 116.411285
+            },
+            "name": "北京王府井文华东方酒店",
+            "price_range": "1500-2500元",
+            "rating": "4.6",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "在酒店用餐,方便上午按时前往天安门广场。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐品尝京味家常菜、炸酱面或北京小吃,选择靠近步行路线的餐厅。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "前门或东交民巷附近北京菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返回酒店附近用餐,可选择北京烤鸭或精致京菜,适合情侣晚餐。",
+              "estimated_cost": 220,
+              "location": null,
+              "name": "王府井晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "全程以地铁和步行为主；天安门广场、东交民巷、国家大剧院之间距离较近,可步行或乘地铁短途接驳。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国北京市东城区景山前街4号 邮政编码: 100009",
+              "category": "宫殿遗址与博物馆",
+              "description": "重点参观午门、太和殿、中和殿、保和殿、乾清宫及御花园等核心区域,适合历史文化爱好者。故宫周一闭馆、无现场售票,建议提前在线预约,并按照午门进、神武门出的路线游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.916344699999996,
+                "longitude": 116.3971546
+              },
+              "map_data_source": "google_places",
+              "name": "故宫博物院",
+              "photos": [],
+              "place_id": "ChIJq4HNm91S8DURZGAQm-3qQ94",
+              "poi_id": "ChIJq4HNm91S8DURZGAQm-3qQ94",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "周一闭馆,无现场售票；建议提前在线预约,午门进、神武门出",
+              "ticket_price": 60,
+              "visit_duration": 240
+            },
+            {
+              "address": "中国北京市西城区景山景山西街44号 邮政编码: 100009",
+              "category": "历史景观公园",
+              "description": "从故宫神武门步行前往,登临万春亭可俯瞰故宫中轴线,是安排在故宫之后的绝佳观景点。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.9250988,
+                "longitude": 116.39684329999999
+              },
+              "map_data_source": "google_places",
+              "name": "景山公园",
+              "photos": [],
+              "place_id": "ChIJiaRNz-BS8DURW2N_nAufVJU",
+              "poi_id": "ChIJiaRNz-BS8DURW2N_nAufVJU",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 2,
+              "visit_duration": 75
+            },
+            {
+              "address": "中国北京市西城区什刹海 邮政编码: 100035",
+              "category": "历史街区与湖区",
+              "description": "傍晚沿后海、前海一带散步,欣赏湖景和胡同风貌。下午至蓝调时刻适合拍照,也可顺路体验老北京酒吧和小店氛围。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.933299999999996,
+                "longitude": 116.38183
+              },
+              "map_data_source": "google_places",
+              "name": "什刹海",
+              "photos": [],
+              "place_id": "ChIJtR0lmwJT8DURMT4IkpqHIlc",
+              "poi_id": "ChIJtR0lmwJT8DURMT4IkpqHIlc",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "北京",
+          "date": "2026-10-13",
+          "day_index": 1,
+          "description": "集中游览故宫中轴线及景山公园,傍晚前往什刹海欣赏湖景和老北京街区氛围。当天为周二,适合安排故宫博物院。",
+          "hotel": {
+            "address": "北京市东城区王府井大街269号",
+            "distance": "距故宫午门约1.8公里,距景山公园约1.7公里",
+            "estimated_cost": 1800,
+            "location": {
+              "latitude": 39.912174,
+              "longitude": 116.411285
+            },
+            "name": "北京王府井文华东方酒店",
+            "price_range": "1500-2500元",
+            "rating": "4.6",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前用餐,方便在故宫开放后尽早入场。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "故宫内外餐饮选择有限,建议准备少量饮水和能量食品,出宫后在景山或地安门附近用餐。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "故宫周边简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可品尝涮肉、烤鸭或京味小吃,晚餐后沿什刹海散步。",
+              "estimated_cost": 220,
+              "location": null,
+              "name": "什刹海或地安门北京菜",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "08:30",
+          "transfer_info": "",
+          "transportation": "酒店前往故宫建议乘地铁或步行至午门；故宫午门进、神武门出后步行前往景山公园,再乘地铁或步行前往什刹海。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国北京市东城区前门东长安街16号 邮政编码: 100051",
+              "category": "综合历史博物馆",
+              "description": "重点选择古代中国、近现代历史或专题展览参观,建议根据当天开放展厅提前规划。周一闭馆,馆内禁止携带自拍杆和大件行李,入馆前请留意安检和寄存要求。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.9050945,
+                "longitude": 116.4015829
+              },
+              "map_data_source": "google_places",
+              "name": "中国国家博物馆",
+              "photos": [],
+              "place_id": "ChIJ5xGxSrlS8DURCcbo8EFiRwI",
+              "poi_id": "ChIJ5xGxSrlS8DURCcbo8EFiRwI",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "周一闭馆；禁止自拍杆和大件行李,具体预约及开放安排以官方公告为准",
+              "ticket_price": 0,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国北京市东城区",
+              "category": "世界文化遗产与古建筑",
+              "description": "游览祈年殿、丹陛桥和回音壁等核心古迹。若重点参观古建筑,建议优先购买联票；如果时间有限,可直接前往祈年殿区域。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.8802793,
+                "longitude": 116.41053640000001
+              },
+              "map_data_source": "google_places",
+              "name": "天坛公园",
+              "photos": [],
+              "place_id": "ChIJq6qqqlFN8DURzScL9AR3y84",
+              "poi_id": "ChIJq6qqqlFN8DURzScL9AR3y84",
+              "poi_match_status": "verified",
+              "rating": 4.8,
+              "reservation_required": null,
+              "reservation_tips": "想完整游览核心古迹,建议优先购买联票；具体票价和开放情况以官方公告为准",
+              "ticket_price": 34,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国北京市西城区珠宝市街 邮政编码: 100051",
+              "category": "历史商业街区",
+              "description": "沿前门大街步行至大栅栏,欣赏老字号、传统商业建筑和老北京街区风貌。可根据体力选择体验复古铛铛车或在鲜鱼口街品尝小吃。",
+              "image_url": null,
+              "location": {
+                "latitude": 39.8971969,
+                "longitude": 116.39768759999998
+              },
+              "map_data_source": "google_places",
+              "name": "前门大街与大栅栏",
+              "photos": [],
+              "place_id": "ChIJXzOzRKJS8DURhVZf_wAXeKU",
+              "poi_id": "ChIJXzOzRKJS8DURhVZf_wAXeKU",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "北京",
+          "date": "2026-10-14",
+          "day_index": 2,
+          "description": "上午参观国家博物馆,下午游览天坛公园,傍晚前往前门大街和大栅栏体验老北京商业街区,形成历史文化与博物馆主题收尾行程。",
+          "hotel": {
+            "address": "北京市东城区王府井大街269号",
+            "distance": "距国家博物馆约1.3公里,距天坛公园约3.5公里",
+            "estimated_cost": 1800,
+            "location": {
+              "latitude": 39.912174,
+              "longitude": 116.411285
+            },
+            "name": "北京王府井文华东方酒店",
+            "price_range": "1500-2500元",
+            "rating": "4.6",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "在酒店用餐后前往国家博物馆,建议携带轻便随身物品。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "国家博物馆参观时间较长,建议选择快速简餐,避免影响下午天坛行程。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "国家博物馆或前门附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可尝试北京小吃、卤煮、爆肚、豆汁或其他传统风味,按个人口味选择。",
+              "estimated_cost": 220,
+              "location": null,
+              "name": "鲜鱼口街或大栅栏小吃",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "酒店前往国家博物馆建议乘地铁；国家博物馆至天坛公园乘地铁或公交；天坛至前门大街可乘地铁或短途公交,晚间返回酒店。"
+        }
+      ],
+      "end_date": "2026-10-14",
+      "overall_suggestions": "当前提供的天气数据日期为2026年8月12日至8月15日,与本次2026年10月12日至10月14日行程日期不一致,因此不将其作为本次行程的逐日天气依据。建议在出行前3至7天重新查询北京天气,并据此调整户外景点顺序。10月北京通常适合历史街区和公园步行,建议准备薄外套、舒适步行鞋和折叠雨具。天安门广场、故宫博物院及可能涉及预约的文化场馆应提前通过官方渠道确认预约规则；故宫周一闭馆,因此安排在10月13日。国家博物馆周一闭馆且禁止自拍杆和大件行李,10月14日参观时应轻装前往。以上费用按2人估算,不包含往返北京的大交通及购物费用。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 2,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:2",
+          "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2026-10-12",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "北京",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 26,
+          "day_weather": "大雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "雷阵雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "北京",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 30,
+          "day_weather": "雷阵雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "北京",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 30,
+          "day_weather": "雷阵雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东南",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "北京",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 30,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 21,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "北京",
+          "data_available": true,
+          "days": [
+            {
+              "city": "北京",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 26,
+              "day_weather": "大雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "雷阵雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "北京",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 30,
+              "day_weather": "雷阵雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "北京",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 30,
+              "day_weather": "雷阵雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东南",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "北京",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 30,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 21,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a7add480000000032020106",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7add480000000032020106",
+              "status": "detail_available",
+              "title": "来北京前必存🔥全景点预约 + 票价保姆攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a73b643000000000f03a000",
+              "source_url": "https://www.xiaohongshu.com/explore/6a73b643000000000f03a000",
+              "status": "detail_available",
+              "title": "📍北京｜秋天必逛的citywalk路线，超适合慢慢走（6/25）"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a633b0a000000001101f614",
+              "source_url": "https://www.xiaohongshu.com/explore/6a633b0a000000001101f614",
+              "status": "detail_available",
+              "title": "北京📍五天五晚旅游详细攻略（出片📷不绕路）"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a75a6120000000033013958",
+              "source_url": "https://www.xiaohongshu.com/explore/6a75a6120000000033013958",
+              "status": "detail_available",
+              "title": "第一次去北京？这篇攻略直接抄作业！📝"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "大人小孩都要预约，务必带身份证原件",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "天安门广场",
+                  "recommendation_quote": "大人小孩都要预约，务必带身份证原件"
+                }
+              ],
+              "identity_text": "天安门广场",
+              "location": {
+                "latitude": 39.9054895,
+                "longitude": 116.3976317
+              },
+              "location_status": "available",
+              "name": "天安门广场",
+              "name_en": "Tiananmen Square",
+              "name_zh": "天安门广场",
+              "recommendation": "大人小孩都要预约，务必带身份证原件",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "周一闭馆，无现场售票，午门进神武门出",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "故宫博物院",
+                  "recommendation_quote": "周一闭馆，无现场售票，午门进神武门出"
+                }
+              ],
+              "identity_text": "故宫博物院",
+              "location": {
+                "latitude": 39.9163447,
+                "longitude": 116.3971546
+              },
+              "location_status": "available",
+              "name": "故宫博物院",
+              "name_en": "The Palace Museum",
+              "name_zh": "故宫博物院",
+              "recommendation": "周一闭馆，无现场售票，午门进神武门出",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "周一闭馆，禁止自拍杆、大件行李",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "国家博物馆",
+                  "recommendation_quote": "周一闭馆，禁止自拍杆、大件行李"
+                }
+              ],
+              "identity_text": "国家博物馆",
+              "location": {
+                "latitude": 39.9050945,
+                "longitude": 116.4015829
+              },
+              "location_status": "available",
+              "name": "国家博物馆",
+              "name_en": "National Museum of China",
+              "name_zh": "中国国家博物馆",
+              "recommendation": "周一闭馆，禁止自拍杆、大件行李",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "万春亭是俯瞰故宫绝佳机位",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "景山公园",
+                  "recommendation_quote": "万春亭是俯瞰故宫绝佳机位"
+                }
+              ],
+              "identity_text": "景山公园",
+              "location": {
+                "latitude": 39.9250988,
+                "longitude": 116.3968433
+              },
+              "location_status": "available",
+              "name": "景山公园",
+              "name_en": "Jingshan Park",
+              "name_zh": "景山公园",
+              "recommendation": "万春亭是俯瞰故宫绝佳机位",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106",
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "想逛核心古迹，优先买联票；就直接去了祈年殿逛逛拍拍就出来了",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "天坛公园",
+                  "recommendation_quote": "想逛核心古迹，优先买联票"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "天坛公园",
+                  "recommendation_quote": "就直接去了祈年殿逛逛拍拍就出来了"
+                }
+              ],
+              "identity_text": "天坛公园",
+              "location": {
+                "latitude": 39.8821803,
+                "longitude": 116.4066056
+              },
+              "location_status": "available",
+              "name": "天坛公园",
+              "name_en": "Temple of Heaven",
+              "name_zh": "天坛公园",
+              "recommendation": "想逛核心古迹，优先买联票；就直接去了祈年殿逛逛拍拍就出来了",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106",
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "想逛核心古迹，优先买联票；建议可以打车到颐和园新建宫门进来，离十七孔桥很近，很多漂亮的拍照机位也在这边门呢",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "颐和园",
+                  "recommendation_quote": "想逛核心古迹，优先买联票"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "颐和园",
+                  "recommendation_quote": "建议可以打车到颐和园新建宫门进来，离十七孔桥很近，很多漂亮的拍照机位也在这边门呢"
+                }
+              ],
+              "identity_text": "颐和园",
+              "location": {
+                "latitude": 39.9999823,
+                "longitude": 116.2754606
+              },
+              "location_status": "available",
+              "name": "颐和园",
+              "name_en": "Summer Palace",
+              "name_zh": "颐和园",
+              "recommendation": "想逛核心古迹，优先买联票；建议可以打车到颐和园新建宫门进来，离十七孔桥很近，很多漂亮的拍照机位也在这边门呢",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "更推荐；摆渡车必买，缆车 / 滑道二选一",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "慕田峪长城",
+                  "recommendation_quote": "更推荐"
+                },
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "慕田峪长城",
+                  "recommendation_quote": "摆渡车必买，缆车 / 滑道二选一"
+                }
+              ],
+              "identity_text": "慕田峪长城",
+              "location": {
+                "latitude": 40.432683,
+                "longitude": 116.564006
+              },
+              "location_status": "available",
+              "name": "慕田峪长城",
+              "name_en": "Mutianyu Great Wall",
+              "name_zh": "慕田峪长城",
+              "recommendation": "更推荐；摆渡车必买，缆车 / 滑道二选一",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a75a6120000000033013958"
+              ],
+              "evidence_summary": "提前7天约，高铁19分钟直达（清河站出发）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a75a6120000000033013958",
+                  "identity_quote": "八达岭长城",
+                  "recommendation_quote": "提前7天约，高铁19分钟直达（清河站出发）"
+                }
+              ],
+              "identity_text": "八达岭长城",
+              "location": {
+                "latitude": 40.3597596,
+                "longitude": 116.0200204
+              },
+              "location_status": "available",
+              "name": "八达岭长城",
+              "name_en": "Badaling Great Wall",
+              "name_zh": "八达岭长城",
+              "recommendation": "提前7天约，高铁19分钟直达（清河站出发）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "周一闭馆",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "恭王府",
+                  "recommendation_quote": "周一闭馆"
+                }
+              ],
+              "identity_text": "恭王府",
+              "location": {
+                "latitude": 39.93577399999999,
+                "longitude": 116.386407
+              },
+              "location_status": "available",
+              "name": "恭王府",
+              "name_en": "Prince Gong's Mansion",
+              "name_zh": "恭王府博物馆",
+              "recommendation": "周一闭馆",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "门票附赠香火",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "雍和宫",
+                  "recommendation_quote": "门票附赠香火"
+                }
+              ],
+              "identity_text": "雍和宫",
+              "location": {
+                "latitude": 39.94767119999999,
+                "longitude": 116.4172902
+              },
+              "location_status": "available",
+              "name": "雍和宫",
+              "name_en": "Lama Temple",
+              "name_zh": "雍和宫",
+              "recommendation": "门票附赠香火",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106",
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "傍晚什刹海看湖景；下午过来看蓝调时刻也蛮好",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "什刹海",
+                  "recommendation_quote": "傍晚什刹海看湖景"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "什刹海",
+                  "recommendation_quote": "下午过来看蓝调时刻也蛮好"
+                }
+              ],
+              "identity_text": "什刹海",
+              "location": {
+                "latitude": 39.94179099999999,
+                "longitude": 116.382454
+              },
+              "location_status": "available",
+              "name": "什刹海",
+              "name_en": "Shichahai",
+              "name_zh": "什刹海",
+              "recommendation": "傍晚什刹海看湖景；下午过来看蓝调时刻也蛮好",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "五道营拍照",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "五道营",
+                  "recommendation_quote": "五道营拍照"
+                }
+              ],
+              "identity_text": "五道营",
+              "location": {
+                "latitude": 39.94843,
+                "longitude": 116.41164
+              },
+              "location_status": "available",
+              "name": "五道营",
+              "name_en": "Wudaoying Hutong",
+              "name_zh": "五道营胡同",
+              "recommendation": "五道营拍照",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106",
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "南锣鼓巷吃小吃；南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "南锣鼓巷",
+                  "recommendation_quote": "南锣鼓巷吃小吃"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "南锣鼓巷",
+                  "recommendation_quote": "南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了"
+                }
+              ],
+              "identity_text": "南锣鼓巷",
+              "location": {
+                "latitude": 39.93709,
+                "longitude": 116.40316
+              },
+              "location_status": "available",
+              "name": "南锣鼓巷",
+              "name_en": "Nanluoguxiang",
+              "name_zh": "南锣鼓巷",
+              "recommendation": "南锣鼓巷吃小吃；南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "外景免费，夜晚亮灯氛围感绝佳",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "鸟巢水立方",
+                  "recommendation_quote": "外景免费，夜晚亮灯氛围感绝佳"
+                }
+              ],
+              "identity_text": "鸟巢水立方",
+              "location": {
+                "latitude": 39.9915721,
+                "longitude": 116.3843752
+              },
+              "location_status": "available",
+              "name": "鸟巢水立方",
+              "name_en": "Beijing National Stadium and National Aquatics Center",
+              "name_zh": "国家体育场和国家游泳中心",
+              "recommendation": "外景免费，夜晚亮灯氛围感绝佳",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "提前 3 天预约",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "国家大剧院",
+                  "recommendation_quote": "提前 3 天预约"
+                }
+              ],
+              "identity_text": "国家大剧院",
+              "location": {
+                "latitude": 39.904799,
+                "longitude": 116.3896712
+              },
+              "location_status": "available",
+              "name": "国家大剧院",
+              "name_en": "National Centre for the Performing Arts",
+              "name_zh": "国家大剧院",
+              "recommendation": "提前 3 天预约",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "科技馆超级适合亲子遛娃",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "中国科技馆",
+                  "recommendation_quote": "科技馆超级适合亲子遛娃"
+                }
+              ],
+              "identity_text": "中国科技馆",
+              "location": {
+                "latitude": 40.006054,
+                "longitude": 116.39864
+              },
+              "location_status": "available",
+              "name": "中国科技馆",
+              "name_en": "China Science and Technology Museum",
+              "name_zh": "中国科学技术馆",
+              "recommendation": "科技馆超级适合亲子遛娃",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7add480000000032020106"
+              ],
+              "evidence_summary": "秋天红叶季超级火爆",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7add480000000032020106",
+                  "identity_quote": "香山公园",
+                  "recommendation_quote": "秋天红叶季超级火爆"
+                }
+              ],
+              "identity_text": "香山公园",
+              "location": {
+                "latitude": 39.990961,
+                "longitude": 116.197196
+              },
+              "location_status": "available",
+              "name": "香山公园",
+              "name_en": "Fragrant Hills Park",
+              "name_zh": "香山公园",
+              "recommendation": "秋天红叶季超级火爆",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "复古西洋建筑特别出片，历史和现代混搭得刚刚好",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "东交民巷",
+                  "recommendation_quote": "复古西洋建筑特别出片，历史和现代混搭得刚刚好"
+                }
+              ],
+              "identity_text": "东交民巷",
+              "location": {
+                "latitude": 39.902609,
+                "longitude": 116.407906
+              },
+              "location_status": "available",
+              "name": "东交民巷",
+              "name_en": "Dongjiaominxiang",
+              "name_zh": "东交民巷",
+              "recommendation": "复古西洋建筑特别出片，历史和现代混搭得刚刚好",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "斜对面路口能拍全景，还能打卡路牌",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "中国法院博物馆",
+                  "recommendation_quote": "斜对面路口能拍全景，还能打卡路牌"
+                }
+              ],
+              "identity_text": "中国法院博物馆",
+              "location": {
+                "latitude": 39.9028318,
+                "longitude": 116.4072626
+              },
+              "location_status": "available",
+              "name": "中国法院博物馆",
+              "name_en": "China Court Museum",
+              "name_zh": "中国法院博物馆",
+              "recommendation": "斜对面路口能拍全景，还能打卡路牌",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "哥特式风格，隔着门栏就能拍到里面",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "圣弥厄尔天主教堂",
+                  "recommendation_quote": "哥特式风格，隔着门栏就能拍到里面"
+                }
+              ],
+              "identity_text": "圣弥厄尔天主教堂",
+              "location": {
+                "latitude": 39.904211,
+                "longitude": 116.407395
+              },
+              "location_status": "available",
+              "name": "圣弥厄尔天主教堂",
+              "name_en": "St. Michael's Church",
+              "name_zh": "圣弥厄尔天主教堂",
+              "recommendation": "哥特式风格，隔着门栏就能拍到里面",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "冷门但超值，西洋古典建筑本身就是文物，里面藏品也挺惊艳",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "北京警察博物馆",
+                  "recommendation_quote": "冷门但超值，西洋古典建筑本身就是文物，里面藏品也挺惊艳"
+                }
+              ],
+              "identity_text": "北京警察博物馆",
+              "location": {
+                "latitude": 39.902248,
+                "longitude": 116.404919
+              },
+              "location_status": "available",
+              "name": "北京警察博物馆",
+              "name_en": "Beijing Police Museum",
+              "name_zh": "北京警察博物馆",
+              "recommendation": "冷门但超值，西洋古典建筑本身就是文物，里面藏品也挺惊艳",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "沿街能看到胡同四合院，老北京生活气息特别浓，秋天拍照也超美",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "西打磨厂街",
+                  "recommendation_quote": "沿街能看到胡同四合院，老北京生活气息特别浓，秋天拍照也超美"
+                }
+              ],
+              "identity_text": "西打磨厂街",
+              "location": {
+                "latitude": 39.904211,
+                "longitude": 116.407395
+              },
+              "location_status": "available",
+              "name": "西打磨厂街",
+              "name_en": "Xidamochang Street",
+              "name_zh": "西打磨厂街",
+              "recommendation": "沿街能看到胡同四合院，老北京生活气息特别浓，秋天拍照也超美",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "人少小众的赏秋好去处",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "西兴隆街",
+                  "recommendation_quote": "人少小众的赏秋好去处"
+                }
+              ],
+              "identity_text": "西兴隆街",
+              "location": {
+                "latitude": 39.904211,
+                "longitude": 116.407395
+              },
+              "location_status": "available",
+              "name": "西兴隆街",
+              "name_en": "Xixinglong Street",
+              "name_zh": "西兴隆街",
+              "recommendation": "人少小众的赏秋好去处",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "里头好多特色小吃",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "鲜鱼口街",
+                  "recommendation_quote": "里头好多特色小吃"
+                }
+              ],
+              "identity_text": "鲜鱼口街",
+              "location": {
+                "latitude": 39.8964799,
+                "longitude": 116.40112
+              },
+              "location_status": "available",
+              "name": "鲜鱼口街",
+              "name_en": "Xianyukou Street",
+              "name_zh": "鲜鱼口街",
+              "recommendation": "里头好多特色小吃",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "最后到前门大栅栏",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "前门大栅栏",
+                  "recommendation_quote": "最后到前门大栅栏"
+                }
+              ],
+              "identity_text": "前门大栅栏",
+              "location": {
+                "latitude": 39.89283,
+                "longitude": 116.39297
+              },
+              "location_status": "available",
+              "name": "前门大栅栏",
+              "name_en": "Qianmen Dashilar",
+              "name_zh": "前门大栅栏",
+              "recommendation": "最后到前门大栅栏",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "老北京地标街道，有古建筑还有复古铛铛车可以坐",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "前门大街",
+                  "recommendation_quote": "老北京地标街道，有古建筑还有复古铛铛车可以坐"
+                }
+              ],
+              "identity_text": "前门大街",
+              "location": {
+                "latitude": 39.8935,
+                "longitude": 116.39825
+              },
+              "location_status": "available",
+              "name": "前门大街",
+              "name_en": "Qianmen Street",
+              "name_zh": "前门大街",
+              "recommendation": "老北京地标街道，有古建筑还有复古铛铛车可以坐",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a73b643000000000f03a000"
+              ],
+              "evidence_summary": "Page one书店二三层能拍到正阳门城楼，古建筑很有年代感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a73b643000000000f03a000",
+                  "identity_quote": "北京坊",
+                  "recommendation_quote": "Page one书店二三层能拍到正阳门城楼，古建筑很有年代感"
+                }
+              ],
+              "identity_text": "北京坊",
+              "location": {
+                "latitude": 39.89871,
+                "longitude": 116.3954
+              },
+              "location_status": "available",
+              "name": "北京坊",
+              "name_en": "Beijing Fun",
+              "name_zh": "北京坊",
+              "recommendation": "Page one书店二三层能拍到正阳门城楼，古建筑很有年代感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "必须玩上一天呀；个人觉得禁忌之旅跟霸天虎过山车比较刺激好玩；又出片又好吃",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "北京环球影城",
+                  "recommendation_quote": "必须玩上一天呀"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "北京环球影城",
+                  "recommendation_quote": "个人觉得禁忌之旅跟霸天虎过山车比较刺激好玩"
+                },
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "北京环球影城",
+                  "recommendation_quote": "又出片又好吃"
+                }
+              ],
+              "identity_text": "北京环球影城",
+              "location": {
+                "latitude": 39.904211,
+                "longitude": 116.407395
+              },
+              "location_status": "available",
+              "name": "北京环球影城",
+              "name_en": "Universal Beijing Resort",
+              "name_zh": "北京环球度假区",
+              "recommendation": "必须玩上一天呀；个人觉得禁忌之旅跟霸天虎过山车比较刺激好玩；又出片又好吃",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a633b0a000000001101f614"
+              ],
+              "evidence_summary": "南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a633b0a000000001101f614",
+                  "identity_quote": "鼓楼",
+                  "recommendation_quote": "南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了"
+                }
+              ],
+              "identity_text": "鼓楼",
+              "location": {
+                "latitude": 39.941165,
+                "longitude": 116.395888
+              },
+              "location_status": "available",
+              "name": "鼓楼",
+              "name_en": "Drum Tower",
+              "name_zh": "钟鼓楼",
+              "recommendation": "南锣鼓巷跟鼓楼离得很近，走走逛逛就可以到了",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_beijing_baseline",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_pilot3_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "amap",
+      "reason": "fallback provider result consumed",
+      "status": "degraded",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 9,
+      "provider": "google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "eligible": 9,
+        "verified": 9
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "google_directions",
+      "reason": "one or more route legs unavailable",
+      "status": "partial",
+      "summary": {
+        "attempted": 6,
+        "available": 4,
+        "eligible_legs": 6
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 2,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:2",
+        "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJuWdhSbdS8DURdMlBxuUEfuM",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1195
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1255
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJ2XRD3Jh2YzYRE1lUrcku6io",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJc6LnIo5S8DURh6oaL1vsdIs",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2240
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2115
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJuWdhSbdS8DURdMlBxuUEfuM",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 1,
+      "destination_stable_id": "ChIJiaRNz-BS8DURW2N_nAufVJU",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1316
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1071
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJq4HNm91S8DURZGAQm-3qQ94",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 1,
+      "destination_stable_id": "ChIJtR0lmwJT8DURMT4IkpqHIlc",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2544
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2087
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJiaRNz-BS8DURW2N_nAufVJU",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJq6qqqlFN8DURzScL9AR3y84",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJ5xGxSrlS8DURCcbo8EFiRwI",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJXzOzRKJS8DURhVZf_wAXeKU",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJq6qqqlFN8DURzScL9AR3y84",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "verification_status": "unavailable"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "multi_interest",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:38b66f0763e1e5bbdd64cade060affd289f944519c8ab939c8f36b121af7a88e",
+    "google_directions": "sha256:7eb60f0b312a2d49d33fe69d7fa3c30e7b11e6970ecb4f4a5b45f703074fbc24",
+    "google_places": "sha256:b52c207285f3f8cc81a2e22122a134c5fa610446842cbcf156300b8f26d1db05",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:e24fd56ea34bbd09bede652341b66a4a1b98c00f412d3e9e00b3527136985cb3"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 105634
+  },
+  "trip_request": {
+    "accommodation": "舒适型酒店",
+    "cities": [
+      {
+        "city": "北京",
+        "days": 3
+      }
+    ],
+    "city": "北京",
+    "end_date": "2026-10-14",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化",
+        "博物馆"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "历史文化",
+      "博物馆"
+    ],
+    "start_date": "2026-10-12",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 11274
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 16113
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 27387
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a7add480000000032020106",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7add480000000032020106",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a73b643000000000f03a000",
+              "source_url": "https://www.xiaohongshu.com/explore/6a73b643000000000f03a000",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a633b0a000000001101f614",
+              "source_url": "https://www.xiaohongshu.com/explore/6a633b0a000000001101f614",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a75a6120000000033013958",
+              "source_url": "https://www.xiaohongshu.com/explore/6a75a6120000000033013958",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

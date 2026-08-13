@@ -5,22 +5,29 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_AMAP_WEB_JS_KEY: ${VITE_AMAP_WEB_JS_KEY:-your_amap_web_js_api_key_here}
-        VITE_AMAP_WEB_KEY: ${VITE_AMAP_WEB_KEY:-your_amap_web_api_key_here}
+        VITE_GOOGLE_MAPS_BROWSER_KEY: ${VITE_GOOGLE_MAPS_BROWSER_KEY:-}
+        VITE_PUBLIC_DEMO_MODE: ${VITE_PUBLIC_DEMO_MODE:-true}
     container_name: helloagents-trip-planner
     ports:
       - "7860:7860"
     environment:
-      - LLM_API_KEY=${LLM_API_KEY:-your_key}
-      - LLM_BASE_URL=${LLM_BASE_URL:-your_url}
-      - LLM_MODEL_ID=${LLM_MODEL_ID:-your_model}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - LLM_BASE_URL=${LLM_BASE_URL:-}
+      - LLM_MODEL_ID=${LLM_MODEL_ID:-}
       - LLM_TIMEOUT=${LLM_TIMEOUT:-600}
-      - VITE_AMAP_WEB_KEY=${VITE_AMAP_WEB_KEY:-your_amap_web_api_key_here}
-      - XHS_COOKIE=${XHS_COOKIE:-your_xhs_cookie_here}
-      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY:-}
+      - AMAP_WEB_SERVICE_KEY=${AMAP_WEB_SERVICE_KEY:-}
+      - XHS_COOKIE=${XHS_COOKIE:-}
+      - GOOGLE_MAPS_SERVER_API_KEY=${GOOGLE_MAPS_SERVER_API_KEY:-}
       - GOOGLE_MAPS_PROXY=${GOOGLE_MAPS_PROXY:-}
       - HOST=0.0.0.0
       - PORT=7860
       - LOG_LEVEL=INFO
+      - APP_ENV=${APP_ENV:-production}
+      - PUBLIC_DEMO_MODE=${PUBLIC_DEMO_MODE:-true}
+      - PUBLIC_MAX_CONCURRENT_GENERATIONS=${PUBLIC_MAX_CONCURRENT_GENERATIONS:-1}
+      - PUBLIC_GENERATION_COOLDOWN_SECONDS=${PUBLIC_GENERATION_COOLDOWN_SECONDS:-60}
+      - PUBLIC_AUXILIARY_COOLDOWN_SECONDS=${PUBLIC_AUXILIARY_COOLDOWN_SECONDS:-10}
+      - PUBLIC_HISTORY_ENABLED=${PUBLIC_HISTORY_ENABLED:-false}
     volumes:
       - trip_data:/app/backend/data
     restart: unless-stopped

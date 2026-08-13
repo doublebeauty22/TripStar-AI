@@ -11,12 +11,14 @@ if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 from pathlib import Path
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from ..config import get_settings, validate_config, print_config
-from .routes import trip, poi, map as map_routes, chat, settings as settings_routes
+from .routes import trip, poi, map as map_routes, chat, preferences, settings as settings_routes, demo
+from ..services.public_demo_guard import public_error
 
 # 获取配置
 settings = get_settings()
@@ -29,6 +31,58 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
+
+
+def _public_error_response(status_code: int, detail):
+    if isinstance(detail, dict) and set(detail) == {"error"}:
+        return JSONResponse(status_code=status_code, content=detail)
+    mapping = {
+        400: ("invalid_input", "请求内容无效，请检查后重试。", False),
+        403: ("feature_disabled", "该功能在公开演示环境中不可用。", False),
+        404: ("not_found", "未找到请求的资源。", False),
+        409: ("request_conflict", "行程状态已变化，请刷新后重试。", True),
+        429: ("rate_limited", "请求过于频繁，请稍后再试。", True),
+    }
+    code, message, retryable = mapping.get(
+        status_code,
+        ("service_unavailable", "服务暂时不可用，请稍后重试或查看示例行程。", True),
+    )
+    return JSONResponse(
+        status_code=status_code,
+        content=public_error(code, message, retryable),
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(_request: Request, exc: HTTPException):
+    if settings.is_public_deployment:
+        return _public_error_response(exc.status_code, exc.detail)
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(_request: Request, _exc: RequestValidationError):
+    if settings.is_public_deployment:
+        return JSONResponse(
+            status_code=422,
+            content=public_error(
+                "invalid_input", "请求内容无效，请检查后重试。", False
+            ),
+        )
+    return JSONResponse(status_code=422, content={"detail": _exc.errors()})
+
+
+@app.exception_handler(Exception)
+async def unexpected_exception_handler(_request: Request, exc: Exception):
+    print(f"UNHANDLED_REQUEST_ERROR type={type(exc).__name__}")
+    if settings.is_public_deployment:
+        return JSONResponse(
+            status_code=500,
+            content=public_error(
+                "internal_error", "服务暂时不可用，请稍后重试。", True
+            ),
+        )
+    raise exc
 
 @app.middleware("http")
 async def intercept_proxy_path(request: Request, call_next):
@@ -57,7 +111,9 @@ app.include_router(trip.router, prefix="/api")
 app.include_router(poi.router, prefix="/api")
 app.include_router(map_routes.router, prefix="/api")
 app.include_router(chat.router, prefix="/api")
+app.include_router(preferences.router, prefix="/api")
 app.include_router(settings_routes.router, prefix="/api")
+app.include_router(demo.router, prefix="/api")
 
 
 @app.on_event("startup")
@@ -115,7 +171,11 @@ async def health():
     return {
         "status": "healthy",
         "service": settings.app_name,
-        "version": settings.app_version
+        "version": settings.app_version,
+        "production": settings.app_env.strip().lower() == "production",
+        "public_demo_mode": settings.public_demo_mode,
+        "live_generation_available": settings.live_generation_available,
+        "example_trip_available": demo._EXAMPLE_PATH.is_file(),
     }
 
 # 挂载前端静态文件（生产环境 Docker 部署时）

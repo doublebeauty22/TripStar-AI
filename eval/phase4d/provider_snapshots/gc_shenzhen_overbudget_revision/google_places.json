@@ -1,0 +1,83 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 22.5538895,
+          "longitude": 114.059207
+        },
+        "match_status": "verified",
+        "name": "莲花山公园",
+        "place_id": "ChIJAQAAQHL0AzQRPJEi6CI0wUE"
+      },
+      {
+        "location": {
+          "latitude": 22.540485999999998,
+          "longitude": 113.97855399999999
+        },
+        "match_status": "verified",
+        "name": "南山华侨城创意园",
+        "place_id": "ChIJu10dDCDyAzQRvAUbPAje2X8"
+      },
+      {
+        "location": {
+          "latitude": 22.513469699999998,
+          "longitude": 113.94606399999999
+        },
+        "match_status": "verified",
+        "name": "深圳人才公园",
+        "place_id": "ChIJ2YyRXlfvAzQRhTk-X1ToHMY"
+      },
+      {
+        "location": {
+          "latitude": 22.56826,
+          "longitude": 114.1689
+        },
+        "match_status": "verified",
+        "name": "仙湖植物园",
+        "place_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg"
+      },
+      {
+        "location": {
+          "latitude": 22.59329,
+          "longitude": 114.3086
+        },
+        "match_status": "verified",
+        "name": "大梅沙海滨公园",
+        "place_id": "ChIJbXa-NsdyBDQRrQ-f4Ojdi9A"
+      },
+      {
+        "location": {
+          "latitude": 22.5117454,
+          "longitude": 114.0427088
+        },
+        "match_status": "verified",
+        "name": "福田红树林生态公园",
+        "place_id": "ChIJaf_p3bnxAzQRjAjFZvKTg2s"
+      },
+      {
+        "location": {
+          "latitude": 22.511191999999998,
+          "longitude": 113.954301
+        },
+        "match_status": "verified",
+        "name": "深圳湾公园",
+        "place_id": "ChIJk07HD9jxAzQRDHJXk8G2YOw"
+      },
+      {
+        "location": {
+          "latitude": 22.545168,
+          "longitude": 113.91182479999999
+        },
+        "match_status": "verified",
+        "name": "前海石公园",
+        "place_id": "ChIJq6qqq37uAzQRCV1PBnASqvc"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "available"
+}

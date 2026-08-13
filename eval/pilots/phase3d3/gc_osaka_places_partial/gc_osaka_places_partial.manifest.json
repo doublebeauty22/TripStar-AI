@@ -1,0 +1,12 @@
+{
+  "artifact": "gc_osaka_places_partial.json",
+  "artifact_hash": "sha256:4bde4636f96f3134bdef8ca5f9bcd8b61578fffa47b87ffcb45a29710e2dd380",
+  "capture_status": "complete",
+  "case_id": "gc_osaka_places_partial",
+  "snapshot_hashes": {
+    "amap": "sha256:eb79aa91b7475a9515e17c041cc39edd47ef6a3b72d4e34675a7ecfcb07b3b57",
+    "google_places": "sha256:d395c8fd2a3941173253afdc94af749662b622b6d35ea3df552b935e53a150bf",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:e8580c9ac843b39b4cc4df30287c0d3c62fcca5e52ef81b4382ac6e5786af6df"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_nanjing_local_patch_v1",
+  "case_id": "gc_nanjing_local_patch",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d43/gc_nanjing_local_patch/gc_nanjing_local_patch.json",
+  "artifact_sha256": "sha256:88cd804a7373cdd12a54b8190b858eb33165ff20a0ac1a350dbf4bf27e0113c1",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-13T06:27:00Z",
+  "reviewed_at": "2026-08-13T06:27:00Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 2,
+    "pacing_quality": 3,
+    "usefulness": 2,
+    "explanation_quality": 2
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "用户明确要求“只把第三天最后一个景点换成南京博物院，其他日期保持不变”。Patch 确实将第三天最后一个 POI 从玄武湖替换为南京博物院，且 Day 1、Day 2、Day 4 三个 protected days 完全保持不变，unaffected_day_preservation_rate = 3/3，patch_scope_drift = false。新 POI 也与用户“历史文化”兴趣高度匹配并通过 Google Places verification。但局部替换后形成 Day 3 与 Day 4 连续两天都安排南京博物院的跨日重复，说明字面要求虽被执行，整体体验仍有明显可优化空间，因此不评为 5。",
+    "itinerary_coherence": "Patch 后完整计划出现明显的跨日和文本一致性问题。Day 3 已替换为南京博物院，但 Day 4 原本也安排南京博物院，导致连续两天重复访问同一 POI。同时 Day 3 description 仍写“下午前往玄武湖散步”，transportation 仍写“鸡鸣寺、明城墙台城与玄武湖相邻”，午餐文本也继续引用玄武湖。结构化 POI 与自然语言说明已经发生明显冲突，需要重新组织或补充同步修改，因此符合 human.v1 中 2 分的定义。",
+    "pacing_quality": "Patch 后第三天本身包含鸡鸣寺 90 分钟、明城墙台城 90 分钟、南京博物院 150 分钟，共 330 分钟 POI 活动，数量和总停留时间本身仍可接受。但明城墙台城至南京博物院的 walking route 约 4.5 公里、67 分钟，而用户偏好是公共交通；此外完整计划 8 条 route 中仅 5 条被判断 feasible，Day 1、Day 2、Day 4 仍存在多个较长路线 warning。因此整体节奏基本可执行，但仍有明显路线与交通方式优化空间，评为 3。",
+    "usefulness": "Patch engine 在局部修改、protected-day preservation、POI grounding 和 provenance 方面表现正确，但最终交付给用户的计划仍存在多个需要人工修正的重要问题：Day 3 文本仍引用玄武湖；Day 3 与 Day 4 重复南京博物院；同一南京博物院的 reservation_required 在两天之间存在冲突；用户偏好公共交通，但 route validation 全部使用 walking；完整计划还有 3/8 infeasible route legs 和 7 个 revisable route warnings，且 patch path 不会继续执行 revision。因此用户不能把这次修改视为已经完整处理好的最终计划，仍需明显二次检查和修正，评为 2。",
+    "explanation_quality": "Patch 完成后没有向用户明确解释修改产生的全局影响。系统没有提醒 Day 4 已经存在南京博物院，也没有询问用户是否需要调整重复 POI；Day 3 的 description、transportation 和餐饮文本也没有同步更新。同时没有充分解释 7 个 revisable route warnings、公共交通偏好与 walking route validation 的不一致，以及同一南京博物院在 Day 3 与 Day 4 预约要求冲突的问题。修改动作本身被执行，但限制、不确定性和副作用披露不足，因此评为 2。"
+  },
+  "unsupported_fact": "yes",
+  "unsupported_fact_rationale": "Patch 后至少存在可明确识别的事实与当前 itinerary 结构不一致。Day 3 的结构化 POI 已从玄武湖替换为南京博物院，但 description、transportation 和午餐文本仍继续引用玄武湖，这些陈述已不再支持当前 Day 3 行程。同时，同一个南京博物院在 Day 3 被标记 reservation_required=false，而 Day 4 被标记 reservation_required=true，形成直接冲突。因此最终用户可见计划中至少存在一部分无法同时成立或已经与当前结构失配的外部/执行性事实，不能仅判为 provenance uncertain。",
+  "additional_notes": "该 case 显示 Local Patch 的 deterministic scope correctness 与 whole-plan semantic correctness 是两个不同问题。Patch 成功实现了目标 POI 替换、protected-day preservation、new-POI verification 和 post-patch validation，但没有同步处理相关自然语言文本、跨日重复和事实冲突。核心产品发现是：Local patch correctness ≠ global plan correctness。"
+}

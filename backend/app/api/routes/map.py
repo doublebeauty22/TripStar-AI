@@ -6,6 +6,7 @@ from ...models.schemas import (
     POISearchRequest,
     POISearchResponse,
     RouteRequest,
+    RouteInfo,
     RouteResponse,
     WeatherResponse
 )
@@ -41,12 +42,17 @@ async def search_poi(
         service = get_amap_service()
         
         # 搜索POI
-        pois = service.search_poi(keywords, city, citylimit)
+        result = service.search_poi(keywords, city, citylimit)
         
         return POISearchResponse(
-            success=True,
-            message="POI搜索成功",
-            data=pois
+            success=result.data_available,
+            message="POI搜索成功" if result.data_available else f"POI 数据暂不可用 ({result.reason})",
+            data=result.data,
+            provider=result.provider,
+            request_success=result.request_success,
+            data_available=result.data_available,
+            degraded=result.degraded,
+            reason=result.reason,
         )
         
     except Exception as e:
@@ -83,8 +89,8 @@ async def get_weather(
         weather_info = service.get_weather(city)
         
         return WeatherResponse(
-            success=True,
-            message="天气查询成功",
+            success=weather_info.data_available,
+            message="天气查询成功" if weather_info.data_available else "天气数据暂不可用",
             data=weather_info
         )
         
@@ -117,7 +123,7 @@ async def plan_route(request: RouteRequest):
         service = get_amap_service()
         
         # 规划路线
-        route_info = service.plan_route(
+        result = service.plan_route(
             origin_address=request.origin_address,
             destination_address=request.destination_address,
             origin_city=request.origin_city,
@@ -125,10 +131,23 @@ async def plan_route(request: RouteRequest):
             route_type=request.route_type
         )
         
+        route_info = None
+        if result.data_available:
+            route_info = RouteInfo(
+                distance=result.distance or 0,
+                duration=result.duration or 0,
+                route_type=result.route_mode,
+                description="高德 Web Service 实际路线",
+            )
         return RouteResponse(
-            success=True,
-            message="路线规划成功",
-            data=route_info
+            success=result.data_available,
+            message="路线规划成功" if result.data_available else f"路线数据暂不可用 ({result.reason})",
+            data=route_info,
+            provider=result.provider,
+            request_success=result.request_success,
+            data_available=result.data_available,
+            degraded=result.degraded,
+            reason=result.reason,
         )
         
     except Exception as e:
@@ -151,13 +170,12 @@ async def health_check():
         service = get_amap_service()
         
         return {
-            "status": "healthy",
-            "service": "map-service",
-            "mcp_tools_count": len(service.mcp_tool._available_tools)
+            "status": "configured" if service.api_key else "unavailable",
+            "service": "amap-rest-service",
+            "provider": "amap" if service.api_key else "unavailable",
         }
     except Exception as e:
         raise HTTPException(
             status_code=503,
             detail=f"服务不可用: {str(e)}"
         )
-

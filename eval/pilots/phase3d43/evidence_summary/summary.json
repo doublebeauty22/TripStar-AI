@@ -1,0 +1,89 @@
+{
+  "atomicity": {
+    "base_artifact_hash": true,
+    "multi_city_success_absent": true,
+    "patch_artifact_hash": true
+  },
+  "controlled_base_support_artifacts": [
+    {
+      "artifact_hash": "sha256:efc1f7a9bea35e121b6b9b0b50ce0886f0812f5cfd4ec1089dd7a870b1ea3c22",
+      "case_id": "gc_nanjing_local_patch",
+      "reference": "eval/pilots/phase3d43/gc_nanjing_local_patch_base/gc_nanjing_local_patch.json"
+    }
+  ],
+  "eight_case_initial_planning_baseline": "not_established",
+  "failure_artifacts": [
+    {
+      "case_id": "gc_beijing_xian_multi_city",
+      "failed_stage": "planner",
+      "failure_type": "planner_output_parse_failure",
+      "reference": "eval/pilots/phase3d43/gc_beijing_xian_multi_city/gc_beijing_xian_multi_city.failure.json"
+    }
+  ],
+  "failure_count": 1,
+  "initial_planning_controlled_artifacts": [
+    "gc_beijing_baseline",
+    "gc_kyoto_no_early_start",
+    "gc_osaka_places_partial",
+    "gc_shenzhen_overbudget_revision",
+    "gc_chengdu_budget",
+    "gc_lijiang_places_unavailable"
+  ],
+  "initial_planning_count": 6,
+  "metric_integrity_failures": [],
+  "metric_policy_version": "metrics.v2",
+  "patch_controlled_artifacts": [
+    {
+      "affected_days": [
+        2
+      ],
+      "automatic_badcases": [
+        "route_infeasible"
+      ],
+      "base_artifact_hash": "sha256:efc1f7a9bea35e121b6b9b0b50ce0886f0812f5cfd4ec1089dd7a870b1ea3c22",
+      "case_id": "gc_nanjing_local_patch",
+      "metrics": {
+        "route_check_coverage": {
+          "denominator": 8.0,
+          "metric": "route_check_coverage",
+          "numerator": 8.0,
+          "policy_version": "metrics.v2",
+          "reason": null,
+          "status": "known",
+          "value": 1.0
+        },
+        "route_feasibility_rate": {
+          "denominator": 8.0,
+          "metric": "route_feasibility_rate",
+          "numerator": 5.0,
+          "policy_version": "metrics.v2",
+          "reason": null,
+          "status": "known",
+          "value": 0.625
+        },
+        "unaffected_day_preservation_rate": {
+          "denominator": 3.0,
+          "metric": "unaffected_day_preservation_rate",
+          "numerator": 3.0,
+          "policy_version": "metrics.v2",
+          "reason": null,
+          "status": "known",
+          "value": 1.0
+        }
+      },
+      "protected_days": [
+        0,
+        1,
+        3
+      ],
+      "protected_deep_equal": [
+        true,
+        true,
+        true
+      ],
+      "reference": "eval/pilots/phase3d43/gc_nanjing_local_patch/gc_nanjing_local_patch.json"
+    }
+  ],
+  "patch_count": 1,
+  "summary_id": "phase3d43_final_branch_evidence_v1"
+}

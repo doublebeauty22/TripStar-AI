@@ -1,8 +1,10 @@
 """AI 行程问答路由"""
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from ...models.schemas import TripChatRequest, TripChatResponse
 from ...services.chat_service import chat_with_trip_context
+from ...config import get_settings
+from ...services.public_demo_guard import public_demo_guard, public_error
 
 router = APIRouter(prefix="/chat", tags=["AI问答"])
 
@@ -13,7 +15,7 @@ router = APIRouter(prefix="/chat", tags=["AI问答"])
     summary="行程智能问答",
     description="根据当前旅行计划上下文,回答用户关于行程的问题"
 )
-async def ask_about_trip(request: TripChatRequest):
+async def ask_about_trip(request: TripChatRequest, http_request: Request = None):
     """
     AI 行程问答
 
@@ -24,6 +26,7 @@ async def ask_about_trip(request: TripChatRequest):
         AI 回复
     """
     try:
+        await public_demo_guard.check_auxiliary(http_request, "chat")
         print(f"\n💬 收到行程问答: {request.message[:50]}...")
 
         # 将 history 转换为 dict 列表
@@ -42,11 +45,19 @@ async def ask_about_trip(request: TripChatRequest):
             reply=reply,
         )
 
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"❌ 行程问答失败: {e}")
         import traceback
         traceback.print_exc()
-        raise HTTPException(
-            status_code=500,
-            detail=f"AI问答服务异常: {str(e)}"
+        detail = (
+            public_error(
+                "provider_temporarily_unavailable",
+                "智能问答暂时不可用，请稍后重试。",
+                True,
+            )
+            if get_settings().is_public_deployment
+            else f"AI问答服务异常: {str(e)}"
         )
+        raise HTTPException(status_code=503, detail=detail)

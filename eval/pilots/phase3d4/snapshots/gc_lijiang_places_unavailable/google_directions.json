@@ -1,0 +1,286 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "routes": [
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJy8TvSInJIDcRGH71EIOA4E0",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 5970
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 5246
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3384
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2786
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJy8TvSInJIDcRGH71EIOA4E0",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 1,
+        "destination_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2649
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 3119
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 1,
+        "destination_stable_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 10491
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 9560
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "origin_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 9936
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 8655
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "origin_stable_id": "ChIJ90Cy7VfIIDcRtGuweYJUOfM",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "丽江古城（大研古城）",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "ChIJy8TvSInJIDcRGH71EIOA4E0",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "黑龙潭公园",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 0,
+        "destination_stable_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3384
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2786
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJy8TvSInJIDcRGH71EIOA4E0",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 1,
+        "destination_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+        "distance_m": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "route_unavailable",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+        "reason": "route_unavailable",
+        "request_attempted": true,
+        "route_mode": "transit",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 9936
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 8655
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "origin_stable_id": "ChIJ90Cy7VfIIDcRtGuweYJUOfM",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 2,
+        "destination_stable_id": "丽江古城（大研古城）",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      }
+    ]
+  },
+  "provider": "google_directions",
+  "sanitized": true,
+  "state": "partial"
+}

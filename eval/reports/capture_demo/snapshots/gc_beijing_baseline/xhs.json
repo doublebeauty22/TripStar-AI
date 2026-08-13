@@ -1,0 +1,14 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "facts": [
+      {
+        "id": "mock-xhs"
+      }
+    ]
+  },
+  "provider": "xhs",
+  "sanitized": true,
+  "state": "available"
+}

@@ -1,0 +1,71 @@
+{
+  "review_type": "paired_human_review",
+  "review_id": "paired_review_gc_lijiang_places_unavailable_v1",
+  "case_id": "gc_lijiang_places_unavailable",
+  "rubric_version": "human.v1",
+  "status": "revealed_complete",
+  "reviewer": "Yi Huang",
+  "reviewed_at": "2026-08-13T12:49:59Z",
+  "blind_material_reference": "eval/phase4d/blind_review/gc_lijiang_places_unavailable/human_review.md",
+  "blind_material_sha256": "sha256:bcc486f0bfb41866a2f90463a2b3b639b2612cb9791cc616d6214ba543ca0f80",
+  "blind_plan_a_label": "Plan A",
+  "blind_plan_b_label": "Plan B",
+  "identity_revealed": true,
+  "identity_revealed_at": "2026-08-13T12:50:46Z",
+  "blind_review_completed_at": "2026-08-13T12:49:59Z",
+  "blind_order_integrity": "limitation",
+  "plan_a_review": {
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 3, "usefulness": 4, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "情侣、自然风光和 relaxed 三个核心偏好基本得到体现。Day 2 主动减少其他活动，Day 3 将玉湖村设为可选，说明计划有控制强度的意识。但 Day 1 三个地点以及 Day 3 在执行全部活动时仍略满。",
+      "itinerary_coherence": "每日主题清楚，形成城市周边自然、雪山核心日、白沙/玉湖村/古城的结构。但 Day 1 黑龙潭—清溪水库—束河，以及 Day 3 白沙—玉湖村—大研古城仍存在一定移动负担和部分体验重复。",
+      "pacing_quality": "Day 1 基本可接受，但 Day 2 08:00 出发并安排玉龙雪山和云杉坪，高海拔、景区交通、排队及内部移动会增加实际负荷。Day 3 如果完整执行白沙、玉湖村和大研古城，也不完全符合 relaxed pace。玉湖村 optional 设计提供了一定缓解。",
+      "usefulness": "计划提供了雪山预约、天气不匹配、交通方式、高海拔恢复和玉湖村 conditional execution 等实际建议，已经具有较好的执行价值，但部分路线、票务和开放情况仍需要额外确认。",
+      "explanation_quality": "能够解释为什么不安排泸沽湖和虎跳峡、为什么雪山日减少额外活动、为什么玉湖村设为 optional，也明确披露天气数据日期不匹配和相关不确定性。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "没有发现足以直接判定为错误的核心事实，但关于 12 月气候、景点特征、预约要求、票价和开放规则等外部事实仍需要在实际出发前通过官方来源确认。"
+  },
+  "plan_b_review": {
+    "scores": {"preference_satisfaction": 5, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "计划更直接围绕情侣、自然风光和 relaxed pace 组织。Day 1 主动安排午后休息，Day 2 集中核心雪山自然体验，Day 3 安排古镇和村落自然风貌，整体体验定位与用户偏好高度一致。",
+      "itinerary_coherence": "三天形成清晰的市区恢复/古城、核心雪山日、古镇村落慢游结构。Day 1 没有为了增加 POI 数量继续堆叠景点，跨日结构自然且容易理解。",
+      "pacing_quality": "Day 1 很符合 relaxed pace，Day 3 的束河古镇和九鼎龙潭具有较自然的连续游览关系。主要问题是 Day 2：玉龙雪山、云杉坪和蓝月谷合计约 390 分钟活动时间，再叠加市区往返、景区换乘、高海拔和排队，仍可能偏紧，因此不能评为 5。",
+      "usefulness": "对景区交通、预约、高原环境、保暖、休息和路线不确定性都有实际提醒，整体容易理解和执行。但雪山日部分具体票务和预约信息仍需官方确认。",
+      "explanation_quality": "对天气数据失效、未知路线、高原负担、官方复核和执行边界均有较清楚说明。但部分具体外部信息的 evidence strength 仍有限。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "没有足够证据确认存在明确 fabricated fact，但部分具体 external claims 需要核实，包括雪山相关票价、观光交通、预约时间建议、黑龙潭公园费用状态及其他未来开放/预约规则。"
+  },
+  "paired_verdict": "plan_b_better",
+  "paired_rationale": "Plan B overall better reflects the requested relaxed pace while preserving the couple-oriented natural-landscape experience. Its three-day structure is more coherent: a lighter city/recovery day, a focused core mountain day, and a lower-intensity old-town/village day. It does not appear to obtain better pacing merely by removing the user's core natural-landscape interest. However, Plan B does not fully solve pacing: Day 2 remains potentially dense because attraction duration alone does not capture suburban travel, scenic-area access, queues, internal mobility and altitude burden.",
+  "more_balanced_plan": "Plan B",
+  "more_executable_plan": "Plan B",
+  "core_preference_sacrifice_detected": false,
+  "underpacked_detected": false,
+  "metric_improvement_but_ux_regression": false,
+  "additional_notes": "Both plans contain potentially dense scenic-area days; suburban/unknown-route judgments are estimate-dependent. Visible durations are individually plausible but do not guarantee acceptable whole-day load. High-altitude/access/internal-mobility burden lacks complete structured support. The exact historical blind-review ordering cannot be independently proven; this timestamp records schema registration with no identity fields present.",
+  "reveal": {
+    "plan_a_identity": {
+      "role": "baseline",
+      "artifact_reference": "eval/pilots/phase3d4/gc_lijiang_places_unavailable/gc_lijiang_places_unavailable.json",
+      "artifact_sha256": "sha256:ccad40d98ff2bf2d2041da87d482041bd29496cab62a312fc85b82455fced79b",
+      "planner_version": "planner_baseline_v1",
+      "prompt_version": "planner_prompt_v1",
+      "pacing_policy_version": null,
+      "pacing_revision_version": null
+    },
+    "plan_b_identity": {
+      "role": "candidate",
+      "artifact_reference": "eval/phase4d/cases/gc_lijiang_places_unavailable/gc_lijiang_places_unavailable.json",
+      "artifact_sha256": "sha256:425ecd951579c63b4621905803b66f30cfdd68db19ef7fe179c96668e5674821",
+      "planner_version": "planner_pacing_v1",
+      "prompt_version": "planner_prompt_pacing_v1",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "pacing_revision_version": "pacing_revision.v1"
+    },
+    "baseline_label": "Plan A",
+    "candidate_label": "Plan B"
+  }
+}

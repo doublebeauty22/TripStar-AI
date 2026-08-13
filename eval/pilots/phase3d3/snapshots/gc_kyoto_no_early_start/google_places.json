@@ -1,0 +1,92 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "清水寺",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "三年坂",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "八坂神社",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "伏见稻荷大社",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "花见小路",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 34.9804985,
+          "longitude": 135.7671783
+        },
+        "match_status": "verified",
+        "name": "鸭川",
+        "place_id": "ChIJKZsHV-QIAWARAwyExuxohlc"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "竹林小径",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 35.009449,
+          "longitude": 135.666773
+        },
+        "match_status": "verified",
+        "name": "岚山",
+        "place_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "渡月桥",
+        "place_id": ""
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

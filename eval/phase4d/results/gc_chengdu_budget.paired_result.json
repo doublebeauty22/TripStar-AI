@@ -1,0 +1,37 @@
+{
+  "result_version": "phase4d.paired_result.v1",
+  "case_id": "gc_chengdu_budget",
+  "pair_level_outcome": "BETTER",
+  "baseline": {
+    "label": "Plan A", "planner_version": "planner_baseline_v1", "prompt_version": "planner_prompt_v1",
+    "artifact_sha256": "sha256:23e2a45f31bb1ea0aca7e46676407dacc224e5734633952209249504379ab85d",
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 3, "usefulness": 3, "explanation_quality": 4}
+  },
+  "candidate": {
+    "label": "Plan B", "planner_version": "planner_pacing_v1", "prompt_version": "planner_prompt_pacing_v1",
+    "pacing_policy_version": "pacing.daily_load.v0.proposed", "pacing_revision_version": "pacing_revision.v1",
+    "artifact_sha256": "sha256:db83d8911c6def3a7d4eb3bc3cca3491e205a8bdb58135f41252ad376b583550",
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4}
+  },
+  "candidate_minus_baseline": {"preference_satisfaction": 0, "itinerary_coherence": 0, "pacing_quality": 1, "usefulness": 1, "explanation_quality": 0},
+  "blind_human_review": {
+    "paired_verdict": "plan_b_better", "unsupported_fact": {"Plan A": "uncertain", "Plan B": "uncertain"},
+    "blind_order_integrity": "limitation", "underpacked_detected": false, "core_preference_sacrifice_detected": false
+  },
+  "deterministic_comparison": {
+    "baseline": {"schema_valid": 1.0, "date_day_consistency": 1.0, "budget_arithmetic_consistency": 1.0, "budget_limit_satisfaction": 1.0, "grounded_poi_rate": 0.7272727272727273, "provenance_coverage": 0.8125, "route_check_coverage": null, "route_feasibility_rate": null},
+    "candidate": {"schema_valid": 1.0, "date_day_consistency": 1.0, "budget_arithmetic_consistency": 1.0, "budget_limit_satisfaction": 1.0, "grounded_poi_rate": 0.8333333333333334, "provenance_coverage": 0.8823529411764706, "route_check_coverage": 0.5, "route_feasibility_rate": 1.0}
+  },
+  "constraint_preservation": {"budget_total_cny": 3225, "budget_ceiling_cny": 3500, "budget_preserved": true, "peanut_avoidance_guidance_preserved": true, "core_interest_pois_removed": false},
+  "revision": {
+    "triggered": true, "outcome": "success", "committed": true, "affected_day_indices": [2], "protected_day_indices": [0, 1, 3], "protected_day_equality": {"0": true, "1": true, "3": true},
+    "before_load_ratio": 1.032, "after_load_ratio": 0.986, "before_overload_status": "revisable_overload", "after_overload_status": "warning",
+    "residual_concern": "Day 4 still has substantial public-transport, transfer and internal-walking burden.",
+    "attribution": "The final candidate includes a committed targeted revision, but the paired human difference may also reflect the initial pacing-aware Planner."
+  },
+  "evaluation_semantics_limitation": {"present": true, "production_resolution_rate": 1.0, "offline_revision_risk_resolution_rate": 0.0, "offline_revision_failed": true, "interpretation": "The offline evaluator incorrectly treats the same risk ID downgraded from revisable_overload to warning as unresolved; this does not overturn production commit evidence."},
+  "grounding_outcome_capture": "unavailable",
+  "comparability": {"status": "limited_provider_drift", "trip_request_equal": true, "provider_snapshot_exact": false, "causal_claim_allowed": false},
+  "resume_safe_claim": "In one Chengdu paired review, the pacing-aware candidate received higher human ratings for pacing and usefulness while preserving preference satisfaction, budget compliance, and the peanut-avoidance constraint. The final candidate included a committed targeted pacing revision; causal attribution remains limited by live-provider drift.",
+  "prohibited_claims": ["statistically significant", "overall user satisfaction improved", "Phase 4 proven globally", "targeted Revision alone caused the improvement", "universal pacing threshold validated"]
+}

@@ -1,0 +1,71 @@
+{
+  "review_type": "paired_human_review",
+  "review_id": "paired_review_gc_chengdu_budget_v1",
+  "case_id": "gc_chengdu_budget",
+  "rubric_version": "human.v1",
+  "status": "revealed_complete",
+  "reviewer": "Yi Huang",
+  "reviewed_at": "2026-08-13T11:39:33Z",
+  "blind_material_reference": "eval/phase4d/blind_review/gc_chengdu_budget/human_review.md",
+  "blind_material_sha256": "sha256:1557f9149dd63ca4757a5203e6d814dbd7eee06a72b05d6af0112d990e3dc9e1",
+  "blind_plan_a_label": "Plan A",
+  "blind_plan_b_label": "Plan B",
+  "identity_revealed": true,
+  "identity_revealed_at": "2026-08-13T11:40:14Z",
+  "blind_review_completed_at": "2026-08-13T11:39:33Z",
+  "blind_order_integrity": "limitation",
+  "plan_a_review": {
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 3, "usefulness": 3, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "Plan A 保留美食、城市探索、公共交通、预算和不吃花生要求，整体符合偏好。",
+      "itinerary_coherence": "Plan A 每日主题与空间组织整体连贯，但近郊日仍有较重衔接负担。",
+      "pacing_quality": "Plan A 总体可接受，但 Day 4 的公共交通、换乘、景区内部移动及较长活动时长使该日明显偏紧。",
+      "usefulness": "Plan A 基本可执行且约束提醒充分，但部分活动时长与近郊负荷仍需用户调整。",
+      "explanation_quality": "Plan A 对交通、天气、预算、食物安全和外部事实不确定性有清楚说明。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "两份计划均包含需要进一步核实的开放、票价、预约、路线和食品配料等外部事实，现有材料不足以确定支持状态。"
+  },
+  "plan_b_review": {
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "Plan B 未减少核心兴趣内容，保留美食、城市探索、不吃花生和预算约束。",
+      "itinerary_coherence": "Plan B 的每日主题与空间组织整体连贯，与 Plan A 接近。",
+      "pacing_quality": "Plan B 通过更合理的活动时长和更克制的近郊日负荷，更符合 balanced pace，且无明显 underpacked。",
+      "usefulness": "Plan B 的活动时长与 Day 4 安排更利于真实执行，但近郊交通和内部移动仍需确认。",
+      "explanation_quality": "Plan B 对交通、天气、预算、食物安全和外部事实不确定性有清楚说明。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "两份计划均包含需要进一步核实的开放、票价、预约、路线和食品配料等外部事实，现有材料不足以确定支持状态。"
+  },
+  "paired_verdict": "plan_b_better",
+  "paired_rationale": "Plan B 在不减少核心兴趣、不破坏不吃花生特殊要求和预算约束的情况下，以更合理的活动时长和更克制的 Day 4 负荷改善 balanced pace 与真实可执行性。Plan B 无明显 underpacked，也无明显通过删除核心兴趣 POI 换取改善。两案在 Preference、Coherence 和 Explanation 上接近；Day 4 仍有公共交通、换乘和景区内部移动负担，因此属于有限改善。两案外部事实均需进一步核实。",
+  "more_balanced_plan": "Plan B",
+  "more_executable_plan": "Plan B",
+  "core_preference_sacrifice_detected": false,
+  "underpacked_detected": false,
+  "metric_improvement_but_ux_regression": false,
+  "additional_notes": "The exact historical blind-review completion timestamp and ordering cannot be independently proven from repository artifacts. This timestamp records schema registration; no identity fields were present at registration.",
+  "reveal": {
+    "plan_a_identity": {
+      "role": "baseline",
+      "artifact_reference": "eval/pilots/phase3d4/gc_chengdu_budget/gc_chengdu_budget.json",
+      "artifact_sha256": "sha256:23e2a45f31bb1ea0aca7e46676407dacc224e5734633952209249504379ab85d",
+      "planner_version": "planner_baseline_v1",
+      "prompt_version": "planner_prompt_v1",
+      "pacing_policy_version": null,
+      "pacing_revision_version": null
+    },
+    "plan_b_identity": {
+      "role": "candidate",
+      "artifact_reference": "eval/phase4d/cases/gc_chengdu_budget/gc_chengdu_budget.json",
+      "artifact_sha256": "sha256:db83d8911c6def3a7d4eb3bc3cca3491e205a8bdb58135f41252ad376b583550",
+      "planner_version": "planner_pacing_v1",
+      "prompt_version": "planner_prompt_pacing_v1",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "pacing_revision_version": "pacing_revision.v1"
+    },
+    "baseline_label": "Plan A",
+    "candidate_label": "Plan B"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_shenzhen_overbudget_revision_v1",
+  "case_id": "gc_shenzhen_overbudget_revision",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d4/gc_shenzhen_overbudget_revision/gc_shenzhen_overbudget_revision.json",
+  "artifact_sha256": "sha256:85a59d603ad37a69f12c13646fe7a3e4201ba48b594fb5fd17f55a5cc6dfbf52",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-13T06:09:27Z",
+  "reviewed_at": "2026-08-13T06:09:27Z",
+  "scores": {
+    "preference_satisfaction": 3,
+    "itinerary_coherence": 3,
+    "pacing_quality": 2,
+    "usefulness": 2,
+    "explanation_quality": 3
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "结构化预算 1,510 元低于用户 2,000 元的明确限制，城市探索偏好也得到部分落实。但预算满足不能抵消路线和节奏问题；世界之窗和整日大鹏滨海安排使城市探索主题的聚焦度一般，因此核心偏好仅属基本满足，仍有明显缺口。",
+    "itinerary_coherence": "行程具有可理解的三日结构，但 Day 2 存在未验证的跨片区移动，Day 3 又需要从南山区前往大鹏并串联三个 POI，两条关键公共交通路线 unavailable。整体 route coverage 仅 2/6，加上 day_index 使用 1/2/3、与 contract 不一致，执行层面的衔接和结构一致性存在明显不确定性。",
+    "pacing_quality": "Day 3 从 08:00 开始，由南山区前往大鹏，三个 POI 的停留时间合计 420 分钟，同时两条关键公共交通路线 unavailable。这与用户选择的 balanced pace 存在明显冲突；Day 2 的跨片区移动同样缺少充分路线验证，因此多日移动负担需要明显调整。",
+    "usefulness": "预算结果低于上限，且计划提供了基本游览框架，但 route coverage 仅 2/6，Day 2 和 Day 3 的关键移动缺少验证，显著降低直接执行能力。同时存在 day_index 1/2/3 与 contract 不一致，以及结构化预算 1,510 元和文案 1,495 元不一致；用户仍需修正和重新核实多项关键信息。",
+    "explanation_quality": "计划对城市探索主题和预算安排提供了基本说明，但没有充分解释 Day 2、Day 3 路线 unavailable 对可执行性和 balanced pace 的影响，也没有解释 day_index 异常及结构化预算 1,510 元与文案 1,495 元之间的不一致。推荐逻辑基本可理解，但限制和不确定性披露仍有明显缺口。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "Workbook 中存在价格、评分、距离等具体外部事实，但仅凭当前摘要无法确认每项 provenance 是否充分，因此不能判定这些事实全部获得支持，也不能据此确认某项具体陈述一定错误或无来源，verdict 为 uncertain。",
+  "additional_notes": null
+}

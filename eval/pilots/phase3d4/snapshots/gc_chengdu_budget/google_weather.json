@@ -1,0 +1,22 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "endpoint": "weather",
+    "malformed_count": 0,
+    "results": [
+      {
+        "city": "",
+        "data_available": false,
+        "days": [],
+        "degraded": true,
+        "provider": "google_weather",
+        "reason": "malformed_response",
+        "request_success": false
+      }
+    ]
+  },
+  "provider": "google_weather",
+  "sanitized": true,
+  "state": "unavailable"
+}

@@ -30,7 +30,8 @@
     "submitTripPlanFailed": "提交旅行计划失败",
     "queryTaskStatusFailed": "查询任务状态失败",
     "generateTripPlanFailed": "生成旅行计划失败",
-    "healthCheckFailed": "健康检查失败"
+    "healthCheckFailed": "健康检查失败",
+    "parsePreferenceFailed": "解析旅行偏好失败"
   },
   "settings": {
     "open": "打开配置",
@@ -112,9 +113,53 @@
       "food": "美食",
       "shopping": "购物",
       "art": "艺术",
-      "leisure": "休闲"
+      "leisure": "休闲",
+      "photography": "拍照",
+      "museum": "博物馆",
+      "cityExploration": "城市探索",
+      "nightlife": "夜生活",
+      "hiddenGems": "小众景点"
     },
-    "specialNeedsPlaceholder": "告诉我你的特殊需求，比如：带老人出行、想看日出、对花粉过敏……",
+    "specialNeedsPlaceholder": "例如：不想早起、妈妈膝盖不好、不吃辣、每天最多走 15000 步、喜欢拍照……",
+    "preference": {
+      "partyTypeLabel": "和谁一起去",
+      "partyTypeRequired": "请选择同行人类型",
+      "partySizeLabel": "出行人数",
+      "budgetLabel": "当地消费总预算",
+      "budgetPlaceholder": "选填，例如 5000",
+      "budgetHelp": "目的地旅行期间的当地消费总预算（人民币），不包含往返目的地的大交通。",
+      "paceLabel": "旅行节奏",
+      "partyTypes": {
+        "solo": "独自旅行",
+        "couple": "情侣",
+        "friends": "朋友",
+        "family": "家庭",
+        "withParents": "带父母",
+        "withChildren": "带儿童"
+      },
+      "paces": {
+        "intensive": "特种兵 · 一天体验更多地点",
+        "balanced": "适中 · 景点与休息平衡",
+        "relaxed": "松弛度假 · 减少赶路"
+      },
+      "understandButton": "AI 理解我的需求",
+      "parsing": "AI 正在整理你的偏好…",
+      "parseFailed": "AI 偏好解析失败，请稍后重试",
+      "parseFallback": "AI 未能结构化解析特殊要求，已保留原文；你仍可继续生成行程。",
+      "reviewEyebrow": "PREFERENCE PROFILE",
+      "reviewTitle": "AI 对这次旅行的理解",
+      "reviewBoundary": "AI 会尝试理解你的特殊要求，可能存在偏差。请确认后再生成行程。",
+      "aiAssisted": "AI 已参与整理",
+      "aiInferred": "AI 识别",
+      "removeInferred": "删除 AI 识别的兴趣",
+      "earliestStartLabel": "最早出发时间",
+      "earliestStartRequired": "你提到不想早起，请先选择一个具体的最早出发时间。",
+      "specialAttention": "特别注意",
+      "parsingNotes": "AI 理解说明",
+      "notSet": "未设置",
+      "backToEdit": "返回修改原始表单",
+      "confirmGenerate": "确认并生成行程"
+    },
     "submit": "开始规划旅程",
     "submitting": "AI 正在规划中…",
     "history": {
@@ -128,6 +173,7 @@
     },
     "loading": {
       "initializing": "正在初始化...",
+      "recovering": "正在恢复未完成的旅行计划...",
       "searchingAttractions": "正在搜索景点...",
       "searchedAttractions": "景点搜索完毕",
       "queryingWeather": "正在查询天气...",
@@ -135,11 +181,21 @@
       "recommendingHotels": "正在推荐酒店...",
       "recommendedHotels": "酒店推荐完毕",
       "generatingPlan": "正在生成行程...",
+      "validatingPlan": "正在检查行程约束和地图路线...",
+      "criticPlan": "发现可优化问题，正在分析",
+      "revisingPlan": "正在进行一次针对性调整",
+      "revalidatingPlan": "正在重新验证调整后的行程",
       "planCode": "计划编号 {code}",
       "preparing": "请稍等，正在为您准备...",
       "workingTogether": "AI 正在齐心协力为您定制旅程...",
       "donePrepare": "完成！准备出发...",
       "done": "完成！"
+    },
+    "taskFailure": {
+      "title": "旅行计划生成失败",
+      "backToEdit": "返回修改",
+      "retry": "重试",
+      "editBeforeRetry": "未找到可重试的请求，请修改后重新生成。"
     },
     "messages": {
       "travelDaysTooLong": "旅行天数不能超过 30 天",
@@ -205,6 +261,24 @@
     "graphTitle": "旅行知识图谱",
     "dailyTitle": "每日行程",
     "dayDescription": "行程描述:",
+    "dayStartTime": "第一个主要活动预计开始时间:",
+    "risks": {
+      "title": "AI 检查到的问题",
+      "autoRevised": "AI 已根据检查结果自动调整 1 次",
+      "disclaimer": "基于用户明确约束、计划预算估算和已验证的 Google 地图路线；未知数据不会被视为已通过。",
+      "status": {
+        "passed": "基础检查通过",
+        "issues_found": "发现需注意的问题",
+        "degraded": "部分检查不可用"
+      },
+      "severity": {
+        "info": "信息",
+        "warning": "提醒",
+        "blocking": "明确冲突"
+      },
+      "suggestion": "建议",
+      "empty": "未发现基础规则冲突"
+    },
     "dayTransport": "交通方式:",
     "dayAccommodation": "住宿:",
     "attractionTitle": "景点安排",
@@ -239,6 +313,23 @@
       "quickSuitabilityQuestion": "这个行程适合老人吗？",
       "quickMealQuestion": "推荐的餐厅价格如何？",
       "placeholder": "输入您关于行程的问题...",
+      "modeLabel": "AI 行程功能模式",
+      "qaMode": "行程问答",
+      "patchMode": "修改行程",
+      "editWelcome": "告诉我需要局部修改哪一天或哪项安排；未提及的内容会保持不变。",
+      "editPlaceholder": "例如：第二天改成 11 点出发，其他安排不要变",
+      "currentVersion": "当前行程版本：v{version}",
+      "missingTaskInfo": "当前行程缺少可编辑任务信息，请重新打开最新生成的行程。",
+      "missingVersionInfo": "当前行程缺少版本信息，请重新打开最新生成的行程。",
+      "editModeOn": "局部修改模式已开启",
+      "editModeOff": "切换到局部修改",
+      "understandingEdit": "正在理解你的修改…",
+      "updatingEdit": "正在更新受影响的行程…",
+      "revalidatingEdit": "正在重新检查路线…",
+      "patchSuccess": "已完成局部修改",
+      "patchFailed": "未能安全应用修改，原行程保持不变",
+      "requiresRegeneration": "这个修改会影响整个旅行结构，建议重新生成行程。",
+      "versionConflict": "行程已更新，请刷新最新版本后重试",
       "send": "发送",
       "replyFallback": "抱歉，未能获取回复，请稍后再试",
       "networkError": "网络连接异常，请检查后端服务是否已启动"

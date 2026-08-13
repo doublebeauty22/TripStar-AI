@@ -1,0 +1,67 @@
+{
+  "policy_id": "pacing.daily_load.v0.proposed",
+  "status": "PROPOSED",
+  "production_enum": ["intensive", "balanced", "relaxed"],
+  "time_policy": {
+    "day_finish": {"intensive": "21:30", "balanced": "20:30", "relaxed": "19:30"},
+    "nominal_start": {"intensive": "08:00", "balanced": "09:00", "relaxed": "09:30"},
+    "minimum_window_minutes": 360,
+    "maximum_window_minutes": 810
+  },
+  "pace": {
+    "relaxed": {
+      "target_load_ratio": [0.55, 0.78],
+      "maximum_acceptable_load_ratio": 1.05,
+      "warning_load_ratio": 0.78,
+      "revisable_load_ratio": 1.05,
+      "minimum_rest_minutes": 75,
+      "meal_minutes": 105,
+      "early_start_before": "09:00",
+      "early_start_tolerance": "low",
+      "long_transfer_tolerance": "low",
+      "uncertainty_tolerance": "low",
+      "max_low_confidence_legs_before_warning": 1
+    },
+    "balanced": {
+      "target_load_ratio": [0.62, 0.86],
+      "maximum_acceptable_load_ratio": 1.0,
+      "warning_load_ratio": 0.86,
+      "revisable_load_ratio": 1.0,
+      "minimum_rest_minutes": 50,
+      "meal_minutes": 105,
+      "early_start_before": "08:30",
+      "early_start_tolerance": "medium",
+      "long_transfer_tolerance": "medium",
+      "uncertainty_tolerance": "medium",
+      "max_low_confidence_legs_before_warning": 2
+    },
+    "intensive": {
+      "target_load_ratio": [0.72, 0.98],
+      "maximum_acceptable_load_ratio": 1.1,
+      "warning_load_ratio": 0.98,
+      "revisable_load_ratio": 1.1,
+      "minimum_rest_minutes": 30,
+      "meal_minutes": 90,
+      "early_start_before": "07:30",
+      "early_start_tolerance": "high",
+      "long_transfer_tolerance": "high",
+      "uncertainty_tolerance": "medium",
+      "max_low_confidence_legs_before_warning": 3
+    }
+  },
+  "buffers": {
+    "access_per_attraction_minutes": 10,
+    "reservation_extra_minutes": 10,
+    "estimated_route_minutes": {"urban": 30, "suburban": 60, "inter_city": null},
+    "uncertainty_per_estimated_leg_minutes": {"urban": 10, "suburban": 20, "inter_city": 30}
+  },
+  "confidence": {
+    "HIGH": "all required mobility durations are verified",
+    "MEDIUM": "at least one credible estimate and no unknown/unbounded inter-city leg",
+    "LOW": "one or more required legs use conservative fallback or an unbounded transfer remains"
+  },
+  "secondary_heuristics": {
+    "poi_count_warning": {"relaxed": 4, "balanced": 5, "intensive": 6},
+    "note": "POI count never determines overload by itself"
+  }
+}

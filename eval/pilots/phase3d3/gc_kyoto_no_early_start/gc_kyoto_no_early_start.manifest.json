@@ -1,0 +1,12 @@
+{
+  "artifact": "gc_kyoto_no_early_start.json",
+  "artifact_hash": "sha256:9a7292cef4403e68f95d7c078523d41efca008d0b1bb8d39fc8d3d8a80b80808",
+  "capture_status": "complete",
+  "case_id": "gc_kyoto_no_early_start",
+  "snapshot_hashes": {
+    "amap": "sha256:68464c39431d5fe3da576ebf67278da8c528d6297abfba09d999b7ea123b29b0",
+    "google_places": "sha256:b17b19a494d9191cb611f9eb1b53ef1d675653ccdca1217b2ba875dd5c4171a5",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:238b0cac11af9248dbe3602714b1ce36e927ceebc8c444bb270140f5f3b35d8d"
+  }
+}

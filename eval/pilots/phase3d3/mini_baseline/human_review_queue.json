@@ -1,0 +1,23 @@
+{
+  "reviews": [
+    {
+      "artifact_reference": "eval/pilots/phase3d2_pilot3/gc_beijing_baseline/gc_beijing_baseline.json",
+      "case_id": "gc_beijing_baseline",
+      "review_status": "pending",
+      "rubric_version": "human.v1"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d3/gc_kyoto_no_early_start/gc_kyoto_no_early_start.json",
+      "case_id": "gc_kyoto_no_early_start",
+      "review_status": "pending",
+      "rubric_version": "human.v1"
+    },
+    {
+      "artifact_reference": "eval/pilots/phase3d3/gc_osaka_places_partial/gc_osaka_places_partial.json",
+      "case_id": "gc_osaka_places_partial",
+      "review_status": "pending",
+      "rubric_version": "human.v1"
+    }
+  ],
+  "rubric_version": "human.v1"
+}

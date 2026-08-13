@@ -122,11 +122,11 @@ async def chat_with_trip_context(
             return reply.strip()
 
     except httpx.HTTPStatusError as e:
-        print(f"❌ LLM API 返回错误: {e.response.status_code} - {e.response.text}")
+        print(f"❌ provider=llm endpoint=chat_completions category=http_status status={e.response.status_code}")
         return f"抱歉，AI 服务暂时出现问题 (HTTP {e.response.status_code})，请稍后重试 🙏"
     except httpx.TimeoutException:
         print("❌ LLM API 请求超时")
         return "抱歉，AI 回复超时了，请稍后再试 ⏳"
-    except Exception as e:
-        print(f"❌ LLM 调用异常: {e}")
+    except Exception:
+        print("❌ provider=llm endpoint=chat_completions category=unexpected_error status=none")
         return f"抱歉，AI 出现了意外错误，请稍后重试 🙏"

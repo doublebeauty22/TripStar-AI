@@ -1,0 +1,119 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 32.01144,
+          "longitude": 118.78711000000001
+        },
+        "match_status": "verified",
+        "name": "老门东",
+        "place_id": "ChIJBV_11GqMtTURszjp7_yBLgI"
+      },
+      {
+        "location": {
+          "latitude": 32.021719,
+          "longitude": 118.79186999999997
+        },
+        "match_status": "verified",
+        "name": "夫子庙",
+        "place_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c"
+      },
+      {
+        "location": {
+          "latitude": 31.824236,
+          "longitude": 118.859514
+        },
+        "match_status": "verified",
+        "name": "秦淮河",
+        "place_id": "ChIJi8v-KrWEtTURvtssuiVGE_0"
+      },
+      {
+        "location": {
+          "latitude": 32.062176,
+          "longitude": 118.85334339999999
+        },
+        "match_status": "verified",
+        "name": "中山陵",
+        "place_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM"
+      },
+      {
+        "location": {
+          "latitude": 32.055215,
+          "longitude": 118.855486
+        },
+        "match_status": "verified",
+        "name": "音乐台",
+        "place_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY"
+      },
+      {
+        "location": {
+          "latitude": 32.0582164,
+          "longitude": 118.83457390000001
+        },
+        "match_status": "verified",
+        "name": "明孝陵",
+        "place_id": "ChIJC0WmIACMtTURoHl_UDb52iU"
+      },
+      {
+        "location": {
+          "latitude": 32.060857999999996,
+          "longitude": 118.79515900000001
+        },
+        "match_status": "verified",
+        "name": "鸡鸣寺",
+        "place_id": "ChIJiz0zBMaMtTURqO0amG5GlC0"
+      },
+      {
+        "location": {
+          "latitude": 32.062553,
+          "longitude": 118.79650099999999
+        },
+        "match_status": "verified",
+        "name": "明城墙台城",
+        "place_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A"
+      },
+      {
+        "location": {
+          "latitude": 32.07051,
+          "longitude": 118.78747000000001
+        },
+        "match_status": "verified",
+        "name": "玄武湖",
+        "place_id": "ChIJ3dmDpbWMtTURFM6Q6TXX0O8"
+      },
+      {
+        "location": {
+          "latitude": 32.041084,
+          "longitude": 118.82542400000001
+        },
+        "match_status": "verified",
+        "name": "南京博物院",
+        "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk"
+      },
+      {
+        "location": {
+          "latitude": 32.044261,
+          "longitude": 118.79732
+        },
+        "match_status": "verified",
+        "name": "南京总统府",
+        "place_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg"
+      },
+      {
+        "location": {
+          "latitude": 32.0355351,
+          "longitude": 118.74337109999999
+        },
+        "match_status": "verified",
+        "name": "遇难同胞纪念馆",
+        "place_id": "ChIJQVG7g5iLtTURaY-mopzXiqw"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "available"
+}

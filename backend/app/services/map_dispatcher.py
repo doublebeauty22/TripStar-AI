@@ -1,7 +1,7 @@
 """统一地图服务调度层
 
 优先使用 Google Maps API（如果已配置且可用），
-否则降级到高德地图 MCP 服务。
+否则降级到高德地图 Web Service REST 适配器。
 
 用法:
     from ..services.map_dispatcher import get_map_provider, geocode_unified
@@ -12,7 +12,7 @@
 
 from typing import Optional, Literal
 
-from ..config import get_settings
+from ..config import get_google_maps_server_api_key
 from ..models.schemas import Location
 
 
@@ -25,15 +25,14 @@ def get_map_provider() -> MapProvider:
     """根据当前运行时配置判断应使用哪个地图供应商。
 
     优先级: Google Maps API Key 已配置 → google,
-            否则 → amap (高德 MCP)
+            否则 → amap (高德 Web Service)
     """
-    settings = get_settings()
-    if settings.google_maps_api_key:
+    if get_google_maps_server_api_key():
         return "google"
     return "amap"
 
 
-def geocode_unified(address: str, city: str, *, address_zh: str = "", address_en: str = "") -> dict:
+def geocode_unified(address: str, city: str, *, address_zh: str = "", address_en: str = "") -> Optional[dict]:
     """统一地理编码接口，返回 {"longitude": float, "latitude": float}。
 
     根据 get_map_provider() 的结果，自动路由到 Google 或高德，
@@ -68,5 +67,17 @@ def geocode_unified(address: str, city: str, *, address_zh: str = "", address_en
 
     # 高德兜底 — 高德对中文地名识别更准确，优先使用中文地址
     amap_address = address_zh or address
-    from .xhs_service import _geocode_amap_raw  # noqa: delay import
-    return _geocode_amap_raw(amap_address, city)
+    from .amap_service import get_amap_service  # noqa: delay import
+    # address_zh here normally denotes an extracted POI/landmark identity.
+    # Otherwise preserve address-first semantics and fall back to POI search.
+    geocode_result = get_amap_service().resolve_place(
+        amap_address, city, prefer_poi=bool(address_zh)
+    )
+    if geocode_result.data_available and geocode_result.location:
+        print(f"✅ [Dispatcher] 地理编码实际供应商=amap: {amap_address}")
+        return geocode_result.location.model_dump()
+    print(
+        f"⚠️ [Dispatcher] 地理编码供应商 unavailable: "
+        f"{amap_address} reason={geocode_result.reason}"
+    )
+    return None

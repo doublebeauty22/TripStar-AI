@@ -1,0 +1,1217 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:26:30.161874+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:25:09.804192+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 5080,
+        "total_attractions": 550,
+        "total_hotels": 2100,
+        "total_inter_city_transport": 0,
+        "total_meals": 1530,
+        "total_transportation": 900
+      },
+      "cities": [
+        "大阪"
+      ],
+      "city": "大阪",
+      "days": [
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "2-1-33 Sakurajima, Konohana Ward, Osaka, 554-0031日本",
+              "category": "主题乐园",
+              "description": "日本环球影城主题乐园,适合安排全天游玩。热门项目可能排队较久,建议提前购买Express,并在出发前确认当天开放时间及入园规则。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "USJ 环球影城",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 450,
+              "visit_duration": 480
+            },
+            {
+              "address": "日本环球影城内,好莱坞梦幻乘车游区域,2-1-33 Sakurajima, Konohana Ward, Osaka, 554-0031日本",
+              "category": "游乐设施",
+              "description": "环球影城内的高刺激过山车项目,适合喜欢强烈失重和俯冲体验的游客。建议结合Express或开园后优先排队,具体开放情况以当天园区公告为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "飞天恐龙",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "大阪",
+          "date": "2026-12-07",
+          "day_index": 0,
+          "description": "第1天安排日本环球影城全天游玩,重点体验飞天恐龙等热门项目。建议提前购买Express,以减少热门项目排队时间；晚上返回难波区域用餐。",
+          "hotel": {
+            "address": "7-9 Nanbasennichimae, Chuo Ward, Osaka, 542-0075日本",
+            "distance": "距离难波千日前约0.2公里,前往道顿堀和黑门市场较方便",
+            "estimated_cost": 700,
+            "location": {
+              "latitude": 34.6632417,
+              "longitude": 135.5044903
+            },
+            "name": "&Here OSAKA NAMBA",
+            "price_range": "700-1000元",
+            "rating": "4.8",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "购买饭团、三明治和咖啡,方便提早前往环球影城。",
+              "estimated_cost": 90,
+              "location": null,
+              "name": "难波站周边便利店早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择园区内汉堡、咖喱或主题套餐,建议错峰用餐。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "环球影城园区餐厅",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返回难波后品尝大阪烧、炒面等关西特色料理。",
+              "estimated_cost": 240,
+              "location": null,
+              "name": "难波周边大阪烧",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "08:30",
+          "transfer_info": "",
+          "transportation": "大阪市区乘JR梦咲线前往环球城站,园内步行游览,往返公共交通约60-90分钟"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "1-15-6 Nippombashi, Chuo Ward, Osaka, 542-0073日本",
+              "category": "市场美食",
+              "description": "大阪著名食品市场,可品尝海鲜、和牛、水果及各类街头小吃。建议上午前往,部分店铺可能较早结束营业。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "黑门市场",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "Nanbasennichimae, Chuo Ward, Osaka, 542-0075日本",
+              "category": "购物街区",
+              "description": "适合购买伴手礼、小物、餐具和生活用品的购物区域,可与黑门市场步行串联。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "难波千日前",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "Shinsaibashi-suji, Chuo Ward, Osaka, 542-0085日本",
+              "category": "购物街区",
+              "description": "大阪代表性购物街,适合集中购买零食、药妆、服装和杂货。建议提前列好采购清单,并预留退税及排队时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "心斋桥",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "大阪",
+          "date": "2026-12-08",
+          "day_index": 1,
+          "description": "第2天以难波和心斋桥为核心,上午逛黑门市场,中午后前往难波千日前和心斋桥购物,晚上在道顿堀体验大阪美食与夜景。",
+          "hotel": {
+            "address": "7-9 Nanbasennichimae, Chuo Ward, Osaka, 542-0075日本",
+            "distance": "距离黑门市场约0.5公里,距离道顿堀约0.6公里",
+            "estimated_cost": 700,
+            "location": {
+              "latitude": 34.6632417,
+              "longitude": 135.5044903
+            },
+            "name": "&Here OSAKA NAMBA",
+            "price_range": "700-1000元",
+            "rating": "4.8",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择吐司、鸡蛋和咖啡等简餐,为步行购物补充能量。",
+              "estimated_cost": 90,
+              "location": null,
+              "name": "难波咖啡店早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "在市场内分散品尝海鲜串、寿司、烤物和水果,方便控制分量。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "黑门市场海鲜小吃",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "体验章鱼烧、串烧、蟹料理或拉面,建议避开最拥挤的用餐时段。",
+              "estimated_cost": 240,
+              "location": null,
+              "name": "道顿堀大阪美食",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "以地铁和步行为主；黑门市场、难波千日前、道顿堀距离较近,心斋桥可步行或乘大阪Metro御堂筋线"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "Ebisuhigashi, Naniwa Ward, Osaka, 556-0002日本",
+              "category": "历史街区与美食",
+              "description": "大阪南部复古街区,以炸串店和怀旧氛围闻名。适合边逛边吃,炸串用餐时注意遵守店铺的蘸酱规则。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "新世界",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "1-18-6 Ebisuhigashi, Naniwa Ward, Osaka, 556-0002日本",
+              "category": "城市地标",
+              "description": "新世界地标性观景塔,可了解大阪旧城区风貌。现场购票或预约规则可能调整,建议出发前查看官方信息。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "通天阁",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 100,
+              "visit_duration": 90
+            },
+            {
+              "address": "日本〒530-0001 大阪府大阪市北区梅田",
+              "category": "城市商业区",
+              "description": "大阪现代商业中心,适合购买服装、杂货和伴手礼,也可在大型商业设施内休息及用餐。建议预留行李整理时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 34.700558799999996,
+                "longitude": 135.4957339
+              },
+              "map_data_source": "google_places",
+              "name": "梅田",
+              "photos": [],
+              "place_id": "ChIJ7b9MGI3mAGARufc_HWvT3M0",
+              "poi_id": "ChIJ7b9MGI3mAGARufc_HWvT3M0",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "大阪",
+          "date": "2026-12-09",
+          "day_index": 2,
+          "description": "第3天游览大阪南部的新世界与通天阁,感受复古大阪风情；下午前往梅田购物和城市观景,适合作为返程前的轻松收尾。",
+          "hotel": {
+            "address": "7-9 Nanbasennichimae, Chuo Ward, Osaka, 542-0075日本",
+            "distance": "距离难波地铁站及购物区较近,便于前往新世界和梅田",
+            "estimated_cost": 700,
+            "location": {
+              "latitude": 34.6632417,
+              "longitude": 135.5044903
+            },
+            "name": "&Here OSAKA NAMBA",
+            "price_range": "700-1000元",
+            "rating": "4.8",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择饭团、酸奶和热饮,节省早晨时间。",
+              "estimated_cost": 90,
+              "location": null,
+              "name": "难波便利店早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "品尝大阪特色炸串,可搭配大阪风味小菜和饮品。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "新世界炸串",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "在梅田商业区选择居酒屋、拉面或定食,方便用餐后返回酒店整理行李。",
+              "estimated_cost": 240,
+              "location": null,
+              "name": "梅田居酒屋或拉面",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "大阪Metro御堂筋线连接难波、新世界和梅田,景点间以地铁及步行为主"
+        }
+      ],
+      "end_date": "2026-12-09",
+      "overall_suggestions": "天气服务当前不可用,未提供具体逐日天气、温度或风力信息。12月大阪通常体感偏冷,建议携带保暖外套、围巾和便于步行的防滑鞋,并根据出发前最新天气预报增减衣物。USJ建议提前确认营业时间、入园规则及Express产品；热门项目可能排队较久。购物时保留护照及购物小票以便办理退税,注意商场营业时间。以上费用为3人合计的粗略估算,不含国际往返交通、个人购物、USJ Express及酒水等费用；酒店价格会随日期和房型变化,建议尽早确认可入住3人的房型。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:2",
+          "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2026-12-07",
+      "validation_status": "degraded",
+      "weather_info": [],
+      "weather_results": [
+        {
+          "city": "大阪",
+          "data_available": false,
+          "days": [],
+          "degraded": true,
+          "provider": "unavailable",
+          "reason": "empty_forecast",
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "699c14400000000028009bee",
+              "source_url": "https://www.xiaohongshu.com/explore/699c14400000000028009bee",
+              "status": "detail_available",
+              "title": "🇯🇵 大阪10D9N自由行10大好去处‼️（记得⭐️"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a01cf43000000000702f90f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a01cf43000000000702f90f",
+              "status": "detail_available",
+              "title": "大阪必吃什么"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "69809757000000000c037c2f",
+              "source_url": "https://www.xiaohongshu.com/explore/69809757000000000c037c2f",
+              "status": "detail_available",
+              "title": "🇯🇵大阪著名9️⃣件套。。。。。"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "69cc6ef6000000002103bbac",
+              "source_url": "https://www.xiaohongshu.com/explore/69cc6ef6000000002103bbac",
+              "status": "detail_available",
+              "title": "【食遍日本】第一站！日本美食天堂🤤"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "要去，而且have to 入Express 🎟️，🔥门项需要排久",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "USJ 环球影城",
+                  "recommendation_quote": "要去，而且have to 入Express 🎟️，🔥门项需要排久"
+                }
+              ],
+              "identity_text": "USJ 环球影城",
+              "location": {
+                "latitude": 34.6656768,
+                "longitude": 135.4323185
+              },
+              "location_status": "available",
+              "name": "USJ 环球影城",
+              "name_en": "Universal Studios Japan",
+              "name_zh": "日本环球影城",
+              "recommendation": "要去，而且have to 入Express 🎟️，🔥门项需要排久",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "飞天恐龙要玩，那种刺激感是完全不一样的层次，玩完会觉得值回🎟️💰",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "飞天恐龙",
+                  "recommendation_quote": "飞天恐龙要玩，那种刺激感是完全不一样的层次，玩完会觉得值回🎟️💰"
+                }
+              ],
+              "identity_text": "飞天恐龙",
+              "location": {
+                "latitude": 34.66424320000001,
+                "longitude": 135.4307178
+              },
+              "location_status": "available",
+              "name": "飞天恐龙",
+              "name_en": "The Flying Dinosaur",
+              "name_zh": "飞天恐龙",
+              "recommendation": "飞天恐龙要玩，那种刺激感是完全不一样的层次，玩完会觉得值回🎟️💰",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "好逛好m，零食、药妆、衣服一次解决",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "心斋桥 Shinsaibashi",
+                  "recommendation_quote": "好逛好m，零食、药妆、衣服一次解决"
+                }
+              ],
+              "identity_text": "心斋桥 Shinsaibashi",
+              "location": {
+                "latitude": 34.6724248,
+                "longitude": 135.5010362
+              },
+              "location_status": "available",
+              "name": "心斋桥 Shinsaibashi",
+              "name_en": "Shinsaibashi",
+              "name_zh": "心斋桥",
+              "recommendation": "好逛好m，零食、药妆、衣服一次解决",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "适合入伴手礼，小物、餐具、生活用品都hin好挖宝",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "难波千日前 Namba Sennichimae",
+                  "recommendation_quote": "适合入伴手礼，小物、餐具、生活用品都hin好挖宝"
+                }
+              ],
+              "identity_text": "难波千日前 Namba Sennichimae",
+              "location": {
+                "latitude": 34.6646125,
+                "longitude": 135.5033929
+              },
+              "location_status": "available",
+              "name": "难波千日前 Namba Sennichimae",
+              "name_en": "Namba Sennichimae",
+              "name_zh": "难波千日前",
+              "recommendation": "适合入伴手礼，小物、餐具、生活用品都hin好挖宝",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "想感受大阪夜晚氛围就来这里，霓虹灯牌+章鱼烧，气氛拉满",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "道顿堀 Dotonbori",
+                  "recommendation_quote": "想感受大阪夜晚氛围就来这里，霓虹灯牌+章鱼烧，气氛拉满"
+                }
+              ],
+              "identity_text": "道顿堀 Dotonbori",
+              "location": {
+                "latitude": 34.6686471,
+                "longitude": 135.5030983
+              },
+              "location_status": "available",
+              "name": "道顿堀 Dotonbori",
+              "name_en": "Dotonbori",
+              "name_zh": "道顿堀",
+              "recommendation": "想感受大阪夜晚氛围就来这里，霓虹灯牌+章鱼烧，气氛拉满",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "建筑线条干净，现代感",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "梅田 Umeda",
+                  "recommendation_quote": "建筑线条干净，现代感"
+                }
+              ],
+              "identity_text": "梅田 Umeda",
+              "location": {
+                "latitude": 34.7005588,
+                "longitude": 135.4957339
+              },
+              "location_status": "available",
+              "name": "梅田 Umeda",
+              "name_en": "Umeda",
+              "name_zh": "梅田",
+              "recommendation": "建筑线条干净，现代感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "699c14400000000028009bee"
+              ],
+              "evidence_summary": "比较复古、有旧大阪味道，整体💰也会比道顿堀亲民一点",
+              "evidence_support": [
+                {
+                  "evidence_id": "699c14400000000028009bee",
+                  "identity_quote": "通天阁 Tsutenkaku",
+                  "recommendation_quote": "比较复古、有旧大阪味道，整体💰也会比道顿堀亲民一点"
+                }
+              ],
+              "identity_text": "通天阁 Tsutenkaku",
+              "location": {
+                "latitude": 34.6524992,
+                "longitude": 135.5063058
+              },
+              "location_status": "available",
+              "name": "通天阁 Tsutenkaku",
+              "name_en": "Tsutenkaku",
+              "name_zh": "通天阁",
+              "recommendation": "比较复古、有旧大阪味道，整体💰也会比道顿堀亲民一点",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69cc6ef6000000002103bbac"
+              ],
+              "evidence_summary": "新世界｜炸串圣地",
+              "evidence_support": [
+                {
+                  "evidence_id": "69cc6ef6000000002103bbac",
+                  "identity_quote": "新世界",
+                  "recommendation_quote": "新世界｜炸串圣地"
+                }
+              ],
+              "identity_text": "新世界",
+              "location": {
+                "latitude": 34.6516013,
+                "longitude": 135.5059562
+              },
+              "location_status": "available",
+              "name": "新世界",
+              "name_en": "Shinsekai",
+              "name_zh": "新世界",
+              "recommendation": "新世界｜炸串圣地",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69cc6ef6000000002103bbac"
+              ],
+              "evidence_summary": "📍黑门市场｜大阪人的厨房",
+              "evidence_support": [
+                {
+                  "evidence_id": "69cc6ef6000000002103bbac",
+                  "identity_quote": "黑门市场",
+                  "recommendation_quote": "📍黑门市场｜大阪人的厨房"
+                }
+              ],
+              "identity_text": "黑门市场",
+              "location": {
+                "latitude": 34.6646119,
+                "longitude": 135.5069824
+              },
+              "location_status": "available",
+              "name": "黑门市场",
+              "name_en": "Kuromon Market",
+              "name_zh": "黑门市场",
+              "recommendation": "📍黑门市场｜大阪人的厨房",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_osaka_places_partial",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_osaka_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "美食",
+        "购物"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 3,
+      "party_type": "friends",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "amap",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 1,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 8,
+        "verified": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_directions",
+      "reason": "provider was not called",
+      "status": "not_called",
+      "summary": {
+        "attempted": 0,
+        "available": 0,
+        "eligible_legs": 5
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:2",
+        "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "飞天恐龙",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "USJ 环球影城",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "难波千日前",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "黑门市场",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "心斋桥",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "难波千日前",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "通天阁",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "新世界",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJ7b9MGI3mAGARufc_HWvT3M0",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "通天阁",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "google_places_partial",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:eb79aa91b7475a9515e17c041cc39edd47ef6a3b72d4e34675a7ecfcb07b3b57",
+    "google_places": "sha256:d395c8fd2a3941173253afdc94af749662b622b6d35ea3df552b935e53a150bf",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:e8580c9ac843b39b4cc4df30287c0d3c62fcca5e52ef81b4382ac6e5786af6df"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 80356
+  },
+  "trip_request": {
+    "accommodation": "经济型酒店",
+    "cities": [
+      {
+        "city": "大阪",
+        "days": 3
+      }
+    ],
+    "city": "大阪",
+    "end_date": "2026-12-09",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "美食",
+        "购物"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 3,
+      "party_type": "friends",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "美食",
+      "购物"
+    ],
+    "start_date": "2026-12-07",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 6704
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 8905
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 15609
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "699c14400000000028009bee",
+              "source_url": "https://www.xiaohongshu.com/explore/699c14400000000028009bee",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a01cf43000000000702f90f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a01cf43000000000702f90f",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "69809757000000000c037c2f",
+              "source_url": "https://www.xiaohongshu.com/explore/69809757000000000c037c2f",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "69cc6ef6000000002103bbac",
+              "source_url": "https://www.xiaohongshu.com/explore/69cc6ef6000000002103bbac",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

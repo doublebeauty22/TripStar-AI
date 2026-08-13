@@ -1,0 +1,141 @@
+{
+  "schema_version": "portfolio.example_trip.v1",
+  "example": true,
+  "generated_at": "2026-08-14",
+  "source_semantics": "Pre-generated, sanitized portfolio example. It is not a live result.",
+  "demo_request": {
+    "destination": "京都",
+    "dates": "示例日期（出发前请重新核对营业时间）",
+    "travelers": "2 位朋友",
+    "pace": "balanced",
+    "interests": ["历史文化", "城市漫步"],
+    "transportation": "公共交通"
+  },
+  "grounding_summary": {
+    "status": "partial",
+    "message": "示例保留地点与路线不确定性；营业时间、票价和交通班次需要在真实出发前复核。"
+  },
+  "route_uncertainty": "路线耗时为示例估算，不代表实时 Directions 查询结果。",
+  "pacing_summary": "两天均采用较晚开始、两个主要活动和明确休息/用餐空间的 balanced 示例安排。",
+  "result": {
+    "success": true,
+    "message": "预生成示例行程",
+    "plan_id": "portfolio-example-v1",
+    "data": {
+      "city": "京都",
+      "cities": ["京都"],
+      "start_date": "2026-10-20",
+      "end_date": "2026-10-21",
+      "days": [
+        {
+          "date": "2026-10-20",
+          "day_index": 0,
+          "start_time": "09:30",
+          "city": "京都",
+          "description": "以东山历史街区为主的步行日，景点之间预留休息与用餐时间。",
+          "transportation": "公共交通抵达东山后步行；实际班次与步行路线请在出发当天复核。",
+          "accommodation": "京都站或四条河原町附近住宿（示例不指定酒店）。",
+          "attractions": [
+            {
+              "name": "清水寺",
+              "address": "京都市东山区（示例地址）",
+              "location": {"longitude": 135.785, "latitude": 34.9949},
+              "visit_duration": 120,
+              "description": "历史寺院与东山景观；开放时间和预约要求需以官方信息为准。",
+              "category": "历史文化",
+              "poi_match_status": "unverified",
+              "map_data_source": "llm_unverified",
+              "ticket_price": 0,
+              "reservation_required": false,
+              "reservation_tips": "示例未验证实时票务信息。"
+            },
+            {
+              "name": "二年坂与三年坂",
+              "address": "京都市东山区（示例地址）",
+              "location": {"longitude": 135.7815, "latitude": 34.9976},
+              "visit_duration": 90,
+              "description": "传统街区漫步；高峰时段可能拥挤。",
+              "category": "城市漫步",
+              "poi_match_status": "unverified",
+              "map_data_source": "llm_unverified",
+              "ticket_price": 0,
+              "reservation_required": false
+            }
+          ],
+          "meals": [
+            {"type": "lunch", "name": "东山附近自选午餐", "description": "预留 75 分钟，按现场菜单与饮食要求选择。", "estimated_cost": 160},
+            {"type": "dinner", "name": "四条河原町附近自选晚餐", "description": "不指定未经核验的餐厅。", "estimated_cost": 240}
+          ]
+        },
+        {
+          "date": "2026-10-21",
+          "day_index": 1,
+          "start_time": "10:00",
+          "city": "京都",
+          "description": "较晚开始的城市文化日，下午保留自由活动时间。",
+          "transportation": "市内公共交通加短距离步行；路线状态为 estimated。",
+          "accommodation": "京都站或四条河原町附近住宿（示例不指定酒店）。",
+          "attractions": [
+            {
+              "name": "京都御苑",
+              "address": "京都市上京区（示例地址）",
+              "location": {"longitude": 135.7621, "latitude": 35.0254},
+              "visit_duration": 120,
+              "description": "城市绿地与历史环境，适合较舒缓的上午安排。",
+              "category": "历史文化",
+              "poi_match_status": "unverified",
+              "map_data_source": "llm_unverified",
+              "ticket_price": 0,
+              "reservation_required": false
+            },
+            {
+              "name": "鸭川散步",
+              "address": "京都市内鸭川沿岸（示例范围）",
+              "location": {"longitude": 135.7712, "latitude": 35.0116},
+              "visit_duration": 75,
+              "description": "根据天气与体力弹性调整的河岸散步。",
+              "category": "城市漫步",
+              "poi_match_status": "unverified",
+              "map_data_source": "llm_unverified",
+              "ticket_price": 0,
+              "reservation_required": false
+            }
+          ],
+          "meals": [
+            {"type": "lunch", "name": "御苑周边自选午餐", "description": "预留 75 分钟。", "estimated_cost": 160},
+            {"type": "dinner", "name": "京都站附近自选晚餐", "description": "按返程时间灵活安排。", "estimated_cost": 220}
+          ]
+        }
+      ],
+      "weather_info": [],
+      "weather_results": [],
+      "xhs_research": [],
+      "overall_suggestions": "这是预生成示例，不包含实时天气、路线、营业时间或票价。实际出发前请使用官方渠道复核，并根据体力与天气调整。",
+      "budget": {
+        "total_attractions": 0,
+        "total_hotels": 0,
+        "total_meals": 780,
+        "total_transportation": 240,
+        "total_inter_city_transport": 0,
+        "total": 1020
+      },
+      "risks": [
+        {
+          "id": "portfolio-example-route-uncertainty",
+          "type": "route_feasibility",
+          "severity": "info",
+          "title": "路线信息为示例估算",
+          "message": "本示例没有调用实时路线 provider，交通班次和耗时需要复核。",
+          "evidence": {"route_state": "estimated", "live_provider_called": false},
+          "suggestion": "出发当天使用地图和交通运营方信息确认。",
+          "source": "rule_validator",
+          "revisable": false
+        }
+      ],
+      "validation_status": "degraded",
+      "revision_count": 0,
+      "plan_version": 1
+    },
+    "graph_data": {"nodes": [], "edges": [], "categories": []}
+  }
+}

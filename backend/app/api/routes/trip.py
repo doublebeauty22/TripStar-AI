@@ -1,6 +1,7 @@
 """旅行规划 API 路由 - WebSocket 同步 + 轮询兼容模式"""
 
 import asyncio
+import hashlib
 import json
 import traceback
 import uuid
@@ -8,16 +9,29 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
-from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, HTTPException, Request, WebSocket, WebSocketDisconnect
 
 from ...agents.trip_planner_agent import get_trip_planner_agent
-from ...models.schemas import TripPlanResponse, TripRequest
+from ...models.schemas import (
+    TripPatchRequest, TripPatchResult, TripPlan, TripPlanResponse, TripRequest,
+)
 from ...services.knowledge_graph_service import build_knowledge_graph
+from ...services.llm_service import (
+    generation_llm_execution,
+    get_generation_usage,
+    get_or_create_generation_usage,
+    llm_execution,
+    release_generation_usage,
+)
+from ...config import get_settings
+from ...services.public_demo_guard import client_identity, public_demo_guard, public_error
 
 router = APIRouter(prefix="/trip", tags=["旅行规划"])
 
 # 内存任务存储（单实例部署足够）
 _tasks: Dict[str, Dict[str, Any]] = {}
+_active_trip_fingerprints: Dict[str, str] = {}
+_trip_patch_locks: Dict[str, asyncio.Lock] = {}
 _FINAL_TASK_STATUS = {"completed", "failed"}
 _TASKS_DATA_DIR = Path(__file__).resolve().parents[3] / "data" / "trip_tasks"
 
@@ -35,6 +49,21 @@ def _create_task_state(task_id: str) -> Dict[str, Any]:
         "error": None,
         "request_payload": None,
         "subscribers": [],  # list[asyncio.Queue]
+        "request_fingerprint": None,
+        "logical_llm_calls": 0,
+        "llm_stage": "",
+        "llm_model": "",
+        "llm_retry_count": 0,
+        "generation_id": None,
+        "llm_stage_calls": {},
+        "llm_prompt_tokens": 0,
+        "llm_completion_tokens": 0,
+        "llm_total_tokens": 0,
+        "deduplicated_generation_ids": [],
+        "plan_version": 1,
+        "patch_history": [],
+        "patch_requests": {},
+        "public_client_id": None,
     }
 
 
@@ -46,9 +75,96 @@ def _serialize_result(result: Any) -> Any:
     return result
 
 
+def _sanitize_request_payload_for_persistence(payload: Any) -> Any:
+    """Remove free-form preference text from the task's disk representation."""
+    if not isinstance(payload, dict):
+        return payload
+    sanitized = dict(payload)
+    if "free_text_input" in sanitized:
+        sanitized["free_text_input"] = ""
+    profile = sanitized.get("preference_profile")
+    if isinstance(profile, dict):
+        sanitized_profile = dict(profile)
+        if "special_requirements" in sanitized_profile:
+            sanitized_profile["special_requirements"] = ""
+        sanitized["preference_profile"] = sanitized_profile
+    return sanitized
+
+
+def _log_generation_summary(
+    generation_id: str,
+    task_id: str,
+    snapshot: Dict[str, Any],
+) -> None:
+    """Emit one prompt-free, non-sensitive cost summary for a generation."""
+    stage_calls = snapshot.get("stage_calls", {})
+    print(
+        "LLM_GENERATION_SUMMARY "
+        f"generation_id={generation_id} task_id={task_id} "
+        f"preference_calls={stage_calls.get('preference', 0)} "
+        f"xhs_calls={stage_calls.get('xhs_research', 0)} "
+        f"planner_calls={stage_calls.get('planner', 0)} "
+        f"critic_calls={stage_calls.get('critic', 0)} "
+        f"revision_calls={stage_calls.get('revision', 0)} "
+        f"repair_calls={stage_calls.get('json_repair', 0)} "
+        f"total_logical_calls={snapshot.get('logical_llm_calls', 0)} "
+        f"prompt_tokens={snapshot.get('prompt_tokens', 0)} "
+        f"completion_tokens={snapshot.get('completion_tokens', 0)} "
+        f"total_tokens={snapshot.get('total_tokens', 0)} "
+        f"retry_count={snapshot.get('retry_count', 0)} "
+        f"model={snapshot.get('model', '')}"
+    )
+
+
 def _task_file_path(task_id: str) -> Path:
     """获取任务持久化文件路径。"""
     return _TASKS_DATA_DIR / f"{task_id}.json"
+
+
+def _safe_persisted_plan_version(payload: Dict[str, Any]) -> int | None:
+    """Resolve a version without ever resetting an already-patched task to v1."""
+    result = payload.get("result")
+    if hasattr(result, "model_dump"):
+        result = result.model_dump(mode="json")
+    data = result.get("data") if isinstance(result, dict) else None
+    candidates: list[int] = []
+    if isinstance(data, dict):
+        candidates.append(data.get("plan_version"))
+    candidates.append(payload.get("plan_version"))
+    for item in payload.get("patch_history") or []:
+        if isinstance(item, dict):
+            candidates.append(item.get("plan_version"))
+    for item in (payload.get("patch_requests") or {}).values():
+        if isinstance(item, dict):
+            candidates.append(item.get("plan_version"))
+            updated = item.get("updated_plan")
+            if isinstance(updated, dict):
+                candidates.append(updated.get("plan_version"))
+    valid = [value for value in candidates if isinstance(value, int) and value >= 1]
+    if valid:
+        return max(valid)
+    if payload.get("patch_history") or payload.get("patch_requests"):
+        # Existing patch metadata without a recoverable version is ambiguous.
+        return None
+    return 1
+
+
+def _ensure_task_plan_version(task: Dict[str, Any]) -> bool:
+    """Normalize only version metadata; never touch TripPlan business fields."""
+    resolved = _safe_persisted_plan_version(task)
+    if resolved is None:
+        return False
+    changed = task.get("plan_version") != resolved
+    task["plan_version"] = resolved
+    result = task.get("result")
+    if hasattr(result, "model_dump"):
+        # New Pydantic results already carry the schema default/version.
+        return changed
+    if isinstance(result, dict) and isinstance(result.get("data"), dict):
+        if result["data"].get("plan_version") != resolved:
+            result["data"]["plan_version"] = resolved
+            changed = True
+    return changed
 
 
 def _normalize_loaded_task(task_id: str, payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -64,9 +180,22 @@ def _normalize_loaded_task(task_id: str, payload: Dict[str, Any]) -> Dict[str, A
             "result": payload.get("result"),
             "error": payload.get("error"),
             "request_payload": payload.get("request_payload"),
+            "logical_llm_calls": payload.get("logical_llm_calls", 0),
+            "llm_stage": payload.get("llm_stage", ""),
+            "llm_model": payload.get("llm_model", ""),
+            "llm_retry_count": payload.get("llm_retry_count", 0),
+            "generation_id": payload.get("generation_id"),
+            "llm_stage_calls": payload.get("llm_stage_calls", {}),
+            "llm_prompt_tokens": payload.get("llm_prompt_tokens", 0),
+            "llm_completion_tokens": payload.get("llm_completion_tokens", 0),
+            "llm_total_tokens": payload.get("llm_total_tokens", 0),
+            "plan_version": payload.get("plan_version"),
+            "patch_history": payload.get("patch_history", []),
+            "patch_requests": payload.get("patch_requests", {}),
         }
     )
     task["subscribers"] = []
+    task["_plan_version_needs_persistence"] = _ensure_task_plan_version(task)
 
     # 服务重启后，处理中任务无法恢复执行，直接标记为失败，避免前端无限等待。
     if task["status"] not in _FINAL_TASK_STATUS:
@@ -79,7 +208,7 @@ def _normalize_loaded_task(task_id: str, payload: Dict[str, Any]) -> Dict[str, A
     return task
 
 
-def _persist_task_state(task_id: str, task: Dict[str, Any]) -> None:
+def _persist_task_state(task_id: str, task: Dict[str, Any]) -> bool:
     """将任务状态持久化到本地 JSON 文件。"""
     try:
         _TASKS_DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -92,15 +221,31 @@ def _persist_task_state(task_id: str, task: Dict[str, Any]) -> None:
             "message": task.get("message", ""),
             "result": _serialize_result(task.get("result")),
             "error": task.get("error"),
-            "request_payload": task.get("request_payload"),
+            "request_payload": _sanitize_request_payload_for_persistence(
+                task.get("request_payload")
+            ),
+            "logical_llm_calls": task.get("logical_llm_calls", 0),
+            "llm_stage": task.get("llm_stage", ""),
+            "llm_model": task.get("llm_model", ""),
+            "llm_retry_count": task.get("llm_retry_count", 0),
+            "generation_id": task.get("generation_id"),
+            "llm_stage_calls": task.get("llm_stage_calls", {}),
+            "llm_prompt_tokens": task.get("llm_prompt_tokens", 0),
+            "llm_completion_tokens": task.get("llm_completion_tokens", 0),
+            "llm_total_tokens": task.get("llm_total_tokens", 0),
+            "plan_version": task.get("plan_version", 1),
+            "patch_history": task.get("patch_history", []),
+            "patch_requests": task.get("patch_requests", {}),
         }
         target = _task_file_path(task_id)
         tmp = target.with_suffix(".json.tmp")
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=2)
         tmp.replace(target)
+        return True
     except Exception as e:
         print(f"⚠️  持久化任务 {task_id} 失败: {e}")
+        return False
 
 
 def _load_task_from_disk(task_id: str) -> Dict[str, Any] | None:
@@ -220,7 +365,12 @@ def _build_task_event(task_id: str, task: Dict[str, Any], include_result: bool =
         "message": task.get("message", ""),
     }
     if task.get("error"):
-        event["error"] = task["error"]
+        if get_settings().is_public_deployment:
+            safe_message = "本次实时生成暂时失败，请稍后重试或查看示例行程。"
+            event["message"] = safe_message
+            event["error"] = safe_message
+        else:
+            event["error"] = task["error"]
     if task.get("status") == "failed" and task.get("request_payload") is not None:
         event["request_payload"] = task["request_payload"]
     if include_result and task.get("result") is not None:
@@ -283,11 +433,57 @@ async def _update_task_state(
     summary="提交旅行规划任务",
     description="异步提交旅行规划请求，立即返回 task_id；可通过 WebSocket 或 /trip/status/{task_id} 获取执行状态",
 )
-async def plan_trip(request: TripRequest):
+async def plan_trip(request: TripRequest, http_request: Request = None):
     """提交旅行规划任务（立即返回 task_id）。"""
-    task_id = str(uuid.uuid4())[:8]
+    fingerprint_payload = request.model_dump(mode="json")
+    # Correlation metadata must not change semantic request deduplication.
+    fingerprint_payload.pop("generation_id", None)
+    request_json = json.dumps(
+        fingerprint_payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    fingerprint = hashlib.sha256(request_json.encode("utf-8")).hexdigest()
+    existing_task_id = _active_trip_fingerprints.get(fingerprint)
+    existing_task = _tasks.get(existing_task_id) if existing_task_id else None
+    incoming_client_id = client_identity(http_request)
+    if (
+        existing_task
+        and get_settings().is_public_deployment
+        and existing_task.get("public_client_id") != incoming_client_id
+    ):
+        # Never reveal another visitor's active task ID through deduplication.
+        existing_task = None
+    if existing_task and existing_task.get("status") not in _FINAL_TASK_STATUS:
+        incoming_generation_id = (request.generation_id or "").strip()
+        existing_generation_id = (existing_task.get("generation_id") or "").strip()
+        if incoming_generation_id and incoming_generation_id != existing_generation_id:
+            aliases = existing_task.setdefault("deduplicated_generation_ids", [])
+            if incoming_generation_id not in aliases:
+                aliases.append(incoming_generation_id)
+                # Ensure a direct-to-trip generation also receives a terminal summary.
+                get_or_create_generation_usage(incoming_generation_id)
+        print(f"♻️ [TRIP_DEDUPE] fingerprint={fingerprint[:12]} task_id={existing_task_id}")
+        return {
+            "task_id": existing_task_id,
+            "plan_id": existing_task.get("plan_id", existing_task_id),
+            "status": existing_task.get("status", "processing"),
+            "ws_url": f"/api/trip/ws/{existing_task_id}",
+            "message": "相同旅行规划任务正在执行，已返回现有任务。",
+            "deduplicated": True,
+        }
+
+    # Full UUID entropy is a privacy boundary improvement, but not authorization.
+    task_id = str(uuid.uuid4())
+    await public_demo_guard.reserve_generation(http_request, task_id)
     _tasks[task_id] = _create_task_state(task_id)
+    _tasks[task_id]["public_client_id"] = incoming_client_id
+    generation_id = (request.generation_id or "").strip() or task_id
+    _tasks[task_id]["generation_id"] = generation_id
+    _tasks[task_id]["request_fingerprint"] = fingerprint
     _tasks[task_id]["request_payload"] = request.model_dump(mode="json")
+    _active_trip_fingerprints[fingerprint] = task_id
     _persist_task_state(task_id, _tasks[task_id])
 
     _city_display = ' → '.join(cs.city for cs in request.cities) if request.cities else request.city
@@ -339,7 +535,32 @@ async def _run_trip_planning(task_id: str, request: TripRequest):
                 message=message,
             )
 
-        trip_plan = await agent.plan_trip(request, progress_callback=progress_callback)
+        def usage_update(usage) -> None:
+            task = _tasks.get(task_id)
+            if task is None:
+                return
+            snapshot = usage.snapshot()
+            task["logical_llm_calls"] = snapshot["logical_llm_calls"]
+            task["llm_stage"] = snapshot["llm_stage"]
+            task["llm_model"] = snapshot["model"]
+            task["llm_retry_count"] = snapshot["retry_count"]
+            task["generation_id"] = snapshot["generation_id"]
+            task["llm_stage_calls"] = snapshot["stage_calls"]
+            task["llm_prompt_tokens"] = snapshot["prompt_tokens"]
+            task["llm_completion_tokens"] = snapshot["completion_tokens"]
+            task["llm_total_tokens"] = snapshot["total_tokens"]
+
+        generation_id = _tasks.get(task_id, {}).get("generation_id") or task_id
+        if request.generation_id:
+            with generation_llm_execution(
+                generation_id,
+                task_id=task_id,
+                on_update=usage_update,
+            ):
+                trip_plan = await agent.plan_trip(request, progress_callback=progress_callback)
+        else:
+            with llm_execution(task_id, on_update=usage_update):
+                trip_plan = await agent.plan_trip(request, progress_callback=progress_callback)
 
         await _update_task_state(
             task_id,
@@ -367,21 +588,15 @@ async def _run_trip_planning(task_id: str, request: TripRequest):
             message="旅行计划生成成功",
             result=trip_result,
         )
-
     except Exception as e:
         print(f"❌ 任务 {task_id} 失败: {e}")
         traceback.print_exc()
 
-        # 针对小红书 Cookie 过期异常做出特殊处理返回给前端
-        try:
-            from ...services.xhs_service import XHSCookieExpiredError
-
-            if isinstance(e, XHSCookieExpiredError):
-                error_msg = f"【认证失败】{str(e)}"
-            else:
-                error_msg = str(e)
-        except ImportError:
-            error_msg = str(e)
+        error_msg = (
+            "本次实时生成暂时失败，请稍后重试或查看示例行程。"
+            if get_settings().is_public_deployment
+            else str(e)
+        )
 
         await _update_task_state(
             task_id,
@@ -391,6 +606,49 @@ async def _run_trip_planning(task_id: str, request: TripRequest):
             message=error_msg,
             error=error_msg,
         )
+    finally:
+        task = _tasks.get(task_id, {})
+        generation_id = task.get("generation_id") or task_id
+        usage = get_generation_usage(generation_id) if request.generation_id else None
+        snapshot = usage.snapshot() if usage is not None else {
+            "stage_calls": task.get("llm_stage_calls", {}),
+            "logical_llm_calls": task.get("logical_llm_calls", 0),
+            "prompt_tokens": task.get("llm_prompt_tokens", 0),
+            "completion_tokens": task.get("llm_completion_tokens", 0),
+            "total_tokens": task.get("llm_total_tokens", 0),
+            "retry_count": task.get("llm_retry_count", 0),
+            "model": task.get("llm_model", ""),
+        }
+        stage_calls = snapshot.get("stage_calls", {})
+        if task:
+            task["logical_llm_calls"] = snapshot.get("logical_llm_calls", 0)
+            task["llm_stage"] = snapshot.get("llm_stage", task.get("llm_stage", ""))
+            task["llm_model"] = snapshot.get("model", task.get("llm_model", ""))
+            task["llm_retry_count"] = snapshot.get("retry_count", 0)
+            task["llm_stage_calls"] = stage_calls
+            task["llm_prompt_tokens"] = snapshot.get("prompt_tokens", 0)
+            task["llm_completion_tokens"] = snapshot.get("completion_tokens", 0)
+            task["llm_total_tokens"] = snapshot.get("total_tokens", 0)
+            _persist_task_state(task_id, task)
+        _log_generation_summary(generation_id, task_id, snapshot)
+        if request.generation_id:
+            release_generation_usage(generation_id)
+        # A semantically identical request can be deduplicated across two UI
+        # generations. Its own Preference cost remains separately attributable;
+        # the shared Planner request is charged only to the generation that ran it.
+        for alias_generation_id in task.get("deduplicated_generation_ids", []):
+            alias_usage = get_generation_usage(alias_generation_id)
+            if alias_usage is not None:
+                _log_generation_summary(
+                    alias_generation_id,
+                    task_id,
+                    alias_usage.snapshot(),
+                )
+            release_generation_usage(alias_generation_id)
+        fingerprint = _tasks.get(task_id, {}).get("request_fingerprint")
+        if fingerprint and _active_trip_fingerprints.get(fingerprint) == task_id:
+            _active_trip_fingerprints.pop(fingerprint, None)
+        await public_demo_guard.release_generation(task_id)
 
 
 @router.websocket("/ws/{task_id}")
@@ -452,6 +710,14 @@ async def trip_task_ws(websocket: WebSocket, task_id: str):
 )
 async def get_trip_history(limit: int = 10):
     """查询最近的历史计划摘要。"""
+    settings = get_settings()
+    if settings.is_public_deployment and not settings.public_history_enabled:
+        raise HTTPException(
+            status_code=403,
+            detail=public_error(
+                "feature_disabled", "公开演示环境不提供历史行程列表。", False
+            ),
+        )
     safe_limit = max(1, min(int(limit or 10), 50))
     return {
         "items": _load_history_items(safe_limit),
@@ -467,7 +733,15 @@ async def get_task_status(task_id: str):
     """查询任务执行状态。"""
     task = _get_task(task_id)
     if task is None:
-        raise HTTPException(status_code=404, detail="任务不存在")
+        raise HTTPException(
+            status_code=404,
+            detail=public_error("task_not_found", "未找到该行程任务。", False),
+        )
+
+    version_changed = _ensure_task_plan_version(task)
+    version_changed = bool(task.pop("_plan_version_needs_persistence", False)) or version_changed
+    if version_changed:
+        _persist_task_state(task_id, task)
 
     if task["status"] == "completed":
         return {
@@ -477,13 +751,20 @@ async def get_task_status(task_id: str):
             "result": _serialize_result(task.get("result")),
         }
     if task["status"] == "failed":
-        return {
+        error_message = (
+            "本次实时生成暂时失败，请稍后重试或查看示例行程。"
+            if get_settings().is_public_deployment
+            else task.get("error", "")
+        )
+        response = {
             "task_id": task_id,
             "plan_id": task.get("plan_id", task_id),
             "status": "failed",
-            "error": task.get("error", ""),
-            "request_payload": task.get("request_payload"),
+            "error": error_message,
         }
+        if not get_settings().is_public_deployment:
+            response["request_payload"] = task.get("request_payload")
+        return response
     return {
         "task_id": task_id,
         "plan_id": task.get("plan_id", task_id),
@@ -492,6 +773,234 @@ async def get_task_status(task_id: str):
         "progress": task.get("progress", 0),
         "progress_text": task.get("message", "处理中..."),
     }
+
+
+def _task_trip_plan(task: Dict[str, Any]) -> TripPlan:
+    result = task.get("result")
+    if hasattr(result, "data"):
+        data = result.data
+    elif isinstance(result, dict):
+        data = result.get("data")
+    else:
+        data = None
+    if data is None:
+        raise ValueError("任务没有可编辑的旅行计划")
+    return data if isinstance(data, TripPlan) else TripPlan.model_validate(data)
+
+
+async def _enrich_patch_pois(
+    plan: TripPlan,
+    patch,
+) -> TripPlan:
+    """Ground only added/replaced POIs; untouched identities are never rematched."""
+    from ...models.schemas import AddPOIOperation, ReplacePOIOperation
+
+    target_names: Dict[int, list[str]] = {}
+    for operation in patch.operations:
+        if isinstance(operation, (AddPOIOperation, ReplacePOIOperation)):
+            target_names.setdefault(operation.day_index, []).append(operation.new_poi.name)
+    if not target_names:
+        return plan
+
+    enriched_plan = plan.model_copy(deep=True)
+    enriched_plan.days = []
+    target_positions: list[tuple[int, int]] = []
+    for day_index, names in target_names.items():
+        day = plan.days[day_index].model_copy(deep=True)
+        selected = []
+        for name in names:
+            positions = [
+                position for position, attraction in enumerate(plan.days[day_index].attractions)
+                if attraction.name == name
+            ]
+            if len(positions) != 1:
+                raise ValueError(f"替换景点无法唯一定位: {name}")
+            position = positions[0]
+            selected.append(plan.days[day_index].attractions[position].model_copy(deep=True))
+            target_positions.append((day_index, position))
+        day.attractions = selected
+        enriched_plan.days.append(day)
+
+    agent = get_trip_planner_agent()
+    enriched_plan = await agent._enrich_trip_plan_pois(enriched_plan)
+    flattened = [poi for day in enriched_plan.days for poi in day.attractions]
+    if len(flattened) != len(target_positions):
+        raise ValueError("景点重新匹配结果不完整")
+    updated = plan.model_copy(deep=True)
+    for (day_index, position), attraction in zip(target_positions, flattened):
+        if attraction.poi_match_status != "verified":
+            raise ValueError(f"替换景点未能通过地图验证: {attraction.name}")
+        updated.days[day_index].attractions[position] = attraction
+    return updated
+
+
+@router.post(
+    "/{task_id}/patch",
+    response_model=TripPatchResult,
+    summary="对已生成行程执行一次局部修改",
+)
+async def patch_trip(task_id: str, request: TripPatchRequest, http_request: Request = None):
+    """Interpret once, apply deterministically, validate, then atomically commit."""
+    from ...services.trip_patch_service import (
+        PATCH_MAX_LLM_CALLS, TripPatchEngine, get_trip_patch_interpreter,
+    )
+    from ...services.trip_validator_service import get_trip_validator_service
+
+    await public_demo_guard.check_auxiliary(http_request, "patch")
+    task = _get_task(task_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail="任务不存在")
+    lock = _trip_patch_locks.setdefault(task_id, asyncio.Lock())
+    async with lock:
+        task = _get_task(task_id)
+        _ensure_task_plan_version(task)
+        if not isinstance(task.get("plan_version"), int):
+            raise HTTPException(
+                status_code=409,
+                detail="行程存在无法安全恢复的版本历史，请刷新或联系支持。",
+            )
+        cached = task.get("patch_requests", {}).get(request.patch_request_id)
+        if cached:
+            return TripPatchResult.model_validate(cached)
+        current_plan = _task_trip_plan(task)
+        current_version = int(task.get("plan_version") or current_plan.plan_version or 1)
+        if request.current_plan_version != current_version:
+            raise HTTPException(
+                status_code=409,
+                detail=f"行程版本已更新（当前版本 {current_version}），请刷新后重试。",
+            )
+
+        original = current_plan.model_copy(deep=True)
+        previous_result = task.get("result")
+        previous_version = current_version
+        previous_history = list(task.get("patch_history", []))
+        trip_request = TripRequest.model_validate(task.get("request_payload") or {})
+        engine = TripPatchEngine()
+        usage_snapshot: Dict[str, Any] = {
+            "logical_llm_calls": 0, "prompt_tokens": 0, "completion_tokens": 0,
+            "total_tokens": 0, "retry_count": 0, "stage_calls": {}, "model": "",
+        }
+        operation_types: list[str] = []
+        affected_days: list[int] = []
+        requires_regeneration = False
+        success = False
+        result: TripPatchResult
+        try:
+            patch_usage = None
+            try:
+                with llm_execution(request.patch_request_id, max_calls=PATCH_MAX_LLM_CALLS) as patch_usage:
+                    patch = await get_trip_patch_interpreter().interpret(
+                        request.instruction, original, trip_request
+                    )
+            finally:
+                if patch_usage is not None:
+                    usage_snapshot = patch_usage.snapshot()
+            operation_types = [operation.operation for operation in patch.operations]
+            requires_regeneration = patch.requires_regeneration
+            if patch.requires_regeneration:
+                result = TripPatchResult(
+                    success=False,
+                    patch=patch,
+                    requires_regeneration=True,
+                    regeneration_reason=patch.regeneration_reason or "该修改影响整体行程结构，建议重新生成。",
+                    plan_version=current_version,
+                    patch_request_id=request.patch_request_id,
+                )
+            else:
+                updated, affected_days = engine.apply_patch(original, patch)
+                updated = await _enrich_patch_pois(updated, patch)
+                validation = await get_trip_validator_service().validate(trip_request, updated)
+                updated.risks = validation.risks
+                updated.validation_status = validation.status
+                # Phase 2C explicitly stops here; Phase 2B trigger is not called.
+                updated.plan_version = current_version + 1
+                diff = engine.compare_before_after(original, updated)
+                if diff.changed_day_indices != affected_days:
+                    raise ValueError("实际变更天数与 Patch scope 不一致")
+                for index in diff.unchanged_day_indices:
+                    if original.days[index].model_dump(mode="json") != updated.days[index].model_dump(mode="json"):
+                        raise ValueError("未受影响天数发生变化")
+                summary = engine.change_summary(diff)
+                graph = build_knowledge_graph(
+                    updated, language=getattr(trip_request, "language", "zh") or "zh"
+                )
+                trip_result = TripPlanResponse(
+                    success=True,
+                    message="行程局部修改成功",
+                    plan_id=task_id,
+                    data=updated,
+                    graph_data=graph,
+                )
+                result = TripPatchResult(
+                    success=True,
+                    updated_plan=updated,
+                    graph_data=graph.model_dump(mode="json") if hasattr(graph, "model_dump") else graph,
+                    patch=patch,
+                    changed_day_indices=diff.changed_day_indices,
+                    change_summary=summary,
+                    diff=diff,
+                    validation_status=validation.status,
+                    risks=validation.risks,
+                    plan_version=updated.plan_version,
+                    patch_request_id=request.patch_request_id,
+                )
+                # Commit only after interpretation, apply, enrichment, validation,
+                # diff and graph construction have all succeeded.
+                task["result"] = trip_result
+                task["plan_version"] = updated.plan_version
+                task.setdefault("patch_history", []).append({
+                    "patch_request_id": request.patch_request_id,
+                    "plan_version": updated.plan_version,
+                    "changed_day_indices": diff.changed_day_indices,
+                    "operation_types": operation_types,
+                    "change_summary": summary,
+                    "validation_status": validation.status,
+                    "timestamp": datetime.now().isoformat(timespec="seconds"),
+                })
+                success = True
+            task.setdefault("patch_requests", {})[request.patch_request_id] = result.model_dump(mode="json")
+            if not _persist_task_state(task_id, task):
+                success = False
+                task["result"] = previous_result
+                task["plan_version"] = previous_version
+                task["patch_history"] = previous_history
+                task.get("patch_requests", {}).pop(request.patch_request_id, None)
+                return TripPatchResult(
+                    success=False,
+                    error="行程修改未能安全持久化，原行程保持不变。",
+                    plan_version=previous_version,
+                    patch_request_id=request.patch_request_id,
+                )
+            return result
+        except HTTPException:
+            raise
+        except Exception as exc:
+            result = TripPatchResult(
+                success=False,
+                error=(
+                    "行程修改暂时失败，原行程保持不变。"
+                    if get_settings().is_public_deployment
+                    else str(exc)
+                ),
+                plan_version=current_version,
+                patch_request_id=request.patch_request_id,
+            )
+            task.setdefault("patch_requests", {})[request.patch_request_id] = result.model_dump(mode="json")
+            _persist_task_state(task_id, task)
+            return result
+        finally:
+            print(
+                "TRIP_PATCH_SUMMARY "
+                f"patch_request_id={request.patch_request_id} task_id={task_id} stage=trip_patch "
+                f"logical_llm_calls={usage_snapshot.get('logical_llm_calls', 0)} "
+                f"prompt_tokens={usage_snapshot.get('prompt_tokens', 0)} "
+                f"completion_tokens={usage_snapshot.get('completion_tokens', 0)} "
+                f"total_tokens={usage_snapshot.get('total_tokens', 0)} "
+                f"retry_count={usage_snapshot.get('retry_count', 0)} "
+                f"affected_days={affected_days} operation_types={operation_types} "
+                f"requires_regeneration={str(requires_regeneration).lower()} "
+                f"success={str(success).lower()}"
+            )
 
 
 @router.get(
@@ -506,8 +1015,8 @@ async def health_check():
         return {
             "status": "healthy",
             "service": "trip-planner",
-            "agent_name": agent.planner_agent.name,
-            "tools_count": len(agent.weather_agent.list_tools()) + len(agent.hotel_agent.list_tools()),
+            "agent_name": agent.planner_agent_name,
+            "tools_count": 0,
         }
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"服务不可用: {str(e)}")

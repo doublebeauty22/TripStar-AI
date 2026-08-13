@@ -1,0 +1,14 @@
+{
+  "artifact": "gc_chengdu_budget.json",
+  "artifact_hash": "sha256:f5426654890cae844f8d65291987cb2c36c9157c84b5d3142b0897274044784f",
+  "capture_status": "complete",
+  "case_id": "gc_chengdu_budget",
+  "snapshot_hashes": {
+    "amap": "sha256:c11c00819cb27d2db562cc4e674b4af2f535342be523ce1ed193788cf5710ad0",
+    "google_directions": "sha256:8406b2d6b23c82ffb92c40f8041df6da7fc23bc2363c9e7cc183d50a5eea345f",
+    "google_places": "sha256:3221a28ef4e0f5116c043b190d54fa55996f4c24d6e61f10338f36d251641c6a",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:6ffd221b0c59b47a95a9babb85b731abbd16f922c33107c4f44d443c0e1339e1",
+    "xhs": "sha256:759ae2146ae16674273bfc83d19f0e3f6a21585e9512a93cd66011d64f2e772a"
+  }
+}

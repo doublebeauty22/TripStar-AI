@@ -1,0 +1,1 @@
+{"fixture_version":"v1","provider":"amap","state":"degraded","sanitized":true,"payload":{"request_success":true,"data_available":true,"degraded":true,"days":[{"date":"2027-01-11","condition":"synthetic_clear"}]}}

@@ -1,0 +1,2029 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:28:34.549097+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:26:39.389927+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 1510,
+        "total_attractions": 235,
+        "total_hotels": 660,
+        "total_inter_city_transport": 0,
+        "total_meals": 465,
+        "total_transportation": 150
+      },
+      "cities": [
+        "深圳"
+      ],
+      "city": "深圳",
+      "days": [
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国广东省深圳市南山区南头深南大道9668号 邮政编码: 518058",
+              "category": "城市商业街区",
+              "description": "大型开放式商业及城市生活街区,适合观察深圳现代城市空间、建筑设计和本地消费文化,可安排咖啡、购物和街区拍照。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.5418178,
+                "longitude": 113.9557052
+              },
+              "map_data_source": "google_places",
+              "name": "万象天地",
+              "photos": [],
+              "place_id": "ChIJh9AxxnzxAzQR8WHcMFkDZhk",
+              "poi_id": "ChIJh9AxxnzxAzQR8WHcMFkDZhk",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国深圳市南山区 邮政编码: 518058",
+              "category": "主题景区",
+              "description": "以世界各地著名建筑景观为主题的综合性主题景区,适合城市探索中进行集中式观景和拍照。门票价格以出行前官方渠道为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.534798600000002,
+                "longitude": 113.9722329
+              },
+              "map_data_source": "google_places",
+              "name": "世界之窗",
+              "photos": [],
+              "place_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+              "poi_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 220,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国广东省深圳市南山区滨海大道辅路GX97+P3Q",
+              "category": "滨海公园",
+              "description": "沿深圳湾展开的滨海公园,适合傍晚散步、观赏城市天际线和海湾景色。建议预留充足步行时间,并根据日落时间灵活调整停留。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.519334999999998,
+                "longitude": 113.962729
+              },
+              "map_data_source": "google_places",
+              "name": "深圳湾公园",
+              "photos": [],
+              "place_id": "ChIJkVFRdt3xAzQRDh8egHyeL3s",
+              "poi_id": "ChIJkVFRdt3xAzQRDh8egHyeL3s",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "深圳",
+          "date": "2027-02-22",
+          "day_index": 1,
+          "description": "以南山区城市漫游和滨海夜景为主,依次游览万象天地、世界之窗及深圳湾公园。三处均位于深圳西部,适合使用地铁和步行串联,晚上可根据体力选择前往海上世界或欢乐港湾作为晚餐及夜游备选。",
+          "hotel": {
+            "address": "深圳市南山区白石路3818号",
+            "distance": "距离万象天地约3公里,距离深圳湾公园约4公里",
+            "estimated_cost": 220,
+            "location": {
+              "latitude": 22.538155,
+              "longitude": 113.948395
+            },
+            "name": "HAMPS HOTEL",
+            "price_range": "约200-300元",
+            "rating": "4.5",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "推荐肠粉、粥或面点,方便快速出发。",
+              "estimated_cost": 25,
+              "location": null,
+              "name": "酒店周边早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择商场内简餐或工作日套餐,控制用餐时间和预算。",
+              "estimated_cost": 50,
+              "location": null,
+              "name": "万象天地简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择海上世界周边粤菜、面食或简餐；若不前往海上世界,也可在深圳湾公园附近用餐。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "深圳湾或海上世界周边餐厅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "公共交通为主:地铁、公交及短距离步行。万象天地至世界之窗距离较近,深圳湾公园建议乘地铁或公交前往。"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国广东省深圳市罗湖区莲塘仙湖路160号",
+              "category": "植物园",
+              "description": "园区面积较大,适合安排半天进行植物观赏、园林漫步和自然景观拍摄。建议穿舒适鞋,并提前确认开放时间及园区交通安排。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.56826,
+                "longitude": 114.1689
+              },
+              "map_data_source": "google_places",
+              "name": "仙湖植物园",
+              "photos": [],
+              "place_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg",
+              "poi_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 15,
+              "visit_duration": 210
+            },
+            {
+              "address": "广东省深圳市罗湖区水贝一路及周边",
+              "category": "产业及商业街区",
+              "description": "深圳珠宝产业聚集片区,可观察专业市场、商业街区和城市产业空间。以街区探索和建筑拍摄为主,购物时注意核验商家资质和价格。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "水贝",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "广东省深圳市罗湖区东门街道东门老街商圈",
+              "category": "历史商业街区",
+              "description": "深圳传统商业街区之一,适合体验本地小吃、街头商业和夜间城市氛围。建议傍晚后前往,步行游览并预留用餐时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "东门老街",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "深圳",
+          "date": "2027-02-23",
+          "day_index": 2,
+          "description": "体验深圳较有代表性的城市生活路线,上午游览仙湖植物园,下午前往水贝,晚上在东门老街逛街用餐。由于仙湖植物园与水贝、东门分属不同片区,建议上午集中游览,使用地铁完成片区切换。",
+          "hotel": {
+            "address": "深圳市南山区白石路3818号",
+            "distance": "距离深圳市中心约8公里,可通过地铁前往罗湖片区",
+            "estimated_cost": 220,
+            "location": {
+              "latitude": 22.538155,
+              "longitude": 113.948395
+            },
+            "name": "HAMPS HOTEL",
+            "price_range": "约200-300元",
+            "rating": "4.5",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择豆浆、包点、粥或肠粉等快捷早餐。",
+              "estimated_cost": 25,
+              "location": null,
+              "name": "酒店周边早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "建议在入园前或离园后解决午餐,选择当地粉面、快餐或简便粤菜。",
+              "estimated_cost": 50,
+              "location": null,
+              "name": "仙湖植物园附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可组合尝试牛杂、烧腊、肠粉、糖水等,控制单次购买分量以便多样体验。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "东门老街小吃及简餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "公共交通为主:前往仙湖植物园可乘地铁后换乘公交或步行；之后乘地铁前往水贝和东门老街。"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国广东省深圳市龙岗区较场尾路 邮政编码: 518120",
+              "category": "滨海村落",
+              "description": "大鹏半岛海边村落,适合沿海散步、观察民宿街区和拍摄海岸风景。建议上午到访,避开返程高峰并根据潮汐和海况调整亲水活动。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.586281,
+                "longitude": 114.5075401
+              },
+              "map_data_source": "google_places",
+              "name": "较场尾",
+              "photos": [],
+              "place_id": "ChIJVcYUDIlqBDQRWy0Q68RI-fI",
+              "poi_id": "ChIJVcYUDIlqBDQRWy0Q68RI-fI",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国深圳市龙岗区南澳街道东山社区街道海滩 邮政编码: 518120",
+              "category": "海滩",
+              "description": "大鹏半岛的滨海沙滩,适合短时停留、散步和拍照。海边风力及浪况可能变化,建议穿防滑鞋并注意安全警示。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.5851525,
+                "longitude": 114.4806741
+              },
+              "map_data_source": "google_places",
+              "name": "桔钓沙",
+              "photos": [],
+              "place_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+              "poi_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+              "poi_match_status": "verified",
+              "rating": 5.0,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国广东省深圳市龙岗区杨梅坑 邮政编码: 518121",
+              "category": "滨海景区",
+              "description": "以海岸线和山海景观著称,适合沿海步行、拍照和放松。可根据体力选择在海边休闲,不必强行完成较长路线,返程建议预留充足时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 22.542686999999997,
+                "longitude": 114.572222
+              },
+              "map_data_source": "google_places",
+              "name": "杨梅坑",
+              "photos": [],
+              "place_id": "ChIJqfYjeYdABDQREK4OzOLFERA",
+              "poi_id": "ChIJqfYjeYdABDQREK4OzOLFERA",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "深圳",
+          "date": "2027-02-24",
+          "day_index": 3,
+          "description": "安排大鹏新区山海一日游,重点游览较场尾、桔钓沙和杨梅坑。东部景点距离市区较远,建议尽早出发,使用地铁接驳公交或直达公交；若公共交通耗时过长,可减少较场尾停留,把时间集中在杨梅坑海岸线。",
+          "hotel": {
+            "address": "深圳市南山区白石路3818号",
+            "distance": "位于南山区,返程后可通过公共交通回酒店",
+            "estimated_cost": 220,
+            "location": {
+              "latitude": 22.538155,
+              "longitude": 113.948395
+            },
+            "name": "HAMPS HOTEL",
+            "price_range": "约200-300元",
+            "rating": "4.5",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议购买面包、豆浆、包点等便携食物,方便早起赶路。",
+              "estimated_cost": 25,
+              "location": null,
+              "name": "酒店附近便携早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择明码标价的餐厅,优先点单人份海鲜、客家菜或粉面,避免超出预算。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "大鹏半岛海鲜或客家简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "经过较长交通和步行后,建议选择汤粉、粥、烧腊饭等方便快捷的晚餐。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "返程后酒店周边晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "08:00",
+          "transfer_info": "",
+          "transportation": "公共交通为主:地铁前往大鹏方向后换乘公交或短途接驳。大鹏半岛景点之间距离较远,需预留换乘和等车时间。"
+        }
+      ],
+      "end_date": "2027-02-24",
+      "overall_suggestions": "本计划按独自旅行、适中节奏和城市探索偏好设计,预计当地消费约1495元,低于2000元预算。费用按经济型酒店每晚约220元、普通餐饮和公共交通估算,世界之窗及仙湖植物园门票为预算估算值,出行前请通过官方渠道核实。2027年2月22日至24日的逐日天气数据当前未提供,天气字段不应视为实际预报；建议临近出发前3至7天重新查询深圳及大鹏新区天气,并据此调整海边行程。大鹏半岛公共交通耗时较长,第三天应尽早出发；海边游览注意防晒、防风和防滑,夜间返程不要安排过晚。酒店信息中未提供实际房价,住宿费用为预算估算,预订前请确认房型、价格和取消政策。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:2",
+          "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2027-02-22",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "深圳",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 35,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 28,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "深圳",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 33,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 26,
+          "night_weather": "雷阵雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "深圳",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 31,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 26,
+          "night_weather": "雷阵雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "深圳",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 32,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 26,
+          "night_weather": "中雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "深圳",
+          "data_available": true,
+          "days": [
+            {
+              "city": "深圳",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 35,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 28,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "深圳",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 33,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 26,
+              "night_weather": "雷阵雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "深圳",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 31,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 26,
+              "night_weather": "雷阵雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "深圳",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 32,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 26,
+              "night_weather": "中雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a536b4e000000001603cd6f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a536b4e000000001603cd6f",
+              "status": "detail_available",
+              "title": "深圳旅游三天两夜不绕路攻略（手绘版）"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a769625000000003300b999",
+              "source_url": "https://www.xiaohongshu.com/explore/6a769625000000003300b999",
+              "status": "detail_available",
+              "title": "朋友眼中那个无聊的深圳。。。"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a6dd34f000000002500f7f6",
+              "source_url": "https://www.xiaohongshu.com/explore/6a6dd34f000000002500f7f6",
+              "status": "detail_available",
+              "title": "低能量人适用的旅游攻略 深圳篇（五）"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a76f836000000002c005b08",
+              "source_url": "https://www.xiaohongshu.com/explore/6a76f836000000002c005b08",
+              "status": "detail_available",
+              "title": "深圳，其实是一个适合穷游的地方"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "万象天地",
+                  "recommendation_quote": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾"
+                }
+              ],
+              "identity_text": "万象天地",
+              "location": {
+                "latitude": 22.5418178,
+                "longitude": 113.9557052
+              },
+              "location_status": "available",
+              "name": "万象天地",
+              "name_en": "The MixC World",
+              "name_zh": "万象天地",
+              "recommendation": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "世界之窗",
+                  "recommendation_quote": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾"
+                }
+              ],
+              "identity_text": "世界之窗",
+              "location": {
+                "latitude": 22.536818,
+                "longitude": 113.974514
+              },
+              "location_status": "available",
+              "name": "世界之窗",
+              "name_en": "Window of the World",
+              "name_zh": "世界之窗",
+              "recommendation": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "深圳湾公园",
+                  "recommendation_quote": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾"
+                }
+              ],
+              "identity_text": "深圳湾公园",
+              "location": {
+                "latitude": 22.506537,
+                "longitude": 113.95348
+              },
+              "location_status": "available",
+              "name": "深圳湾公园",
+              "name_en": "Shenzhen Bay Park",
+              "name_zh": "深圳湾公园",
+              "recommendation": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "蛇口超chill的看海放空的好地方，海上世界文化艺术中心不定期有免费展览",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "海上世界",
+                  "recommendation_quote": "蛇口超chill的看海放空的好地方，海上世界文化艺术中心不定期有免费展览"
+                }
+              ],
+              "identity_text": "海上世界",
+              "location": {
+                "latitude": 22.48329,
+                "longitude": 113.916127
+              },
+              "location_status": "available",
+              "name": "海上世界",
+              "name_en": "Sea World",
+              "name_zh": "海上世界",
+              "recommendation": "蛇口超chill的看海放空的好地方，海上世界文化艺术中心不定期有免费展览",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "欢乐港湾",
+                  "recommendation_quote": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾"
+                }
+              ],
+              "identity_text": "欢乐港湾",
+              "location": {
+                "latitude": 22.5447288,
+                "longitude": 113.8845005
+              },
+              "location_status": "available",
+              "name": "欢乐港湾",
+              "name_en": "Happy Harbor",
+              "name_zh": "欢乐港湾",
+              "recommendation": "第①天：万象天地-世界之窗-深圳湾公园-海上世界-欢乐港湾",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f",
+                "6a6dd34f000000002500f7f6"
+              ],
+              "evidence_summary": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北；仙湖植物园、梧桐山、莲花山、笔架山、红花山、虹桥、人民、洪湖、中心公园等也很值得大家游玩打卡",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "仙湖植物园",
+                  "recommendation_quote": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北"
+                },
+                {
+                  "evidence_id": "6a6dd34f000000002500f7f6",
+                  "identity_quote": "仙湖植物园",
+                  "recommendation_quote": "仙湖植物园、梧桐山、莲花山、笔架山、红花山、虹桥、人民、洪湖、中心公园等也很值得大家游玩打卡"
+                }
+              ],
+              "identity_text": "仙湖植物园",
+              "location": {
+                "latitude": 22.5775992,
+                "longitude": 114.1825737
+              },
+              "location_status": "available",
+              "name": "仙湖植物园",
+              "name_en": "Fairy Lake Botanical Garden",
+              "name_zh": "仙湖植物园",
+              "recommendation": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北；仙湖植物园、梧桐山、莲花山、笔架山、红花山、虹桥、人民、洪湖、中心公园等也很值得大家游玩打卡",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "水贝",
+                  "recommendation_quote": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北"
+                }
+              ],
+              "identity_text": "水贝",
+              "location": {
+                "latitude": 22.788512,
+                "longitude": 113.890419
+              },
+              "location_status": "available",
+              "name": "水贝",
+              "name_en": "Shuibei",
+              "name_zh": "水贝",
+              "recommendation": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "东门老街",
+                  "recommendation_quote": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北"
+                }
+              ],
+              "identity_text": "东门老街",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "东门老街",
+              "name_en": "Dongmen Old Street",
+              "name_zh": "东门老街",
+              "recommendation": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "华强北",
+                  "recommendation_quote": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北"
+                }
+              ],
+              "identity_text": "华强北",
+              "location": {
+                "latitude": 22.5451892,
+                "longitude": 114.0966186
+              },
+              "location_status": "available",
+              "name": "华强北",
+              "name_en": "Huaqiangbei",
+              "name_zh": "华强北",
+              "recommendation": "第②天：仙湖植物园-大芬油画村-水贝-东门老街-华强北",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "较场尾",
+                  "recommendation_quote": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台"
+                }
+              ],
+              "identity_text": "较场尾",
+              "location": {
+                "latitude": 22.588178,
+                "longitude": 114.509677
+              },
+              "location_status": "available",
+              "name": "较场尾",
+              "name_en": "Jiaochangwei",
+              "name_zh": "较场尾",
+              "recommendation": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "桔钓沙",
+                  "recommendation_quote": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台"
+                }
+              ],
+              "identity_text": "桔钓沙",
+              "location": {
+                "latitude": 22.55592,
+                "longitude": 114.55265
+              },
+              "location_status": "available",
+              "name": "桔钓沙",
+              "name_en": "Judiaosha Beach",
+              "name_zh": "桔钓沙",
+              "recommendation": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "星爷🎬《美人鱼》拍摄地，海水🌊很蓝很美！",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "杨梅坑",
+                  "recommendation_quote": "星爷🎬《美人鱼》拍摄地，海水🌊很蓝很美！"
+                }
+              ],
+              "identity_text": "杨梅坑",
+              "location": {
+                "latitude": 22.54401,
+                "longitude": 114.57196
+              },
+              "location_status": "available",
+              "name": "杨梅坑",
+              "name_en": "Yangmeikeng",
+              "name_zh": "杨梅坑",
+              "recommendation": "星爷🎬《美人鱼》拍摄地，海水🌊很蓝很美！",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "鹿嘴山庄",
+                  "recommendation_quote": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台"
+                }
+              ],
+              "identity_text": "鹿嘴山庄",
+              "location": {
+                "latitude": 22.5358599,
+                "longitude": 114.60213
+              },
+              "location_status": "available",
+              "name": "鹿嘴山庄",
+              "name_en": "Luzui Villa",
+              "name_zh": "鹿嘴山庄",
+              "recommendation": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a536b4e000000001603cd6f"
+              ],
+              "evidence_summary": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a536b4e000000001603cd6f",
+                  "identity_quote": "深圳天文台",
+                  "recommendation_quote": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台"
+                }
+              ],
+              "identity_text": "深圳天文台",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "深圳天文台",
+              "name_en": "Shenzhen Astronomical Observatory",
+              "name_zh": "深圳天文台",
+              "recommendation": "第③天：较场尾-桔钓沙-杨梅坑-鹿嘴山庄-深圳天文台",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "眺望对面香港的山海，有大片草坪可以露营野餐放风筝",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "恩上湿地公园",
+                  "recommendation_quote": "眺望对面香港的山海，有大片草坪可以露营野餐放风筝"
+                }
+              ],
+              "identity_text": "恩上湿地公园",
+              "location": {
+                "latitude": 22.4700585,
+                "longitude": 114.0065831
+              },
+              "location_status": "available",
+              "name": "恩上湿地公园",
+              "name_en": "Enshang Wetland Park",
+              "name_zh": "恩上湿地公园",
+              "recommendation": "眺望对面香港的山海，有大片草坪可以露营野餐放风筝",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "新开不久的绿道，S弯绿道超出片📷还有儿童玩乐设施🛝可以遛娃～",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "西丽国际科教城绿道",
+                  "recommendation_quote": "新开不久的绿道，S弯绿道超出片📷还有儿童玩乐设施🛝可以遛娃～"
+                }
+              ],
+              "identity_text": "西丽国际科教城绿道",
+              "location": {
+                "latitude": 22.579947,
+                "longitude": 113.952518
+              },
+              "location_status": "available",
+              "name": "西丽国际科教城绿道",
+              "name_en": "Xili International Science and Education City Greenway",
+              "name_zh": "西丽国际科教城绿道",
+              "recommendation": "新开不久的绿道，S弯绿道超出片📷还有儿童玩乐设施🛝可以遛娃～",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "超级推荐走秀桐道，又快景色又好，一步一景，山海景色尽收眼底",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "梧桐山",
+                  "recommendation_quote": "超级推荐走秀桐道，又快景色又好，一步一景，山海景色尽收眼底"
+                }
+              ],
+              "identity_text": "梧桐山",
+              "location": {
+                "latitude": 22.58987,
+                "longitude": 114.19579
+              },
+              "location_status": "available",
+              "name": "梧桐山",
+              "name_en": "Wutong Mountain",
+              "name_zh": "梧桐山",
+              "recommendation": "超级推荐走秀桐道，又快景色又好，一步一景，山海景色尽收眼底",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "骑行🚴散步都很适合，一路绿野仙踪，小桥流水，冬天还有落羽杉",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "环西丽湖碧道",
+                  "recommendation_quote": "骑行🚴散步都很适合，一路绿野仙踪，小桥流水，冬天还有落羽杉"
+                }
+              ],
+              "identity_text": "环西丽湖碧道",
+              "location": {
+                "latitude": 22.600064,
+                "longitude": 113.96762
+              },
+              "location_status": "available",
+              "name": "环西丽湖碧道",
+              "name_en": "Xili Lake Greenway",
+              "name_zh": "环西丽湖碧道",
+              "recommendation": "骑行🚴散步都很适合，一路绿野仙踪，小桥流水，冬天还有落羽杉",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "超小众的山，半小时可登顶，山顶四面观景台，各有看点，还能看到👀铁岗水库",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "尖岗山公园",
+                  "recommendation_quote": "超小众的山，半小时可登顶，山顶四面观景台，各有看点，还能看到👀铁岗水库"
+                }
+              ],
+              "identity_text": "尖岗山公园",
+              "location": {
+                "latitude": 22.59566,
+                "longitude": 113.90191
+              },
+              "location_status": "available",
+              "name": "尖岗山公园",
+              "name_en": "Jiangangshan Park",
+              "name_zh": "尖岗山公园",
+              "recommendation": "超小众的山，半小时可登顶，山顶四面观景台，各有看点，还能看到👀铁岗水库",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "不出市区就可以赶海🦀玩水，遛娃好地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "深圳湾海风运动公园",
+                  "recommendation_quote": "不出市区就可以赶海🦀玩水，遛娃好地方"
+                }
+              ],
+              "identity_text": "深圳湾海风运动公园",
+              "location": {
+                "latitude": 22.5020944,
+                "longitude": 113.9714894
+              },
+              "location_status": "available",
+              "name": "深圳湾海风运动公园",
+              "name_en": "Shenzhen Bay Sea Breeze Sports Park",
+              "name_zh": "深圳湾海风运动公园",
+              "recommendation": "不出市区就可以赶海🦀玩水，遛娃好地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "公园很大有好几个区，可以逛很久，没每个区都挺出片的～",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "中心公园",
+                  "recommendation_quote": "公园很大有好几个区，可以逛很久，没每个区都挺出片的～"
+                }
+              ],
+              "identity_text": "中心公园",
+              "location": {
+                "latitude": 22.544999,
+                "longitude": 114.077466
+              },
+              "location_status": "available",
+              "name": "中心公园",
+              "name_en": "Shenzhen Central Park",
+              "name_zh": "深圳中心公园",
+              "recommendation": "公园很大有好几个区，可以逛很久，没每个区都挺出片的～",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "超美的看海栈道，可以一路徒步到背仔角灯塔，看完日落🌄再回家～",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "小梅沙栈道",
+                  "recommendation_quote": "超美的看海栈道，可以一路徒步到背仔角灯塔，看完日落🌄再回家～"
+                }
+              ],
+              "identity_text": "小梅沙栈道",
+              "location": {
+                "latitude": 22.602703,
+                "longitude": 114.324889
+              },
+              "location_status": "available",
+              "name": "小梅沙栈道",
+              "name_en": "Xiaomeisha Promenade",
+              "name_zh": "小梅沙栈道",
+              "recommendation": "超美的看海栈道，可以一路徒步到背仔角灯塔，看完日落🌄再回家～",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "很美的山海公路弯道，浪漫的海岸线可一路徒步",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "万科十七英里",
+                  "recommendation_quote": "很美的山海公路弯道，浪漫的海岸线可一路徒步"
+                }
+              ],
+              "identity_text": "万科十七英里",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "万科十七英里",
+              "name_en": "Vanke Seventeen Miles",
+              "name_zh": "万科十七英里",
+              "recommendation": "很美的山海公路弯道，浪漫的海岸线可一路徒步",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "可以跟小梅沙🌊一起游玩，离得不远，拍照很出片，可以看日落🌄",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "空中廊桥观海平台",
+                  "recommendation_quote": "可以跟小梅沙🌊一起游玩，离得不远，拍照很出片，可以看日落🌄"
+                }
+              ],
+              "identity_text": "空中廊桥观海平台",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "空中廊桥观海平台",
+              "name_en": "Sky Corridor Sea-view Platform",
+              "name_zh": "空中廊桥观海平台",
+              "recommendation": "可以跟小梅沙🌊一起游玩，离得不远，拍照很出片，可以看日落🌄",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "园区很大很多打卡点📷",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "园博园",
+                  "recommendation_quote": "园区很大很多打卡点📷"
+                }
+              ],
+              "identity_text": "园博园",
+              "location": {
+                "latitude": 22.535438,
+                "longitude": 114.001998
+              },
+              "location_status": "available",
+              "name": "园博园",
+              "name_en": "Shenzhen International Garden and Flower Expo Park",
+              "name_zh": "深圳国际园林花卉博览园",
+              "recommendation": "园区很大很多打卡点📷",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "地铁🚇出站就是海，冬天可坐早班专线地铁来看日出",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "大梅沙海滨公园",
+                  "recommendation_quote": "地铁🚇出站就是海，冬天可坐早班专线地铁来看日出"
+                }
+              ],
+              "identity_text": "大梅沙海滨公园",
+              "location": {
+                "latitude": 22.5948,
+                "longitude": 114.309105
+              },
+              "location_status": "available",
+              "name": "大梅沙海滨公园",
+              "name_en": "Dameisha Beach Park",
+              "name_zh": "大梅沙海滨公园",
+              "recommendation": "地铁🚇出站就是海，冬天可坐早班专线地铁来看日出",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "半小时懒人登顶路线记得在西门进，走18号登山道，中途会到一个观景平台，还要再往上到云阁碧空，才是无死角观景台",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "铁仔山公园",
+                  "recommendation_quote": "半小时懒人登顶路线记得在西门进，走18号登山道，中途会到一个观景平台，还要再往上到云阁碧空，才是无死角观景台"
+                }
+              ],
+              "identity_text": "铁仔山公园",
+              "location": {
+                "latitude": 22.5931879,
+                "longitude": 113.8629353
+              },
+              "location_status": "available",
+              "name": "铁仔山公园",
+              "name_en": "Tiezaishan Park",
+              "name_zh": "铁仔山公园",
+              "recommendation": "半小时懒人登顶路线记得在西门进，走18号登山道，中途会到一个观景平台，还要再往上到云阁碧空，才是无死角观景台",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "被名字耽误的小众⛰️，花季登山道一路都是花！山下还可以溯溪玩水",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "企龙山足球公园",
+                  "recommendation_quote": "被名字耽误的小众⛰️，花季登山道一路都是花！山下还可以溯溪玩水"
+                }
+              ],
+              "identity_text": "企龙山足球公园",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "企龙山足球公园",
+              "name_en": "Qilongshan Football Park",
+              "name_zh": "企龙山足球公园",
+              "recommendation": "被名字耽误的小众⛰️，花季登山道一路都是花！山下还可以溯溪玩水",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "宝安人看日落的宝藏地，可以抓螃蟹🦀看海上日落，远眺深中通通道～",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "西湾红树林",
+                  "recommendation_quote": "宝安人看日落的宝藏地，可以抓螃蟹🦀看海上日落，远眺深中通通道～"
+                }
+              ],
+              "identity_text": "西湾红树林",
+              "location": {
+                "latitude": 22.51283,
+                "longitude": 114.04341
+              },
+              "location_status": "available",
+              "name": "西湾红树林",
+              "name_en": "Xiwan Mangrove Park",
+              "name_zh": "西湾红树林",
+              "recommendation": "宝安人看日落的宝藏地，可以抓螃蟹🦀看海上日落，远眺深中通通道～",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a769625000000003300b999"
+              ],
+              "evidence_summary": "深圳自己的热带雨林，里面的还有巨骨舌鱼🐟，超级大！天气好早点去还能看到丁达尔效应☀️，还有人工降雨，很适合带娃～",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a769625000000003300b999",
+                  "identity_quote": "青青世界",
+                  "recommendation_quote": "深圳自己的热带雨林，里面的还有巨骨舌鱼🐟，超级大！天气好早点去还能看到丁达尔效应☀️，还有人工降雨，很适合带娃～"
+                }
+              ],
+              "identity_text": "青青世界",
+              "location": {
+                "latitude": 22.5428599,
+                "longitude": 114.05956
+              },
+              "location_status": "available",
+              "name": "青青世界",
+              "name_en": "Qingqing World",
+              "name_zh": "青青世界",
+              "recommendation": "深圳自己的热带雨林，里面的还有巨骨舌鱼🐟，超级大！天气好早点去还能看到丁达尔效应☀️，还有人工降雨，很适合带娃～",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6dd34f000000002500f7f6"
+              ],
+              "evidence_summary": "算得上是深圳创意街区的鼻祖了。OCAT的门头、旧天堂书店暖黄的灯光、各式各类的涂鸦墙...",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6dd34f000000002500f7f6",
+                  "identity_quote": "华侨城创意园",
+                  "recommendation_quote": "算得上是深圳创意街区的鼻祖了。OCAT的门头、旧天堂书店暖黄的灯光、各式各类的涂鸦墙..."
+                }
+              ],
+              "identity_text": "华侨城创意园",
+              "location": {
+                "latitude": 22.537294,
+                "longitude": 113.991931
+              },
+              "location_status": "available",
+              "name": "华侨城创意园",
+              "name_en": "OCT-LOFT Creative Culture Park",
+              "name_zh": "华侨城创意园",
+              "recommendation": "算得上是深圳创意街区的鼻祖了。OCAT的门头、旧天堂书店暖黄的灯光、各式各类的涂鸦墙...",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6dd34f000000002500f7f6"
+              ],
+              "evidence_summary": "经典海边游玩点。大梅沙门票🆓 小梅沙 门票50r/人（我个人更推荐大梅沙hhh）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6dd34f000000002500f7f6",
+                  "identity_quote": "大&小梅沙",
+                  "recommendation_quote": "经典海边游玩点。大梅沙门票🆓 小梅沙 门票50r/人（我个人更推荐大梅沙hhh）"
+                }
+              ],
+              "identity_text": "大&小梅沙",
+              "location": {
+                "latitude": 22.6054322,
+                "longitude": 114.3253701
+              },
+              "location_status": "available",
+              "name": "大&小梅沙",
+              "name_en": "Dameisha and Xiaomeisha",
+              "name_zh": "大梅沙和小梅沙",
+              "recommendation": "经典海边游玩点。大梅沙门票🆓 小梅沙 门票50r/人（我个人更推荐大梅沙hhh）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a76f836000000002c005b08"
+              ],
+              "evidence_summary": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a76f836000000002c005b08",
+                  "identity_quote": "莲花山公园",
+                  "recommendation_quote": "人才公园，虹桥公园，莲花山公园，都值得去看看"
+                }
+              ],
+              "identity_text": "莲花山公园",
+              "location": {
+                "latitude": 22.554571,
+                "longitude": 114.057378
+              },
+              "location_status": "available",
+              "name": "莲花山公园",
+              "name_en": "Lianhuashan Park",
+              "name_zh": "莲花山公园",
+              "recommendation": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a76f836000000002c005b08"
+              ],
+              "evidence_summary": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a76f836000000002c005b08",
+                  "identity_quote": "虹桥公园",
+                  "recommendation_quote": "人才公园，虹桥公园，莲花山公园，都值得去看看"
+                }
+              ],
+              "identity_text": "虹桥公园",
+              "location": {
+                "latitude": 22.748242,
+                "longitude": 113.957328
+              },
+              "location_status": "available",
+              "name": "虹桥公园",
+              "name_en": "Hongqiao Park",
+              "name_zh": "虹桥公园",
+              "recommendation": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a76f836000000002c005b08"
+              ],
+              "evidence_summary": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a76f836000000002c005b08",
+                  "identity_quote": "人才公园",
+                  "recommendation_quote": "人才公园，虹桥公园，莲花山公园，都值得去看看"
+                }
+              ],
+              "identity_text": "人才公园",
+              "location": {
+                "latitude": 22.5112161,
+                "longitude": 113.9462257
+              },
+              "location_status": "available",
+              "name": "人才公园",
+              "name_en": "Talent Park",
+              "name_zh": "人才公园",
+              "recommendation": "人才公园，虹桥公园，莲花山公园，都值得去看看",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_shenzhen_overbudget_revision",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase3d4_shenzhen_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": 2000,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "城市探索"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 1,
+      "party_type": "solo",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "amap",
+      "reason": "fallback provider result consumed",
+      "status": "degraded",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 7,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 9,
+        "verified": 7
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 2,
+      "provider": "google_directions",
+      "reason": "one or more route legs unavailable",
+      "status": "partial",
+      "summary": {
+        "attempted": 4,
+        "available": 2,
+        "eligible_legs": 6
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:2",
+        "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2516
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2159
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJh9AxxnzxAzQR8WHcMFkDZhk",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJkVFRdt3xAzQRDh8egHyeL3s",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2305
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1903
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "origin_stable_id": "ChIJ____7_PxAzQRBuBr2pNmuIU",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "水贝",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "东门老街",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "水贝",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJVcYUDIlqBDQRWy0Q68RI-fI",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJqfYjeYdABDQREK4OzOLFERA",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "verification_status": "unavailable"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "budget_limit",
+    "revision_trigger",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:257c7a6becb830b716003d381ed2e1afacfe7802d1a9e043697b19bbd55ccf20",
+    "google_directions": "sha256:0918c207c9472c89de7ff54158896081af217b0e2cfc6527396405da8bf07b13",
+    "google_places": "sha256:422a2cb3cd1aefdd3920423b802555c0943e98c7cda973454b3bf40349ec504e",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:6ff1741e854f86bc66c6f9d59743f6c50880c5a7eb53f5bc8f9da7b3c77fa5d9"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 115158
+  },
+  "trip_request": {
+    "accommodation": "经济型酒店",
+    "cities": [
+      {
+        "city": "深圳",
+        "days": 3
+      }
+    ],
+    "city": "深圳",
+    "end_date": "2027-02-24",
+    "free_text_input": "当地消费控制在2000元",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": 2000,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "城市探索"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 1,
+      "party_type": "solo",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "城市探索"
+    ],
+    "start_date": "2027-02-22",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 13103
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 17811
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 30914
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a536b4e000000001603cd6f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a536b4e000000001603cd6f",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a769625000000003300b999",
+              "source_url": "https://www.xiaohongshu.com/explore/6a769625000000003300b999",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a6dd34f000000002500f7f6",
+              "source_url": "https://www.xiaohongshu.com/explore/6a6dd34f000000002500f7f6",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a76f836000000002c005b08",
+              "source_url": "https://www.xiaohongshu.com/explore/6a76f836000000002c005b08",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

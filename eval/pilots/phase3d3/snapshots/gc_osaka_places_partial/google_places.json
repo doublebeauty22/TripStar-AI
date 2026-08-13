@@ -1,0 +1,83 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "USJ 环球影城",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "飞天恐龙",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "黑门市场",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "难波千日前",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "心斋桥",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "新世界",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "通天阁",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 34.700558799999996,
+          "longitude": 135.4957339
+        },
+        "match_status": "verified",
+        "name": "梅田",
+        "place_id": "ChIJ7b9MGI3mAGARufc_HWvT3M0"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

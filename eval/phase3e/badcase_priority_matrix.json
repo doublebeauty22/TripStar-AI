@@ -1,0 +1,74 @@
+{
+  "matrix_version": "phase3e.priority.v2",
+  "status": "established_small_sample",
+  "evidence_scope": {"initial_planning": 6, "patch": 1, "product_failure": 1},
+  "scale": {
+    "frequency": "1=rare in this evidence set, 5=recurs across most cases",
+    "severity": "1=minor, 5=task-ending or major usability harm",
+    "user_trust_impact": "1=low, 5=high",
+    "recoverability": "1=difficult, 5=easy",
+    "engineering_effort": "1=low, 5=high",
+    "evidence_strength": "1=weak/inferred, 5=direct deterministic plus human evidence",
+    "portfolio_value": "1=low, 5=high",
+    "current_readiness": "1=poorly measurable, 5=ready for scoped experiment"
+  },
+  "ranking_policy": "No composite score. Rank balances user harm, repetition, evidence, fixability and scope; frequency or severity alone does not decide priority.",
+  "items": [
+    {
+      "rank": 1,
+      "badcase": "pacing_quality_overpacked",
+      "problem_type": "planner_behavior_problem",
+      "evidence": "Shenzhen, Chengdu and Lijiang pacing=2/5; early starts, 450–510 POI minutes and uncounted transfer/queue/rest burden conflict with balanced/relaxed pace.",
+      "scores": {"frequency":3,"severity":4,"user_trust_impact":4,"recoverability":3,"engineering_effort":3,"evidence_strength":5,"portfolio_value":5,"current_readiness":5}
+    },
+    {
+      "rank": 2,
+      "badcase": "route_availability_and_planning_reliability",
+      "problem_type": "provider_data_coverage_and_product_transparency",
+      "evidence": "route_unavailable in 6/6 initial cases; coverage ranges from 0/4 to 6/8, while unavailable is not infeasible. Human reviews repeatedly cite execution uncertainty.",
+      "scores": {"frequency":5,"severity":4,"user_trust_impact":5,"recoverability":2,"engineering_effort":5,"evidence_strength":5,"portfolio_value":5,"current_readiness":3}
+    },
+    {
+      "rank": 3,
+      "badcase": "multi_city_structured_output_failure",
+      "problem_type": "structured_output_robustness_problem",
+      "evidence": "One attempted multi-city case failed after 161127 ms and 47284 tokens with no TripPlan or partial result; human severity/user impact high, recoverability difficult.",
+      "scores": {"frequency":1,"severity":5,"user_trust_impact":5,"recoverability":1,"engineering_effort":3,"evidence_strength":5,"portfolio_value":5,"current_readiness":4}
+    },
+    {
+      "rank": 4,
+      "badcase": "patch_semantic_inconsistency",
+      "problem_type": "patch_consistency_problem",
+      "evidence": "Nanjing scope preservation 3/3 and grounding/provenance 100%, but stale Xuanwu Lake text, duplicate museum, reservation conflict and usefulness/coherence=2.",
+      "scores": {"frequency":1,"severity":4,"user_trust_impact":5,"recoverability":2,"engineering_effort":3,"evidence_strength":5,"portfolio_value":5,"current_readiness":5}
+    },
+    {
+      "rank": 5,
+      "badcase": "poi_grounding_coverage",
+      "problem_type": "provider_data_coverage_problem",
+      "evidence": "ungrounded_poi in 5/6 initial cases; Kyoto 2/9 and Osaka 1/8 are weakest. Coverage affects route eligibility, but causal effect on usefulness is not isolated.",
+      "scores": {"frequency":5,"severity":3,"user_trust_impact":5,"recoverability":3,"engineering_effort":4,"evidence_strength":5,"portfolio_value":4,"current_readiness":4}
+    },
+    {
+      "rank": 6,
+      "badcase": "provenance_visibility_and_unsupported_fact_risk",
+      "problem_type": "product_ux_transparency_and_evaluation_limitation",
+      "evidence": "provenance_missing in 5/6; all initial unsupported-fact verdicts uncertain because claim-level evidence was not visible. Nanjing has confirmed inconsistent claims.",
+      "scores": {"frequency":5,"severity":3,"user_trust_impact":5,"recoverability":3,"engineering_effort":3,"evidence_strength":4,"portfolio_value":4,"current_readiness":4}
+    },
+    {
+      "rank": 7,
+      "badcase": "explanation_and_uncertainty_communication",
+      "problem_type": "product_ux_transparency_problem",
+      "evidence": "Initial explanation mean 3.33; degradation, route unknown and estimate boundaries are often not user-visible. Nanjing patch explanation=2.",
+      "scores": {"frequency":4,"severity":3,"user_trust_impact":5,"recoverability":4,"engineering_effort":2,"evidence_strength":4,"portfolio_value":4,"current_readiness":4}
+    },
+    {
+      "rank": 8,
+      "badcase": "budget_completeness_and_realism",
+      "problem_type": "planner_behavior_and_provenance_limitation",
+      "evidence": "Arithmetic and explicit limits pass, but Shenzhen structured/text totals disagree, Chengdu inter-city transport is zero and estimate sources remain unclear.",
+      "scores": {"frequency":2,"severity":3,"user_trust_impact":4,"recoverability":3,"engineering_effort":4,"evidence_strength":4,"portfolio_value":3,"current_readiness":3}
+    }
+  ]
+}

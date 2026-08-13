@@ -1,0 +1,30 @@
+{
+  "admission_events": [],
+  "calls_completed": 0,
+  "capture_status": "failed",
+  "case_id": "gc_shenzhen_overbudget_revision",
+  "code_revision": "96b9c5e-dirty",
+  "completion_tokens": 0,
+  "configured_max_llm_calls": 4,
+  "configured_max_total_tokens": 60000,
+  "elapsed_latency_ms": 123698,
+  "execution_completed_at": "2026-08-13T08:50:05.747900+00:00",
+  "execution_started_at": "2026-08-13T08:48:02.052776+00:00",
+  "failed_after_stage": null,
+  "failed_before_stage": null,
+  "failed_stage": "capture_execution",
+  "failure_reason": "capture_validation_failure",
+  "failure_type": "capture_validation_failure",
+  "model": {
+    "reason": "model identity was not observed",
+    "status": "unknown",
+    "value": null
+  },
+  "planner_version": "planner_pacing_v1",
+  "prompt_tokens": 0,
+  "prompt_version": "planner_prompt_pacing_v1",
+  "retries": 0,
+  "run_status": "failed",
+  "sanitized": true,
+  "total_tokens": 0
+}

@@ -1,0 +1,83 @@
+{
+  "review_type": "paired_human_review",
+  "review_id": "paired_review_gc_shenzhen_overbudget_revision_v1",
+  "case_id": "gc_shenzhen_overbudget_revision",
+  "rubric_version": "human.v1",
+  "status": "revealed_complete",
+  "reviewer": "Yi Huang",
+  "reviewed_at": "2026-08-13T09:37:42Z",
+  "blind_material_reference": "eval/phase4d/blind_review/gc_shenzhen_overbudget_revision/human_review.md",
+  "blind_material_sha256": "sha256:2b5de29544d0acdff27ee90b58ffdee1531893146e19988335e9be858a357d01",
+  "blind_plan_a_label": "Plan A",
+  "blind_plan_b_label": "Plan B",
+  "identity_revealed": true,
+  "identity_revealed_at": "2026-08-13T10:02:08Z",
+  "blind_review_completed_at": "2026-08-13T09:37:42Z",
+  "blind_order_integrity": "limitation",
+  "plan_a_review": {
+    "scores": {
+      "preference_satisfaction": 4,
+      "itinerary_coherence": 3,
+      "pacing_quality": 2,
+      "usefulness": 3,
+      "explanation_quality": 4
+    },
+    "rationale_by_dimension": {
+      "preference_satisfaction": "Plan A 保持城市探索、预算与核心兴趣覆盖，但整体体验受部分日期的高负荷影响。",
+      "itinerary_coherence": "Plan A 的 Day 1 与 Day 3 跨区移动和活动组合较重，空间组织不如另一方案收敛。",
+      "pacing_quality": "Plan A 的 Day 1 与 Day 3 明显过载，不符合 balanced pace 的预期。",
+      "usefulness": "Plan A 提供了可用信息，但过载和较重的跨区移动降低了真实执行性。",
+      "explanation_quality": "Plan A 对安排和外部不确定性有较完整说明，但部分外部事实仍需进一步核实。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "计划包含需要进一步核实的外部事实；现有盲评材料不足以确认其受支持或明确不受支持。"
+  },
+  "plan_b_review": {
+    "scores": {
+      "preference_satisfaction": 4,
+      "itinerary_coherence": 4,
+      "pacing_quality": 4,
+      "usefulness": 4,
+      "explanation_quality": 4
+    },
+    "rationale_by_dimension": {
+      "preference_satisfaction": "Plan B 保持城市探索、预算与核心兴趣覆盖，没有明显证据表明其通过牺牲核心兴趣 POI 换取节奏改善。",
+      "itinerary_coherence": "Plan B 的整体空间组织更收敛，行程衔接优于 Plan A。",
+      "pacing_quality": "Plan B 更符合 balanced pace，且没有明显 underpacked。",
+      "usefulness": "Plan B 的空间组织与节奏使其更适合真实执行。",
+      "explanation_quality": "Plan B 对安排和外部不确定性有较完整说明，但部分外部事实仍需进一步核实。"
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "计划包含需要进一步核实的外部事实；现有盲评材料不足以确认其受支持或明确不受支持。"
+  },
+  "paired_verdict": "plan_b_better",
+  "paired_rationale": "Plan A 的 Day 1 与 Day 3 明显过载。Plan B 保持城市探索、预算与核心兴趣，同时空间组织更收敛，没有明显 underpacked，也没有明显证据表明其通过牺牲核心兴趣 POI 换取 pacing 改善。Plan B 在 Pacing、Coherence 和 Usefulness 上更优。两份计划均存在部分外部事实需进一步核实。",
+  "more_balanced_plan": "Plan B",
+  "more_executable_plan": "Plan B",
+  "core_preference_sacrifice_detected": false,
+  "underpacked_detected": false,
+  "metric_improvement_but_ux_regression": null,
+  "additional_notes": "The exact historical blind-review completion timestamp and ordering cannot be independently proven from repository artifacts. This timestamp records schema registration; no identity fields are present.",
+  "reveal": {
+    "plan_a_identity": {
+      "role": "baseline",
+      "artifact_reference": "eval/pilots/phase3d4/gc_shenzhen_overbudget_revision/gc_shenzhen_overbudget_revision.json",
+      "artifact_sha256": "sha256:85a59d603ad37a69f12c13646fe7a3e4201ba48b594fb5fd17f55a5cc6dfbf52",
+      "planner_version": "planner_baseline_v1",
+      "prompt_version": "planner_prompt_v1",
+      "pacing_policy_version": null,
+      "pacing_revision_version": null
+    },
+    "plan_b_identity": {
+      "role": "candidate",
+      "artifact_reference": "eval/phase4d/cases/gc_shenzhen_overbudget_revision/gc_shenzhen_overbudget_revision.json",
+      "artifact_sha256": "sha256:f6b58ad6752cf62ac0059d58c24b230637e9b7503bf087956caf5aef3f90015d",
+      "planner_version": "planner_pacing_v1",
+      "prompt_version": "planner_prompt_pacing_v1",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "pacing_revision_version": "pacing_revision.v1"
+    },
+    "baseline_label": "Plan A",
+    "candidate_label": "Plan B"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 22.5418178,
+          "longitude": 113.9557052
+        },
+        "match_status": "verified",
+        "name": "万象天地",
+        "place_id": "ChIJh9AxxnzxAzQR8WHcMFkDZhk"
+      },
+      {
+        "location": {
+          "latitude": 22.534798600000002,
+          "longitude": 113.9722329
+        },
+        "match_status": "verified",
+        "name": "世界之窗",
+        "place_id": "ChIJ____7_PxAzQRBuBr2pNmuIU"
+      },
+      {
+        "location": {
+          "latitude": 22.519334999999998,
+          "longitude": 113.962729
+        },
+        "match_status": "verified",
+        "name": "深圳湾公园",
+        "place_id": "ChIJkVFRdt3xAzQRDh8egHyeL3s"
+      },
+      {
+        "location": {
+          "latitude": 22.56826,
+          "longitude": 114.1689
+        },
+        "match_status": "verified",
+        "name": "仙湖植物园",
+        "place_id": "ChIJ-xZMIe0KBDQRsme-lX9I-qg"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "水贝",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "东门老街",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 22.586281,
+          "longitude": 114.5075401
+        },
+        "match_status": "verified",
+        "name": "较场尾",
+        "place_id": "ChIJVcYUDIlqBDQRWy0Q68RI-fI"
+      },
+      {
+        "location": {
+          "latitude": 22.5851525,
+          "longitude": 114.4806741
+        },
+        "match_status": "verified",
+        "name": "桔钓沙",
+        "place_id": "ChIJWQEv8fxqBDQRRs3jgkzVCA4"
+      },
+      {
+        "location": {
+          "latitude": 22.542686999999997,
+          "longitude": 114.572222
+        },
+        "match_status": "verified",
+        "name": "杨梅坑",
+        "place_id": "ChIJqfYjeYdABDQREK4OzOLFERA"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

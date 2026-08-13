@@ -1,0 +1,13 @@
+{
+  "artifact": "gc_beijing_baseline.json",
+  "artifact_hash": "sha256:0c0fe5d1422518a1e7dfc2d826d1c0840b3b5dc89f345b448d95bbfab53c525a",
+  "capture_status": "complete",
+  "case_id": "gc_beijing_baseline",
+  "snapshot_hashes": {
+    "amap": "sha256:38b66f0763e1e5bbdd64cade060affd289f944519c8ab939c8f36b121af7a88e",
+    "google_directions": "sha256:7eb60f0b312a2d49d33fe69d7fa3c30e7b11e6970ecb4f4a5b45f703074fbc24",
+    "google_places": "sha256:b52c207285f3f8cc81a2e22122a134c5fa610446842cbcf156300b8f26d1db05",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:e24fd56ea34bbd09bede652341b66a4a1b98c00f412d3e9e00b3527136985cb3"
+  }
+}

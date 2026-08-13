@@ -1,0 +1,386 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "routes": [
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "成都国际金融中心IFS",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "太古里",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "成都国际金融中心IFS",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 1,
+        "destination_stable_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 11531
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 10341
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "origin_stable_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 1,
+        "destination_stable_id": "ChIJRxJWE9jE7zYRZVJ_scoyS4M",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2767
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2602
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2639
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2248
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJHSK0oePE7zYRKcnSiomj91k",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3423
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2950
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 3,
+        "destination_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "都江堰熊猫谷",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 3,
+        "destination_stable_id": "ChIJQyMeYrUG8DYRgurVUgr8Ogs",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3525
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 3049
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "成都国际金融中心IFS",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": false,
+        "day_index": 0,
+        "destination_stable_id": "太古里",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "成都国际金融中心IFS",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 1,
+        "destination_stable_id": "ChIJRxJWE9jE7zYRZVJ_scoyS4M",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 14634
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 12680
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": false
+        },
+        "origin_stable_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 2639
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2248
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": true,
+        "day_index": 2,
+        "destination_stable_id": "ChIJHSK0oePE7zYRKcnSiomj91k",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3423
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 2950
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      },
+      {
+        "data_available": false,
+        "day_index": 3,
+        "destination_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+        "distance_m": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "duration_s": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "feasible": {
+          "reason": "invalid_or_unverified_poi",
+          "status": "unknown",
+          "value": null
+        },
+        "origin_stable_id": "都江堰熊猫谷",
+        "reason": "invalid_or_unverified_poi",
+        "request_attempted": false,
+        "route_mode": "walking",
+        "verification_status": "unavailable"
+      },
+      {
+        "data_available": true,
+        "day_index": 3,
+        "destination_stable_id": "ChIJQyMeYrUG8DYRgurVUgr8Ogs",
+        "distance_m": {
+          "reason": null,
+          "status": "known",
+          "value": 3525
+        },
+        "duration_s": {
+          "reason": null,
+          "status": "known",
+          "value": 3049
+        },
+        "feasible": {
+          "reason": null,
+          "status": "known",
+          "value": true
+        },
+        "origin_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+        "reason": null,
+        "request_attempted": true,
+        "route_mode": "walking",
+        "verification_status": "verified"
+      }
+    ]
+  },
+  "provider": "google_directions",
+  "sanitized": true,
+  "state": "partial"
+}

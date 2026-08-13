@@ -1,0 +1,5569 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T15:07:16.820703+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T15:07:06.491493+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 4775,
+        "total_attractions": 155,
+        "total_hotels": 3600,
+        "total_inter_city_transport": 0,
+        "total_meals": 780,
+        "total_transportation": 240
+      },
+      "cities": [
+        "南京"
+      ],
+      "city": "南京",
+      "days": [
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国南京市与剪子巷箍桶巷交汇处 邮政编码: 210004",
+              "category": "历史文化街区",
+              "description": "南京传统民居与老城街巷风貌保存较好的历史文化街区,可边走边了解城南商业和居住空间的历史变迁。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711000000001
+              },
+              "map_data_source": "google_places",
+              "name": "老门东",
+              "photos": [],
+              "place_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市秦淮区夫子庙夫子庙景区步行街2QCR+MPQ 邮政编码: 210001",
+              "category": "历史文化景区",
+              "description": "秦淮文化的重要地标,适合参观建筑群、贡院周边街区并了解南京科举文化；夜间氛围较好。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.021719,
+                "longitude": 118.79186999999997
+              },
+              "map_data_source": "google_places",
+              "name": "夫子庙",
+              "photos": [],
+              "place_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市江宁区RVF5+MRR 邮政编码: 211111",
+              "category": "城市人文景观",
+              "description": "夜间沿河步行欣赏灯火和两岸历史建筑,感受秦淮河作为南京城市文化与商业水系的历史特色。游船项目可根据现场开放情况另行选择。",
+              "image_url": null,
+              "location": {
+                "latitude": 31.824236,
+                "longitude": 118.859514
+              },
+              "map_data_source": "google_places",
+              "name": "秦淮河",
+              "photos": [],
+              "place_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-15",
+          "day_index": 0,
+          "description": "以南京明清历史街区和秦淮文化为主线,上午游览老门东,下午前往夫子庙及乌衣巷,夜间沿秦淮河散步赏灯。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离夫子庙约6公里,建议乘坐地铁前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "在酒店用餐,方便为全天步行游览补充能量。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排在老门东或夫子庙片区用餐,可品尝蟹黄面等南京及江南风味。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "李百蟹·江南蟹黄面",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "推荐选择鸭血粉丝汤、盐水鸭、小笼包等本地小吃组合。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "夫子庙秦淮风味餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "以地铁、公交和步行为主；老门东、瞻园、夫子庙、乌衣巷和秦淮河之间距离较近,适合步行串联。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区石祥路7号 邮政编码: 210014",
+              "category": "近代历史建筑",
+              "description": "近代南京重要历史地标,重点参观陵门、碑亭和墓道等空间,了解孙中山及中国近代历史。该景点需要提前预约,请至少提前一周查看官方预约安排并按预约时段入场。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.85334339999999
+              },
+              "map_data_source": "google_places",
+              "name": "中山陵",
+              "photos": [],
+              "place_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市玄武区灵谷寺路3V44+35Q 邮政编码: 210014",
+              "category": "近代建筑与园林",
+              "description": "钟山景区内具有代表性的近代园林与建筑空间,可与中山陵步行或乘景区接驳车衔接,适合短暂停留拍照。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.055215,
+                "longitude": 118.855486
+              },
+              "map_data_source": "google_places",
+              "name": "音乐台",
+              "photos": [],
+              "place_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 60
+            },
+            {
+              "address": "中国江苏省南京市玄武区3R5M+7RP 邮政编码: 210000",
+              "category": "世界文化遗产与陵寝遗址",
+              "description": "明代开国皇帝朱元璋陵寝,重点游览神道、石像生和陵寝遗址,适合深入了解明代陵寝制度与南京都城历史。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.83457390000001
+              },
+              "map_data_source": "google_places",
+              "name": "明孝陵",
+              "photos": [],
+              "place_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 70,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-16",
+          "day_index": 1,
+          "description": "集中游览钟山风景区,按照中山陵、音乐台、明孝陵和美龄宫的方向安排,重点了解近代史与明代陵寝文化。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离钟山风景区约8公里,建议公共交通前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提早用餐,便于避开钟山景区高峰。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择景区周边南京菜或便捷套餐,控制用餐时间以保证下午游览。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "钟山景区附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返回市区后品尝盐水鸭、鸭血粉丝汤和金陵烤鸭等本地菜式。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口南京菜",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁后换乘景区接驳车或公交；钟山景区内部步行距离较长,穿舒适防滑鞋。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区北京东路39号 邮政编码: 210000",
+              "category": "宗教历史建筑",
+              "description": "南京历史悠久的佛教寺院之一,可了解古鸡鸣寺沿革并欣赏台城、玄武湖一带的城市景观。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.060857999999996,
+                "longitude": 118.79515900000001
+              },
+              "map_data_source": "google_places",
+              "name": "鸡鸣寺",
+              "photos": [],
+              "place_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区环湖路解放门8号 邮政编码: 210000",
+              "category": "古城墙遗址",
+              "description": "南京明城墙的重要遗存,可从城墙视角观察玄武湖和南京城北格局,适合结合明代都城史进行游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062553,
+                "longitude": 118.79650099999999
+              },
+              "map_data_source": "google_places",
+              "name": "明城墙台城",
+              "photos": [],
+              "place_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 30,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区中山东路321号 邮政编码: 210095",
+              "category": "历史博物馆",
+              "description": "南京博物院",
+              "image_url": null,
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.82542400000001
+              },
+              "map_data_source": "google_places",
+              "name": "南京博物院",
+              "photos": [],
+              "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-17",
+          "day_index": 2,
+          "description": "游览南京城北及玄武区历史文化景点,上午参观鸡鸣寺和明城墙台城,下午前往玄武湖散步,整体节奏适中。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离鸡鸣寺约2公里,距离玄武湖约3公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "用餐后步行或乘地铁前往鸡鸣寺。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排南京家常菜和时令蔬菜,适合朋友同行分餐。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "鸡鸣寺或玄武湖附近文德食府",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择淮扬菜、金陵菜或南京小吃,作为较轻松的晚餐。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "湖南路或新街口特色餐厅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和步行；鸡鸣寺、明城墙台城与玄武湖相邻,可步行或短途公交衔接。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区中山东路321号 邮政编码: 210095",
+              "category": "历史博物馆",
+              "description": "系统了解江苏及南京地区历史文化、考古和艺术收藏的重点场馆,建议提前规划展馆顺序。出发前需要查看预约安排,建议至少提前一周预约。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.82542400000001
+              },
+              "map_data_source": "google_places",
+              "name": "南京博物院",
+              "photos": [],
+              "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": true,
+              "reservation_tips": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "ticket_price": 0,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国江苏省南京市玄武区长江路292号 邮政编码: 210018",
+              "category": "近代历史遗址",
+              "description": "近代南京政治史的重要遗址,可参观总统府建筑群、办公区域和园林空间,适合结合晚清至民国时期历史理解。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "map_data_source": "google_places",
+              "name": "南京总统府",
+              "photos": [],
+              "place_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 35,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市建邺区水西门大街418号 邮政编码: 210017",
+              "category": "历史纪念馆",
+              "description": "南京重要历史纪念场馆,参观时应保持肃静并预留充足时间。该景点预约难度较高,需要提前一周关注官方预约；如未预约成功,不建议现场长时间排队,可改为在附近进行纪念性步行。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.74337109999999
+              },
+              "map_data_source": "google_places",
+              "name": "遇难同胞纪念馆",
+              "photos": [],
+              "place_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆超级难预约,本次没有预约上",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-18",
+          "day_index": 3,
+          "description": "以近现代南京历史为主题,参观南京博物院和总统府,下午根据预约情况前往遇难同胞纪念馆,适合作为行程收束。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离南京博物院约5公里,距离总统府约4公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前确认南京博物院预约时段后安排早餐时间。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择新街口、长江路沿线的南京菜或简餐,方便衔接下午行程。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "博物院或总统府附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "行程结束后在新街口选择本地菜或特色小吃,便于返程或前往交通枢纽。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和公交；南京博物院、总统府和纪念馆分处不同片区,需预留约30至50分钟公共交通及步行时间。"
+        }
+      ],
+      "end_date": "2027-02-18",
+      "overall_suggestions": "本行程按历史文化兴趣和适中节奏设计,钟山风景区建议安排整天并穿舒适鞋。中山陵、南京博物院和遇难同胞纪念馆均需提前查看官方预约安排,其中遇难同胞纪念馆预约难度较高。用户提供的天气数据对应2026-08-12至2026-08-15,与本次2027-02-15至2027-02-18行程日期不一致,因此未将其写入逐日天气信息；出发前一周请重新查询南京天气,并根据实际情况调整户外景点顺序。酒店费用按每晚900元估算,餐饮和门票为两人合计估算,未包含往返南京的大交通。",
+      "plan_version": 2,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 26611,
+            "duration_s": 22509,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:0:1",
+          "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+          "related_poi_names": [
+            "夫子庙",
+            "秦淮河"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 23583
+          },
+          "id": "route_feasibility:day_total:0",
+          "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 23583,
+            "visit_duration_s": 19800
+          },
+          "id": "route_feasibility:day_load:0",
+          "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 10295,
+            "duration_s": 9180,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:1:0",
+          "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+          "related_poi_names": [
+            "中山陵",
+            "音乐台"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13894
+          },
+          "id": "route_feasibility:day_total:1",
+          "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 5764,
+            "duration_s": 5433,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:3:1",
+          "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+          "related_poi_names": [
+            "南京总统府",
+            "遇难同胞纪念馆"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间较长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 7988,
+            "visit_duration_s": 28800
+          },
+          "id": "route_feasibility:day_load:3",
+          "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        }
+      ],
+      "start_date": "2027-02-15",
+      "validation_status": "issues_found",
+      "weather_info": [
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 30,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 29,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "大雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 29,
+          "day_weather": "中雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 28,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "晴",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "南京",
+          "data_available": true,
+          "days": [
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 30,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 29,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "大雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 29,
+              "day_weather": "中雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 28,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "晴",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a7c117c0000000026035bb4",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7c117c0000000026035bb4",
+              "status": "detail_available",
+              "title": "南京土著自评必去景点！2026暑假版"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a608482000000001003c8b8",
+              "source_url": "https://www.xiaohongshu.com/explore/6a608482000000001003c8b8",
+              "status": "detail_available",
+              "title": "✨南京旅游｜三天两晚不绕路版保姆级攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7b36de0000000024027efe",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7b36de0000000024027efe",
+              "status": "detail_available",
+              "title": "南京总统府研学｜带娃走入半部中国近代史"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7bcdfd000000002402d072",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7bcdfd000000002402d072",
+              "status": "detail_available",
+              "title": "南京亲子三日游重点小结"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "既有秦淮河的灯火夜景",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "秦淮河",
+                  "recommendation_quote": "既有秦淮河的灯火夜景"
+                }
+              ],
+              "identity_text": "秦淮河",
+              "location": {
+                "latitude": 32.0775,
+                "longitude": 118.7258333
+              },
+              "location_status": "available",
+              "name": "秦淮河",
+              "name_en": "Qinhuai River",
+              "name_zh": "秦淮河",
+              "recommendation": "既有秦淮河的灯火夜景",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "玄武湖",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "玄武湖",
+              "location": {
+                "latitude": 32.0668791,
+                "longitude": 118.804326
+              },
+              "location_status": "available",
+              "name": "玄武湖",
+              "name_en": "Xuanwu Lake",
+              "name_zh": "玄武湖",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "颐和路",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "颐和路",
+              "location": {
+                "latitude": 32.06336,
+                "longitude": 118.76688
+              },
+              "location_status": "available",
+              "name": "颐和路",
+              "name_en": "Yihe Road",
+              "name_zh": "颐和路",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "夫子庙适合夜游",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "夫子庙",
+                  "recommendation_quote": "夫子庙适合夜游"
+                }
+              ],
+              "identity_text": "夫子庙",
+              "location": {
+                "latitude": 32.0162537,
+                "longitude": 118.7920965
+              },
+              "location_status": "available",
+              "name": "夫子庙",
+              "name_en": "Confucius Temple",
+              "name_zh": "夫子庙",
+              "recommendation": "夫子庙适合夜游",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "老门东",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "老门东",
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711
+              },
+              "location_status": "available",
+              "name": "老门东",
+              "name_en": "Laomendong Historic District",
+              "name_zh": "老门东",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "瞻园",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "瞻园",
+              "location": {
+                "latitude": 32.021444,
+                "longitude": 118.785972
+              },
+              "location_status": "available",
+              "name": "瞻园",
+              "name_en": "Zhanyuan Garden",
+              "name_zh": "瞻园",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "大报恩寺",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "大报恩寺",
+              "location": {
+                "latitude": 32.009386,
+                "longitude": 118.783343
+              },
+              "location_status": "available",
+              "name": "大报恩寺",
+              "name_en": "Dabaoen Temple",
+              "name_zh": "大报恩寺",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鸡鸣寺",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府"
+                }
+              ],
+              "identity_text": "鸡鸣寺",
+              "location": {
+                "latitude": 32.060858,
+                "longitude": 118.795159
+              },
+              "location_status": "available",
+              "name": "鸡鸣寺",
+              "name_en": "Jiming Temple",
+              "name_zh": "鸡鸣寺",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京博物院",
+                  "recommendation_quote": "南京博物院、中山陵等景点出发前记得查看予约安排"
+                }
+              ],
+              "identity_text": "南京博物院",
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.825424
+              },
+              "location_status": "available",
+              "name": "南京博物院",
+              "name_en": "Nanjing Museum",
+              "name_zh": "南京博物院",
+              "recommendation": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明城墙台城",
+                  "recommendation_quote": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城"
+                }
+              ],
+              "identity_text": "明城墙台城",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "明城墙台城",
+              "name_en": "Nanjing Ming City Wall Taicheng Section",
+              "name_zh": "明城墙台城",
+              "recommendation": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "先锋书店五台山店",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "先锋书店五台山店",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "先锋书店五台山店",
+              "name_en": "Librairie Avant-Garde Wutaishan Branch",
+              "name_zh": "先锋书店五台山店",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "阅江楼",
+                  "recommendation_quote": "鼓楼区：颐和路、先锋书店五台山店、阅江楼"
+                }
+              ],
+              "identity_text": "阅江楼",
+              "location": {
+                "latitude": 32.0937926,
+                "longitude": 118.7452605
+              },
+              "location_status": "available",
+              "name": "阅江楼",
+              "name_en": "Yuejiang Tower",
+              "name_zh": "阅江楼",
+              "recommendation": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京眼步行桥",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "南京眼步行桥",
+              "location": {
+                "latitude": 32.0174365,
+                "longitude": 118.7845151
+              },
+              "location_status": "available",
+              "name": "南京眼步行桥",
+              "name_en": "Nanjing Eye Pedestrian Bridge",
+              "name_zh": "南京眼步行桥",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "江苏大剧院",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "江苏大剧院",
+              "location": {
+                "latitude": 32.015102,
+                "longitude": 118.714821
+              },
+              "location_status": "available",
+              "name": "江苏大剧院",
+              "name_en": "Jiangsu Centre for the Performing Arts",
+              "name_zh": "江苏大剧院",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鱼嘴湿地公园",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "鱼嘴湿地公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "鱼嘴湿地公园",
+              "name_en": "Yuzui Wetland Park",
+              "name_zh": "鱼嘴湿地公园",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "栖霞山",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "栖霞山",
+              "location": {
+                "latitude": 32.158175,
+                "longitude": 118.969792
+              },
+              "location_status": "available",
+              "name": "栖霞山",
+              "name_en": "Qixia Mountain",
+              "name_zh": "栖霞山",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "红山森林动物园",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "红山森林动物园",
+              "location": {
+                "latitude": 32.091625,
+                "longitude": 118.802027
+              },
+              "location_status": "available",
+              "name": "红山森林动物园",
+              "name_en": "Hongshan Forest Zoo",
+              "name_zh": "红山森林动物园",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "中山陵",
+                  "recommendation_quote": "遇难同胞纪念馆、中山陵、南博需要提前一周预约"
+                }
+              ],
+              "identity_text": "中山陵",
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.8533434
+              },
+              "location_status": "available",
+              "name": "中山陵",
+              "name_en": "Sun Yat-sen Mausoleum",
+              "name_zh": "中山陵",
+              "recommendation": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "音乐台",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "音乐台",
+              "location": {
+                "latitude": 32.058976,
+                "longitude": 118.84709
+              },
+              "location_status": "available",
+              "name": "音乐台",
+              "name_en": "Music Stage",
+              "name_zh": "音乐台",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明孝陵",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "明孝陵",
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.8345739
+              },
+              "location_status": "available",
+              "name": "明孝陵",
+              "name_en": "Ming Xiaoling Mausoleum",
+              "name_zh": "明孝陵",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "美龄宫",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "美龄宫",
+              "location": {
+                "latitude": 32.046188,
+                "longitude": 118.849588
+              },
+              "location_status": "available",
+              "name": "美龄宫",
+              "name_en": "Meiling Palace",
+              "name_zh": "美龄宫",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "收藏这份笔记，下次去总统府直接照着逛",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "带娃逛南京总统府",
+                  "recommendation_quote": "收藏这份笔记，下次去总统府直接照着逛"
+                }
+              ],
+              "identity_text": "南京总统府",
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "location_status": "available",
+              "name": "南京总统府",
+              "name_en": "Nanjing Presidential Palace",
+              "name_zh": "南京总统府",
+              "recommendation": "收藏这份笔记，下次去总统府直接照着逛",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "煦园的这几个细节一定要跟娃讲",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "煦园的这几个细节一定要跟娃讲",
+                  "recommendation_quote": "煦园的这几个细节一定要跟娃讲"
+                }
+              ],
+              "identity_text": "煦园",
+              "location": {
+                "latitude": 32.0441967,
+                "longitude": 118.7974053
+              },
+              "location_status": "available",
+              "name": "煦园",
+              "name_en": "Xuyuan Garden",
+              "name_zh": "煦园",
+              "recommendation": "煦园的这几个细节一定要跟娃讲",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "遇难同胞纪念馆",
+                  "recommendation_quote": "遇难同胞纪念馆超级难预约，本次没有预约上"
+                }
+              ],
+              "identity_text": "遇难同胞纪念馆",
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.7433711
+              },
+              "location_status": "available",
+              "name": "遇难同胞纪念馆",
+              "name_en": "Nanjing Massacre Memorial Hall",
+              "name_zh": "侵华日军南京大屠杀遇难同胞纪念馆",
+              "recommendation": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "雨花台",
+                  "recommendation_quote": "中山陵、雨花台都是受天气影响临时关闭景区没去成"
+                }
+              ],
+              "identity_text": "雨花台",
+              "location": {
+                "latitude": 32.003782,
+                "longitude": 118.779219
+              },
+              "location_status": "available",
+              "name": "雨花台",
+              "name_en": "Yuhuatai Martyrs Cemetery",
+              "name_zh": "雨花台",
+              "recommendation": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "长江大桥江边公园",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙"
+                }
+              ],
+              "identity_text": "长江大桥江边公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "长江大桥江边公园",
+              "name_en": "Nanjing Yangtze River Bridge Riverside Park",
+              "name_zh": "长江大桥江边公园",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "乌衣巷",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河"
+                }
+              ],
+              "identity_text": "乌衣巷",
+              "location": {
+                "latitude": 32.0178,
+                "longitude": 118.7912
+              },
+              "location_status": "available",
+              "name": "乌衣巷",
+              "name_en": "Wuyi Lane",
+              "name_zh": "乌衣巷",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "熙南里",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "熙南里",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "熙南里",
+              "name_en": "Xinanli Historic District",
+              "name_zh": "熙南里",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "净觉寺",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "净觉寺",
+              "location": {
+                "latitude": 32.023992,
+                "longitude": 118.783244
+              },
+              "location_status": "available",
+              "name": "净觉寺",
+              "name_en": "Jingjue Temple",
+              "name_zh": "净觉寺",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "checked_rules": [
+        "earliest_start",
+        "budget",
+        "route_feasibility",
+        "mobility"
+      ],
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 26611,
+            "duration_s": 22509,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:0:1",
+          "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+          "related_poi_names": [
+            "夫子庙",
+            "秦淮河"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 23583
+          },
+          "id": "route_feasibility:day_total:0",
+          "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 23583,
+            "visit_duration_s": 19800
+          },
+          "id": "route_feasibility:day_load:0",
+          "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 10295,
+            "duration_s": 9180,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:1:0",
+          "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+          "related_poi_names": [
+            "中山陵",
+            "音乐台"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13894
+          },
+          "id": "route_feasibility:day_total:1",
+          "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 5764,
+            "duration_s": 5433,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:3:1",
+          "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+          "related_poi_names": [
+            "南京总统府",
+            "遇难同胞纪念馆"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间较长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 7988,
+            "visit_duration_s": 28800
+          },
+          "id": "route_feasibility:day_load:3",
+          "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        }
+      ],
+      "route_api_calls": 8,
+      "status": "issues_found",
+      "unavailable_checks": []
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v2",
+    "case_id": "gc_nanjing_local_patch",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase3d43_nanjing_patch_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [
+      2
+    ],
+    "after": {
+      "budget": {
+        "total": 4775,
+        "total_attractions": 155,
+        "total_hotels": 3600,
+        "total_inter_city_transport": 0,
+        "total_meals": 780,
+        "total_transportation": 240
+      },
+      "cities": [
+        "南京"
+      ],
+      "city": "南京",
+      "days": [
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国南京市与剪子巷箍桶巷交汇处 邮政编码: 210004",
+              "category": "历史文化街区",
+              "description": "南京传统民居与老城街巷风貌保存较好的历史文化街区,可边走边了解城南商业和居住空间的历史变迁。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711000000001
+              },
+              "map_data_source": "google_places",
+              "name": "老门东",
+              "photos": [],
+              "place_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市秦淮区夫子庙夫子庙景区步行街2QCR+MPQ 邮政编码: 210001",
+              "category": "历史文化景区",
+              "description": "秦淮文化的重要地标,适合参观建筑群、贡院周边街区并了解南京科举文化；夜间氛围较好。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.021719,
+                "longitude": 118.79186999999997
+              },
+              "map_data_source": "google_places",
+              "name": "夫子庙",
+              "photos": [],
+              "place_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市江宁区RVF5+MRR 邮政编码: 211111",
+              "category": "城市人文景观",
+              "description": "夜间沿河步行欣赏灯火和两岸历史建筑,感受秦淮河作为南京城市文化与商业水系的历史特色。游船项目可根据现场开放情况另行选择。",
+              "image_url": null,
+              "location": {
+                "latitude": 31.824236,
+                "longitude": 118.859514
+              },
+              "map_data_source": "google_places",
+              "name": "秦淮河",
+              "photos": [],
+              "place_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-15",
+          "day_index": 0,
+          "description": "以南京明清历史街区和秦淮文化为主线,上午游览老门东,下午前往夫子庙及乌衣巷,夜间沿秦淮河散步赏灯。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离夫子庙约6公里,建议乘坐地铁前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "在酒店用餐,方便为全天步行游览补充能量。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排在老门东或夫子庙片区用餐,可品尝蟹黄面等南京及江南风味。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "李百蟹·江南蟹黄面",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "推荐选择鸭血粉丝汤、盐水鸭、小笼包等本地小吃组合。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "夫子庙秦淮风味餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "以地铁、公交和步行为主；老门东、瞻园、夫子庙、乌衣巷和秦淮河之间距离较近,适合步行串联。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区石祥路7号 邮政编码: 210014",
+              "category": "近代历史建筑",
+              "description": "近代南京重要历史地标,重点参观陵门、碑亭和墓道等空间,了解孙中山及中国近代历史。该景点需要提前预约,请至少提前一周查看官方预约安排并按预约时段入场。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.85334339999999
+              },
+              "map_data_source": "google_places",
+              "name": "中山陵",
+              "photos": [],
+              "place_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市玄武区灵谷寺路3V44+35Q 邮政编码: 210014",
+              "category": "近代建筑与园林",
+              "description": "钟山景区内具有代表性的近代园林与建筑空间,可与中山陵步行或乘景区接驳车衔接,适合短暂停留拍照。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.055215,
+                "longitude": 118.855486
+              },
+              "map_data_source": "google_places",
+              "name": "音乐台",
+              "photos": [],
+              "place_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 60
+            },
+            {
+              "address": "中国江苏省南京市玄武区3R5M+7RP 邮政编码: 210000",
+              "category": "世界文化遗产与陵寝遗址",
+              "description": "明代开国皇帝朱元璋陵寝,重点游览神道、石像生和陵寝遗址,适合深入了解明代陵寝制度与南京都城历史。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.83457390000001
+              },
+              "map_data_source": "google_places",
+              "name": "明孝陵",
+              "photos": [],
+              "place_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 70,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-16",
+          "day_index": 1,
+          "description": "集中游览钟山风景区,按照中山陵、音乐台、明孝陵和美龄宫的方向安排,重点了解近代史与明代陵寝文化。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离钟山风景区约8公里,建议公共交通前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提早用餐,便于避开钟山景区高峰。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择景区周边南京菜或便捷套餐,控制用餐时间以保证下午游览。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "钟山景区附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返回市区后品尝盐水鸭、鸭血粉丝汤和金陵烤鸭等本地菜式。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口南京菜",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁后换乘景区接驳车或公交；钟山景区内部步行距离较长,穿舒适防滑鞋。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区北京东路39号 邮政编码: 210000",
+              "category": "宗教历史建筑",
+              "description": "南京历史悠久的佛教寺院之一,可了解古鸡鸣寺沿革并欣赏台城、玄武湖一带的城市景观。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.060857999999996,
+                "longitude": 118.79515900000001
+              },
+              "map_data_source": "google_places",
+              "name": "鸡鸣寺",
+              "photos": [],
+              "place_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区环湖路解放门8号 邮政编码: 210000",
+              "category": "古城墙遗址",
+              "description": "南京明城墙的重要遗存,可从城墙视角观察玄武湖和南京城北格局,适合结合明代都城史进行游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062553,
+                "longitude": 118.79650099999999
+              },
+              "map_data_source": "google_places",
+              "name": "明城墙台城",
+              "photos": [],
+              "place_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 30,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区中山东路321号 邮政编码: 210095",
+              "category": "历史博物馆",
+              "description": "南京博物院",
+              "image_url": null,
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.82542400000001
+              },
+              "map_data_source": "google_places",
+              "name": "南京博物院",
+              "photos": [],
+              "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-17",
+          "day_index": 2,
+          "description": "游览南京城北及玄武区历史文化景点,上午参观鸡鸣寺和明城墙台城,下午前往玄武湖散步,整体节奏适中。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离鸡鸣寺约2公里,距离玄武湖约3公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "用餐后步行或乘地铁前往鸡鸣寺。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排南京家常菜和时令蔬菜,适合朋友同行分餐。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "鸡鸣寺或玄武湖附近文德食府",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择淮扬菜、金陵菜或南京小吃,作为较轻松的晚餐。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "湖南路或新街口特色餐厅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和步行；鸡鸣寺、明城墙台城与玄武湖相邻,可步行或短途公交衔接。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区中山东路321号 邮政编码: 210095",
+              "category": "历史博物馆",
+              "description": "系统了解江苏及南京地区历史文化、考古和艺术收藏的重点场馆,建议提前规划展馆顺序。出发前需要查看预约安排,建议至少提前一周预约。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.82542400000001
+              },
+              "map_data_source": "google_places",
+              "name": "南京博物院",
+              "photos": [],
+              "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": true,
+              "reservation_tips": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "ticket_price": 0,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国江苏省南京市玄武区长江路292号 邮政编码: 210018",
+              "category": "近代历史遗址",
+              "description": "近代南京政治史的重要遗址,可参观总统府建筑群、办公区域和园林空间,适合结合晚清至民国时期历史理解。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "map_data_source": "google_places",
+              "name": "南京总统府",
+              "photos": [],
+              "place_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 35,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市建邺区水西门大街418号 邮政编码: 210017",
+              "category": "历史纪念馆",
+              "description": "南京重要历史纪念场馆,参观时应保持肃静并预留充足时间。该景点预约难度较高,需要提前一周关注官方预约；如未预约成功,不建议现场长时间排队,可改为在附近进行纪念性步行。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.74337109999999
+              },
+              "map_data_source": "google_places",
+              "name": "遇难同胞纪念馆",
+              "photos": [],
+              "place_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆超级难预约,本次没有预约上",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-18",
+          "day_index": 3,
+          "description": "以近现代南京历史为主题,参观南京博物院和总统府,下午根据预约情况前往遇难同胞纪念馆,适合作为行程收束。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离南京博物院约5公里,距离总统府约4公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前确认南京博物院预约时段后安排早餐时间。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择新街口、长江路沿线的南京菜或简餐,方便衔接下午行程。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "博物院或总统府附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "行程结束后在新街口选择本地菜或特色小吃,便于返程或前往交通枢纽。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和公交；南京博物院、总统府和纪念馆分处不同片区,需预留约30至50分钟公共交通及步行时间。"
+        }
+      ],
+      "end_date": "2027-02-18",
+      "overall_suggestions": "本行程按历史文化兴趣和适中节奏设计,钟山风景区建议安排整天并穿舒适鞋。中山陵、南京博物院和遇难同胞纪念馆均需提前查看官方预约安排,其中遇难同胞纪念馆预约难度较高。用户提供的天气数据对应2026-08-12至2026-08-15,与本次2027-02-15至2027-02-18行程日期不一致,因此未将其写入逐日天气信息；出发前一周请重新查询南京天气,并根据实际情况调整户外景点顺序。酒店费用按每晚900元估算,餐饮和门票为两人合计估算,未包含往返南京的大交通。",
+      "plan_version": 2,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 26611,
+            "duration_s": 22509,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:0:1",
+          "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+          "related_poi_names": [
+            "夫子庙",
+            "秦淮河"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 23583
+          },
+          "id": "route_feasibility:day_total:0",
+          "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 23583,
+            "visit_duration_s": 19800
+          },
+          "id": "route_feasibility:day_load:0",
+          "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 10295,
+            "duration_s": 9180,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:1:0",
+          "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+          "related_poi_names": [
+            "中山陵",
+            "音乐台"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13894
+          },
+          "id": "route_feasibility:day_total:1",
+          "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 5764,
+            "duration_s": 5433,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:3:1",
+          "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+          "related_poi_names": [
+            "南京总统府",
+            "遇难同胞纪念馆"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间较长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 7988,
+            "visit_duration_s": 28800
+          },
+          "id": "route_feasibility:day_load:3",
+          "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        }
+      ],
+      "start_date": "2027-02-15",
+      "validation_status": "issues_found",
+      "weather_info": [
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 30,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 29,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "大雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 29,
+          "day_weather": "中雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 28,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "晴",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "南京",
+          "data_available": true,
+          "days": [
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 30,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 29,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "大雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 29,
+              "day_weather": "中雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 28,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "晴",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a7c117c0000000026035bb4",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7c117c0000000026035bb4",
+              "status": "detail_available",
+              "title": "南京土著自评必去景点！2026暑假版"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a608482000000001003c8b8",
+              "source_url": "https://www.xiaohongshu.com/explore/6a608482000000001003c8b8",
+              "status": "detail_available",
+              "title": "✨南京旅游｜三天两晚不绕路版保姆级攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7b36de0000000024027efe",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7b36de0000000024027efe",
+              "status": "detail_available",
+              "title": "南京总统府研学｜带娃走入半部中国近代史"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7bcdfd000000002402d072",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7bcdfd000000002402d072",
+              "status": "detail_available",
+              "title": "南京亲子三日游重点小结"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "既有秦淮河的灯火夜景",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "秦淮河",
+                  "recommendation_quote": "既有秦淮河的灯火夜景"
+                }
+              ],
+              "identity_text": "秦淮河",
+              "location": {
+                "latitude": 32.0775,
+                "longitude": 118.7258333
+              },
+              "location_status": "available",
+              "name": "秦淮河",
+              "name_en": "Qinhuai River",
+              "name_zh": "秦淮河",
+              "recommendation": "既有秦淮河的灯火夜景",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "玄武湖",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "玄武湖",
+              "location": {
+                "latitude": 32.0668791,
+                "longitude": 118.804326
+              },
+              "location_status": "available",
+              "name": "玄武湖",
+              "name_en": "Xuanwu Lake",
+              "name_zh": "玄武湖",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "颐和路",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "颐和路",
+              "location": {
+                "latitude": 32.06336,
+                "longitude": 118.76688
+              },
+              "location_status": "available",
+              "name": "颐和路",
+              "name_en": "Yihe Road",
+              "name_zh": "颐和路",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "夫子庙适合夜游",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "夫子庙",
+                  "recommendation_quote": "夫子庙适合夜游"
+                }
+              ],
+              "identity_text": "夫子庙",
+              "location": {
+                "latitude": 32.0162537,
+                "longitude": 118.7920965
+              },
+              "location_status": "available",
+              "name": "夫子庙",
+              "name_en": "Confucius Temple",
+              "name_zh": "夫子庙",
+              "recommendation": "夫子庙适合夜游",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "老门东",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "老门东",
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711
+              },
+              "location_status": "available",
+              "name": "老门东",
+              "name_en": "Laomendong Historic District",
+              "name_zh": "老门东",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "瞻园",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "瞻园",
+              "location": {
+                "latitude": 32.021444,
+                "longitude": 118.785972
+              },
+              "location_status": "available",
+              "name": "瞻园",
+              "name_en": "Zhanyuan Garden",
+              "name_zh": "瞻园",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "大报恩寺",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "大报恩寺",
+              "location": {
+                "latitude": 32.009386,
+                "longitude": 118.783343
+              },
+              "location_status": "available",
+              "name": "大报恩寺",
+              "name_en": "Dabaoen Temple",
+              "name_zh": "大报恩寺",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鸡鸣寺",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府"
+                }
+              ],
+              "identity_text": "鸡鸣寺",
+              "location": {
+                "latitude": 32.060858,
+                "longitude": 118.795159
+              },
+              "location_status": "available",
+              "name": "鸡鸣寺",
+              "name_en": "Jiming Temple",
+              "name_zh": "鸡鸣寺",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京博物院",
+                  "recommendation_quote": "南京博物院、中山陵等景点出发前记得查看予约安排"
+                }
+              ],
+              "identity_text": "南京博物院",
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.825424
+              },
+              "location_status": "available",
+              "name": "南京博物院",
+              "name_en": "Nanjing Museum",
+              "name_zh": "南京博物院",
+              "recommendation": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明城墙台城",
+                  "recommendation_quote": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城"
+                }
+              ],
+              "identity_text": "明城墙台城",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "明城墙台城",
+              "name_en": "Nanjing Ming City Wall Taicheng Section",
+              "name_zh": "明城墙台城",
+              "recommendation": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "先锋书店五台山店",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "先锋书店五台山店",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "先锋书店五台山店",
+              "name_en": "Librairie Avant-Garde Wutaishan Branch",
+              "name_zh": "先锋书店五台山店",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "阅江楼",
+                  "recommendation_quote": "鼓楼区：颐和路、先锋书店五台山店、阅江楼"
+                }
+              ],
+              "identity_text": "阅江楼",
+              "location": {
+                "latitude": 32.0937926,
+                "longitude": 118.7452605
+              },
+              "location_status": "available",
+              "name": "阅江楼",
+              "name_en": "Yuejiang Tower",
+              "name_zh": "阅江楼",
+              "recommendation": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京眼步行桥",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "南京眼步行桥",
+              "location": {
+                "latitude": 32.0174365,
+                "longitude": 118.7845151
+              },
+              "location_status": "available",
+              "name": "南京眼步行桥",
+              "name_en": "Nanjing Eye Pedestrian Bridge",
+              "name_zh": "南京眼步行桥",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "江苏大剧院",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "江苏大剧院",
+              "location": {
+                "latitude": 32.015102,
+                "longitude": 118.714821
+              },
+              "location_status": "available",
+              "name": "江苏大剧院",
+              "name_en": "Jiangsu Centre for the Performing Arts",
+              "name_zh": "江苏大剧院",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鱼嘴湿地公园",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "鱼嘴湿地公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "鱼嘴湿地公园",
+              "name_en": "Yuzui Wetland Park",
+              "name_zh": "鱼嘴湿地公园",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "栖霞山",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "栖霞山",
+              "location": {
+                "latitude": 32.158175,
+                "longitude": 118.969792
+              },
+              "location_status": "available",
+              "name": "栖霞山",
+              "name_en": "Qixia Mountain",
+              "name_zh": "栖霞山",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "红山森林动物园",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "红山森林动物园",
+              "location": {
+                "latitude": 32.091625,
+                "longitude": 118.802027
+              },
+              "location_status": "available",
+              "name": "红山森林动物园",
+              "name_en": "Hongshan Forest Zoo",
+              "name_zh": "红山森林动物园",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "中山陵",
+                  "recommendation_quote": "遇难同胞纪念馆、中山陵、南博需要提前一周预约"
+                }
+              ],
+              "identity_text": "中山陵",
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.8533434
+              },
+              "location_status": "available",
+              "name": "中山陵",
+              "name_en": "Sun Yat-sen Mausoleum",
+              "name_zh": "中山陵",
+              "recommendation": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "音乐台",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "音乐台",
+              "location": {
+                "latitude": 32.058976,
+                "longitude": 118.84709
+              },
+              "location_status": "available",
+              "name": "音乐台",
+              "name_en": "Music Stage",
+              "name_zh": "音乐台",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明孝陵",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "明孝陵",
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.8345739
+              },
+              "location_status": "available",
+              "name": "明孝陵",
+              "name_en": "Ming Xiaoling Mausoleum",
+              "name_zh": "明孝陵",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "美龄宫",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "美龄宫",
+              "location": {
+                "latitude": 32.046188,
+                "longitude": 118.849588
+              },
+              "location_status": "available",
+              "name": "美龄宫",
+              "name_en": "Meiling Palace",
+              "name_zh": "美龄宫",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "收藏这份笔记，下次去总统府直接照着逛",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "带娃逛南京总统府",
+                  "recommendation_quote": "收藏这份笔记，下次去总统府直接照着逛"
+                }
+              ],
+              "identity_text": "南京总统府",
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "location_status": "available",
+              "name": "南京总统府",
+              "name_en": "Nanjing Presidential Palace",
+              "name_zh": "南京总统府",
+              "recommendation": "收藏这份笔记，下次去总统府直接照着逛",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "煦园的这几个细节一定要跟娃讲",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "煦园的这几个细节一定要跟娃讲",
+                  "recommendation_quote": "煦园的这几个细节一定要跟娃讲"
+                }
+              ],
+              "identity_text": "煦园",
+              "location": {
+                "latitude": 32.0441967,
+                "longitude": 118.7974053
+              },
+              "location_status": "available",
+              "name": "煦园",
+              "name_en": "Xuyuan Garden",
+              "name_zh": "煦园",
+              "recommendation": "煦园的这几个细节一定要跟娃讲",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "遇难同胞纪念馆",
+                  "recommendation_quote": "遇难同胞纪念馆超级难预约，本次没有预约上"
+                }
+              ],
+              "identity_text": "遇难同胞纪念馆",
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.7433711
+              },
+              "location_status": "available",
+              "name": "遇难同胞纪念馆",
+              "name_en": "Nanjing Massacre Memorial Hall",
+              "name_zh": "侵华日军南京大屠杀遇难同胞纪念馆",
+              "recommendation": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "雨花台",
+                  "recommendation_quote": "中山陵、雨花台都是受天气影响临时关闭景区没去成"
+                }
+              ],
+              "identity_text": "雨花台",
+              "location": {
+                "latitude": 32.003782,
+                "longitude": 118.779219
+              },
+              "location_status": "available",
+              "name": "雨花台",
+              "name_en": "Yuhuatai Martyrs Cemetery",
+              "name_zh": "雨花台",
+              "recommendation": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "长江大桥江边公园",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙"
+                }
+              ],
+              "identity_text": "长江大桥江边公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "长江大桥江边公园",
+              "name_en": "Nanjing Yangtze River Bridge Riverside Park",
+              "name_zh": "长江大桥江边公园",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "乌衣巷",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河"
+                }
+              ],
+              "identity_text": "乌衣巷",
+              "location": {
+                "latitude": 32.0178,
+                "longitude": 118.7912
+              },
+              "location_status": "available",
+              "name": "乌衣巷",
+              "name_en": "Wuyi Lane",
+              "name_zh": "乌衣巷",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "熙南里",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "熙南里",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "熙南里",
+              "name_en": "Xinanli Historic District",
+              "name_zh": "熙南里",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "净觉寺",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "净觉寺",
+              "location": {
+                "latitude": 32.023992,
+                "longitude": 118.783244
+              },
+              "location_status": "available",
+              "name": "净觉寺",
+              "name_en": "Jingjue Temple",
+              "name_zh": "净觉寺",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    "base_artifact_hash": "sha256:efc1f7a9bea35e121b6b9b0b50ce0886f0812f5cfd4ec1089dd7a870b1ea3c22",
+    "base_artifact_identity": {
+      "capture_version": "capture.v2",
+      "case_id": "gc_nanjing_local_patch",
+      "code_revision": "96b9c5e-dirty",
+      "eval_contract_version": "phase3a.v1",
+      "eval_run_id": "capture_phase3d43_nanjing_base_0",
+      "fixture_version": "fixtures.v1",
+      "golden_case_version": "golden.v1",
+      "model": {
+        "reason": null,
+        "status": "known",
+        "value": "gpt-5.6-luna"
+      },
+      "planner_version": "planner_baseline_v1",
+      "prompt_version": "planner_prompt_v1"
+    },
+    "before": {
+      "budget": {
+        "total": 4775,
+        "total_attractions": 155,
+        "total_hotels": 3600,
+        "total_inter_city_transport": 0,
+        "total_meals": 780,
+        "total_transportation": 240
+      },
+      "cities": [
+        "南京"
+      ],
+      "city": "南京",
+      "days": [
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国南京市与剪子巷箍桶巷交汇处 邮政编码: 210004",
+              "category": "历史文化街区",
+              "description": "南京传统民居与老城街巷风貌保存较好的历史文化街区,可边走边了解城南商业和居住空间的历史变迁。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711000000001
+              },
+              "map_data_source": "google_places",
+              "name": "老门东",
+              "photos": [],
+              "place_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市秦淮区夫子庙夫子庙景区步行街2QCR+MPQ 邮政编码: 210001",
+              "category": "历史文化景区",
+              "description": "秦淮文化的重要地标,适合参观建筑群、贡院周边街区并了解南京科举文化；夜间氛围较好。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.021719,
+                "longitude": 118.79186999999997
+              },
+              "map_data_source": "google_places",
+              "name": "夫子庙",
+              "photos": [],
+              "place_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国江苏省南京市江宁区RVF5+MRR 邮政编码: 211111",
+              "category": "城市人文景观",
+              "description": "夜间沿河步行欣赏灯火和两岸历史建筑,感受秦淮河作为南京城市文化与商业水系的历史特色。游船项目可根据现场开放情况另行选择。",
+              "image_url": null,
+              "location": {
+                "latitude": 31.824236,
+                "longitude": 118.859514
+              },
+              "map_data_source": "google_places",
+              "name": "秦淮河",
+              "photos": [],
+              "place_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-15",
+          "day_index": 0,
+          "description": "以南京明清历史街区和秦淮文化为主线,上午游览老门东,下午前往夫子庙及乌衣巷,夜间沿秦淮河散步赏灯。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离夫子庙约6公里,建议乘坐地铁前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "在酒店用餐,方便为全天步行游览补充能量。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排在老门东或夫子庙片区用餐,可品尝蟹黄面等南京及江南风味。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "李百蟹·江南蟹黄面",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "推荐选择鸭血粉丝汤、盐水鸭、小笼包等本地小吃组合。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "夫子庙秦淮风味餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "以地铁、公交和步行为主；老门东、瞻园、夫子庙、乌衣巷和秦淮河之间距离较近,适合步行串联。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区石祥路7号 邮政编码: 210014",
+              "category": "近代历史建筑",
+              "description": "近代南京重要历史地标,重点参观陵门、碑亭和墓道等空间,了解孙中山及中国近代历史。该景点需要提前预约,请至少提前一周查看官方预约安排并按预约时段入场。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.85334339999999
+              },
+              "map_data_source": "google_places",
+              "name": "中山陵",
+              "photos": [],
+              "place_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市玄武区灵谷寺路3V44+35Q 邮政编码: 210014",
+              "category": "近代建筑与园林",
+              "description": "钟山景区内具有代表性的近代园林与建筑空间,可与中山陵步行或乘景区接驳车衔接,适合短暂停留拍照。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.055215,
+                "longitude": 118.855486
+              },
+              "map_data_source": "google_places",
+              "name": "音乐台",
+              "photos": [],
+              "place_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 60
+            },
+            {
+              "address": "中国江苏省南京市玄武区3R5M+7RP 邮政编码: 210000",
+              "category": "世界文化遗产与陵寝遗址",
+              "description": "明代开国皇帝朱元璋陵寝,重点游览神道、石像生和陵寝遗址,适合深入了解明代陵寝制度与南京都城历史。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.83457390000001
+              },
+              "map_data_source": "google_places",
+              "name": "明孝陵",
+              "photos": [],
+              "place_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 70,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-16",
+          "day_index": 1,
+          "description": "集中游览钟山风景区,按照中山陵、音乐台、明孝陵和美龄宫的方向安排,重点了解近代史与明代陵寝文化。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离钟山风景区约8公里,建议公共交通前往",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提早用餐,便于避开钟山景区高峰。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择景区周边南京菜或便捷套餐,控制用餐时间以保证下午游览。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "钟山景区附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返回市区后品尝盐水鸭、鸭血粉丝汤和金陵烤鸭等本地菜式。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口南京菜",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:00",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁后换乘景区接驳车或公交；钟山景区内部步行距离较长,穿舒适防滑鞋。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区北京东路39号 邮政编码: 210000",
+              "category": "宗教历史建筑",
+              "description": "南京历史悠久的佛教寺院之一,可了解古鸡鸣寺沿革并欣赏台城、玄武湖一带的城市景观。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.060857999999996,
+                "longitude": 118.79515900000001
+              },
+              "map_data_source": "google_places",
+              "name": "鸡鸣寺",
+              "photos": [],
+              "place_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 10,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区环湖路解放门8号 邮政编码: 210000",
+              "category": "古城墙遗址",
+              "description": "南京明城墙的重要遗存,可从城墙视角观察玄武湖和南京城北格局,适合结合明代都城史进行游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.062553,
+                "longitude": 118.79650099999999
+              },
+              "map_data_source": "google_places",
+              "name": "明城墙台城",
+              "photos": [],
+              "place_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 30,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国江苏省南京市玄武区玄武巷1号 邮政编码: 210009",
+              "category": "历史园林与城市公园",
+              "description": "南京中心城区的大型历史园林湖泊,适合沿湖散步、拍摄城墙和湖景,游览强度可根据体力灵活调整。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.07051,
+                "longitude": 118.78747000000001
+              },
+              "map_data_source": "google_places",
+              "name": "玄武湖",
+              "photos": [],
+              "place_id": "ChIJ3dmDpbWMtTURFM6Q6TXX0O8",
+              "poi_id": "ChIJ3dmDpbWMtTURFM6Q6TXX0O8",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-17",
+          "day_index": 2,
+          "description": "游览南京城北及玄武区历史文化景点,上午参观鸡鸣寺和明城墙台城,下午前往玄武湖散步,整体节奏适中。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离鸡鸣寺约2公里,距离玄武湖约3公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "用餐后步行或乘地铁前往鸡鸣寺。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "安排南京家常菜和时令蔬菜,适合朋友同行分餐。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "鸡鸣寺或玄武湖附近文德食府",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择淮扬菜、金陵菜或南京小吃,作为较轻松的晚餐。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "湖南路或新街口特色餐厅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和步行；鸡鸣寺、明城墙台城与玄武湖相邻,可步行或短途公交衔接。"
+        },
+        {
+          "accommodation": "舒适型酒店",
+          "attractions": [
+            {
+              "address": "中国江苏省南京市玄武区中山东路321号 邮政编码: 210095",
+              "category": "历史博物馆",
+              "description": "系统了解江苏及南京地区历史文化、考古和艺术收藏的重点场馆,建议提前规划展馆顺序。出发前需要查看预约安排,建议至少提前一周预约。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.82542400000001
+              },
+              "map_data_source": "google_places",
+              "name": "南京博物院",
+              "photos": [],
+              "place_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": true,
+              "reservation_tips": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "ticket_price": 0,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国江苏省南京市玄武区长江路292号 邮政编码: 210018",
+              "category": "近代历史遗址",
+              "description": "近代南京政治史的重要遗址,可参观总统府建筑群、办公区域和园林空间,适合结合晚清至民国时期历史理解。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "map_data_source": "google_places",
+              "name": "南京总统府",
+              "photos": [],
+              "place_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 35,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国江苏省南京市建邺区水西门大街418号 邮政编码: 210017",
+              "category": "历史纪念馆",
+              "description": "南京重要历史纪念场馆,参观时应保持肃静并预留充足时间。该景点预约难度较高,需要提前一周关注官方预约；如未预约成功,不建议现场长时间排队,可改为在附近进行纪念性步行。",
+              "image_url": null,
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.74337109999999
+              },
+              "map_data_source": "google_places",
+              "name": "遇难同胞纪念馆",
+              "photos": [],
+              "place_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": true,
+              "reservation_tips": "遇难同胞纪念馆超级难预约,本次没有预约上",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "南京",
+          "date": "2027-02-18",
+          "day_index": 3,
+          "description": "以近现代南京历史为主题,参观南京博物院和总统府,下午根据预约情况前往遇难同胞纪念馆,适合作为行程收束。",
+          "hotel": {
+            "address": "中国江苏省南京市鼓楼区中央路1号 邮政编码: 210008",
+            "distance": "距离南京博物院约5公里,距离总统府约4公里",
+            "estimated_cost": 900,
+            "location": {
+              "latitude": 32.06072,
+              "longitude": 118.783413
+            },
+            "name": "南京绿地洲际酒店",
+            "price_range": "800-1000元",
+            "rating": "4.4",
+            "type": "舒适型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前确认南京博物院预约时段后安排早餐时间。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店自助早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择新街口、长江路沿线的南京菜或简餐,方便衔接下午行程。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "博物院或总统府附近简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "行程结束后在新街口选择本地菜或特色小吃,便于返程或前往交通枢纽。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "新街口晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议乘坐地铁和公交；南京博物院、总统府和纪念馆分处不同片区,需预留约30至50分钟公共交通及步行时间。"
+        }
+      ],
+      "end_date": "2027-02-18",
+      "overall_suggestions": "本行程按历史文化兴趣和适中节奏设计,钟山风景区建议安排整天并穿舒适鞋。中山陵、南京博物院和遇难同胞纪念馆均需提前查看官方预约安排,其中遇难同胞纪念馆预约难度较高。用户提供的天气数据对应2026-08-12至2026-08-15,与本次2027-02-15至2027-02-18行程日期不一致,因此未将其写入逐日天气信息；出发前一周请重新查询南京天气,并根据实际情况调整户外景点顺序。酒店费用按每晚900元估算,餐饮和门票为两人合计估算,未包含往返南京的大交通。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 26611,
+            "duration_s": 22509,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:0:1",
+          "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+          "related_poi_names": [
+            "夫子庙",
+            "秦淮河"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 23583
+          },
+          "id": "route_feasibility:day_total:0",
+          "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 23583,
+            "visit_duration_s": 19800
+          },
+          "id": "route_feasibility:day_load:0",
+          "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 10295,
+            "duration_s": 9180,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:1:0",
+          "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+          "related_poi_names": [
+            "中山陵",
+            "音乐台"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13894
+          },
+          "id": "route_feasibility:day_total:1",
+          "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 5764,
+            "duration_s": 5433,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:3:1",
+          "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+          "related_poi_names": [
+            "南京总统府",
+            "遇难同胞纪念馆"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间较长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 7988,
+            "visit_duration_s": 28800
+          },
+          "id": "route_feasibility:day_load:3",
+          "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        }
+      ],
+      "start_date": "2027-02-15",
+      "validation_status": "issues_found",
+      "weather_info": [
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 30,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 29,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "大雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 29,
+          "day_weather": "中雨",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "东",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "南京",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 28,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "晴",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "南京",
+          "data_available": true,
+          "days": [
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 30,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 29,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "大雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 29,
+              "day_weather": "中雨",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "东",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "南京",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 28,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "晴",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a7c117c0000000026035bb4",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7c117c0000000026035bb4",
+              "status": "detail_available",
+              "title": "南京土著自评必去景点！2026暑假版"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a608482000000001003c8b8",
+              "source_url": "https://www.xiaohongshu.com/explore/6a608482000000001003c8b8",
+              "status": "detail_available",
+              "title": "✨南京旅游｜三天两晚不绕路版保姆级攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7b36de0000000024027efe",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7b36de0000000024027efe",
+              "status": "detail_available",
+              "title": "南京总统府研学｜带娃走入半部中国近代史"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7bcdfd000000002402d072",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7bcdfd000000002402d072",
+              "status": "detail_available",
+              "title": "南京亲子三日游重点小结"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "既有秦淮河的灯火夜景",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "秦淮河",
+                  "recommendation_quote": "既有秦淮河的灯火夜景"
+                }
+              ],
+              "identity_text": "秦淮河",
+              "location": {
+                "latitude": 32.0775,
+                "longitude": 118.7258333
+              },
+              "location_status": "available",
+              "name": "秦淮河",
+              "name_en": "Qinhuai River",
+              "name_zh": "秦淮河",
+              "recommendation": "既有秦淮河的灯火夜景",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "玄武湖",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "玄武湖",
+              "location": {
+                "latitude": 32.0668791,
+                "longitude": 118.804326
+              },
+              "location_status": "available",
+              "name": "玄武湖",
+              "name_en": "Xuanwu Lake",
+              "name_zh": "玄武湖",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武湖、颐和路等适合散步拍照的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "颐和路",
+                  "recommendation_quote": "玄武湖、颐和路等适合散步拍照的地方"
+                }
+              ],
+              "identity_text": "颐和路",
+              "location": {
+                "latitude": 32.06336,
+                "longitude": 118.76688
+              },
+              "location_status": "available",
+              "name": "颐和路",
+              "name_en": "Yihe Road",
+              "name_zh": "颐和路",
+              "recommendation": "玄武湖、颐和路等适合散步拍照的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "夫子庙适合夜游",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "夫子庙",
+                  "recommendation_quote": "夫子庙适合夜游"
+                }
+              ],
+              "identity_text": "夫子庙",
+              "location": {
+                "latitude": 32.0162537,
+                "longitude": 118.7920965
+              },
+              "location_status": "available",
+              "name": "夫子庙",
+              "name_en": "Confucius Temple",
+              "name_zh": "夫子庙",
+              "recommendation": "夫子庙适合夜游",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "老门东",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "老门东",
+              "location": {
+                "latitude": 32.01144,
+                "longitude": 118.78711
+              },
+              "location_status": "available",
+              "name": "老门东",
+              "name_en": "Laomendong Historic District",
+              "name_zh": "老门东",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "瞻园",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "瞻园",
+              "location": {
+                "latitude": 32.021444,
+                "longitude": 118.785972
+              },
+              "location_status": "available",
+              "name": "瞻园",
+              "name_en": "Zhanyuan Garden",
+              "name_zh": "瞻园",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "大报恩寺",
+                  "recommendation_quote": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺"
+                }
+              ],
+              "identity_text": "大报恩寺",
+              "location": {
+                "latitude": 32.009386,
+                "longitude": 118.783343
+              },
+              "location_status": "available",
+              "name": "大报恩寺",
+              "name_en": "Dabaoen Temple",
+              "name_zh": "大报恩寺",
+              "recommendation": "Day1：夫子庙→李百蟹·江南蟹黄面→老门东→瞻园→大报恩寺",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鸡鸣寺",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府"
+                }
+              ],
+              "identity_text": "鸡鸣寺",
+              "location": {
+                "latitude": 32.060858,
+                "longitude": 118.795159
+              },
+              "location_status": "available",
+              "name": "鸡鸣寺",
+              "name_en": "Jiming Temple",
+              "name_zh": "鸡鸣寺",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京博物院",
+                  "recommendation_quote": "南京博物院、中山陵等景点出发前记得查看予约安排"
+                }
+              ],
+              "identity_text": "南京博物院",
+              "location": {
+                "latitude": 32.041084,
+                "longitude": 118.825424
+              },
+              "location_status": "available",
+              "name": "南京博物院",
+              "name_en": "Nanjing Museum",
+              "name_zh": "南京博物院",
+              "recommendation": "南京博物院、中山陵等景点出发前记得查看予约安排",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明城墙台城",
+                  "recommendation_quote": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城"
+                }
+              ],
+              "identity_text": "明城墙台城",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "明城墙台城",
+              "name_en": "Nanjing Ming City Wall Taicheng Section",
+              "name_zh": "明城墙台城",
+              "recommendation": "玄武区：玄武湖、鸡鸣寺、南京博物院、明城墙台城",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "先锋书店五台山店",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "先锋书店五台山店",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "先锋书店五台山店",
+              "name_en": "Librairie Avant-Garde Wutaishan Branch",
+              "name_zh": "先锋书店五台山店",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "阅江楼",
+                  "recommendation_quote": "鼓楼区：颐和路、先锋书店五台山店、阅江楼"
+                }
+              ],
+              "identity_text": "阅江楼",
+              "location": {
+                "latitude": 32.0937926,
+                "longitude": 118.7452605
+              },
+              "location_status": "available",
+              "name": "阅江楼",
+              "name_en": "Yuejiang Tower",
+              "name_zh": "阅江楼",
+              "recommendation": "鼓楼区：颐和路、先锋书店五台山店、阅江楼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "南京眼步行桥",
+                  "recommendation_quote": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼"
+                }
+              ],
+              "identity_text": "南京眼步行桥",
+              "location": {
+                "latitude": 32.0174365,
+                "longitude": 118.7845151
+              },
+              "location_status": "available",
+              "name": "南京眼步行桥",
+              "name_en": "Nanjing Eye Pedestrian Bridge",
+              "name_zh": "南京眼步行桥",
+              "recommendation": "Day3：鸡鸣寺→玄武湖→文德食府→红山森林动物园→先锋书店→南京眼",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "江苏大剧院",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "江苏大剧院",
+              "location": {
+                "latitude": 32.015102,
+                "longitude": 118.714821
+              },
+              "location_status": "available",
+              "name": "江苏大剧院",
+              "name_en": "Jiangsu Centre for the Performing Arts",
+              "name_zh": "江苏大剧院",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "鱼嘴湿地公园",
+                  "recommendation_quote": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园"
+                }
+              ],
+              "identity_text": "鱼嘴湿地公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "鱼嘴湿地公园",
+              "name_en": "Yuzui Wetland Park",
+              "name_zh": "鱼嘴湿地公园",
+              "recommendation": "建邺区：南京眼步行桥、江苏大剧院、鱼嘴湿地公园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "栖霞山",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "栖霞山",
+              "location": {
+                "latitude": 32.158175,
+                "longitude": 118.969792
+              },
+              "location_status": "available",
+              "name": "栖霞山",
+              "name_en": "Qixia Mountain",
+              "name_zh": "栖霞山",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "红山森林动物园",
+                  "recommendation_quote": "时间充足还可以安排牛S山、栖霞山、红山森林动物园"
+                }
+              ],
+              "identity_text": "红山森林动物园",
+              "location": {
+                "latitude": 32.091625,
+                "longitude": 118.802027
+              },
+              "location_status": "available",
+              "name": "红山森林动物园",
+              "name_en": "Hongshan Forest Zoo",
+              "name_zh": "红山森林动物园",
+              "recommendation": "时间充足还可以安排牛S山、栖霞山、红山森林动物园",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "中山陵",
+                  "recommendation_quote": "遇难同胞纪念馆、中山陵、南博需要提前一周预约"
+                }
+              ],
+              "identity_text": "中山陵",
+              "location": {
+                "latitude": 32.062176,
+                "longitude": 118.8533434
+              },
+              "location_status": "available",
+              "name": "中山陵",
+              "name_en": "Sun Yat-sen Mausoleum",
+              "name_zh": "中山陵",
+              "recommendation": "遇难同胞纪念馆、中山陵、南博需要提前一周预约",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "音乐台",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "音乐台",
+              "location": {
+                "latitude": 32.058976,
+                "longitude": 118.84709
+              },
+              "location_status": "available",
+              "name": "音乐台",
+              "name_en": "Music Stage",
+              "name_zh": "音乐台",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "明孝陵",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "明孝陵",
+              "location": {
+                "latitude": 32.0582164,
+                "longitude": 118.8345739
+              },
+              "location_status": "available",
+              "name": "明孝陵",
+              "name_en": "Ming Xiaoling Mausoleum",
+              "name_zh": "明孝陵",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a608482000000001003c8b8"
+              ],
+              "evidence_summary": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a608482000000001003c8b8",
+                  "identity_quote": "美龄宫",
+                  "recommendation_quote": "Day2：中山陵→音乐台→明孝陵→美龄宫"
+                }
+              ],
+              "identity_text": "美龄宫",
+              "location": {
+                "latitude": 32.046188,
+                "longitude": 118.849588
+              },
+              "location_status": "available",
+              "name": "美龄宫",
+              "name_en": "Meiling Palace",
+              "name_zh": "美龄宫",
+              "recommendation": "Day2：中山陵→音乐台→明孝陵→美龄宫",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "收藏这份笔记，下次去总统府直接照着逛",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "带娃逛南京总统府",
+                  "recommendation_quote": "收藏这份笔记，下次去总统府直接照着逛"
+                }
+              ],
+              "identity_text": "南京总统府",
+              "location": {
+                "latitude": 32.044261,
+                "longitude": 118.79732
+              },
+              "location_status": "available",
+              "name": "南京总统府",
+              "name_en": "Nanjing Presidential Palace",
+              "name_zh": "南京总统府",
+              "recommendation": "收藏这份笔记，下次去总统府直接照着逛",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7b36de0000000024027efe"
+              ],
+              "evidence_summary": "煦园的这几个细节一定要跟娃讲",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7b36de0000000024027efe",
+                  "identity_quote": "煦园的这几个细节一定要跟娃讲",
+                  "recommendation_quote": "煦园的这几个细节一定要跟娃讲"
+                }
+              ],
+              "identity_text": "煦园",
+              "location": {
+                "latitude": 32.0441967,
+                "longitude": 118.7974053
+              },
+              "location_status": "available",
+              "name": "煦园",
+              "name_en": "Xuyuan Garden",
+              "name_zh": "煦园",
+              "recommendation": "煦园的这几个细节一定要跟娃讲",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "遇难同胞纪念馆",
+                  "recommendation_quote": "遇难同胞纪念馆超级难预约，本次没有预约上"
+                }
+              ],
+              "identity_text": "遇难同胞纪念馆",
+              "location": {
+                "latitude": 32.0355351,
+                "longitude": 118.7433711
+              },
+              "location_status": "available",
+              "name": "遇难同胞纪念馆",
+              "name_en": "Nanjing Massacre Memorial Hall",
+              "name_zh": "侵华日军南京大屠杀遇难同胞纪念馆",
+              "recommendation": "遇难同胞纪念馆超级难预约，本次没有预约上",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "雨花台",
+                  "recommendation_quote": "中山陵、雨花台都是受天气影响临时关闭景区没去成"
+                }
+              ],
+              "identity_text": "雨花台",
+              "location": {
+                "latitude": 32.003782,
+                "longitude": 118.779219
+              },
+              "location_status": "available",
+              "name": "雨花台",
+              "name_en": "Yuhuatai Martyrs Cemetery",
+              "name_zh": "雨花台",
+              "recommendation": "中山陵、雨花台都是受天气影响临时关闭景区没去成",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "长江大桥江边公园",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙"
+                }
+              ],
+              "identity_text": "长江大桥江边公园",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "长江大桥江边公园",
+              "name_en": "Nanjing Yangtze River Bridge Riverside Park",
+              "name_zh": "长江大桥江边公园",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "乌衣巷",
+                  "recommendation_quote": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河"
+                }
+              ],
+              "identity_text": "乌衣巷",
+              "location": {
+                "latitude": 32.0178,
+                "longitude": 118.7912
+              },
+              "location_status": "available",
+              "name": "乌衣巷",
+              "name_en": "Wuyi Lane",
+              "name_zh": "乌衣巷",
+              "recommendation": "Day1    长江大桥江边公园——老门东——夫子庙（乌衣巷）——秦淮河",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "熙南里",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "熙南里",
+              "location": {
+                "latitude": 32.0583799,
+                "longitude": 118.79647
+              },
+              "location_status": "available",
+              "name": "熙南里",
+              "name_en": "Xinanli Historic District",
+              "name_zh": "熙南里",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7bcdfd000000002402d072"
+              ],
+              "evidence_summary": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7bcdfd000000002402d072",
+                  "identity_quote": "净觉寺",
+                  "recommendation_quote": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像"
+                }
+              ],
+              "identity_text": "净觉寺",
+              "location": {
+                "latitude": 32.023992,
+                "longitude": 118.783244
+              },
+              "location_status": "available",
+              "name": "净觉寺",
+              "name_en": "Jingjue Temple",
+              "name_zh": "净觉寺",
+              "recommendation": "Day4    新街口地铁站周边游:熙南里——净觉寺——中山先生像",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    "patch_request": "只把第三天最后一个景点换成南京博物院，其他日期保持不变。",
+    "plan_version_after": 2,
+    "plan_version_before": 1,
+    "protected_day_indices": [
+      0,
+      1,
+      3
+    ],
+    "reason": null,
+    "status": "known",
+    "typed_operations": [
+      {
+        "day_index": 2,
+        "new_poi": {
+          "category": "历史博物馆",
+          "description": "",
+          "name": "南京博物院",
+          "ticket_price": 0,
+          "visit_duration": 150
+        },
+        "operation": "replace_poi",
+        "target_id": "ChIJ3dmDpbWMtTURFM6Q6TXX0O8",
+        "target_name": "玄武湖",
+        "user_instruction": "只替换第三天最后一个景点"
+      }
+    ],
+    "validation_result": {
+      "checked_rules": [
+        "earliest_start",
+        "budget",
+        "route_feasibility",
+        "mobility"
+      ],
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 26611,
+            "duration_s": 22509,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:0:1",
+          "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+          "related_poi_names": [
+            "夫子庙",
+            "秦淮河"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 23583
+          },
+          "id": "route_feasibility:day_total:0",
+          "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 23583,
+            "visit_duration_s": 19800
+          },
+          "id": "route_feasibility:day_load:0",
+          "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 10295,
+            "duration_s": 9180,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:1:0",
+          "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+          "related_poi_names": [
+            "中山陵",
+            "音乐台"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13894
+          },
+          "id": "route_feasibility:day_total:1",
+          "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 5764,
+            "duration_s": 5433,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:3:1",
+          "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+          "related_poi_names": [
+            "南京总统府",
+            "遇难同胞纪念馆"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间较长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "threshold_s": 36000,
+            "verified_route_duration_s": 7988,
+            "visit_duration_s": 28800
+          },
+          "id": "route_feasibility:day_load:3",
+          "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少一个景点或缩短跨区交通。",
+          "title": "当天主要活动和交通负荷偏高",
+          "type": "route_feasibility"
+        }
+      ],
+      "route_api_calls": 8,
+      "status": "issues_found",
+      "unavailable_checks": []
+    }
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "friends",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 8,
+      "provider": "google_directions",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "attempted": 8,
+        "available": 8,
+        "eligible_final_intra_city_legs": 8,
+        "observed_final_legs": 8,
+        "validation_phase": "post_patch"
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 3,
+      "provider": "google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "affected_pois": 3,
+        "endpoint": "patch_poi_enrichment",
+        "verified": 3
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "xhs",
+      "reason": "provider is outside local patch path",
+      "status": "not_called",
+      "summary": {
+        "endpoint": "patch"
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "provider is outside local patch path",
+      "status": "not_called",
+      "summary": {
+        "endpoint": "patch"
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "amap",
+      "reason": "provider is outside local patch path",
+      "status": "not_called",
+      "summary": {
+        "endpoint": "patch"
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "hotel_google_places",
+      "reason": "provider is outside local patch path",
+      "status": "not_called",
+      "summary": {
+        "endpoint": "patch"
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "hotel_amap",
+      "reason": "provider is outside local patch path",
+      "status": "not_called",
+      "summary": {
+        "endpoint": "patch"
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "initial_risks": [],
+    "initial_validation_result": null,
+    "post_revision_enrichment_state": null,
+    "post_revision_risks": [],
+    "protected_elements": [],
+    "reason": "patch execution does not run revision",
+    "revalidation_result": null,
+    "revision_instructions_metadata": [],
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "data_source": "google_directions",
+          "distance_m": 26611,
+          "duration_s": 22509,
+          "route_type": "walking"
+        },
+        "id": "route_feasibility:leg:0:1",
+        "message": "夫子庙 到 秦淮河 的地图路线预计约 375 分钟。",
+        "related_poi_names": [
+          "夫子庙",
+          "秦淮河"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "考虑调整同日景点分组或改变交通方式。",
+        "title": "相邻景点交通时间明显过长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 0,
+        "evidence": {
+          "threshold_s": 10800,
+          "verified_route_duration_s": 23583
+        },
+        "id": "route_feasibility:day_total:0",
+        "message": "第 1 天已验证路线的累计交通时间约 393 分钟。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+        "title": "当天景点间交通时间偏长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 0,
+        "evidence": {
+          "threshold_s": 36000,
+          "verified_route_duration_s": 23583,
+          "visit_duration_s": 19800
+        },
+        "id": "route_feasibility:day_load:0",
+        "message": "第 1 天景点游览时长与已验证交通时间合计超过 10 小时。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少一个景点或缩短跨区交通。",
+        "title": "当天主要活动和交通负荷偏高",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "data_source": "google_directions",
+          "distance_m": 10295,
+          "duration_s": 9180,
+          "route_type": "walking"
+        },
+        "id": "route_feasibility:leg:1:0",
+        "message": "中山陵 到 音乐台 的地图路线预计约 153 分钟。",
+        "related_poi_names": [
+          "中山陵",
+          "音乐台"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "考虑调整同日景点分组或改变交通方式。",
+        "title": "相邻景点交通时间明显过长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "threshold_s": 10800,
+          "verified_route_duration_s": 13894
+        },
+        "id": "route_feasibility:day_total:1",
+        "message": "第 2 天已验证路线的累计交通时间约 232 分钟。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+        "title": "当天景点间交通时间偏长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 3,
+        "evidence": {
+          "data_source": "google_directions",
+          "distance_m": 5764,
+          "duration_s": 5433,
+          "route_type": "walking"
+        },
+        "id": "route_feasibility:leg:3:1",
+        "message": "南京总统府 到 遇难同胞纪念馆 的地图路线预计约 91 分钟。",
+        "related_poi_names": [
+          "南京总统府",
+          "遇难同胞纪念馆"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "考虑调整同日景点分组或改变交通方式。",
+        "title": "相邻景点交通时间较长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 3,
+        "evidence": {
+          "threshold_s": 36000,
+          "verified_route_duration_s": 7988,
+          "visit_duration_s": 28800
+        },
+        "id": "route_feasibility:day_load:3",
+        "message": "第 4 天景点游览时长与已验证交通时间合计超过 10 小时。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少一个景点或缩短跨区交通。",
+        "title": "当天主要活动和交通负荷偏高",
+        "type": "route_feasibility"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1235
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1074
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJBV_11GqMtTURszjp7_yBLgI",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJi8v-KrWEtTURvtssuiVGE_0",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 26611
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 22509
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": false
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJFbg-PV2MtTUR35zmCdj4s0c",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 1,
+      "destination_stable_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 10295
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 9180
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": false
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJld2Dd8SMtTURNtl1GXmYbBM",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 1,
+      "destination_stable_id": "ChIJC0WmIACMtTURoHl_UDb52iU",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 5500
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 4714
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ1fN461SNtTUR0pMjc-rDLJY",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1008
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 887
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJiz0zBMaMtTURqO0amG5GlC0",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 4499
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 4002
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJBfqgOc-MtTUR0C_zd8fXF9A",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 3,
+      "destination_stable_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2858
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2555
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJK27DixmNtTURcpXpCG1ghCk",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 3,
+      "destination_stable_id": "ChIJQVG7g5iLtTURaY-mopzXiqw",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 5764
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 5433
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": false
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJzQIxiO6MtTURl8UkLwyW3Qg",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.post_patch",
+      "validation_phase": "post_patch",
+      "verification_status": "verified"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "local_patch",
+    "zh_input"
+  ],
+  "snapshot_hashes": {},
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 10329
+  },
+  "trip_request": {
+    "accommodation": "舒适型酒店",
+    "cities": [
+      {
+        "city": "南京",
+        "days": 4
+      }
+    ],
+    "city": "南京",
+    "end_date": "2027-02-18",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "friends",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "历史文化"
+    ],
+    "start_date": "2027-02-15",
+    "transportation": "公共交通",
+    "travel_days": 4
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 454
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 1
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 3002
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 3456
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "not_called_for_patch"
+    }
+  }
+}

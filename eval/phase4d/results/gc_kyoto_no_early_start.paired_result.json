@@ -1,0 +1,17 @@
+{
+  "result_version": "phase4d.paired_result.v1",
+  "case_id": "gc_kyoto_no_early_start",
+  "pair_level_outcome": "MIXED",
+  "baseline": {"label": "Plan A", "planner_version": "planner_baseline_v1", "prompt_version": "planner_prompt_v1", "artifact_sha256": "sha256:9a7292cef4403e68f95d7c078523d41efca008d0b1bb8d39fc8d3d8a80b80808", "scores": {"preference_satisfaction": 4, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4}},
+  "candidate": {"label": "Plan B", "planner_version": "planner_pacing_v1", "prompt_version": "planner_prompt_pacing_v1", "pacing_policy_version": "pacing.daily_load.v0.proposed", "pacing_revision_version": "pacing_revision.v1", "artifact_sha256": "sha256:2b804ad50c6123d0fdcbcc49e35fcfb3a985cbfffc2882780c32f757f2411729", "scores": {"preference_satisfaction": 4, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 3, "explanation_quality": 4}},
+  "candidate_minus_baseline": {"preference_satisfaction": 0, "itinerary_coherence": 0, "pacing_quality": 0, "usefulness": -1, "explanation_quality": 0},
+  "blind_human_review": {"paired_verdict": "mixed", "unsupported_fact": {"Plan A": "uncertain", "Plan B": "uncertain"}, "blind_order_integrity": "limitation", "underpacked_detected": false, "core_preference_sacrifice_detected": false, "metric_improvement_but_ux_regression": true},
+  "revision": {"triggered": true, "status": "success", "committed": true, "affected_day_indices": [0, 2], "protected_day_indices": [1], "protected_day_equality": {"1": true}, "operations": [{"operation": "reduce_optional_duration", "poi": "伏见稻荷大社", "old_minutes": 150, "new_minutes": 85}, {"operation": "reduce_optional_duration", "poi": "祇园", "old_minutes": 120, "new_minutes": 70}], "before_load_ratios": {"0": 1.114, "2": 1.093}, "after_load_ratios": {"0": 1.0, "2": 1.0}, "production_resolution_rate": 1.0, "human_interpretation": "Lower modeled load did not improve human-rated pacing and reduced usefulness by one point; the compressed durations create mild over-correction risk."},
+  "constraint_preservation": {"no_early_start_preserved": true, "preference_satisfaction_preserved": true, "poi_deleted": false},
+  "deterministic_candidate": {"schema_valid": 1.0, "date_day_consistency": 1.0, "explicit_constraint_satisfaction_rate": 1.0, "earliest_start_satisfaction": 1.0, "budget_arithmetic_consistency": 1.0, "grounded_poi_rate": 0.25, "unverified_poi_rate": 0.625, "provenance_coverage": 0.3333333333333333, "route_check_coverage": null, "route_feasibility_rate": null},
+  "evaluation_semantics_limitation": {"present": true, "production_resolution_rate": 1.0, "offline_revision_risk_resolution_rate": 0.0, "offline_revision_failed": true},
+  "grounding_outcome_capture": "unavailable",
+  "comparability": {"status": "limited_provider_drift", "trip_request_equal": true, "provider_snapshot_exact": false, "causal_claim_allowed": false},
+  "resume_safe_claim": "In one Kyoto control paired review, the candidate preserved preference satisfaction and coherence, but duration compression produced no human-rated pacing gain and reduced usefulness by one point; causal attribution remains limited by live-provider drift.",
+  "prohibited_claims": ["pacing improved because load ratios decreased", "statistically significant", "global product improvement", "revision is fully reliable", "Phase 4 validated"]
+}

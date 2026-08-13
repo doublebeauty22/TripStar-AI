@@ -1,0 +1,30 @@
+{
+  "admission_events": [],
+  "calls_completed": 3,
+  "capture_status": "failed",
+  "case_id": "gc_beijing_xian_multi_city",
+  "code_revision": "96b9c5e-dirty",
+  "completion_tokens": 20001,
+  "configured_max_llm_calls": 4,
+  "configured_max_total_tokens": 60000,
+  "elapsed_latency_ms": 161127,
+  "execution_completed_at": "2026-08-12T15:10:36.259852+00:00",
+  "execution_started_at": "2026-08-12T15:07:55.136394+00:00",
+  "failed_after_stage": null,
+  "failed_before_stage": null,
+  "failed_stage": "planner",
+  "failure_reason": "planner_output_parse_failure",
+  "failure_type": "planner_output_parse_failure",
+  "model": {
+    "reason": null,
+    "status": "known",
+    "value": "gpt-5.6-luna"
+  },
+  "planner_version": "planner_baseline_v1",
+  "prompt_tokens": 27283,
+  "prompt_version": "planner_prompt_v1",
+  "retries": 0,
+  "run_status": "failed",
+  "sanitized": true,
+  "total_tokens": 47284
+}

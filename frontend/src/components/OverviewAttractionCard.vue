@@ -2,6 +2,18 @@
   <div class="swiper-slide" :class="{ 'swiper-slide-active': active }" @mouseenter="emit('hover')" @focusin="emit('hover')">
     <div class="swiper-slide-img">
       <img :src="imageSrc" :alt="item.name" loading="lazy" @error="emit('image-error', $event)" />
+      <div v-if="imageAttributions.length" class="photo-attribution">
+        <a
+          v-for="credit in imageAttributions"
+          :key="credit.uri || credit.displayName"
+          :href="credit.uri || undefined"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ credit.displayName }}</a>
+      </div>
+      <div v-else class="photo-attribution">
+        {{ photoSource === 'xhs' ? '小红书图片' : photoSource === 'google_places' ? 'Google Places 图片' : '占位图' }}
+      </div>
       <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
         <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
@@ -37,6 +49,8 @@ defineProps<{
   item: OverviewAttractionItem
   imageSrc: string
   active: boolean
+  imageAttributions: Array<{ displayName?: string; uri?: string; photoUri?: string }>
+  photoSource: 'google_places' | 'xhs' | 'placeholder'
 }>()
 
 const emit = defineEmits<{
@@ -105,6 +119,22 @@ main {
       object-fit: cover;
       z-index: 0;
       transition: transform 0.3s ease-in-out;
+    }
+
+    .photo-attribution {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      z-index: 3;
+      padding: 3px 6px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.65);
+      font-size: 10px;
+      line-height: 1.2;
+
+      a {
+        color: #fff;
+      }
     }
 
     svg {

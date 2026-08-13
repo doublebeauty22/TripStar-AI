@@ -61,7 +61,7 @@
 docker-compose を介してプロジェクト（フロントエンドおよびバックエンドの両方）をワン・クリックで開始することを強く推奨します。起動する前に `.env` ファイルに適切な変数が設定されていることを確認してください。
 
 * コンテナーの起動時にバックエンドは `backend/.env` を読み取りません。構成は常に環境変数で渡してください。
-* `docker-compose.yaml` は本番プロキシや API キーの設定（例：`GOOGLE_MAPS_API_KEY`、`GOOGLE_MAPS_PROXY` の引き渡し）をサポートします。
+* `docker-compose.yaml` はサーバー Key とブラウザー Key を分離します。バックエンドは `GOOGLE_MAPS_SERVER_API_KEY` と `AMAP_WEB_SERVICE_KEY`、フロントエンドは `VITE_GOOGLE_MAPS_BROWSER_KEY` と `VITE_AMAP_WEB_JS_KEY` を使用します。
 * フロントエンドのビルド時変数 `VITE_AMAP_WEB_JS_KEY` は `build.args` 経由で注入されます。
 
 **ワンストップの起動コマンド:**
@@ -96,9 +96,9 @@ uv pip install -r requirements.txt
 # .env に API KEY などを記入
 cp .env.example .env
 # [必須] LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_ID
-# [任意] VITE_AMAP_WEB_KEY 
+# [任意] AMAP_WEB_SERVICE_KEY
 # [必須] XHS_COOKIE
-# [必須] GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_PROXY
+# [任意] GOOGLE_MAPS_SERVER_API_KEY, GOOGLE_MAPS_PROXY
 
 # FastAPIを起動 
 uvicorn app.api.main:app --host 0.0.0.0 --port 8000 --reload
@@ -115,8 +115,8 @@ npm install
 
 # 設定ファイルをコピーし、Key を記入
 cp .env.example .env
-# [必須] VITE_AMAP_WEB_KEY
 # [必須] VITE_AMAP_WEB_JS_KEY
+# [任意] VITE_GOOGLE_MAPS_BROWSER_KEY（referrer/API restriction を設定）
 # フロントエンド用に `index.html` へ 高徳Security JSCodeの注入が必要なことに注意
 
 # Viteサーバーの起動

@@ -1,0 +1,92 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 39.9054895,
+          "longitude": 116.39763169999999
+        },
+        "match_status": "verified",
+        "name": "天安门广场",
+        "place_id": "ChIJ2XRD3Jh2YzYRE1lUrcku6io"
+      },
+      {
+        "location": {
+          "latitude": 39.9250988,
+          "longitude": 116.39684329999999
+        },
+        "match_status": "verified",
+        "name": "景山公园",
+        "place_id": "ChIJiaRNz-BS8DURW2N_nAufVJU"
+      },
+      {
+        "location": {
+          "latitude": 39.933299999999996,
+          "longitude": 116.38183
+        },
+        "match_status": "verified",
+        "name": "什刹海",
+        "place_id": "ChIJtR0lmwJT8DURMT4IkpqHIlc"
+      },
+      {
+        "location": {
+          "latitude": 39.916344699999996,
+          "longitude": 116.3971546
+        },
+        "match_status": "verified",
+        "name": "故宫博物院",
+        "place_id": "ChIJq4HNm91S8DURZGAQm-3qQ94"
+      },
+      {
+        "location": {
+          "latitude": 39.9076214,
+          "longitude": 116.399348
+        },
+        "match_status": "verified",
+        "name": "天安门城楼",
+        "place_id": "ChIJSQyRD79S8DURQF0VcwYnZiY"
+      },
+      {
+        "location": {
+          "latitude": 39.925447399999996,
+          "longitude": 116.38926389999997
+        },
+        "match_status": "verified",
+        "name": "北海公园",
+        "place_id": "ChIJWWErs-ZS8DURdcUOnciALOI"
+      },
+      {
+        "location": {
+          "latitude": 39.9050945,
+          "longitude": 116.4015829
+        },
+        "match_status": "verified",
+        "name": "国家博物馆",
+        "place_id": "ChIJ5xGxSrlS8DURCcbo8EFiRwI"
+      },
+      {
+        "location": {
+          "latitude": 39.8802793,
+          "longitude": 116.41053640000001
+        },
+        "match_status": "verified",
+        "name": "天坛公园",
+        "place_id": "ChIJq6qqqlFN8DURzScL9AR3y84"
+      },
+      {
+        "location": {
+          "latitude": 39.906433799999995,
+          "longitude": 116.341941
+        },
+        "match_status": "verified",
+        "name": "首都博物馆",
+        "place_id": "ChIJeftImwlS8DURsYp0XKRIzHY"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "available"
+}

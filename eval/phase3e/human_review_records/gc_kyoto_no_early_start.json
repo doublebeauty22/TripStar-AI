@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_kyoto_no_early_start_v1",
+  "case_id": "gc_kyoto_no_early_start",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d3/gc_kyoto_no_early_start/gc_kyoto_no_early_start.json",
+  "artifact_sha256": "sha256:9a7292cef4403e68f95d7c078523d41efca008d0b1bb8d39fc8d3d8a80b80808",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-12T15:33:00Z",
+  "reviewed_at": "2026-08-12T15:33:00Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 4,
+    "pacing_quality": 4,
+    "usefulness": 3,
+    "explanation_quality": 3
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "行程明显围绕历史文化主题展开，并且三天主要行程均从 10:00 开始，明确满足用户“不早起”的显式要求。每天约三个主要游览点，也与 relaxed 的总体方向相符。但个性化主要集中在历史文化和开始时间，对情侣出行以及更细粒度兴趣偏好的体现有限，因此不评为 5。",
+    "itinerary_coherence": "三天内部具有较清晰的区域和主题组织。Day 1 的清水寺—三年坂—八坂神社，以及 Day 3 的竹林小径—岚山—渡月桥，在用户看到的 itinerary 层面具有自然的游览逻辑，并非随机组合。但当前 route evidence 未得到有效验证，因此执行层面的路线连贯性仍存在不确定性，不评为 5。",
+    "pacing_quality": "三天均在 10:00 开始，每天约三个主要游览点，没有明显的景点堆叠，从行程结构上较符合 relaxed pace。但由于没有 eligible verified route legs，也缺乏可靠的移动时间证据，无法充分确认实际执行时的步行和交通负担仍然轻松，因此不评为 5。",
+    "usefulness": "计划提供了清晰的京都三日游框架，用户可以据此理解每天去哪里以及主要主题，因此具备基本规划价值。但 POI grounding 仅为 2/9，provenance coverage 为 3/10，并且没有 eligible verified route legs，三天路线均未得到完整验证。对于“明天直接照着执行”的使用场景，地点与路线可信度和执行信息仍存在明显缺口，因此评为 3。",
+    "explanation_quality": "计划能够体现“不早起”和历史文化主题，但现有材料不足以证明精确交通、路线和相关执行信息具有充分来源，也没有充分解释 Places partial、Directions not_called 以及天气 provider unavailable 对计划可靠性的影响。推荐逻辑基本可以理解，但不确定性和限制表达仍有明显提升空间，因此评为 3。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "当前 artifact 的 POI grounding 仅为 2/9，provenance coverage 为 3/10，且没有 eligible verified route legs。现有人工评审材料不足以确认行程中可能出现的精确交通时间、路线或其他外部事实是否均有可靠来源支持。因此不能确认存在明确 unsupported fact，但也没有足够证据判定全部相关事实均已得到支持。尤其不能将未验证的交通或路线描述视为 Google Maps 或官方事实。",
+  "additional_notes": null
+}

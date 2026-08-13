@@ -1,0 +1,93 @@
+{
+  "result_version": "phase4d.paired_result.v1",
+  "case_id": "gc_shenzhen_overbudget_revision",
+  "pair_level_outcome": "BETTER",
+  "baseline": {
+    "label": "Plan A",
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1",
+    "artifact_sha256": "sha256:85a59d603ad37a69f12c13646fe7a3e4201ba48b594fb5fd17f55a5cc6dfbf52",
+    "scores": {
+      "preference_satisfaction": 4,
+      "itinerary_coherence": 3,
+      "pacing_quality": 2,
+      "usefulness": 3,
+      "explanation_quality": 4
+    }
+  },
+  "candidate": {
+    "label": "Plan B",
+    "planner_version": "planner_pacing_v1",
+    "prompt_version": "planner_prompt_pacing_v1",
+    "pacing_policy_version": "pacing.daily_load.v0.proposed",
+    "pacing_revision_version": "pacing_revision.v1",
+    "artifact_sha256": "sha256:f6b58ad6752cf62ac0059d58c24b230637e9b7503bf087956caf5aef3f90015d",
+    "scores": {
+      "preference_satisfaction": 4,
+      "itinerary_coherence": 4,
+      "pacing_quality": 4,
+      "usefulness": 4,
+      "explanation_quality": 4
+    }
+  },
+  "candidate_minus_baseline": {
+    "preference_satisfaction": 0,
+    "itinerary_coherence": 1,
+    "pacing_quality": 2,
+    "usefulness": 1,
+    "explanation_quality": 0
+  },
+  "blind_human_review": {
+    "paired_verdict": "plan_b_better",
+    "unsupported_fact": {"Plan A": "uncertain", "Plan B": "uncertain"},
+    "blind_order_integrity": "limitation"
+  },
+  "deterministic_comparison": {
+    "baseline": {
+      "schema_valid": 1.0,
+      "date_day_consistency": 0.0,
+      "budget_arithmetic_consistency": 1.0,
+      "budget_limit_satisfaction": 1.0,
+      "grounded_poi_rate": 0.7777777777777778,
+      "provenance_coverage": 0.8571428571428571,
+      "route_check_coverage": 0.5,
+      "route_feasibility_rate": 1.0
+    },
+    "candidate": {
+      "schema_valid": 1.0,
+      "date_day_consistency": 1.0,
+      "budget_arithmetic_consistency": 1.0,
+      "budget_limit_satisfaction": 1.0,
+      "grounded_poi_rate": 1.0,
+      "provenance_coverage": 1.0,
+      "route_check_coverage": 0.0,
+      "route_feasibility_rate": null,
+      "route_feasibility_reason": "no checked route legs"
+    }
+  },
+  "revision": {
+    "triggered": true,
+    "outcome": "rejected",
+    "failure_reason": "retained_poi_grounding_regression",
+    "candidate_committed": false,
+    "original_candidate_plan_retained": true,
+    "protected_day_preserved": true,
+    "attribution": "Any observed human-rating improvement applies to the pacing-aware initial Planner output, not to the rejected targeted revision."
+  },
+  "comparability": {
+    "status": "limited_provider_drift",
+    "trip_request_equal": true,
+    "provider_snapshot_exact": false,
+    "causal_claim_allowed": false,
+    "limitation": "Live-provider snapshot drift prevents strict causal attribution."
+  },
+  "resume_safe_claim": "In one Shenzhen paired review, the pacing-aware candidate received higher human ratings for pacing, coherence, and usefulness while preserving preference satisfaction; causal attribution remains limited by live-provider drift.",
+  "prohibited_claims": [
+    "statistically significant improvement",
+    "overall user satisfaction improvement",
+    "Planner V2 is globally better",
+    "the pacing system is proven effective across users",
+    "the targeted revision caused the improvement",
+    "Phase 4D has passed"
+  ]
+}

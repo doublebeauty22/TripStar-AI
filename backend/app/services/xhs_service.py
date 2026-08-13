@@ -11,17 +11,29 @@ import random
 import logging
 import requests
 import httpx
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from ..config import get_settings
+from ..models.schemas import (
+    XHSEvidence, XHSEvidenceSupport, XHSExtractedItem, XHSResearchResult,
+)
 from .llm_service import get_llm
 from .xhs_sign.sign_util import generate_request_params, splice_str, generate_x_b3_traceid, trans_cookies
 
 logger = logging.getLogger(__name__)
+_FABRICATED_CONSENSUS_TERMS = (
+    "大家都推荐", "小红书普遍认为", "小红书用户普遍推荐", "热门必去",
+)
 
 
 class XHSCookieExpiredError(Exception):
     """小红书 Cookie 过期致命异常，用于向前端报警"""
     pass
+
+
+class XHSRequestError(Exception):
+    def __init__(self, reason: str, message: str):
+        super().__init__(message)
+        self.reason = reason
 
 
 # ============ Cookie 处理 ============
@@ -129,6 +141,13 @@ class XhsNativeClient:
             cookies=cookies,
             timeout=15,
         )
+        if response.status_code == 401:
+            raise XHSRequestError("authentication_failed", "小红书认证失败")
+        if response.status_code == 403:
+            raise XHSRequestError("permission_denied", "小红书访问被拒绝")
+        if response.status_code == 429:
+            raise XHSRequestError("rate_limited", "小红书请求频率受限")
+        response.raise_for_status()
         res_json = response.json()
 
         if not res_json.get("success"):
@@ -174,6 +193,13 @@ class XhsNativeClient:
             cookies=cookies,
             timeout=15,
         )
+        if response.status_code == 401:
+            raise XHSRequestError("authentication_failed", "小红书认证失败")
+        if response.status_code == 403:
+            raise XHSRequestError("permission_denied", "小红书访问被拒绝")
+        if response.status_code == 429:
+            raise XHSRequestError("rate_limited", "小红书请求频率受限")
+        response.raise_for_status()
         res_json = response.json()
 
         if not res_json.get("success"):
@@ -183,6 +209,7 @@ class XhsNativeClient:
                 raise XHSCookieExpiredError(
                     f"小红书 Cookie 已被风控拦截 (code={code}): {msg}"
                 )
+            raise XHSRequestError("detail_unavailable", f"小红书详情失败 (code={code}): {msg}")
 
         return res_json
 
@@ -193,38 +220,28 @@ def get_xhs_client() -> XhsNativeClient:
     """初始化并返回原生小红书客户端"""
     settings = get_settings()
     if not settings.xhs_cookie:
-        raise XHSCookieExpiredError("小红书 Cookie 未配置，请先在前端设置页完成配置")
+        raise XHSCookieExpiredError("XHS_COOKIE 未在后端环境中配置")
     cookie_str = normalize_xhs_cookie(settings.xhs_cookie)
     return XhsNativeClient(cookie_str)
 
 
 # ============ 高德地理编码 ============
 
-def _geocode_amap_raw(address: str, city: str) -> dict:
+def _geocode_amap_raw(address: str, city: str) -> Optional[dict]:
     """纯高德 Web 服务地理编码（供 map_dispatcher 降级调用）。
 
     返回: {"longitude": float, "latitude": float}
     """
-    settings = get_settings()
-    if not settings.vite_amap_web_key:
-        return {"longitude": 116.397128, "latitude": 39.916527}  # 默认兜底
+    from .amap_service import get_amap_service
 
-    url = f"https://restapi.amap.com/v3/place/text?keywords={address}&city={city}&offset=1&key={settings.vite_amap_web_key}"
-    try:
-        resp = httpx.get(url, timeout=5)
-        data = resp.json()
-        if data.get("status") == "1" and data.get("pois") and len(data["pois"]) > 0:
-            location = data["pois"][0]["location"]
-            lon, lat = location.split(",")
-            return {"longitude": float(lon), "latitude": float(lat)}
-    except Exception as e:
-        print(f"高德地理编码查阅失败 ({address}): {e}")
-
-    # 获取失败时给个默认兜底
-    return {"longitude": 116.397128, "latitude": 39.916527}
+    result = get_amap_service().resolve_place(address, city, prefer_poi=True)
+    if not result.data_available or result.location is None:
+        print(f"⚠️ [AMAP_UNAVAILABLE] geocode reason={result.reason}: {address}")
+        return None
+    return result.location.model_dump()
 
 
-def geocode_amap(address: str, city: str, *, name_zh: str = "", name_en: str = "") -> dict:
+def geocode_amap(address: str, city: str, *, name_zh: str = "", name_en: str = "") -> Optional[dict]:
     """统一地理编码入口 — 自动路由到 Google / 高德。
 
     内部通过 map_dispatcher 判断当前活跃供应商，
@@ -255,9 +272,83 @@ def get_note_detail_ssr(note_id: str) -> dict:
     return {}
 
 
+def _normalize_evidence_text(value: Any) -> str:
+    """Normalize only superficial formatting; never guess aliases or entities."""
+    return re.sub(r"[\W_]+", "", str(value or "").casefold(), flags=re.UNICODE)
+
+
+def _validate_xhs_extracted_items(
+    extracted: Any,
+    evidence: List[XHSEvidence],
+    evidence_source_text: Dict[str, str],
+) -> List[dict]:
+    """Validate IDs and verbatim support excerpts without claiming semantic entailment."""
+    if not isinstance(extracted, list):
+        return []
+    evidence_lookup = {item.note_id: item for item in evidence}
+    validated: List[dict] = []
+    for item in extracted:
+        if not isinstance(item, dict):
+            continue
+        name = str(item.get("name") or "").strip()
+        identity_text = str(item.get("identity_text") or "").strip()
+        recommendation = str(item.get("recommendation") or item.get("reason") or "").strip()
+        raw_ids = item.get("evidence_ids")
+        raw_support = item.get("evidence_support")
+        if (
+            not name or not identity_text or not recommendation
+            or not isinstance(raw_ids, list) or not raw_ids
+            or not isinstance(raw_support, list) or not raw_support
+            or any(term in recommendation for term in _FABRICATED_CONSENSUS_TERMS)
+        ):
+            continue
+        # ``name`` is the evidence-native identity. Translations belong only in
+        # name_zh/name_en, so no language-specific alias table is required.
+        if _normalize_evidence_text(name) != _normalize_evidence_text(identity_text):
+            continue
+
+        requested_ids = list(dict.fromkeys(str(note_id) for note_id in raw_ids))
+        valid_support: List[dict] = []
+        for support in raw_support:
+            if not isinstance(support, dict):
+                continue
+            evidence_id = str(support.get("evidence_id") or "")
+            identity_quote = str(support.get("identity_quote") or "").strip()
+            recommendation_quote = str(support.get("recommendation_quote") or "").strip()
+            source = evidence_source_text.get(evidence_id, "")
+            normalized_source = _normalize_evidence_text(source)
+            if (
+                evidence_id not in evidence_lookup
+                or evidence_id not in requested_ids
+                or not identity_quote or not recommendation_quote
+                or _normalize_evidence_text(identity_quote) not in normalized_source
+                or _normalize_evidence_text(recommendation_quote) not in normalized_source
+                or _normalize_evidence_text(identity_text) not in _normalize_evidence_text(identity_quote)
+            ):
+                continue
+            valid_support.append({
+                "evidence_id": evidence_id,
+                "identity_quote": identity_quote,
+                "recommendation_quote": recommendation_quote,
+            })
+
+        valid_ids = list(dict.fromkeys(item["evidence_id"] for item in valid_support))
+        if not valid_ids:
+            continue
+        validated.append({
+            **item,
+            "name": name,
+            "identity_text": identity_text,
+            "recommendation": recommendation,
+            "evidence_ids": valid_ids,
+            "evidence_support": valid_support,
+        })
+    return validated
+
+
 # ============ 景点搜索核心函数 ============
 
-def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> str:
+def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XHSResearchResult:
     """
     搜索小红书笔记，使用大模型极速提纯出结构化景点，
     并静默拼装经纬度和真实图片，回传给Planner。
@@ -277,15 +368,18 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> st
         items = res_json.get("data", {}).get("items", [])[:4]
 
         combined_text = ""
+        evidence: List[XHSEvidence] = []
+        evidence_source_text: Dict[str, str] = {}
         for i, note in enumerate(items):
             if note.get("model_type") == "note":
                 note_card = note.get("note_card", {})
                 title = note_card.get("display_title", "")
+                note_id = note.get("id", "")
+                source_url = f"https://www.xiaohongshu.com/explore/{note_id}" if note_id else ""
 
                 # 尝试通过原生 API 获取笔记详情
                 desc = ""
                 try:
-                    note_id = note.get("id", "")
                     xsec_token = note.get("xsec_token", "")
                     if note_id:
                         detail_res = client.get_note_detail(note_id, xsec_token)
@@ -303,18 +397,45 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> st
                     except Exception:
                         desc = ""
 
-                combined_text += f"\n笔记{i+1}:\n标题: {title}\n正文内容: {desc}\n"
+                if note_id:
+                    evidence_source_text[note_id] = f"{title}\n{desc}"
+                    evidence.append(XHSEvidence(
+                        note_id=note_id,
+                        title=title,
+                        source_url=source_url,
+                        status="detail_available" if desc else "detail_unavailable",
+                        extracted_text=desc[:500] if desc else "",
+                    ))
+                if title or desc:
+                    combined_text += (
+                        f"\n笔记{i+1}:\nnote_id: {note_id}\n标题: {title}"
+                        f"\n正文内容: {desc}\n来源: {source_url}\n"
+                    )
 
     except XHSCookieExpiredError:
         raise
+    except XHSRequestError:
+        raise
+    except requests.Timeout as e:
+        raise XHSRequestError("timeout", "小红书搜索超时") from e
+    except requests.ConnectionError as e:
+        raise XHSRequestError("network_error", "小红书网络连接失败") from e
+    except (json.JSONDecodeError, ValueError) as e:
+        raise XHSRequestError("malformed_response", "小红书响应无法解析") from e
     except Exception as e:
         print(f"❌ 小红书接口抓取崩盘: {e}")
-        raise XHSCookieExpiredError(
-            f"小红书访问超时或 Cookie 失效(风控拦截)，抓取失败。请更新 XHS_COOKIE"
-        )
+        raise XHSRequestError("request_failed", "小红书请求失败，已降级继续规划") from e
 
-    if not combined_text:
-        return f"未在小红书检索到关于 {city} {keywords} 的内容。"
+    if not combined_text or not evidence:
+        return XHSResearchResult(
+            status="unavailable", verification_status="unavailable", degraded=True,
+            reason="empty_search", evidence=[], context="",
+        )
+    if not any(item.status == "detail_available" for item in evidence):
+        return XHSResearchResult(
+            status="unavailable", verification_status="unavailable", degraded=True,
+            reason="detail_unavailable", evidence=evidence, context="",
+        )
 
     # ======== 轻量级提取过程 ========
     print(f"🧠 [XHS_SERVICE] 正在调用内联模型提纯小红书游记参数...")
@@ -326,9 +447,8 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> st
     if _lang != "zh" and _lang in _lang_names:
         translation_instruction = f"""
 **极其重要的翻译要求:**
-目标语言为 {_lang_names[_lang]}。你必须将提取结果中的 "name", "reason", "reservation_tips" 字段的内容翻译为 {_lang_names[_lang]}。
-- "name" 字段使用目标语言 {_lang_names[_lang]} 的景点名称（例如中文"故宫博物院" → English "The Palace Museum"）。
-- "reason" 和 "reservation_tips" 也必须翻译为 {_lang_names[_lang]}。
+目标语言为 {_lang_names[_lang]}。你必须将 "recommendation" 和 "reservation_tips" 翻译为 {_lang_names[_lang]}。
+- "name" 和 "identity_text" 必须保留证据原文中的名称，不得翻译；译名仅写入 name_zh/name_en。
 - "duration" 和 "reservation_required" 保持原始数值/布尔值不变。
 - **注意**: "name_zh" 必须始终保持简体中文名称，"name_en" 必须始终保持英文名称，不受目标语言影响！
 - 严格保持 JSON schema 格式不变！
@@ -341,13 +461,27 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> st
 要求返回严格的 JSON 数组格式(哪怕只提取到了1个)，切勿返回除了JSON以外的任何冗余 markdown 文字！
 {translation_instruction}
 数组中每个对象必须包含以下字段:
-"name": 景点官方名称(用于前端展示，按目标语言填写；若目标语言为中文则与 name_zh 相同)
+"name": 必须逐字使用对应笔记中出现的景点名称，不得翻译、扩写或具体化
+"identity_text": 与 name 完全相同的证据原始名称
 "name_zh": 景点的中文简体名称(必须是简体中文，例如 "故宫博物院"。此字段始终为中文，不受目标语言影响)
 "name_en": 景点的英文名称(必须是英文，使用景点在国际上通用的官方英文名，例如 "The Palace Museum"。此字段始终为英文，不受目标语言影响)
-"reason": 小红书用户的真实评价/避坑指南
+"recommendation": 该笔记明确支持的真实评价/避坑指南
 "duration": 游玩时长(数字, 分钟)
 "reservation_required": 是否需要提前预约(布尔值 true/false)。请根据游记中提到的"需要预约"、"提前预约"、"抢票"、"约满"、"官方预约"等关键词判断，如果游记未提及则默认为 false
 "reservation_tips": 预约相关提示(字符串)。如果需要预约，请提取预约渠道、提前天数等具体信息；如果不需要预约则填空字符串
+"evidence_ids": 支持该景点和 recommendation 的 note_id 数组，至少包含一个值
+"evidence_support": 数组；每个 evidence_id 对应一个对象，包含 evidence_id、identity_quote、recommendation_quote。两个 quote 都必须是该笔记正文中的简短逐字片段
+
+**证据约束（必须遵守）:**
+- evidence_ids 只能从上方输入笔记明确提供的 note_id 中选择，不得生成或改写 note_id。
+- attraction identity 必须由对应笔记明确支持。不得把模糊/umbrella 名称具体化成某个分店、园区、场馆或变体。
+- evidence 只写泛称时，name 和 identity_text 必须保持同样粒度；无法明确确认 identity 时不要输出。
+- recommendation 中的每个具体 claim 必须由至少一个关联 evidence 的 recommendation_quote 支持。
+- recommendation 只能保守复述 recommendation_quote，不得加入新的天气、楼层、路线、时间或规划推断。最终服务会以验证后的 recommendation_quote 重建 evidence summary，模型自由文本不具有事实权威。
+- 每个 evidence_id 都必须有对应 evidence_support，并同时提供支持 identity 和 recommendation 的原文短片段。
+- 不得为了增加可信度附加不相关 evidence；不得因为多篇笔记都提到同一目的地，就把全部 note_id 挂到所有 item。
+- 无法找到对应 note_id 的候选不得输出。不要输出 unsupported item。
+- 不得使用“大家都推荐”“小红书普遍认为”“热门必去”等共识或热度措辞。
 
 **地理编码辅助字段说明:**
 name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理定位，请务必准确填写！
@@ -359,14 +493,16 @@ name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理
 
 JSON 返回示例:
 [
-  {{"name": "故宫博物院", "name_zh": "故宫博物院", "name_en": "The Palace Museum", "reason": "必去打卡，建议走中轴线。", "duration": 240, "reservation_required": true, "reservation_tips": "需要提前7天在故宫官网或微信小程序预约，每日限流8万人"}},
-  {{"name": "老君山金顶", "name_zh": "老君山金顶", "name_en": "Laojun Mountain Golden Summit", "reason": "网红打卡点，夜景绝美，必须坐索道上山。", "duration": 180, "reservation_required": false, "reservation_tips": ""}}
+  {{"name": "故宫博物院", "identity_text": "故宫博物院", "name_zh": "故宫博物院", "name_en": "The Palace Museum", "recommendation": "建议走中轴线。", "duration": 240, "reservation_required": true, "reservation_tips": "按笔记中的渠道提前预约", "evidence_ids": ["输入中的真实note_id"], "evidence_support": [{{"evidence_id": "输入中的真实note_id", "identity_quote": "故宫博物院", "recommendation_quote": "建议走中轴线"}}]}}
 ]
 """
     try:
-        response = llm._client.chat.completions.create(
+        from .llm_service import create_chat_completion
+        response = create_chat_completion(
+            stage="xhs_research",
             model=llm.model,
             messages=[{"role": "user", "content": extract_prompt}],
+            llm_instance=llm,
             temperature=0.1,
         )
         content = response.choices[0].message.content
@@ -377,24 +513,82 @@ JSON 返回示例:
         else:
             extracted = json.loads(content)
 
-        final_result = f"这是小红书热门精选游记的提取结果，附带确切坐标（图片由前端单独搜索获取）：\n"
-        for item in extracted:
+        evidence_lookup = {item.note_id: item for item in evidence}
+        supported_items: List[XHSExtractedItem] = []
+        validated_items = _validate_xhs_extracted_items(
+            extracted, evidence, evidence_source_text,
+        )
+        for item in validated_items:
             name = item.get("name", "")
-            if not name:
+            valid_ids = item["evidence_ids"]
+            # XHS Research owns only evidence-native facts. Never forward the
+            # model's free-form recommendation: rebuild it deterministically
+            # from source-verified excerpts. Planner inference remains a
+            # separate, non-XHS provenance domain.
+            evidence_summary = "；".join(dict.fromkeys(
+                support["recommendation_quote"].strip()
+                for support in item["evidence_support"]
+                if support["recommendation_quote"].strip()
+            ))
+            if not evidence_summary or any(
+                term in evidence_summary for term in _FABRICATED_CONSENSUS_TERMS
+            ):
                 continue
             # 获取中英文名称，用于精准地理编码（Google用英文，高德用中文）
             name_zh = item.get("name_zh", name)
             name_en = item.get("name_en", name)
             loc = geocode_amap(name, city, name_zh=name_zh, name_en=name_en)
-            item["location"] = loc
-            final_result += json.dumps(item, ensure_ascii=False) + "\n"
+            supported_items.append(XHSExtractedItem(
+                name=name,
+                identity_text=item["identity_text"],
+                name_zh=name_zh,
+                name_en=name_en,
+                evidence_summary=evidence_summary,
+                recommendation=evidence_summary,
+                # These are planning interpretations unless separately
+                # grounded. Keep them neutral; the exact source tip remains in
+                # evidence_summary for Planner to reason about under its own provenance.
+                duration=None,
+                reservation_required=None,
+                reservation_tips="",
+                evidence_ids=valid_ids,
+                evidence_support=[XHSEvidenceSupport(**support) for support in item["evidence_support"]],
+                location=loc,
+                location_status="available" if loc else "unavailable",
+            ))
+
+        if not supported_items:
+            return XHSResearchResult(
+                status="unavailable", verification_status="unavailable", degraded=True,
+                reason="unsupported_extraction", evidence=evidence,
+                extracted_items=[], context="",
+            )
+
+        final_result = "以下候选由指定的小红书笔记证据支持；坐标仅在地图服务成功时提供：\n"
+        for item in supported_items:
+            final_result += json.dumps(item.model_dump(), ensure_ascii=False) + "\n"
+            sources = [evidence_lookup[note_id] for note_id in item.evidence_ids]
+            final_result += "XHS evidence: " + "; ".join(
+                f"{source.note_id} ({source.source_url})" for source in sources
+            ) + "\n"
 
         print(f"✅ [XHS_SERVICE] 小红书数据挖掘完毕，已装载进上下文。")
-        return final_result
+        usable_evidence = [item for item in evidence if item.status != "detail_unavailable"]
+        return XHSResearchResult(
+            status="available" if usable_evidence else "degraded",
+            verification_status="verified" if usable_evidence else "partial",
+            degraded=not bool(usable_evidence),
+            reason=None if usable_evidence else "detail_unavailable",
+            evidence=evidence, extracted_items=supported_items,
+            context=final_result,
+        )
 
     except Exception as e:
         print(f"❌ 大模型提纯小红书数据异常: {e}")
-        return "尝试提取小红书结构化数据失败，降级回常规处理。"
+        return XHSResearchResult(
+            status="unavailable", verification_status="unavailable", degraded=True,
+            reason="extraction_failed", evidence=evidence, context="",
+        )
 
 
 # ============ 景点搜图 ============

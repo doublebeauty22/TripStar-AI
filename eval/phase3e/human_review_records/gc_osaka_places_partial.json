@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_osaka_places_partial_v1",
+  "case_id": "gc_osaka_places_partial",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d3/gc_osaka_places_partial/gc_osaka_places_partial.json",
+  "artifact_sha256": "sha256:4bde4636f96f3134bdef8ca5f9bcd8b61578fffa47b87ffcb45a29710e2dd380",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-12T15:56:42Z",
+  "reviewed_at": "2026-08-12T15:56:42Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 4,
+    "pacing_quality": 4,
+    "usefulness": 3,
+    "explanation_quality": 3
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "计划较明确地落实了用户“美食 + 购物”的兴趣。Day 2 的黑门市场—难波千日前—心斋桥—道顿堀，以及 Day 3 的新世界和梅田，形成了较清晰的美食与购物主题；餐饮建议也覆盖大阪烧、海鲜小吃、炸串、居酒屋或拉面。Day 1 的 USJ 虽然不是核心兴趣本身，但作为三日旅行中的独立娱乐日并不构成明显 preference miss。主要缺口是部分建议仍停留在区域或品类层面，例如“道顿堀大阪美食”“梅田居酒屋或拉面”，缺乏更具体的可执行选择和推荐依据，因此不评为 5。",
+    "itinerary_coherence": "三天具有清晰且容易理解的主题组织：Day 1 为 USJ 专日，Day 2 集中于黑门市场、难波、心斋桥和道顿堀，Day 3 为新世界、通天阁和梅田。整体不是随机 POI 拼接，用户能够理解每天的主要活动区域和主题。但只有 1/8 eligible POIs verified，且 5 条 eligible route legs 均未得到 Directions verification，因此只能确认 itinerary 层面的组织较连贯，不能确认地理和交通执行层面已经充分验证，不评为 5。",
+    "pacing_quality": "整体节奏基本符合 balanced。Day 1 虽然安排 USJ 480 分钟及飞天恐龙 90 分钟，但属于主题乐园全天型安排，并非由于过多景点堆叠导致的明显 overpacking。Day 2 从 10:00 开始、Day 3 从 09:30 开始，每天约三个主要游览区域，结构上没有明显过度紧凑。但由于所有 eligible route legs 均未获得 verified route evidence，实际交通、步行和排队负担仍存在不确定性，因此无法确认真实执行时仍完全符合 balanced pace，不评为 5。",
+    "usefulness": "计划提供了清晰的大阪三日旅行框架，能够帮助用户理解每天主要去哪里、吃什么以及购物区域，因此具备基本规划价值。但 Grounding 仅有 1/8 eligible POIs verified，provenance coverage 为 2/9，5 条 eligible route legs 均未调用 Directions，route feasibility 为 unknown；Google Weather 与 AMap 也均 unavailable。对于“明天直接出发并照计划执行”的场景，用户仍需要自行重新确认多个地点、路线和运营信息，因此属于基本可用但存在明显执行缺口，评为 3。",
+    "explanation_quality": "计划提供了 JR 梦咲线、大阪 Metro 御堂筋线、公共交通约 60–90 分钟、餐饮类型和停留时间等较具体的信息，因此推荐逻辑在表面上容易理解。但底层 provenance 和 route verification 明显不足，尤其 Google Directions 实际为 not_called，却存在较精确的交通和时间描述。计划没有充分向用户解释 Places partial、Directions not_called、天气 unavailable 等 provider degradation 对这些建议可靠性的影响，容易让未验证信息显得比实际更确定，因此评为 3。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "行程包含 JR/Metro 交通描述、约 60–90 分钟的交通时间、餐饮建议和景点停留时间等具体外部或执行性陈述。但该 artifact 仅有 1/8 eligible POIs verified，provenance coverage 为 2/9，且没有 eligible route legs 通过 Google Directions 验证。现有人工评审证据不足以确认这些具体外部事实均具有充分来源支持，因此存在明显 unsupported-fact 风险；但当前证据也不能证明某一具体陈述一定错误或完全无来源支持，因此 verdict 为 uncertain。不得将未验证的交通、时间、营业、Express、价格或类似描述视为 Google Maps、官方来源或已验证事实。",
+  "additional_notes": "该 case 的主要人工质量风险不是 itinerary 完全不可用，而是“表面执行信息较具体，但底层 grounding、provenance 和 route verification 较弱”，可能造成高于实际证据强度的可信感。Human Review 不应把 deterministic grounding 指标机械重复计算为低 coherence 分数。"
+}

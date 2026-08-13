@@ -1,0 +1,5912 @@
+{
+  "capture_mode": "record",
+  "daily_load_assessments": [
+    {
+      "breakdown": {
+        "access_buffer_minutes": 20,
+        "attraction_minutes": 300,
+        "available_day_window_minutes": 570,
+        "effective_load_minutes": 580,
+        "estimated_travel_minutes": 60,
+        "load_ratio": 1.018,
+        "meal_minutes": 105,
+        "raw_attraction_minutes": 300,
+        "rest_buffer_minutes": 75,
+        "uncertainty_buffer_minutes": 20,
+        "verified_travel_minutes": 0
+      },
+      "confidence": "MEDIUM",
+      "day_index": 0,
+      "evidence": [
+        {
+          "field": "DayPlan.start_time",
+          "value": "10:00"
+        },
+        {
+          "field": "Attraction.visit_duration",
+          "raw_minutes": 300
+        },
+        {
+          "field": "route_legs",
+          "states": [
+            "unknown"
+          ]
+        },
+        {
+          "count": 3,
+          "field": "DayPlan.meals"
+        }
+      ],
+      "normalization": {
+        "classification": "ordinary_day",
+        "confidence_reduced": false,
+        "effective_access_units": 2,
+        "effective_minutes": 300,
+        "raw_minutes": 300,
+        "reasons": []
+      },
+      "overload_status": "warning",
+      "policy_assumptions": [
+        {
+          "name": "policy_finish",
+          "value": "19:30"
+        },
+        {
+          "class": "suburban",
+          "estimated_minutes": 60,
+          "name": "route_fallback",
+          "source": "pacing.daily_load.v0.proposed"
+        },
+        {
+          "name": "meal_access_rest_uncertainty_buffers",
+          "source": "pacing.daily_load.v0.proposed"
+        }
+      ],
+      "policy_version": "pacing.daily_load.v0.proposed",
+      "reasons": [
+        "effective_load_above_proposed_target",
+        "suburban_excursion"
+      ],
+      "requested_pace": "relaxed"
+    },
+    {
+      "breakdown": {
+        "access_buffer_minutes": 40,
+        "attraction_minutes": 390,
+        "available_day_window_minutes": 600,
+        "effective_load_minutes": 770,
+        "estimated_travel_minutes": 120,
+        "load_ratio": 1.283,
+        "meal_minutes": 105,
+        "raw_attraction_minutes": 390,
+        "rest_buffer_minutes": 75,
+        "uncertainty_buffer_minutes": 40,
+        "verified_travel_minutes": 0
+      },
+      "confidence": "MEDIUM",
+      "day_index": 1,
+      "evidence": [
+        {
+          "field": "DayPlan.start_time",
+          "value": "09:30"
+        },
+        {
+          "field": "Attraction.visit_duration",
+          "raw_minutes": 390
+        },
+        {
+          "field": "route_legs",
+          "states": [
+            "unavailable",
+            "unavailable"
+          ]
+        },
+        {
+          "count": 3,
+          "field": "DayPlan.meals"
+        }
+      ],
+      "normalization": {
+        "classification": "ordinary_day",
+        "confidence_reduced": false,
+        "effective_access_units": 3,
+        "effective_minutes": 390,
+        "raw_minutes": 390,
+        "reasons": []
+      },
+      "overload_status": "revisable_overload",
+      "policy_assumptions": [
+        {
+          "name": "policy_finish",
+          "value": "19:30"
+        },
+        {
+          "class": "suburban",
+          "estimated_minutes": 120,
+          "name": "route_fallback",
+          "source": "pacing.daily_load.v0.proposed"
+        },
+        {
+          "name": "meal_access_rest_uncertainty_buffers",
+          "source": "pacing.daily_load.v0.proposed"
+        }
+      ],
+      "policy_version": "pacing.daily_load.v0.proposed",
+      "reasons": [
+        "effective_load_exceeds_proposed_maximum",
+        "suburban_excursion",
+        "multiple_unknown_routes"
+      ],
+      "requested_pace": "relaxed"
+    },
+    {
+      "breakdown": {
+        "access_buffer_minutes": 30,
+        "attraction_minutes": 360,
+        "available_day_window_minutes": 570,
+        "effective_load_minutes": 794,
+        "estimated_travel_minutes": 0,
+        "load_ratio": 1.393,
+        "meal_minutes": 105,
+        "raw_attraction_minutes": 360,
+        "rest_buffer_minutes": 75,
+        "uncertainty_buffer_minutes": 0,
+        "verified_travel_minutes": 224
+      },
+      "confidence": "HIGH",
+      "day_index": 2,
+      "evidence": [
+        {
+          "field": "DayPlan.start_time",
+          "value": "10:00"
+        },
+        {
+          "field": "Attraction.visit_duration",
+          "raw_minutes": 360
+        },
+        {
+          "field": "route_legs",
+          "states": [
+            "verified",
+            "infeasible"
+          ]
+        },
+        {
+          "count": 3,
+          "field": "DayPlan.meals"
+        }
+      ],
+      "normalization": {
+        "classification": "ordinary_day",
+        "confidence_reduced": false,
+        "effective_access_units": 3,
+        "effective_minutes": 360,
+        "raw_minutes": 360,
+        "reasons": []
+      },
+      "overload_status": "revisable_overload",
+      "policy_assumptions": [
+        {
+          "name": "policy_finish",
+          "value": "19:30"
+        },
+        {
+          "class": "suburban",
+          "estimated_minutes": 0,
+          "name": "route_fallback",
+          "source": "pacing.daily_load.v0.proposed"
+        },
+        {
+          "name": "meal_access_rest_uncertainty_buffers",
+          "source": "pacing.daily_load.v0.proposed"
+        }
+      ],
+      "policy_version": "pacing.daily_load.v0.proposed",
+      "reasons": [
+        "effective_load_exceeds_proposed_maximum",
+        "suburban_excursion"
+      ],
+      "requested_pace": "relaxed"
+    }
+  ],
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-13T12:07:29.985042+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-13T12:05:50.049549+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 2930,
+        "total_attractions": 260,
+        "total_hotels": 1350,
+        "total_inter_city_transport": 0,
+        "total_meals": 960,
+        "total_transportation": 360
+      },
+      "cities": [
+        "丽江"
+      ],
+      "city": "丽江",
+      "daily_load_assessments": [
+        {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        }
+      ],
+      "days": [
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市古城区 邮政编码: 674100",
+              "category": "公园与自然风光",
+              "description": "环境清幽、湖水与雪山景观相映成趣,适合慢慢散步和拍摄自然风光。景点免费,建议预留充足时间在水边和园林步道休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.887715999999998,
+                "longitude": 100.2361806
+              },
+              "map_data_source": "google_places",
+              "name": "黑龙潭公园",
+              "photos": [],
+              "place_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_match_status": "verified",
+              "rating": 4.0,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "云南省丽江市古城区大研街道",
+              "category": "历史街区与人文景观",
+              "description": "傍晚后灯光、流水和街巷氛围更适合慢逛,可体验古城夜景、特色小店及沿街驻唱。古城石板路较多,建议穿舒适防滑鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "丽江古城",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-14",
+          "day_index": 0,
+          "description": "松弛游览丽江市区北部与古城片区。上午在黑龙潭公园欣赏雪山倒影和园林水景,午后回客栈休息,傍晚及夜间慢逛丽江古城,适合情侣拍照和体验驻唱氛围。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离丽江古城步行约5-15分钟,距离黑龙潭公园约3-4公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择客栈附近的米线、丽江粑粑和热饮,方便节省早晨时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城附近米线或粑粑早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐选择腊排骨、野生菌或当地时蔬等适合两人分享的菜品。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "古城内云南家常菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择纳西风味餐或腊排骨火锅,晚餐后继续在古城散步。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "丽江古城特色晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "以步行和网约车为主；黑龙潭公园距丽江古城北门较近,建议网约车前往后步行游览,古城内步行"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市玉龙纳西族自治县玉龙雪山 邮政编码: 674112",
+              "category": "高山自然风光",
+              "description": "丽江代表性高山自然景观,可结合雪山观光小火车及景区交通游览。景区海拔较高,需根据身体状态放慢节奏并注意保暖。参考信息显示雪山观光小火车来回及进山大门票约130元,具体以官方当日价格为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "map_data_source": "google_places",
+              "name": "玉龙雪山",
+              "photos": [],
+              "place_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 130,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县4679+VHV 邮政编码: 674112",
+              "category": "高山草甸与森林",
+              "description": "高山草甸与云杉林相结合,适合观景和轻松散步。建议先游览云杉坪,再前往蓝月谷；参考信息提示需提前在小程序预约门票,建议预约15:30之前的时段,请提前确认官方预约规则。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.114732,
+                "longitude": 100.218927
+              },
+              "map_data_source": "google_places",
+              "name": "云杉坪",
+              "photos": [],
+              "place_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": true,
+              "reservation_tips": "建议提前通过官方小程序预约门票,参考信息建议预约15:30之前的时段；具体开放时间、索道及景区接驳安排以官方信息为准。",
+              "ticket_price": 60,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县46GV+8VM 邮政编码: 674106",
+              "category": "峡谷湖泊与自然风光",
+              "description": "以碧蓝水色、峡谷和雪山背景为主要看点,景色受光照和天气影响明显。建议沿步道慢行拍照,不必追求一次走完全部区域。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "map_data_source": "google_places",
+              "name": "蓝月谷",
+              "photos": [],
+              "place_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-15",
+          "day_index": 1,
+          "description": "安排自然风光核心日,前往玉龙雪山景区,建议先游览云杉坪,再前往蓝月谷。雪山海拔较高,行程不安排过多额外景点,返程后留出休息时间。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,适合作为玉龙雪山一日游的市区住宿点",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前准备面包、鸡蛋、热饮等,减少雪山日早晨等待时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "客栈简便早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "以热食、汤面和热饮为主,避免安排过于油腻的餐食。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "玉龙雪山景区简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择土鸡汤、米线或云南家常菜,补充体力并尽早休息。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近清淡晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议提前预约景区交通或选择正规一日接送；市区往返玉龙雪山车程和景区接驳时间需保守预留,景区内按照现场指引换乘"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市古城区束河路W684+2RM 邮政编码: 674101",
+              "category": "古镇与自然风光",
+              "description": "相比大研古城更适合慢节奏散步,可沿古镇水系、街巷和绿意较多的区域游览,适合情侣轻松拍照和休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "map_data_source": "google_places",
+              "name": "束河古镇",
+              "photos": [],
+              "place_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市古城区W6F3+HG9 邮政编码: 674101",
+              "category": "潭水与生态景观",
+              "description": "从束河古镇步行前往,可欣赏潭水、树木和较为安静的绿色环境。建议放慢步调,在潭边留出休息和拍照时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.923918999999998,
+                "longitude": 100.203865
+              },
+              "map_data_source": "google_places",
+              "name": "九鼎龙潭",
+              "photos": [],
+              "place_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县玉湖村 邮政编码: 674101",
+              "category": "村落与山地风光",
+              "description": "村落以石头民居和雪山脚下的乡村环境为特色,适合进行低强度漫步。建议尊重当地居民生活,不随意进入私人院落或拍摄村民。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.012895999999998,
+                "longitude": 100.213571
+              },
+              "map_data_source": "google_places",
+              "name": "玉湖村",
+              "photos": [],
+              "place_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-16",
+          "day_index": 2,
+          "description": "安排古镇与村落自然风貌的一日慢游。上午游览束河古镇并步行至九鼎龙潭,午后前往玉湖村,感受石头民居和玉龙雪山脚下的村落景观,傍晚返回市区。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离束河古镇约7-9公里,距离玉湖村约15-20公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择当地米线、豆浆或烤饵块,保持轻松出发节奏。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "可选择土鸡、腊排骨、时蔬或米线等当地菜品,两人适量点餐。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "束河古镇纳西风味午餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择环境舒适的云南菜馆,作为行程收尾晚餐。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近情侣晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "丽江古城至束河古镇、玉湖村之间建议使用网约车或包车；束河古镇和九鼎龙潭之间以步行为主,村落道路及景区入口需预留机动时间"
+        }
+      ],
+      "end_date": "2026-12-16",
+      "overall_suggestions": "当前提供的外部天气数据日期为2026-08-13至2026-08-16,与本次2026-12-14至2026-12-16行程日期不匹配,因此不写入逐日天气信息。12月丽江通常昼夜温差较大,建议携带保暖外套、帽子、手套、防晒用品和润唇保湿用品；玉龙雪山日需准备防滑鞋和便携氧气,并根据身体状况量力而行。云杉坪预约信息来自候选笔记,出发前应通过官方渠道确认门票、索道、景区接驳和开放安排。黑龙潭公园、蓝月谷、束河古镇、九鼎龙潭和玉湖村的费用及开放规则可能调整,景点门票按当前已知信息估算,实际以现场或官方公告为准。行程按照情侣、自然风光和松弛节奏设计,每天保留较长休息时间,未知路线及景区换乘均建议额外预留时间。",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 20,
+              "attraction_minutes": 300,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 580,
+              "estimated_travel_minutes": 60,
+              "load_ratio": 1.018,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 300,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 20,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 0,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 300
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unknown"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 2,
+              "effective_minutes": 300,
+              "raw_minutes": 300,
+              "reasons": []
+            },
+            "overload_status": "warning",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 60,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_above_proposed_target",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "confidence_or_status_not_auto_revisable",
+            "revision_execution_supported": false,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:0",
+          "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "黑龙潭公园",
+            "丽江古城"
+          ],
+          "revisable": false,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "确认移动时间并为用餐和休息保留余量。",
+          "title": "当天节奏负荷接近建议上限",
+          "type": "pacing"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 40,
+              "attraction_minutes": 390,
+              "available_day_window_minutes": 600,
+              "effective_load_minutes": 770,
+              "estimated_travel_minutes": 120,
+              "load_ratio": 1.283,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 390,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 40,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 1,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "09:30"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 390
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unavailable",
+                  "unavailable"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 390,
+              "raw_minutes": 390,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 120,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion",
+              "multiple_unknown_routes"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:1",
+          "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "玉龙雪山",
+            "云杉坪",
+            "蓝月谷"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 13905,
+            "duration_s": 11966,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:2:1",
+          "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+          "related_poi_names": [
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13488
+          },
+          "id": "route_feasibility:day_total:2",
+          "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 30,
+              "attraction_minutes": 360,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 794,
+              "estimated_travel_minutes": 0,
+              "load_ratio": 1.393,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 360,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 0,
+              "verified_travel_minutes": 224
+            },
+            "confidence": "HIGH",
+            "day_index": 2,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 360
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "verified",
+                  "infeasible"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 360,
+              "raw_minutes": 360,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 0,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:2",
+          "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "束河古镇",
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        }
+      ],
+      "start_date": "2026-12-14",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 25,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-16",
+          "day_temp": 24,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "丽江",
+          "data_available": true,
+          "days": [
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 25,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-16",
+              "day_temp": 24,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available",
+              "title": "丽江游完美结束～附一些小tips"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available",
+              "title": "去丽江第一站☝️——直奔玉湖村"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available",
+              "title": "丽江留5天绝对正确✅"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a30ce10000000002103fa27",
+              "source_url": "https://www.xiaohongshu.com/explore/6a30ce10000000002103fa27",
+              "status": "detail_available",
+              "title": "丽江景点值不值得去。。。。（个人主观锐评）"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "黑龙潭公园",
+                  "recommendation_quote": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠"
+                }
+              ],
+              "identity_text": "黑龙潭公园",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "黑龙潭公园",
+              "name_en": "Black Dragon Pool Park",
+              "name_zh": "黑龙潭公园",
+              "recommendation": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "玉龙雪山",
+                  "recommendation_quote": "还强推大家去坐雪山观光小火车，来回+进山大门票130"
+                }
+              ],
+              "identity_text": "玉龙雪山",
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "location_status": "available",
+              "name": "玉龙雪山",
+              "name_en": "Jade Dragon Snow Mountain",
+              "name_zh": "玉龙雪山",
+              "recommendation": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69",
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车"
+                },
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "要提前在小程序预约门票，建议约15:30之前的"
+                }
+              ],
+              "identity_text": "云杉坪",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "云杉坪",
+              "name_en": "Spruce Meadow",
+              "name_zh": "云杉坪",
+              "recommendation": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "蓝月谷",
+                  "recommendation_quote": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮"
+                }
+              ],
+              "identity_text": "蓝月谷",
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "location_status": "available",
+              "name": "蓝月谷",
+              "name_en": "Blue Moon Valley",
+              "name_zh": "蓝月谷",
+              "recommendation": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "丽江古城",
+                  "recommendation_quote": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的"
+                }
+              ],
+              "identity_text": "丽江古城",
+              "location": {
+                "latitude": 26.8718026,
+                "longitude": 100.2358502
+              },
+              "location_status": "available",
+              "name": "丽江古城",
+              "name_en": "Lijiang Old Town",
+              "name_zh": "丽江古城",
+              "recommendation": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "束河古镇",
+                  "recommendation_quote": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色"
+                }
+              ],
+              "identity_text": "束河古镇",
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "location_status": "available",
+              "name": "束河古镇",
+              "name_en": "Shuhe Ancient Town",
+              "name_zh": "束河古镇",
+              "recommendation": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "九鼎龙谭",
+                  "recommendation_quote": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感"
+                }
+              ],
+              "identity_text": "九鼎龙谭",
+              "location": {
+                "latitude": 26.923936,
+                "longitude": 100.203939
+              },
+              "location_status": "available",
+              "name": "九鼎龙谭",
+              "name_en": "Jiuding Longtan",
+              "name_zh": "九鼎龙潭",
+              "recommendation": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "玉湖村 房子很有特色，石头民居",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "玉湖村",
+                  "recommendation_quote": "玉湖村 房子很有特色，石头民居"
+                }
+              ],
+              "identity_text": "玉湖村",
+              "location": {
+                "latitude": 27.012896,
+                "longitude": 100.213571
+              },
+              "location_status": "available",
+              "name": "玉湖村",
+              "name_en": "Yuhu Village",
+              "name_zh": "玉湖村",
+              "recommendation": "玉湖村 房子很有特色，石头民居",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "龙女湖",
+                  "recommendation_quote": "龙女湖像是一个人工水库，比较小，不要抱太大的预期"
+                }
+              ],
+              "identity_text": "龙女湖",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "龙女湖",
+              "name_en": "Longnü Lake",
+              "name_zh": "龙女湖",
+              "recommendation": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v2",
+    "case_id": "gc_lijiang_places_unavailable",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase4d_lijiang_authorized_run_01_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_pacing_v1",
+    "prompt_version": "planner_prompt_pacing_v1"
+  },
+  "pacing_policy_version": "pacing.daily_load.v0.proposed",
+  "pacing_risk_ids": [
+    "pacing_daily_load:day:0",
+    "pacing_daily_load:day:1",
+    "pacing_daily_load:day:2"
+  ],
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "base_artifact_hash": null,
+    "base_artifact_identity": null,
+    "before": null,
+    "patch_request": null,
+    "plan_version_after": null,
+    "plan_version_before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable",
+    "typed_operations": [],
+    "validation_result": null
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "自然风光"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "amap",
+      "reason": "fallback provider result consumed",
+      "status": "degraded",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 7,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 8,
+        "verified": 7
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 2,
+      "provider": "google_directions",
+      "reason": "one or more route legs unavailable",
+      "status": "partial",
+      "summary": {
+        "attempted": 4,
+        "available": 2,
+        "eligible_final_intra_city_legs": 4,
+        "observed_final_legs": 5,
+        "validation_phase": "initial"
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 2,
+      "provider": "hotel_google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "candidate_count": 2,
+        "cities": 1,
+        "endpoint": "hotel_search"
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "affected_day_indices": [
+      1,
+      2
+    ],
+    "after": {
+      "budget": {
+        "total": 2930,
+        "total_attractions": 260,
+        "total_hotels": 1350,
+        "total_inter_city_transport": 0,
+        "total_meals": 960,
+        "total_transportation": 360
+      },
+      "cities": [
+        "丽江"
+      ],
+      "city": "丽江",
+      "daily_load_assessments": [
+        {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        }
+      ],
+      "days": [
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市古城区 邮政编码: 674100",
+              "category": "公园与自然风光",
+              "description": "环境清幽、湖水与雪山景观相映成趣,适合慢慢散步和拍摄自然风光。景点免费,建议预留充足时间在水边和园林步道休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.887715999999998,
+                "longitude": 100.2361806
+              },
+              "map_data_source": "google_places",
+              "name": "黑龙潭公园",
+              "photos": [],
+              "place_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_match_status": "verified",
+              "rating": 4.0,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "云南省丽江市古城区大研街道",
+              "category": "历史街区与人文景观",
+              "description": "傍晚后灯光、流水和街巷氛围更适合慢逛,可体验古城夜景、特色小店及沿街驻唱。古城石板路较多,建议穿舒适防滑鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "丽江古城",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-14",
+          "day_index": 0,
+          "description": "松弛游览丽江市区北部与古城片区。上午在黑龙潭公园欣赏雪山倒影和园林水景,午后回客栈休息,傍晚及夜间慢逛丽江古城,适合情侣拍照和体验驻唱氛围。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离丽江古城步行约5-15分钟,距离黑龙潭公园约3-4公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择客栈附近的米线、丽江粑粑和热饮,方便节省早晨时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城附近米线或粑粑早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐选择腊排骨、野生菌或当地时蔬等适合两人分享的菜品。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "古城内云南家常菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择纳西风味餐或腊排骨火锅,晚餐后继续在古城散步。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "丽江古城特色晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "以步行和网约车为主；黑龙潭公园距丽江古城北门较近,建议网约车前往后步行游览,古城内步行"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市玉龙纳西族自治县玉龙雪山 邮政编码: 674112",
+              "category": "高山自然风光",
+              "description": "丽江代表性高山自然景观,可结合雪山观光小火车及景区交通游览。景区海拔较高,需根据身体状态放慢节奏并注意保暖。参考信息显示雪山观光小火车来回及进山大门票约130元,具体以官方当日价格为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "map_data_source": "google_places",
+              "name": "玉龙雪山",
+              "photos": [],
+              "place_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 130,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县4679+VHV 邮政编码: 674112",
+              "category": "高山草甸与森林",
+              "description": "高山草甸与云杉林相结合,适合观景和轻松散步。建议先游览云杉坪,再前往蓝月谷；参考信息提示需提前在小程序预约门票,建议预约15:30之前的时段,请提前确认官方预约规则。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.114732,
+                "longitude": 100.218927
+              },
+              "map_data_source": "google_places",
+              "name": "云杉坪",
+              "photos": [],
+              "place_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": true,
+              "reservation_tips": "建议提前通过官方小程序预约门票,参考信息建议预约15:30之前的时段；具体开放时间、索道及景区接驳安排以官方信息为准。",
+              "ticket_price": 60,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县46GV+8VM 邮政编码: 674106",
+              "category": "峡谷湖泊与自然风光",
+              "description": "以碧蓝水色、峡谷和雪山背景为主要看点,景色受光照和天气影响明显。建议沿步道慢行拍照,不必追求一次走完全部区域。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "map_data_source": "google_places",
+              "name": "蓝月谷",
+              "photos": [],
+              "place_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-15",
+          "day_index": 1,
+          "description": "安排自然风光核心日,前往玉龙雪山景区,建议先游览云杉坪,再前往蓝月谷。雪山海拔较高,行程不安排过多额外景点,返程后留出休息时间。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,适合作为玉龙雪山一日游的市区住宿点",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前准备面包、鸡蛋、热饮等,减少雪山日早晨等待时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "客栈简便早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "以热食、汤面和热饮为主,避免安排过于油腻的餐食。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "玉龙雪山景区简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择土鸡汤、米线或云南家常菜,补充体力并尽早休息。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近清淡晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议提前预约景区交通或选择正规一日接送；市区往返玉龙雪山车程和景区接驳时间需保守预留,景区内按照现场指引换乘"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市古城区束河路W684+2RM 邮政编码: 674101",
+              "category": "古镇与自然风光",
+              "description": "相比大研古城更适合慢节奏散步,可沿古镇水系、街巷和绿意较多的区域游览,适合情侣轻松拍照和休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "map_data_source": "google_places",
+              "name": "束河古镇",
+              "photos": [],
+              "place_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市古城区W6F3+HG9 邮政编码: 674101",
+              "category": "潭水与生态景观",
+              "description": "从束河古镇步行前往,可欣赏潭水、树木和较为安静的绿色环境。建议放慢步调,在潭边留出休息和拍照时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.923918999999998,
+                "longitude": 100.203865
+              },
+              "map_data_source": "google_places",
+              "name": "九鼎龙潭",
+              "photos": [],
+              "place_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县玉湖村 邮政编码: 674101",
+              "category": "村落与山地风光",
+              "description": "村落以石头民居和雪山脚下的乡村环境为特色,适合进行低强度漫步。建议尊重当地居民生活,不随意进入私人院落或拍摄村民。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.012895999999998,
+                "longitude": 100.213571
+              },
+              "map_data_source": "google_places",
+              "name": "玉湖村",
+              "photos": [],
+              "place_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-16",
+          "day_index": 2,
+          "description": "安排古镇与村落自然风貌的一日慢游。上午游览束河古镇并步行至九鼎龙潭,午后前往玉湖村,感受石头民居和玉龙雪山脚下的村落景观,傍晚返回市区。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离束河古镇约7-9公里,距离玉湖村约15-20公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择当地米线、豆浆或烤饵块,保持轻松出发节奏。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "可选择土鸡、腊排骨、时蔬或米线等当地菜品,两人适量点餐。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "束河古镇纳西风味午餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择环境舒适的云南菜馆,作为行程收尾晚餐。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近情侣晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "丽江古城至束河古镇、玉湖村之间建议使用网约车或包车；束河古镇和九鼎龙潭之间以步行为主,村落道路及景区入口需预留机动时间"
+        }
+      ],
+      "end_date": "2026-12-16",
+      "overall_suggestions": "当前提供的外部天气数据日期为2026-08-13至2026-08-16,与本次2026-12-14至2026-12-16行程日期不匹配,因此不写入逐日天气信息。12月丽江通常昼夜温差较大,建议携带保暖外套、帽子、手套、防晒用品和润唇保湿用品；玉龙雪山日需准备防滑鞋和便携氧气,并根据身体状况量力而行。云杉坪预约信息来自候选笔记,出发前应通过官方渠道确认门票、索道、景区接驳和开放安排。黑龙潭公园、蓝月谷、束河古镇、九鼎龙潭和玉湖村的费用及开放规则可能调整,景点门票按当前已知信息估算,实际以现场或官方公告为准。行程按照情侣、自然风光和松弛节奏设计,每天保留较长休息时间,未知路线及景区换乘均建议额外预留时间。",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 20,
+              "attraction_minutes": 300,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 580,
+              "estimated_travel_minutes": 60,
+              "load_ratio": 1.018,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 300,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 20,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 0,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 300
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unknown"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 2,
+              "effective_minutes": 300,
+              "raw_minutes": 300,
+              "reasons": []
+            },
+            "overload_status": "warning",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 60,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_above_proposed_target",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "confidence_or_status_not_auto_revisable",
+            "revision_execution_supported": false,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:0",
+          "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "黑龙潭公园",
+            "丽江古城"
+          ],
+          "revisable": false,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "确认移动时间并为用餐和休息保留余量。",
+          "title": "当天节奏负荷接近建议上限",
+          "type": "pacing"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 40,
+              "attraction_minutes": 390,
+              "available_day_window_minutes": 600,
+              "effective_load_minutes": 770,
+              "estimated_travel_minutes": 120,
+              "load_ratio": 1.283,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 390,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 40,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 1,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "09:30"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 390
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unavailable",
+                  "unavailable"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 390,
+              "raw_minutes": 390,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 120,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion",
+              "multiple_unknown_routes"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:1",
+          "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "玉龙雪山",
+            "云杉坪",
+            "蓝月谷"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 13905,
+            "duration_s": 11966,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:2:1",
+          "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+          "related_poi_names": [
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13488
+          },
+          "id": "route_feasibility:day_total:2",
+          "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 30,
+              "attraction_minutes": 360,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 794,
+              "estimated_travel_minutes": 0,
+              "load_ratio": 1.393,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 360,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 0,
+              "verified_travel_minutes": 224
+            },
+            "confidence": "HIGH",
+            "day_index": 2,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 360
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "verified",
+                  "infeasible"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 360,
+              "raw_minutes": 360,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 0,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:2",
+          "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "束河古镇",
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        }
+      ],
+      "start_date": "2026-12-14",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 25,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-16",
+          "day_temp": 24,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "丽江",
+          "data_available": true,
+          "days": [
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 25,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-16",
+              "day_temp": 24,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available",
+              "title": "丽江游完美结束～附一些小tips"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available",
+              "title": "去丽江第一站☝️——直奔玉湖村"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available",
+              "title": "丽江留5天绝对正确✅"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a30ce10000000002103fa27",
+              "source_url": "https://www.xiaohongshu.com/explore/6a30ce10000000002103fa27",
+              "status": "detail_available",
+              "title": "丽江景点值不值得去。。。。（个人主观锐评）"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "黑龙潭公园",
+                  "recommendation_quote": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠"
+                }
+              ],
+              "identity_text": "黑龙潭公园",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "黑龙潭公园",
+              "name_en": "Black Dragon Pool Park",
+              "name_zh": "黑龙潭公园",
+              "recommendation": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "玉龙雪山",
+                  "recommendation_quote": "还强推大家去坐雪山观光小火车，来回+进山大门票130"
+                }
+              ],
+              "identity_text": "玉龙雪山",
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "location_status": "available",
+              "name": "玉龙雪山",
+              "name_en": "Jade Dragon Snow Mountain",
+              "name_zh": "玉龙雪山",
+              "recommendation": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69",
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车"
+                },
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "要提前在小程序预约门票，建议约15:30之前的"
+                }
+              ],
+              "identity_text": "云杉坪",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "云杉坪",
+              "name_en": "Spruce Meadow",
+              "name_zh": "云杉坪",
+              "recommendation": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "蓝月谷",
+                  "recommendation_quote": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮"
+                }
+              ],
+              "identity_text": "蓝月谷",
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "location_status": "available",
+              "name": "蓝月谷",
+              "name_en": "Blue Moon Valley",
+              "name_zh": "蓝月谷",
+              "recommendation": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "丽江古城",
+                  "recommendation_quote": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的"
+                }
+              ],
+              "identity_text": "丽江古城",
+              "location": {
+                "latitude": 26.8718026,
+                "longitude": 100.2358502
+              },
+              "location_status": "available",
+              "name": "丽江古城",
+              "name_en": "Lijiang Old Town",
+              "name_zh": "丽江古城",
+              "recommendation": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "束河古镇",
+                  "recommendation_quote": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色"
+                }
+              ],
+              "identity_text": "束河古镇",
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "location_status": "available",
+              "name": "束河古镇",
+              "name_en": "Shuhe Ancient Town",
+              "name_zh": "束河古镇",
+              "recommendation": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "九鼎龙谭",
+                  "recommendation_quote": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感"
+                }
+              ],
+              "identity_text": "九鼎龙谭",
+              "location": {
+                "latitude": 26.923936,
+                "longitude": 100.203939
+              },
+              "location_status": "available",
+              "name": "九鼎龙谭",
+              "name_en": "Jiuding Longtan",
+              "name_zh": "九鼎龙潭",
+              "recommendation": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "玉湖村 房子很有特色，石头民居",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "玉湖村",
+                  "recommendation_quote": "玉湖村 房子很有特色，石头民居"
+                }
+              ],
+              "identity_text": "玉湖村",
+              "location": {
+                "latitude": 27.012896,
+                "longitude": 100.213571
+              },
+              "location_status": "available",
+              "name": "玉湖村",
+              "name_en": "Yuhu Village",
+              "name_zh": "玉湖村",
+              "recommendation": "玉湖村 房子很有特色，石头民居",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "龙女湖",
+                  "recommendation_quote": "龙女湖像是一个人工水库，比较小，不要抱太大的预期"
+                }
+              ],
+              "identity_text": "龙女湖",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "龙女湖",
+              "name_en": "Longnü Lake",
+              "name_zh": "龙女湖",
+              "recommendation": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    "before": {
+      "budget": {
+        "total": 2930,
+        "total_attractions": 260,
+        "total_hotels": 1350,
+        "total_inter_city_transport": 0,
+        "total_meals": 960,
+        "total_transportation": 360
+      },
+      "cities": [
+        "丽江"
+      ],
+      "city": "丽江",
+      "daily_load_assessments": [
+        {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        }
+      ],
+      "days": [
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市古城区 邮政编码: 674100",
+              "category": "公园与自然风光",
+              "description": "环境清幽、湖水与雪山景观相映成趣,适合慢慢散步和拍摄自然风光。景点免费,建议预留充足时间在水边和园林步道休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.887715999999998,
+                "longitude": 100.2361806
+              },
+              "map_data_source": "google_places",
+              "name": "黑龙潭公园",
+              "photos": [],
+              "place_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+              "poi_match_status": "verified",
+              "rating": 4.0,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "云南省丽江市古城区大研街道",
+              "category": "历史街区与人文景观",
+              "description": "傍晚后灯光、流水和街巷氛围更适合慢逛,可体验古城夜景、特色小店及沿街驻唱。古城石板路较多,建议穿舒适防滑鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "丽江古城",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-14",
+          "day_index": 0,
+          "description": "松弛游览丽江市区北部与古城片区。上午在黑龙潭公园欣赏雪山倒影和园林水景,午后回客栈休息,傍晚及夜间慢逛丽江古城,适合情侣拍照和体验驻唱氛围。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离丽江古城步行约5-15分钟,距离黑龙潭公园约3-4公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择客栈附近的米线、丽江粑粑和热饮,方便节省早晨时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城附近米线或粑粑早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐选择腊排骨、野生菌或当地时蔬等适合两人分享的菜品。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "古城内云南家常菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择纳西风味餐或腊排骨火锅,晚餐后继续在古城散步。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "丽江古城特色晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "以步行和网约车为主；黑龙潭公园距丽江古城北门较近,建议网约车前往后步行游览,古城内步行"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国丽江市玉龙纳西族自治县玉龙雪山 邮政编码: 674112",
+              "category": "高山自然风光",
+              "description": "丽江代表性高山自然景观,可结合雪山观光小火车及景区交通游览。景区海拔较高,需根据身体状态放慢节奏并注意保暖。参考信息显示雪山观光小火车来回及进山大门票约130元,具体以官方当日价格为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "map_data_source": "google_places",
+              "name": "玉龙雪山",
+              "photos": [],
+              "place_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 130,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县4679+VHV 邮政编码: 674112",
+              "category": "高山草甸与森林",
+              "description": "高山草甸与云杉林相结合,适合观景和轻松散步。建议先游览云杉坪,再前往蓝月谷；参考信息提示需提前在小程序预约门票,建议预约15:30之前的时段,请提前确认官方预约规则。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.114732,
+                "longitude": 100.218927
+              },
+              "map_data_source": "google_places",
+              "name": "云杉坪",
+              "photos": [],
+              "place_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": true,
+              "reservation_tips": "建议提前通过官方小程序预约门票,参考信息建议预约15:30之前的时段；具体开放时间、索道及景区接驳安排以官方信息为准。",
+              "ticket_price": 60,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县46GV+8VM 邮政编码: 674106",
+              "category": "峡谷湖泊与自然风光",
+              "description": "以碧蓝水色、峡谷和雪山背景为主要看点,景色受光照和天气影响明显。建议沿步道慢行拍照,不必追求一次走完全部区域。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "map_data_source": "google_places",
+              "name": "蓝月谷",
+              "photos": [],
+              "place_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-15",
+          "day_index": 1,
+          "description": "安排自然风光核心日,前往玉龙雪山景区,建议先游览云杉坪,再前往蓝月谷。雪山海拔较高,行程不安排过多额外景点,返程后留出休息时间。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,适合作为玉龙雪山一日游的市区住宿点",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议提前准备面包、鸡蛋、热饮等,减少雪山日早晨等待时间。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "客栈简便早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "以热食、汤面和热饮为主,避免安排过于油腻的餐食。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "玉龙雪山景区简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择土鸡汤、米线或云南家常菜,补充体力并尽早休息。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近清淡晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议提前预约景区交通或选择正规一日接送；市区往返玉龙雪山车程和景区接驳时间需保守预留,景区内按照现场指引换乘"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市古城区束河路W684+2RM 邮政编码: 674101",
+              "category": "古镇与自然风光",
+              "description": "相比大研古城更适合慢节奏散步,可沿古镇水系、街巷和绿意较多的区域游览,适合情侣轻松拍照和休息。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "map_data_source": "google_places",
+              "name": "束河古镇",
+              "photos": [],
+              "place_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市古城区W6F3+HG9 邮政编码: 674101",
+              "category": "潭水与生态景观",
+              "description": "从束河古镇步行前往,可欣赏潭水、树木和较为安静的绿色环境。建议放慢步调,在潭边留出休息和拍照时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.923918999999998,
+                "longitude": 100.203865
+              },
+              "map_data_source": "google_places",
+              "name": "九鼎龙潭",
+              "photos": [],
+              "place_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县玉湖村 邮政编码: 674101",
+              "category": "村落与山地风光",
+              "description": "村落以石头民居和雪山脚下的乡村环境为特色,适合进行低强度漫步。建议尊重当地居民生活,不随意进入私人院落或拍摄村民。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.012895999999998,
+                "longitude": 100.213571
+              },
+              "map_data_source": "google_places",
+              "name": "玉湖村",
+              "photos": [],
+              "place_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-16",
+          "day_index": 2,
+          "description": "安排古镇与村落自然风貌的一日慢游。上午游览束河古镇并步行至九鼎龙潭,午后前往玉湖村,感受石头民居和玉龙雪山脚下的村落景观,傍晚返回市区。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37 邮政编码: 674100",
+            "distance": "位于丽江古城七一街片区,距离束河古镇约7-9公里,距离玉湖村约15-20公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "约350-550元",
+            "rating": "4.9",
+            "type": "民宿客栈"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择当地米线、豆浆或烤饵块,保持轻松出发节奏。",
+              "estimated_cost": 40,
+              "location": null,
+              "name": "古城早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "可选择土鸡、腊排骨、时蔬或米线等当地菜品,两人适量点餐。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "束河古镇纳西风味午餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后选择环境舒适的云南菜馆,作为行程收尾晚餐。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "古城附近情侣晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "丽江古城至束河古镇、玉湖村之间建议使用网约车或包车；束河古镇和九鼎龙潭之间以步行为主,村落道路及景区入口需预留机动时间"
+        }
+      ],
+      "end_date": "2026-12-16",
+      "overall_suggestions": "当前提供的外部天气数据日期为2026-08-13至2026-08-16,与本次2026-12-14至2026-12-16行程日期不匹配,因此不写入逐日天气信息。12月丽江通常昼夜温差较大,建议携带保暖外套、帽子、手套、防晒用品和润唇保湿用品；玉龙雪山日需准备防滑鞋和便携氧气,并根据身体状况量力而行。云杉坪预约信息来自候选笔记,出发前应通过官方渠道确认门票、索道、景区接驳和开放安排。黑龙潭公园、蓝月谷、束河古镇、九鼎龙潭和玉湖村的费用及开放规则可能调整,景点门票按当前已知信息估算,实际以现场或官方公告为准。行程按照情侣、自然风光和松弛节奏设计,每天保留较长休息时间,未知路线及景区换乘均建议额外预留时间。",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 20,
+              "attraction_minutes": 300,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 580,
+              "estimated_travel_minutes": 60,
+              "load_ratio": 1.018,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 300,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 20,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 0,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 300
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unknown"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 2,
+              "effective_minutes": 300,
+              "raw_minutes": 300,
+              "reasons": []
+            },
+            "overload_status": "warning",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 60,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_above_proposed_target",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "confidence_or_status_not_auto_revisable",
+            "revision_execution_supported": false,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:0",
+          "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "黑龙潭公园",
+            "丽江古城"
+          ],
+          "revisable": false,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "确认移动时间并为用餐和休息保留余量。",
+          "title": "当天节奏负荷接近建议上限",
+          "type": "pacing"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 40,
+              "attraction_minutes": 390,
+              "available_day_window_minutes": 600,
+              "effective_load_minutes": 770,
+              "estimated_travel_minutes": 120,
+              "load_ratio": 1.283,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 390,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 40,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 1,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "09:30"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 390
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unavailable",
+                  "unavailable"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 390,
+              "raw_minutes": 390,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 120,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion",
+              "multiple_unknown_routes"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:1",
+          "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "玉龙雪山",
+            "云杉坪",
+            "蓝月谷"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 13905,
+            "duration_s": 11966,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:2:1",
+          "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+          "related_poi_names": [
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13488
+          },
+          "id": "route_feasibility:day_total:2",
+          "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 30,
+              "attraction_minutes": 360,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 794,
+              "estimated_travel_minutes": 0,
+              "load_ratio": 1.393,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 360,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 0,
+              "verified_travel_minutes": 224
+            },
+            "confidence": "HIGH",
+            "day_index": 2,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 360
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "verified",
+                  "infeasible"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 360,
+              "raw_minutes": 360,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 0,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:2",
+          "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "束河古镇",
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        }
+      ],
+      "start_date": "2026-12-14",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 26,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 25,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-16",
+          "day_temp": 24,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "丽江",
+          "data_available": true,
+          "days": [
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 26,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 25,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-16",
+              "day_temp": 24,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available",
+              "title": "丽江游完美结束～附一些小tips"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available",
+              "title": "去丽江第一站☝️——直奔玉湖村"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available",
+              "title": "丽江留5天绝对正确✅"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a30ce10000000002103fa27",
+              "source_url": "https://www.xiaohongshu.com/explore/6a30ce10000000002103fa27",
+              "status": "detail_available",
+              "title": "丽江景点值不值得去。。。。（个人主观锐评）"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "黑龙潭公园",
+                  "recommendation_quote": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠"
+                }
+              ],
+              "identity_text": "黑龙潭公园",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "黑龙潭公园",
+              "name_en": "Black Dragon Pool Park",
+              "name_zh": "黑龙潭公园",
+              "recommendation": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费，离丽江古城北门很近，运气好还能看到小松鼠",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "玉龙雪山",
+                  "recommendation_quote": "还强推大家去坐雪山观光小火车，来回+进山大门票130"
+                }
+              ],
+              "identity_text": "玉龙雪山",
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "location_status": "available",
+              "name": "玉龙雪山",
+              "name_en": "Jade Dragon Snow Mountain",
+              "name_zh": "玉龙雪山",
+              "recommendation": "还强推大家去坐雪山观光小火车，来回+进山大门票130",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69",
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车"
+                },
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "要提前在小程序预约门票，建议约15:30之前的"
+                }
+              ],
+              "identity_text": "云杉坪",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "云杉坪",
+              "name_en": "Spruce Meadow",
+              "name_zh": "云杉坪",
+              "recommendation": "建议的游玩顺序：先云杉坪再蓝月谷。云杉坪索道下来不用坐电瓶车；要提前在小程序预约门票，建议约15:30之前的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "蓝月谷",
+                  "recommendation_quote": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮"
+                }
+              ],
+              "identity_text": "蓝月谷",
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "location_status": "available",
+              "name": "蓝月谷",
+              "name_en": "Blue Moon Valley",
+              "name_zh": "蓝月谷",
+              "recommendation": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "丽江古城",
+                  "recommendation_quote": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的"
+                }
+              ],
+              "identity_text": "丽江古城",
+              "location": {
+                "latitude": 26.8718026,
+                "longitude": 100.2358502
+              },
+              "location_status": "available",
+              "name": "丽江古城",
+              "name_en": "Lijiang Old Town",
+              "name_zh": "丽江古城",
+              "recommendation": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动，还蛮有意思的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "束河古镇",
+                  "recommendation_quote": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色"
+                }
+              ],
+              "identity_text": "束河古镇",
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "location_status": "available",
+              "name": "束河古镇",
+              "name_en": "Shuhe Ancient Town",
+              "name_zh": "束河古镇",
+              "recommendation": "束河古镇我要打💯，非常好看，太美了，就是我脑海里古镇应该有的样子，要走到九鼎龙谭，就能看到绝美的满眼绿色",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "九鼎龙谭",
+                  "recommendation_quote": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感"
+                }
+              ],
+              "identity_text": "九鼎龙谭",
+              "location": {
+                "latitude": 26.923936,
+                "longitude": 100.203939
+              },
+              "location_status": "available",
+              "name": "九鼎龙谭",
+              "name_en": "Jiuding Longtan",
+              "name_zh": "九鼎龙潭",
+              "recommendation": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "玉湖村 房子很有特色，石头民居",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "玉湖村",
+                  "recommendation_quote": "玉湖村 房子很有特色，石头民居"
+                }
+              ],
+              "identity_text": "玉湖村",
+              "location": {
+                "latitude": 27.012896,
+                "longitude": 100.213571
+              },
+              "location_status": "available",
+              "name": "玉湖村",
+              "name_en": "Yuhu Village",
+              "name_zh": "玉湖村",
+              "recommendation": "玉湖村 房子很有特色，石头民居",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "龙女湖",
+                  "recommendation_quote": "龙女湖像是一个人工水库，比较小，不要抱太大的预期"
+                }
+              ],
+              "identity_text": "龙女湖",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "龙女湖",
+              "name_en": "Longnü Lake",
+              "name_zh": "龙女湖",
+              "recommendation": "龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    "candidate": null,
+    "failure_reason": "invalid_revision_output",
+    "grounding_details": {},
+    "grounding_outcome": null,
+    "initial_risks": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 0,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "confidence_or_status_not_auto_revisable",
+          "revision_execution_supported": false,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:0",
+        "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "黑龙潭公园",
+          "丽江古城"
+        ],
+        "revisable": false,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "确认移动时间并为用餐和休息保留余量。",
+        "title": "当天节奏负荷接近建议上限",
+        "type": "pacing"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "phase4c_affected_day_only",
+          "revision_execution_supported": true,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:1",
+        "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "玉龙雪山",
+          "云杉坪",
+          "蓝月谷"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+        "title": "当天节奏负荷超过建议范围",
+        "type": "pacing"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "data_source": "google_directions",
+          "distance_m": 13905,
+          "duration_s": 11966,
+          "route_type": "walking"
+        },
+        "id": "route_feasibility:leg:2:1",
+        "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+        "related_poi_names": [
+          "九鼎龙潭",
+          "玉湖村"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "考虑调整同日景点分组或改变交通方式。",
+        "title": "相邻景点交通时间明显过长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "threshold_s": 10800,
+          "verified_route_duration_s": 13488
+        },
+        "id": "route_feasibility:day_total:2",
+        "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+        "title": "当天景点间交通时间偏长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "phase4c_affected_day_only",
+          "revision_execution_supported": true,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:2",
+        "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "束河古镇",
+          "九鼎龙潭",
+          "玉湖村"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+        "title": "当天节奏负荷超过建议范围",
+        "type": "pacing"
+      }
+    ],
+    "initial_validation_result": {
+      "checked_rules": [
+        "earliest_start",
+        "budget",
+        "route_feasibility",
+        "mobility",
+        "pacing_daily_load"
+      ],
+      "daily_load_assessments": [
+        {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed"
+        },
+        {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed"
+        }
+      ],
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 0,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 20,
+              "attraction_minutes": 300,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 580,
+              "estimated_travel_minutes": 60,
+              "load_ratio": 1.018,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 300,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 20,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 0,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 300
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unknown"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 2,
+              "effective_minutes": 300,
+              "raw_minutes": 300,
+              "reasons": []
+            },
+            "overload_status": "warning",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 60,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_above_proposed_target",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "confidence_or_status_not_auto_revisable",
+            "revision_execution_supported": false,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:0",
+          "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "黑龙潭公园",
+            "丽江古城"
+          ],
+          "revisable": false,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "确认移动时间并为用餐和休息保留余量。",
+          "title": "当天节奏负荷接近建议上限",
+          "type": "pacing"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 40,
+              "attraction_minutes": 390,
+              "available_day_window_minutes": 600,
+              "effective_load_minutes": 770,
+              "estimated_travel_minutes": 120,
+              "load_ratio": 1.283,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 390,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 40,
+              "verified_travel_minutes": 0
+            },
+            "confidence": "MEDIUM",
+            "day_index": 1,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "09:30"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 390
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "unavailable",
+                  "unavailable"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 390,
+              "raw_minutes": 390,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 120,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion",
+              "multiple_unknown_routes"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:1",
+          "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "玉龙雪山",
+            "云杉坪",
+            "蓝月谷"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "data_source": "google_directions",
+            "distance_m": 13905,
+            "duration_s": 11966,
+            "route_type": "walking"
+          },
+          "id": "route_feasibility:leg:2:1",
+          "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+          "related_poi_names": [
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "考虑调整同日景点分组或改变交通方式。",
+          "title": "相邻景点交通时间明显过长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "threshold_s": 10800,
+            "verified_route_duration_s": 13488
+          },
+          "id": "route_feasibility:day_total:2",
+          "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+          "related_poi_names": [],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+          "title": "当天景点间交通时间偏长",
+          "type": "route_feasibility"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "breakdown": {
+              "access_buffer_minutes": 30,
+              "attraction_minutes": 360,
+              "available_day_window_minutes": 570,
+              "effective_load_minutes": 794,
+              "estimated_travel_minutes": 0,
+              "load_ratio": 1.393,
+              "meal_minutes": 105,
+              "raw_attraction_minutes": 360,
+              "rest_buffer_minutes": 75,
+              "uncertainty_buffer_minutes": 0,
+              "verified_travel_minutes": 224
+            },
+            "confidence": "HIGH",
+            "day_index": 2,
+            "evidence": [
+              {
+                "field": "DayPlan.start_time",
+                "value": "10:00"
+              },
+              {
+                "field": "Attraction.visit_duration",
+                "raw_minutes": 360
+              },
+              {
+                "field": "route_legs",
+                "states": [
+                  "verified",
+                  "infeasible"
+                ]
+              },
+              {
+                "count": 3,
+                "field": "DayPlan.meals"
+              }
+            ],
+            "normalization": {
+              "classification": "ordinary_day",
+              "confidence_reduced": false,
+              "effective_access_units": 3,
+              "effective_minutes": 360,
+              "raw_minutes": 360,
+              "reasons": []
+            },
+            "overload_status": "revisable_overload",
+            "policy_assumptions": [
+              {
+                "name": "policy_finish",
+                "value": "19:30"
+              },
+              {
+                "class": "suburban",
+                "estimated_minutes": 0,
+                "name": "route_fallback",
+                "source": "pacing.daily_load.v0.proposed"
+              },
+              {
+                "name": "meal_access_rest_uncertainty_buffers",
+                "source": "pacing.daily_load.v0.proposed"
+              }
+            ],
+            "policy_version": "pacing.daily_load.v0.proposed",
+            "reasons": [
+              "effective_load_exceeds_proposed_maximum",
+              "suburban_excursion"
+            ],
+            "requested_pace": "relaxed",
+            "revision_boundary": "phase4c_affected_day_only",
+            "revision_execution_supported": true,
+            "rule_id": "pacing_daily_load"
+          },
+          "id": "pacing_daily_load:day:2",
+          "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+          "related_poi_names": [
+            "束河古镇",
+            "九鼎龙潭",
+            "玉湖村"
+          ],
+          "revisable": true,
+          "severity": "warning",
+          "source": "rule_validator",
+          "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+          "title": "当天节奏负荷超过建议范围",
+          "type": "pacing"
+        }
+      ],
+      "route_api_calls": 4,
+      "status": "degraded",
+      "unavailable_checks": [
+        "route:day:0",
+        "route:day:1"
+      ],
+      "validation_pass_scope": "validation.initial"
+    },
+    "pacing_policy_version": "pacing.daily_load.v0.proposed",
+    "pacing_revision_metrics": {},
+    "post_pacing_risk_ids": [
+      "pacing_daily_load:day:1",
+      "pacing_daily_load:day:2"
+    ],
+    "post_revision_enrichment_state": null,
+    "post_revision_risks": [],
+    "protected_day_equality": {},
+    "protected_day_indices": [
+      0
+    ],
+    "protected_elements": [],
+    "reason": null,
+    "resolution_outcome": "rejected",
+    "revalidation_result": null,
+    "revision_instructions_metadata": [],
+    "revision_kind": "targeted_pacing",
+    "revision_status": "rejected",
+    "status": "known",
+    "target_risk_ids": [
+      "pacing_daily_load:day:1",
+      "pacing_daily_load:day:2"
+    ]
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 0,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 20,
+            "attraction_minutes": 300,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 580,
+            "estimated_travel_minutes": 60,
+            "load_ratio": 1.018,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 300,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 20,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 0,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 300
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unknown"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 2,
+            "effective_minutes": 300,
+            "raw_minutes": 300,
+            "reasons": []
+          },
+          "overload_status": "warning",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 60,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_above_proposed_target",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "confidence_or_status_not_auto_revisable",
+          "revision_execution_supported": false,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:0",
+        "message": "第 1 天：300 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 580 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "黑龙潭公园",
+          "丽江古城"
+        ],
+        "revisable": false,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "确认移动时间并为用餐和休息保留余量。",
+        "title": "当天节奏负荷接近建议上限",
+        "type": "pacing"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 40,
+            "attraction_minutes": 390,
+            "available_day_window_minutes": 600,
+            "effective_load_minutes": 770,
+            "estimated_travel_minutes": 120,
+            "load_ratio": 1.283,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 390,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 40,
+            "verified_travel_minutes": 0
+          },
+          "confidence": "MEDIUM",
+          "day_index": 1,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "09:30"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 390
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "unavailable",
+                "unavailable"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 390,
+            "raw_minutes": 390,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 120,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion",
+            "multiple_unknown_routes"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "phase4c_affected_day_only",
+          "revision_execution_supported": true,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:1",
+        "message": "第 2 天：390 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 770 分钟，可用窗口为 600 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "玉龙雪山",
+          "云杉坪",
+          "蓝月谷"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+        "title": "当天节奏负荷超过建议范围",
+        "type": "pacing"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "data_source": "google_directions",
+          "distance_m": 13905,
+          "duration_s": 11966,
+          "route_type": "walking"
+        },
+        "id": "route_feasibility:leg:2:1",
+        "message": "九鼎龙潭 到 玉湖村 的地图路线预计约 199 分钟。",
+        "related_poi_names": [
+          "九鼎龙潭",
+          "玉湖村"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "考虑调整同日景点分组或改变交通方式。",
+        "title": "相邻景点交通时间明显过长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "threshold_s": 10800,
+          "verified_route_duration_s": 13488
+        },
+        "id": "route_feasibility:day_total:2",
+        "message": "第 3 天已验证路线的累计交通时间约 225 分钟。",
+        "related_poi_names": [],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "减少跨区域往返或把部分景点调整到其他日期。",
+        "title": "当天景点间交通时间偏长",
+        "type": "route_feasibility"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "breakdown": {
+            "access_buffer_minutes": 30,
+            "attraction_minutes": 360,
+            "available_day_window_minutes": 570,
+            "effective_load_minutes": 794,
+            "estimated_travel_minutes": 0,
+            "load_ratio": 1.393,
+            "meal_minutes": 105,
+            "raw_attraction_minutes": 360,
+            "rest_buffer_minutes": 75,
+            "uncertainty_buffer_minutes": 0,
+            "verified_travel_minutes": 224
+          },
+          "confidence": "HIGH",
+          "day_index": 2,
+          "evidence": [
+            {
+              "field": "DayPlan.start_time",
+              "value": "10:00"
+            },
+            {
+              "field": "Attraction.visit_duration",
+              "raw_minutes": 360
+            },
+            {
+              "field": "route_legs",
+              "states": [
+                "verified",
+                "infeasible"
+              ]
+            },
+            {
+              "count": 3,
+              "field": "DayPlan.meals"
+            }
+          ],
+          "normalization": {
+            "classification": "ordinary_day",
+            "confidence_reduced": false,
+            "effective_access_units": 3,
+            "effective_minutes": 360,
+            "raw_minutes": 360,
+            "reasons": []
+          },
+          "overload_status": "revisable_overload",
+          "policy_assumptions": [
+            {
+              "name": "policy_finish",
+              "value": "19:30"
+            },
+            {
+              "class": "suburban",
+              "estimated_minutes": 0,
+              "name": "route_fallback",
+              "source": "pacing.daily_load.v0.proposed"
+            },
+            {
+              "name": "meal_access_rest_uncertainty_buffers",
+              "source": "pacing.daily_load.v0.proposed"
+            }
+          ],
+          "policy_version": "pacing.daily_load.v0.proposed",
+          "reasons": [
+            "effective_load_exceeds_proposed_maximum",
+            "suburban_excursion"
+          ],
+          "requested_pace": "relaxed",
+          "revision_boundary": "phase4c_affected_day_only",
+          "revision_execution_supported": true,
+          "rule_id": "pacing_daily_load"
+        },
+        "id": "pacing_daily_load:day:2",
+        "message": "第 3 天：360 分钟景点活动，加上 verified/estimated 移动、用餐、出入口和恢复缓冲后为 794 分钟，可用窗口为 570 分钟。这是 relaxed 的 proposed pacing policy 判断。",
+        "related_poi_names": [
+          "束河古镇",
+          "九鼎龙潭",
+          "玉湖村"
+        ],
+        "revisable": true,
+        "severity": "warning",
+        "source": "rule_validator",
+        "suggestion": "仅调整该日的可选活动；保护必去景点、城市/住宿/预算和显式约束。",
+        "title": "当天节奏负荷超过建议范围",
+        "type": "pacing"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "丽江古城",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJAQAAQCLKIDcRVTBpYI9_z5I",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1811
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1522
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 13905
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 11966
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": false
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJL0q1eBLJIDcRCxJrY3Ng1zg",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "google_places_unavailable",
+    "route_unavailable",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:1a7aa5f20ca3b5ec0b9d294654a46fa2beb964e303f449c7fc137479a0060591",
+    "google_directions": "sha256:1d5d6f50f90b2250208494572eb6fedcdcb1fb8ee94ea28308fc053d588918ff",
+    "google_places": "sha256:b116f27d3b5d090bd5930eacc122f849b2394298f2596cf39c2fbc8438860049",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:4d82359a4dd24ad48b952c6d6bdcb24798dc91a8b292b1c6c8affe6335245916",
+    "xhs": "sha256:bd84434aa6eb5612618b9a75911ce6242c9741f60b4cedcffb5a387168d12acf"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 99934
+  },
+  "trip_request": {
+    "accommodation": "民宿",
+    "cities": [
+      {
+        "city": "丽江",
+        "days": 3
+      }
+    ],
+    "city": "丽江",
+    "end_date": "2026-12-16",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "自然风光"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "自然风光"
+    ],
+    "start_date": "2026-12-14",
+    "transportation": "混合",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 9241
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 3
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 10868
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "pacing_revision",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 20109
+    }
+  },
+  "validation_pass_scope": "validation.initial",
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a30ce10000000002103fa27",
+              "source_url": "https://www.xiaohongshu.com/explore/6a30ce10000000002103fa27",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

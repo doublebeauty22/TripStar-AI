@@ -1,0 +1,394 @@
+{
+  "aggregates": {
+    "actionable_risk_count": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.5,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 3.0,
+      "unknown": 0,
+      "value": 0.5
+    },
+    "budget_arithmetic_consistency": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 1.0,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 6.0,
+      "unknown": 0,
+      "value": 1.0
+    },
+    "budget_limit_satisfaction": {
+      "denominator": null,
+      "failed": 0,
+      "known": 2,
+      "mean": 1.0,
+      "not_applicable": 4,
+      "numerator": null,
+      "sum": 2.0,
+      "unknown": 0,
+      "value": 1.0
+    },
+    "completion_tokens": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 12077.166666666666,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 72463.0,
+      "unknown": 0,
+      "value": 12077.166666666666
+    },
+    "date_day_consistency": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.8333333333333334,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 5.0,
+      "unknown": 0,
+      "value": 0.8333333333333334
+    },
+    "earliest_start_satisfaction": {
+      "denominator": 3.0,
+      "failed": 0,
+      "known": 1,
+      "mean": 1.0,
+      "not_applicable": 5,
+      "numerator": 3.0,
+      "sum": 1.0,
+      "unknown": 0,
+      "value": 1.0
+    },
+    "explicit_constraint_satisfaction_rate": {
+      "denominator": 3.0,
+      "failed": 0,
+      "known": 3,
+      "mean": 1.0,
+      "not_applicable": 3,
+      "numerator": 3.0,
+      "sum": 3.0,
+      "unknown": 0,
+      "value": 1.0
+    },
+    "grounded_poi_rate": {
+      "denominator": 54.0,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.6003787878787878,
+      "not_applicable": 0,
+      "numerator": 33.0,
+      "sum": 3.6022727272727275,
+      "unknown": 0,
+      "value": 0.6111111111111112
+    },
+    "latency_ms": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 115139.5,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 690837.0,
+      "unknown": 0,
+      "value": 115139.5
+    },
+    "logical_llm_calls": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 2.6666666666666665,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 16.0,
+      "unknown": 0,
+      "value": 2.6666666666666665
+    },
+    "prompt_tokens": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 22323.833333333332,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 133943.0,
+      "unknown": 0,
+      "value": 22323.833333333332
+    },
+    "provenance_coverage": {
+      "denominator": 76.0,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.6730031542531543,
+      "not_applicable": 0,
+      "numerator": 55.0,
+      "sum": 4.038018925518926,
+      "unknown": 0,
+      "value": 0.7236842105263158
+    },
+    "revision_risk_resolution_rate": {
+      "denominator": null,
+      "failed": 0,
+      "known": 0,
+      "mean": null,
+      "not_applicable": 4,
+      "numerator": null,
+      "sum": null,
+      "unknown": 2,
+      "value": null
+    },
+    "route_check_coverage": {
+      "denominator": 35.0,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.6142857142857143,
+      "not_applicable": 0,
+      "numerator": 22.0,
+      "sum": 3.6857142857142855,
+      "unknown": 0,
+      "value": 0.6285714285714286
+    },
+    "route_feasibility_rate": {
+      "denominator": 22.0,
+      "failed": 0,
+      "known": 4,
+      "mean": 0.8373015873015873,
+      "not_applicable": 0,
+      "numerator": 17.0,
+      "sum": 3.3492063492063493,
+      "unknown": 2,
+      "value": 0.7727272727272727
+    },
+    "schema_valid": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 1.0,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 6.0,
+      "unknown": 0,
+      "value": 1.0
+    },
+    "total_tokens": {
+      "denominator": null,
+      "failed": 0,
+      "known": 6,
+      "mean": 34401.0,
+      "not_applicable": 0,
+      "numerator": null,
+      "sum": 206406.0,
+      "unknown": 0,
+      "value": 34401.0
+    },
+    "unaffected_day_preservation_rate": {
+      "denominator": null,
+      "failed": 0,
+      "known": 0,
+      "mean": null,
+      "not_applicable": 6,
+      "numerator": null,
+      "sum": null,
+      "unknown": 0,
+      "value": null
+    },
+    "unverified_poi_rate": {
+      "denominator": 54.0,
+      "failed": 0,
+      "known": 6,
+      "mean": 0.23274410774410775,
+      "not_applicable": 0,
+      "numerator": 12.0,
+      "sum": 1.3964646464646464,
+      "unknown": 0,
+      "value": 0.2222222222222222
+    }
+  },
+  "badcases": {
+    "automatic_detected": {
+      "provenance_missing": 5,
+      "route_infeasible": 2,
+      "route_unavailable": 6,
+      "ungrounded_poi": 5
+    },
+    "human_required_pending": {
+      "overpacked": 6,
+      "preference_miss": 6,
+      "underpacked": 6,
+      "unnecessary_revision": 6,
+      "unsupported_fact": 6
+    },
+    "not_evaluated": {
+      "excessive_cost": 6,
+      "excessive_latency": 6
+    }
+  },
+  "capture_limitations": [
+    {
+      "artifact_available": false,
+      "case_id": "gc_nanjing_local_patch",
+      "reason": "production capture seam has no local patch executor; initial generation cannot substitute"
+    }
+  ],
+  "cases_capture_limited": 1,
+  "cases_evaluated": 6,
+  "cases_failed": 1,
+  "evidence_scope": "preliminary controlled baseline evidence; descriptive only; no causal claims",
+  "failed_cases": [
+    {
+      "artifact_available": false,
+      "case_id": "gc_beijing_xian_multi_city",
+      "reason": "planner_output_parse_failure",
+      "retry": false
+    }
+  ],
+  "failure_chain": [
+    {
+      "attempted_route_checks": 6,
+      "available_route_checks": 4,
+      "case_id": "gc_beijing_baseline",
+      "eligible_route_legs": 6,
+      "grounded_pois": 9
+    },
+    {
+      "attempted_route_checks": 0,
+      "available_route_checks": 0,
+      "case_id": "gc_kyoto_no_early_start",
+      "eligible_route_legs": 6,
+      "grounded_pois": 2
+    },
+    {
+      "attempted_route_checks": 0,
+      "available_route_checks": 0,
+      "case_id": "gc_osaka_places_partial",
+      "eligible_route_legs": 5,
+      "grounded_pois": 1
+    },
+    {
+      "attempted_route_checks": 9,
+      "available_route_checks": 9,
+      "case_id": "gc_chengdu_budget",
+      "eligible_route_legs": 15,
+      "grounded_pois": 8
+    },
+    {
+      "attempted_route_checks": 4,
+      "available_route_checks": 2,
+      "case_id": "gc_shenzhen_overbudget_revision",
+      "eligible_route_legs": 6,
+      "grounded_pois": 7
+    },
+    {
+      "attempted_route_checks": 8,
+      "available_route_checks": 7,
+      "case_id": "gc_lijiang_places_unavailable",
+      "eligible_route_legs": 11,
+      "grounded_pois": 6
+    }
+  ],
+  "failure_chain_assessment": "MIXED",
+  "metric_integrity_warnings": [
+    "route_check_coverage exceeds 1.0 for gc_chengdu_budget (9/7) and gc_lijiang_places_unavailable (7/5), consistent with revision observation/denominator mismatch; do not treat aggregate route coverage as reliable"
+  ],
+  "scenario_breakdown": {
+    "budget_constrained": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_kyoto_no_early_start",
+        "gc_osaka_places_partial",
+        "gc_lijiang_places_unavailable"
+      ],
+      "no_count": 4,
+      "yes": [
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision"
+      ],
+      "yes_count": 2
+    },
+    "explicit_constraint": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_kyoto_no_early_start",
+        "gc_osaka_places_partial",
+        "gc_lijiang_places_unavailable"
+      ],
+      "no_count": 4,
+      "yes": [
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision"
+      ],
+      "yes_count": 2
+    },
+    "multi_city": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_kyoto_no_early_start",
+        "gc_osaka_places_partial",
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision",
+        "gc_lijiang_places_unavailable"
+      ],
+      "no_count": 6,
+      "yes": [],
+      "yes_count": 0
+    },
+    "patch": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_kyoto_no_early_start",
+        "gc_osaka_places_partial",
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision",
+        "gc_lijiang_places_unavailable"
+      ],
+      "no_count": 6,
+      "yes": [],
+      "yes_count": 0
+    },
+    "provider_degraded": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_kyoto_no_early_start",
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision"
+      ],
+      "no_count": 4,
+      "yes": [
+        "gc_osaka_places_partial",
+        "gc_lijiang_places_unavailable"
+      ],
+      "yes_count": 2
+    },
+    "revision_trigger": {
+      "no": [
+        "gc_beijing_baseline",
+        "gc_osaka_places_partial",
+        "gc_lijiang_places_unavailable"
+      ],
+      "no_count": 3,
+      "yes": [
+        "gc_kyoto_no_early_start",
+        "gc_chengdu_budget",
+        "gc_shenzhen_overbudget_revision"
+      ],
+      "yes_count": 3
+    }
+  },
+  "status": "partial_not_8_case_baseline",
+  "successful_case_ids": [
+    "gc_beijing_baseline",
+    "gc_kyoto_no_early_start",
+    "gc_osaka_places_partial",
+    "gc_chengdu_budget",
+    "gc_shenzhen_overbudget_revision",
+    "gc_lijiang_places_unavailable"
+  ],
+  "summary_id": "phase3d4_partial_expansion_v1",
+  "target_cases_total": 8
+}

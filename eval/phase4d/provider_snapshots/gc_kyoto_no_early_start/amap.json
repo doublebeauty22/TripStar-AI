@@ -1,0 +1,22 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "endpoint": "weather",
+    "malformed_count": 0,
+    "results": [
+      {
+        "city": "京都",
+        "data_available": false,
+        "days": [],
+        "degraded": true,
+        "provider": "unavailable",
+        "reason": "empty_forecast",
+        "request_success": true
+      }
+    ]
+  },
+  "provider": "amap",
+  "sanitized": true,
+  "state": "unavailable"
+}

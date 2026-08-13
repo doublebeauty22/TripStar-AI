@@ -42,7 +42,7 @@
               <a-select-option value="en-US">{{ t('app.language.en') }}</a-select-option>
             </a-select>
           </li>
-          <li class="nav-item">
+          <li v-if="!publicDemoMode" class="nav-item">
             <button
               type="button"
               class="nav-link landing-nav-btn settings-btn"
@@ -94,33 +94,21 @@
                 <a-input-password v-model:value="settingsForm.vite_amap_web_js_key" allow-clear />
               </a-form-item>
 
-              <a-form-item>
-                <template #label>
-                  <span class="field-label">{{ t('settings.labels.amapWebKey') }}</span>
-                </template>
-                <a-input-password v-model:value="settingsForm.vite_amap_web_key" allow-clear />
+              <a-form-item label="AMap Server">
+                <span>{{ settingsForm.amap_server_configured ? '已配置' : '未配置' }}</span>
               </a-form-item>
 
               <a-form-item>
                 <template #label>
                   <span class="field-label">{{ t('settings.labels.googleMapsApiKey') }}</span>
                 </template>
-                <a-input-password
-                  v-model:value="settingsForm.google_maps_api_key"
-                  :placeholder="t('settings.placeholders.googleMapsApiKey')"
-                  allow-clear
-                />
+                <span class="runtime-settings-hint">
+                  Google Server Key 请在 backend/.env 中配置；Browser Key 请在 frontend/.env 中配置。
+                </span>
               </a-form-item>
 
-              <a-form-item>
-                <template #label>
-                  <span class="field-label">{{ t('settings.labels.googleMapsProxy') }}</span>
-                </template>
-                <a-input
-                  v-model:value="settingsForm.google_maps_proxy"
-                  :placeholder="t('settings.placeholders.googleMapsProxy')"
-                  allow-clear
-                />
+              <a-form-item label="Google Maps Proxy">
+                <span>{{ settingsForm.google_maps_proxy_configured ? '已配置' : '未配置' }}</span>
               </a-form-item>
 
               <a-form-item>
@@ -145,25 +133,15 @@
                 />
               </a-form-item>
 
-              <a-form-item>
-                <template #label>
-                  <span class="field-label">{{ t('settings.labels.openaiApiKey') }}</span>
-                </template>
-                <a-input-password v-model:value="settingsForm.openai_api_key" allow-clear />
+              <a-form-item label="OpenAI">
+                <span>{{ settingsForm.openai_configured ? '已配置' : '未配置' }}</span>
+              </a-form-item>
+              <a-form-item label="XHS">
+                <span>{{ settingsForm.xhs_configured ? '已配置' : '未配置' }}</span>
               </a-form-item>
             </div>
 
-            <a-form-item class="runtime-settings-full">
-              <template #label>
-                <span class="field-label">{{ t('settings.labels.xhsCookie') }}</span>
-              </template>
-              <a-textarea
-                v-model:value="settingsForm.xhs_cookie"
-                :rows="4"
-                :placeholder="t('settings.placeholders.xhsCookie')"
-                allow-clear
-              />
-            </a-form-item>
+            <p class="runtime-settings-hint">Server secrets 请通过 backend/.env 或部署 Secret 配置，浏览器不会读取或回填。</p>
           </a-form>
         </section>
       </a-spin>
@@ -179,19 +157,20 @@ import type { RuntimeSettings } from '@/types'
 import { getRuntimeSettings, saveRuntimeSettings } from '@/services/api'
 
 const { t, locale } = useI18n()
+const publicDemoMode = String(import.meta.env.VITE_PUBLIC_DEMO_MODE ?? '').toLowerCase() === 'true'
 const settingsVisible = ref(false)
 const settingsLoading = ref(false)
 const settingsSaving = ref(false)
 const settingsForm = reactive<RuntimeSettings>({
   api_base_url: '',
-  vite_amap_web_key: '',
   vite_amap_web_js_key: '',
-  google_maps_api_key: '',
-  google_maps_proxy: '',
-  xhs_cookie: '',
-  openai_api_key: '',
+  google_maps_proxy_configured: false,
   openai_base_url: '',
   openai_model: '',
+  openai_configured: false,
+  xhs_configured: false,
+  amap_server_configured: false,
+  google_server_configured: false,
 })
 
 const emit = defineEmits<{
@@ -209,14 +188,14 @@ const handleCtaClick = () => {
 
 const applyRuntimeSettings = (settings: RuntimeSettings) => {
   settingsForm.api_base_url = settings.api_base_url || ''
-  settingsForm.vite_amap_web_key = settings.vite_amap_web_key || ''
   settingsForm.vite_amap_web_js_key = settings.vite_amap_web_js_key || ''
-  settingsForm.google_maps_api_key = settings.google_maps_api_key || ''
-  settingsForm.google_maps_proxy = settings.google_maps_proxy || ''
-  settingsForm.xhs_cookie = settings.xhs_cookie || ''
-  settingsForm.openai_api_key = settings.openai_api_key || ''
+  settingsForm.google_maps_proxy_configured = Boolean(settings.google_maps_proxy_configured)
   settingsForm.openai_base_url = settings.openai_base_url || ''
   settingsForm.openai_model = settings.openai_model || ''
+  settingsForm.openai_configured = Boolean(settings.openai_configured)
+  settingsForm.xhs_configured = Boolean(settings.xhs_configured)
+  settingsForm.amap_server_configured = Boolean(settings.amap_server_configured)
+  settingsForm.google_server_configured = Boolean(settings.google_server_configured)
 }
 
 const openSettingsDialog = async () => {
@@ -237,14 +216,14 @@ const saveSettingsNow = async () => {
   try {
     const payload: RuntimeSettings = {
       api_base_url: settingsForm.api_base_url,
-      vite_amap_web_key: settingsForm.vite_amap_web_key,
       vite_amap_web_js_key: settingsForm.vite_amap_web_js_key,
-      google_maps_api_key: settingsForm.google_maps_api_key,
-      google_maps_proxy: settingsForm.google_maps_proxy,
-      xhs_cookie: settingsForm.xhs_cookie,
-      openai_api_key: settingsForm.openai_api_key,
+      google_maps_proxy_configured: settingsForm.google_maps_proxy_configured,
       openai_base_url: settingsForm.openai_base_url,
       openai_model: settingsForm.openai_model,
+      openai_configured: settingsForm.openai_configured,
+      xhs_configured: settingsForm.xhs_configured,
+      amap_server_configured: settingsForm.amap_server_configured,
+      google_server_configured: settingsForm.google_server_configured,
     }
     const saved = await saveRuntimeSettings(payload)
     applyRuntimeSettings(saved)
@@ -541,5 +520,11 @@ const saveSettingsNow = async () => {
 
 .runtime-settings-form :deep(.ant-form-item) {
   margin-bottom: 12px;
+}
+
+.runtime-settings-hint {
+  color: rgba(0, 0, 0, 0.58);
+  font-size: 13px;
+  line-height: 1.6;
 }
 </style>

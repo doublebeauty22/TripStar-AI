@@ -1,0 +1,2216 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:55:39.122494+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:53:43.755681+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 2530,
+        "total_attractions": 290,
+        "total_hotels": 1040,
+        "total_inter_city_transport": 0,
+        "total_meals": 800,
+        "total_transportation": 400
+      },
+      "cities": [
+        "成都"
+      ],
+      "city": "成都",
+      "days": [
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国四川省成都市锦江区骡马市春熙路",
+              "category": "商业街区",
+              "description": "成都代表性商业步行街,适合逛街、观察城市生活和购买伴手礼。餐饮选择丰富,点餐时需主动确认不含花生及花生油。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.65557,
+                "longitude": 104.077
+              },
+              "map_data_source": "google_places",
+              "name": "春熙路",
+              "photos": [],
+              "place_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64",
+              "poi_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "四川省成都市锦江区中纱帽街8号",
+              "category": "城市商业与建筑",
+              "description": "开放式高端商业街区,建筑与街巷结合,适合拍照、咖啡休闲和城市探索。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "太古里",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "中国四川省成都市锦江区书院街大慈寺路23号 邮政编码: 610016",
+              "category": "历史文化建筑",
+              "description": "位于太古里附近的古刹,可在商业街游览中安排短暂停留,感受成都传统寺院与现代街区并存的城市风貌。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.655269299999997,
+                "longitude": 104.08416079999999
+              },
+              "map_data_source": "google_places",
+              "name": "大慈寺",
+              "photos": [],
+              "place_id": "ChIJRbj48EPF7zYR_fGN6Svj74M",
+              "poi_id": "ChIJRbj48EPF7zYR_fGN6Svj74M",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            },
+            {
+              "address": "中国成都市锦江区九眼桥，兰桂坊 邮政编码: 610047",
+              "category": "夜景与休闲街区",
+              "description": "建议傍晚后前往观赏夜景,感受沿河酒吧街氛围。夜间人流较多,注意随身物品并适量饮酒。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.643426199999997,
+                "longitude": 104.0846832
+              },
+              "map_data_source": "google_places",
+              "name": "九眼桥",
+              "photos": [],
+              "place_id": "ChIJAQCcw27F7zYR7E9sC4_Hqdw",
+              "poi_id": "ChIJAQCcw27F7zYR7E9sC4_Hqdw",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国四川省成都市望平街",
+              "category": "滨水休闲街区",
+              "description": "沿河街区适合散步、喝下午茶和夜间休闲,可与九眼桥安排在同一晚游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.65291,
+                "longitude": 104.0898
+              },
+              "map_data_source": "google_places",
+              "name": "望平街",
+              "photos": [],
+              "place_id": "ChIJbwYug1zF7zYRpFsw9fWwOFo",
+              "poi_id": "ChIJbwYug1zF7zYRpFsw9fWwOFo",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "成都",
+          "date": "2026-11-16",
+          "day_index": 0,
+          "description": "以成都核心商圈为主,步行串联春熙路、太古里和大慈寺,晚上前往九眼桥及望平街体验夜景与沿河休闲,整体节奏适中。",
+          "hotel": {
+            "address": "中国四川省成都市武侯区一环路南一段2号,邮政编码610047",
+            "distance": "距离九眼桥约1公里,距离春熙路约3公里",
+            "estimated_cost": 260,
+            "location": {
+              "latitude": 30.638037,
+              "longitude": 104.0861
+            },
+            "name": "Mcsrh麦嘉·拾趣酒店",
+            "price_range": "200-300元/晚",
+            "rating": "5.0",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择清汤面、豆浆或包子,点餐时确认不含花生碎、花生酱及花生油。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店附近面馆早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐尝试担担面、钟水饺或回锅肉等本地风味,提前向商家说明不吃花生。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "春熙路川味简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "两人可选择小份川菜共享,优先点宫保类以外的菜品,并确认调味料中不含花生。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "太古里或望平街川菜",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "以地铁、公交和步行为主；春熙路、太古里、大慈寺之间步行约10-15分钟,前往九眼桥和望平街建议乘坐地铁或公交,约20-30分钟。"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国四川省成都市成华区熊猫大道1375号 邮政编码: 610016",
+              "category": "动物主题公园",
+              "description": "建议尽量在开园后尽早进入,上午通常更适合观察大熊猫活动。园区较大,建议穿舒适鞋并预留充足步行时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.732969,
+                "longitude": 104.14581
+              },
+              "map_data_source": "google_places",
+              "name": "熊猫基地",
+              "photos": [],
+              "place_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM",
+              "poi_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 55,
+              "visit_duration": 240
+            },
+            {
+              "address": "中国四川省成都市青羊区文殊院街66号 邮政编码: 610084",
+              "category": "宗教与历史建筑",
+              "description": "成都历史悠久的佛教寺院,红墙和院落适合拍照与安静参观,参观时注意保持肃静。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.674771,
+                "longitude": 104.07194799999999
+              },
+              "map_data_source": "google_places",
+              "name": "文殊院",
+              "photos": [],
+              "place_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+              "poi_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国四川省成都市青羊区奎星楼街",
+              "category": "美食街区",
+              "description": "适合傍晚觅食的城市街区,可尝试成都小吃和家常川菜。选择餐馆时要询问花生碎、花生酱和花生油使用情况。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.66828,
+                "longitude": 104.05402
+              },
+              "map_data_source": "google_places",
+              "name": "奎星楼街",
+              "photos": [],
+              "place_id": "ChIJt8fX0CnF7zYRGqeWHJjuVWc",
+              "poi_id": "ChIJt8fX0CnF7zYRGqeWHJjuVWc",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "成都",
+          "date": "2026-11-17",
+          "day_index": 1,
+          "description": "早起前往熊猫基地,利用上午熊猫较活跃的时段游览；下午安排文殊院和奎星楼街,兼顾城市文化与成都小吃体验。",
+          "hotel": {
+            "address": "中国四川省成都市武侯区一环路南一段2号,邮政编码610047",
+            "distance": "距离文殊院约4公里,距离熊猫基地约15公里",
+            "estimated_cost": 260,
+            "location": {
+              "latitude": 30.638037,
+              "longitude": 104.0861
+            },
+            "name": "Mcsrh麦嘉·拾趣酒店",
+            "price_range": "200-300元/晚",
+            "rating": "5.0",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议简单用餐后尽早出发,可选择鸡蛋、馒头、粥或清汤面,并确认无花生成分。",
+              "estimated_cost": 35,
+              "location": null,
+              "name": "熊猫基地附近早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "以米饭、青菜和不含花生的家常菜为主,避免选择花生碎拌面和花生调味小吃。",
+              "estimated_cost": 70,
+              "location": null,
+              "name": "熊猫基地周边简餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "两人分食多种成都小吃,点单时逐项确认配料,避免花生及交叉添加风险。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "奎星楼街小吃晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "07:30",
+          "transfer_info": "",
+          "transportation": "早上乘地铁转公交或基地接驳车前往熊猫基地；熊猫基地返回市区约40-60分钟,文殊院前往奎星楼街建议乘地铁或公交约20-30分钟。"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国四川省成都市青羊区十二桥路18号 邮政编码: 610032",
+              "category": "博物馆",
+              "description": "适合了解成都城市发展与巴蜀历史。资料提示该馆提前通过官方公众号预约且有限流,建议出发前确认开放安排并尽早预约。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.663751999999995,
+                "longitude": 104.04461800000001
+              },
+              "map_data_source": "google_places",
+              "name": "成都博物馆",
+              "photos": [],
+              "place_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o",
+              "poi_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "提前通过官方公众号预约,具体预约规则以官方发布为准。",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国四川省成都市青羊区草堂路28号 邮政编码: 610001",
+              "category": "历史文化景区",
+              "description": "以杜甫故居遗址和古典园林为核心的人文景区,园区面积较大,适合放慢节奏游览并穿舒适鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.65949,
+                "longitude": 104.026538
+              },
+              "map_data_source": "google_places",
+              "name": "杜甫草堂",
+              "photos": [],
+              "place_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+              "poi_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 50,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国四川省成都市武侯区高升桥武侯祠大街231号附2号 邮政编码: 610093",
+              "category": "历史文化博物馆",
+              "description": "三国文化主题博物馆与园林景区,可重点参观刘备殿、诸葛亮殿及相关碑刻。建议预留较完整的游览时间。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.645802,
+                "longitude": 104.04942899999999
+              },
+              "map_data_source": "google_places",
+              "name": "武侯祠",
+              "photos": [],
+              "place_id": "ChIJHSK0oePE7zYRKcnSiomj91k",
+              "poi_id": "ChIJHSK0oePE7zYRKcnSiomj91k",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 50,
+              "visit_duration": 150
+            }
+          ],
+          "city": "成都",
+          "date": "2026-11-18",
+          "day_index": 2,
+          "description": "安排成都博物馆、杜甫草堂和武侯祠,重点体验成都历史、三国文化与人文景观。当天步行量较大,建议穿舒适鞋。",
+          "hotel": {
+            "address": "中国四川省成都市武侯区一环路南一段2号,邮政编码610047",
+            "distance": "距离武侯祠约1公里,距离杜甫草堂约3公里",
+            "estimated_cost": 260,
+            "location": {
+              "latitude": 30.638037,
+              "longitude": 104.0861
+            },
+            "name": "Mcsrh麦嘉·拾趣酒店",
+            "price_range": "200-300元/晚",
+            "rating": "5.0",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择粥、鸡蛋、馒头或清汤面等简单早餐,向店家确认不添加花生碎。",
+              "estimated_cost": 30,
+              "location": null,
+              "name": "酒店附近早餐店",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐点鱼香类、青菜和汤品,明确说明不吃花生,避免宫保菜和花生拌凉菜。",
+              "estimated_cost": 80,
+              "location": null,
+              "name": "杜甫草堂附近川菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "选择可单独调制锅底和蘸料的火锅店,避免花生碎蘸料,并确认菜品及调味台无花生污染。",
+              "estimated_cost": 120,
+              "location": null,
+              "name": "武侯祠或酒店附近火锅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "市区内以地铁、公交为主；成都博物馆前往杜甫草堂约30-40分钟,杜甫草堂前往武侯祠约15-25分钟公交或短途步行接驳。"
+        },
+        {
+          "accommodation": "经济型酒店",
+          "attractions": [
+            {
+              "address": "中国四川省成都市都江堰市 408, 熊猫谷 邮政编码: 611843",
+              "category": "动物保护与科普景区",
+              "description": "以大熊猫及其他珍稀动物保护、科普展示为主,建议上午先游览,关注当天开放区域和动物活动情况。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.96216,
+                "longitude": 103.58999
+              },
+              "map_data_source": "google_places",
+              "name": "熊猫谷",
+              "photos": [],
+              "place_id": "ChIJnZ8eqAIB8DYRve8Dg_sTlS4",
+              "poi_id": "ChIJnZ8eqAIB8DYRve8Dg_sTlS4",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 55,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国 1, 都江堰市西南方向90米 CN 四川省 成都市 邮政编码: 611830",
+              "category": "城市公共空间",
+              "description": "适合短暂停留和拍照的城市公共空间,可作为熊猫谷前往灌县古城方向的中途休息点。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.99324,
+                "longitude": 103.62312
+              },
+              "map_data_source": "google_places",
+              "name": "仰天窝广场",
+              "photos": [],
+              "place_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+              "poi_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 45
+            },
+            {
+              "address": "四川省成都市都江堰市公园路",
+              "category": "世界文化遗产与水利工程",
+              "description": "中国古代水利工程代表,建议结合灌县古城和南桥安排游览,景区步行距离较长,穿防滑舒适鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "都江堰",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 80,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国四川省成都市都江堰市 邮政编码: 611830",
+              "category": "古城街区",
+              "description": "可在游览都江堰前后安排散步和用餐,体验都江堰当地街巷与小吃。选择餐饮时注意询问花生配料。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.988446,
+                "longitude": 103.646841
+              },
+              "map_data_source": "google_places",
+              "name": "灌县古城",
+              "photos": [],
+              "place_id": "ChIJnVQUOvgD8DYRUlLG5ecmuHQ",
+              "poi_id": "ChIJnVQUOvgD8DYRUlLG5ecmuHQ",
+              "poi_match_status": "verified",
+              "rating": 4.0,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国四川省成都市都江堰市南街XJW8+PC9 邮政编码: 611830",
+              "category": "桥梁与夜景",
+              "description": "适合傍晚观景和拍照,可根据返程时间安排短暂停留,夜间注意桥面及河岸安全。",
+              "image_url": null,
+              "location": {
+                "latitude": 30.996782999999994,
+                "longitude": 103.616109
+              },
+              "map_data_source": "google_places",
+              "name": "南桥",
+              "photos": [],
+              "place_id": "ChIJYUbnVLQG8DYRF7eXmnu86bo",
+              "poi_id": "ChIJYUbnVLQG8DYRF7eXmnu86bo",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 45
+            }
+          ],
+          "city": "成都",
+          "date": "2026-11-19",
+          "day_index": 3,
+          "description": "安排都江堰方向一日游,依次游览熊猫谷、仰天窝广场和都江堰景区,之后在灌县古城及南桥附近休闲。当天为成都出发的近郊日游,建议提前准备水和舒适鞋。",
+          "hotel": {
+            "address": "中国四川省成都市武侯区一环路南一段2号,邮政编码610047",
+            "distance": "位于成都市区,适合作为都江堰一日游往返住宿",
+            "estimated_cost": 260,
+            "location": {
+              "latitude": 30.638037,
+              "longitude": 104.0861
+            },
+            "name": "Mcsrh麦嘉·拾趣酒店",
+            "price_range": "200-300元/晚",
+            "rating": "5.0",
+            "type": "经济型酒店"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议在酒店附近用餐后出发,选择粥、鸡蛋、馒头或米粉,并确认不含花生。",
+              "estimated_cost": 35,
+              "location": null,
+              "name": "出发前简易早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "可选择米饭配家常菜、清汤面或当地小吃,明确告知不吃花生,避免花生酥和花生拌凉菜。",
+              "estimated_cost": 80,
+              "location": null,
+              "name": "灌县古城午餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "建议选择酒店附近清淡餐食,减少长途游览后的等待时间,继续确认菜品无花生及花生油。",
+              "estimated_cost": 100,
+              "location": null,
+              "name": "返回成都后的简餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "08:30",
+          "transfer_info": "",
+          "transportation": "公共交通前往都江堰方向建议乘城际铁路或长途公交,再换乘当地公交或短途接驳；熊猫谷至仰天窝广场、灌县古城和都江堰景区建议使用公交或短途打车,全天交通时间较长。"
+        }
+      ],
+      "end_date": "2026-11-19",
+      "overall_suggestions": "本行程按2人估算,目的地当地消费预计不超过3500元。酒店建议提前确认双人房价格和取消政策；当前提供的天气数据日期为2026-08-12至2026-08-15,与本次2026-11-16至2026-11-19行程日期不一致,因此不写入逐日天气,建议出发前3-7天重新查询成都及都江堰天气。11月成都通常建议采用洋葱式穿衣并携带轻便雨具,但不要据此替代临近出行的天气预报。成都博物馆建议提前查看官方公众号预约规则。所有餐饮点单时应明确说明不吃花生,并询问花生碎、花生酱、花生油及共用餐具的交叉接触风险。熊猫基地和熊猫谷均建议尽量安排在上午,公共交通前往近郊景点需预留换乘和候车时间。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 3,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:3",
+          "message": "第 4 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2026-11-16",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "成都",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 36,
+          "day_weather": "晴",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "成都",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 37,
+          "day_weather": "晴",
+          "degraded": true,
+          "night_temp": 22,
+          "night_weather": "晴",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "成都",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 36,
+          "day_weather": "晴",
+          "degraded": true,
+          "night_temp": 24,
+          "night_weather": "晴",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "成都",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 35,
+          "day_weather": "晴",
+          "degraded": true,
+          "night_temp": 25,
+          "night_weather": "多云",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "成都",
+          "data_available": true,
+          "days": [
+            {
+              "city": "成都",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 36,
+              "day_weather": "晴",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "成都",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 37,
+              "day_weather": "晴",
+              "degraded": true,
+              "night_temp": 22,
+              "night_weather": "晴",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "成都",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 36,
+              "day_weather": "晴",
+              "degraded": true,
+              "night_temp": 24,
+              "night_weather": "晴",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "成都",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 35,
+              "day_weather": "晴",
+              "degraded": true,
+              "night_temp": 25,
+              "night_weather": "多云",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a4f6001000000001101933f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f6001000000001101933f",
+              "status": "detail_available",
+              "title": "成都待了8年，亲测不绕路四日游路线！"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a56140100000000160255c0",
+              "source_url": "https://www.xiaohongshu.com/explore/6a56140100000000160255c0",
+              "status": "detail_available",
+              "title": "请四川老饕锐评我的美食攻略！（逐渐更新版）"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "69ca8f86000000001a031eac",
+              "source_url": "https://www.xiaohongshu.com/explore/69ca8f86000000001a031eac",
+              "status": "detail_available",
+              "title": "普通人成都三天两夜旅游攻略➕避雷💣❌"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "69aebf3a000000001a02b509",
+              "source_url": "https://www.xiaohongshu.com/explore/69aebf3a000000001a02b509",
+              "status": "detail_available",
+              "title": "本J人对自己做的成都攻略满意到跺jio🥹"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f",
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街；春熙路逛街",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "春熙路",
+                  "recommendation_quote": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街"
+                },
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "春熙路",
+                  "recommendation_quote": "春熙路逛街"
+                }
+              ],
+              "identity_text": "春熙路",
+              "location": {
+                "latitude": 30.65557,
+                "longitude": 104.077
+              },
+              "location_status": "available",
+              "name": "春熙路",
+              "name_en": "Chunxi Road",
+              "name_zh": "春熙路",
+              "recommendation": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街；春熙路逛街",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "太古里",
+                  "recommendation_quote": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街"
+                }
+              ],
+              "identity_text": "太古里",
+              "location": {
+                "latitude": 30.654709,
+                "longitude": 104.084964
+              },
+              "location_status": "available",
+              "name": "太古里",
+              "name_en": "Taikoo Li Chengdu",
+              "name_zh": "太古里",
+              "recommendation": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "大慈寺",
+                  "recommendation_quote": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街"
+                }
+              ],
+              "identity_text": "大慈寺",
+              "location": {
+                "latitude": 30.653818,
+                "longitude": 104.086339
+              },
+              "location_status": "available",
+              "name": "大慈寺",
+              "name_en": "Daci Temple",
+              "name_zh": "大慈寺",
+              "recommendation": "📍day1：春熙路→太古里→大慈寺→九眼桥→望平街",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69ca8f86000000001a031eac",
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "晚上去的九眼桥；九眼桥看夜景，感受bar街氛围（别去太早，晚上更热闹）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69ca8f86000000001a031eac",
+                  "identity_quote": "九眼桥",
+                  "recommendation_quote": "晚上去的九眼桥"
+                },
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "九眼桥",
+                  "recommendation_quote": "九眼桥看夜景，感受bar街氛围（别去太早，晚上更热闹）"
+                }
+              ],
+              "identity_text": "九眼桥",
+              "location": {
+                "latitude": 30.63984,
+                "longitude": 104.08864
+              },
+              "location_status": "available",
+              "name": "九眼桥",
+              "name_en": "Jiuyan Bridge",
+              "name_zh": "九眼桥",
+              "recommendation": "晚上去的九眼桥；九眼桥看夜景，感受bar街氛围（别去太早，晚上更热闹）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "望平街河边吹晚风、喝下午茶",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "望平街",
+                  "recommendation_quote": "望平街河边吹晚风、喝下午茶"
+                }
+              ],
+              "identity_text": "望平街",
+              "location": {
+                "latitude": 30.65291,
+                "longitude": 104.0898
+              },
+              "location_status": "available",
+              "name": "望平街",
+              "name_en": "Wangping Street",
+              "name_zh": "望平街",
+              "recommendation": "望平街河边吹晚风、喝下午茶",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69ca8f86000000001a031eac",
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "我们坐的地铁+公交（也叫基地接驳车）去的，又方便又便宜又快，推荐！！；7:30开门就进，上午熊猫zui活跃",
+              "evidence_support": [
+                {
+                  "evidence_id": "69ca8f86000000001a031eac",
+                  "identity_quote": "熊猫基地",
+                  "recommendation_quote": "我们坐的地铁+公交（也叫基地接驳车）去的，又方便又便宜又快，推荐！！"
+                },
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "大熊猫基地",
+                  "recommendation_quote": "7:30开门就进，上午熊猫zui活跃"
+                }
+              ],
+              "identity_text": "熊猫基地",
+              "location": {
+                "latitude": 30.732969,
+                "longitude": 104.14581
+              },
+              "location_status": "available",
+              "name": "熊猫基地",
+              "name_en": "Chengdu Research Base of Giant Panda Breeding",
+              "name_zh": "成都大熊猫繁育研究基地",
+              "recommendation": "我们坐的地铁+公交（也叫基地接驳车）去的，又方便又便宜又快，推荐！！；7:30开门就进，上午熊猫zui活跃",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "文殊院（红墙超出片，穿浅色系衣服）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "文殊院",
+                  "recommendation_quote": "文殊院（红墙超出片，穿浅色系衣服）"
+                }
+              ],
+              "identity_text": "文殊院",
+              "location": {
+                "latitude": 30.674771,
+                "longitude": 104.071948
+              },
+              "location_status": "available",
+              "name": "文殊院",
+              "name_en": "Wenshu Monastery",
+              "name_zh": "文殊院",
+              "recommendation": "文殊院（红墙超出片，穿浅色系衣服）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "东郊记忆内吃饭，打卡网红墙",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "东郊记忆",
+                  "recommendation_quote": "东郊记忆内吃饭，打卡网红墙"
+                }
+              ],
+              "identity_text": "东郊记忆",
+              "location": {
+                "latitude": 30.666048,
+                "longitude": 104.12085
+              },
+              "location_status": "available",
+              "name": "东郊记忆",
+              "name_en": "Eastern Suburb Memory",
+              "name_zh": "东郊记忆",
+              "recommendation": "东郊记忆内吃饭，打卡网红墙",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day2：熊猫基地→文殊院→东郊记忆→奎星楼街→宽窄巷子",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "宽窄巷子",
+                  "recommendation_quote": "📍day2：熊猫基地→文殊院→东郊记忆→奎星楼街→宽窄巷子"
+                }
+              ],
+              "identity_text": "宽窄巷子",
+              "location": {
+                "latitude": 30.66421,
+                "longitude": 104.05159
+              },
+              "location_status": "available",
+              "name": "宽窄巷子",
+              "name_en": "Kuanzhai Alley",
+              "name_zh": "宽窄巷子",
+              "recommendation": "📍day2：熊猫基地→文殊院→东郊记忆→奎星楼街→宽窄巷子",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "成都博物馆（提前公主号予约，限流）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "成都博物馆",
+                  "recommendation_quote": "成都博物馆（提前公主号予约，限流）"
+                }
+              ],
+              "identity_text": "成都博物馆",
+              "location": {
+                "latitude": 30.663752,
+                "longitude": 104.044618
+              },
+              "location_status": "available",
+              "name": "成都博物馆",
+              "name_en": "Chengdu Museum",
+              "name_zh": "成都博物馆",
+              "recommendation": "成都博物馆（提前公主号予约，限流）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69ca8f86000000001a031eac",
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "早上10点退房直接坐公交直达人民公园；人民公园鹤鸣茶社喝盖碗茶",
+              "evidence_support": [
+                {
+                  "evidence_id": "69ca8f86000000001a031eac",
+                  "identity_quote": "人民公园",
+                  "recommendation_quote": "早上10点退房直接坐公交直达人民公园"
+                },
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "人民公园",
+                  "recommendation_quote": "人民公园鹤鸣茶社喝盖碗茶"
+                }
+              ],
+              "identity_text": "人民公园",
+              "location": {
+                "latitude": 30.657132,
+                "longitude": 104.057246
+              },
+              "location_status": "available",
+              "name": "人民公园",
+              "name_en": "People's Park",
+              "name_zh": "人民公园",
+              "recommendation": "早上10点退房直接坐公交直达人民公园；人民公园鹤鸣茶社喝盖碗茶",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "人民公园鹤鸣茶社喝盖碗茶🍵（早去占湖边位）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "鹤鸣茶社",
+                  "recommendation_quote": "人民公园鹤鸣茶社喝盖碗茶🍵（早去占湖边位）"
+                }
+              ],
+              "identity_text": "鹤鸣茶社",
+              "location": {
+                "latitude": 30.656864,
+                "longitude": 104.05856
+              },
+              "location_status": "available",
+              "name": "鹤鸣茶社",
+              "name_en": "Heming Teahouse",
+              "name_zh": "鹤鸣茶社",
+              "recommendation": "人民公园鹤鸣茶社喝盖碗茶🍵（早去占湖边位）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "杜甫草堂",
+                  "recommendation_quote": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）"
+                }
+              ],
+              "identity_text": "杜甫草堂",
+              "location": {
+                "latitude": 30.65949,
+                "longitude": 104.026538
+              },
+              "location_status": "available",
+              "name": "杜甫草堂",
+              "name_en": "Du Fu Thatched Cottage",
+              "name_zh": "杜甫草堂",
+              "recommendation": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "武侯祠",
+                  "recommendation_quote": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）"
+                }
+              ],
+              "identity_text": "武侯祠",
+              "location": {
+                "latitude": 30.6424199,
+                "longitude": 104.04311
+              },
+              "location_status": "available",
+              "name": "武侯祠",
+              "name_en": "Chengdu Wuhou Shrine Museum",
+              "name_zh": "成都武侯祠博物馆",
+              "recommendation": "杜甫草堂→武侯祠（两园较大，穿舒适鞋子👞）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "锦里古街",
+                  "recommendation_quote": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街"
+                }
+              ],
+              "identity_text": "锦里古街",
+              "location": {
+                "latitude": 30.5722599,
+                "longitude": 104.0665099
+              },
+              "location_status": "available",
+              "name": "锦里古街",
+              "name_en": "Jinli Ancient Street",
+              "name_zh": "锦里古街",
+              "recommendation": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "青羊宫",
+                  "recommendation_quote": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街"
+                }
+              ],
+              "identity_text": "青羊宫",
+              "location": {
+                "latitude": 30.660051,
+                "longitude": 104.041053
+              },
+              "location_status": "available",
+              "name": "青羊宫",
+              "name_en": "Qingyang Palace",
+              "name_zh": "青羊宫",
+              "recommendation": "📍day3：成都博物馆→青羊宫→杜甫草堂→武侯祠→锦里古街",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "下午：宽窄巷子→奎星楼街\n• 傍晚：奎星楼街觅食",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "奎星楼街",
+                  "recommendation_quote": "下午：宽窄巷子→奎星楼街\n• 傍晚：奎星楼街觅食"
+                }
+              ],
+              "identity_text": "奎星楼街",
+              "location": {
+                "latitude": 30.66828,
+                "longitude": 104.05402
+              },
+              "location_status": "available",
+              "name": "奎星楼街",
+              "name_en": "Kuixinglou Street",
+              "name_zh": "奎星楼街",
+              "recommendation": "下午：宽窄巷子→奎星楼街\n• 傍晚：奎星楼街觅食",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "熊猫谷",
+                  "recommendation_quote": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥"
+                }
+              ],
+              "identity_text": "熊猫谷",
+              "location": {
+                "latitude": 30.9632,
+                "longitude": 103.59028
+              },
+              "location_status": "available",
+              "name": "熊猫谷",
+              "name_en": "Dujiangyan Panda Valley",
+              "name_zh": "都江堰熊猫谷",
+              "recommendation": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "仰天窝广场",
+                  "recommendation_quote": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥"
+                }
+              ],
+              "identity_text": "仰天窝广场",
+              "location": {
+                "latitude": 30.99324,
+                "longitude": 103.62312
+              },
+              "location_status": "available",
+              "name": "仰天窝广场",
+              "name_en": "Yangtianwo Square",
+              "name_zh": "仰天窝广场",
+              "recommendation": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "灌县古城",
+                  "recommendation_quote": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥"
+                }
+              ],
+              "identity_text": "灌县古城",
+              "location": {
+                "latitude": 30.996,
+                "longitude": 103.622992
+              },
+              "location_status": "available",
+              "name": "灌县古城",
+              "name_en": "Guanxian Ancient Town",
+              "name_zh": "灌县古城",
+              "recommendation": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "都江堰",
+                  "recommendation_quote": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥"
+                }
+              ],
+              "identity_text": "都江堰",
+              "location": {
+                "latitude": 31.0051649,
+                "longitude": 103.6075308
+              },
+              "location_status": "available",
+              "name": "都江堰",
+              "name_en": "Dujiangyan Irrigation System",
+              "name_zh": "都江堰",
+              "recommendation": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f6001000000001101933f"
+              ],
+              "evidence_summary": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f6001000000001101933f",
+                  "identity_quote": "南桥",
+                  "recommendation_quote": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥"
+                }
+              ],
+              "identity_text": "南桥",
+              "location": {
+                "latitude": 30.85224,
+                "longitude": 104.42032
+              },
+              "location_status": "available",
+              "name": "南桥",
+              "name_en": "Nanqiao Bridge",
+              "name_zh": "南桥",
+              "recommendation": "📍day4：熊猫谷→仰天窝广场→灌县古城→都江堰→南桥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69aebf3a000000001a02b509"
+              ],
+              "evidence_summary": "IFS国金中心打卡爬楼熊猫🐼（7楼拍正脸，早去人少）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69aebf3a000000001a02b509",
+                  "identity_quote": "IFS国金中心",
+                  "recommendation_quote": "IFS国金中心打卡爬楼熊猫🐼（7楼拍正脸，早去人少）"
+                }
+              ],
+              "identity_text": "IFS国金中心",
+              "location": {
+                "latitude": 30.65461019999999,
+                "longitude": 104.0804411
+              },
+              "location_status": "available",
+              "name": "IFS国金中心",
+              "name_en": "Chengdu IFS",
+              "name_zh": "成都国际金融中心",
+              "recommendation": "IFS国金中心打卡爬楼熊猫🐼（7楼拍正脸，早去人少）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "69ca8f86000000001a031eac"
+              ],
+              "evidence_summary": "镗钯街（熊猫书店可以去看看）",
+              "evidence_support": [
+                {
+                  "evidence_id": "69ca8f86000000001a031eac",
+                  "identity_quote": "镗钯街",
+                  "recommendation_quote": "镗钯街（熊猫书店可以去看看）"
+                }
+              ],
+              "identity_text": "镗钯街",
+              "location": {
+                "latitude": 30.5722599,
+                "longitude": 104.0665099
+              },
+              "location_status": "available",
+              "name": "镗钯街",
+              "name_en": "Tangpa Street",
+              "name_zh": "镗钯街",
+              "recommendation": "镗钯街（熊猫书店可以去看看）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v2",
+    "case_id": "gc_chengdu_budget",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase3d42_chengdu_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "patch_request": null,
+    "plan_version_after": null,
+    "plan_version_before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable",
+    "typed_operations": [],
+    "validation_result": null
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": 3500,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [
+          "不吃花生"
+        ],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "美食",
+        "城市探索"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "friends",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "amap",
+      "reason": "fallback provider result consumed",
+      "status": "degraded",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 14,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 16,
+        "verified": 14
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 6,
+      "provider": "google_directions",
+      "reason": "one or more route legs unavailable",
+      "status": "partial",
+      "summary": {
+        "attempted": 8,
+        "available": 6,
+        "eligible_final_intra_city_legs": 8,
+        "observed_final_legs": 12,
+        "validation_phase": "initial"
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 5,
+      "provider": "hotel_google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "candidate_count": 5,
+        "cities": 1,
+        "endpoint": "hotel_search"
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "initial_risks": [],
+    "initial_validation_result": null,
+    "post_revision_enrichment_state": null,
+    "post_revision_risks": [],
+    "protected_elements": [],
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "revision_instructions_metadata": [],
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 3,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:3",
+        "message": "第 4 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "太古里",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "ChIJRbj48EPF7zYR_fGN6Svj74M",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "太古里",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJAQCcw27F7zYR7E9sC4_Hqdw",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1556
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1462
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJRbj48EPF7zYR_fGN6Svj74M",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 0,
+      "destination_stable_id": "ChIJbwYug1zF7zYRpFsw9fWwOFo",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 1267
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1358
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJAQCcw27F7zYR7E9sC4_Hqdw",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJt8fX0CnF7zYRGqeWHJjuVWc",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJvTWARcva7zYRPk9kGPy5G1E",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 2639
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2248
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 2,
+      "destination_stable_id": "ChIJHSK0oePE7zYRKcnSiomj91k",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 3423
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 2950
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": true,
+      "day_index": 3,
+      "destination_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 8455
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1423
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJnZ8eqAIB8DYRve8Dg_sTlS4",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "driving",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    },
+    {
+      "data_available": false,
+      "day_index": 3,
+      "destination_stable_id": "都江堰",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "driving",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 3,
+      "destination_stable_id": "ChIJnVQUOvgD8DYRUlLG5ecmuHQ",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "都江堰",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "driving",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": true,
+      "day_index": 3,
+      "destination_stable_id": "ChIJYUbnVLQG8DYRF7eXmnu86bo",
+      "distance_m": {
+        "reason": null,
+        "status": "known",
+        "value": 4837
+      },
+      "duration_s": {
+        "reason": null,
+        "status": "known",
+        "value": 1052
+      },
+      "feasible": {
+        "reason": null,
+        "status": "known",
+        "value": true
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJnVQUOvgD8DYRUlLG5ecmuHQ",
+      "provider": "google_directions",
+      "reason": null,
+      "request_attempted": true,
+      "route_mode": "driving",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "verified"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "budget_limit",
+    "food_constraint",
+    "zh_input",
+    "revision_trigger"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:c11c00819cb27d2db562cc4e674b4af2f535342be523ce1ed193788cf5710ad0",
+    "google_directions": "sha256:8406b2d6b23c82ffb92c40f8041df6da7fc23bc2363c9e7cc183d50a5eea345f",
+    "google_places": "sha256:3221a28ef4e0f5116c043b190d54fa55996f4c24d6e61f10338f36d251641c6a",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:6ffd221b0c59b47a95a9babb85b731abbd16f922c33107c4f44d443c0e1339e1",
+    "xhs": "sha256:759ae2146ae16674273bfc83d19f0e3f6a21585e9512a93cd66011d64f2e772a"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 115369
+  },
+  "trip_request": {
+    "accommodation": "经济型酒店",
+    "cities": [
+      {
+        "city": "成都",
+        "days": 4
+      }
+    ],
+    "city": "成都",
+    "end_date": "2026-11-19",
+    "free_text_input": "当地消费不超过3500元，不吃花生",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": 3500,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [
+          "不吃花生"
+        ],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "美食",
+        "城市探索"
+      ],
+      "pace": "balanced",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "friends",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "美食",
+      "城市探索"
+    ],
+    "start_date": "2026-11-16",
+    "transportation": "公共交通",
+    "travel_days": 4
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 12145
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 15441
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 27586
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a4f6001000000001101933f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f6001000000001101933f",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a56140100000000160255c0",
+              "source_url": "https://www.xiaohongshu.com/explore/6a56140100000000160255c0",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "69ca8f86000000001a031eac",
+              "source_url": "https://www.xiaohongshu.com/explore/69ca8f86000000001a031eac",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "69aebf3a000000001a02b509",
+              "source_url": "https://www.xiaohongshu.com/explore/69aebf3a000000001a02b509",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

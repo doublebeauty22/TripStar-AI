@@ -1,0 +1,18 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "searches": [
+      {
+        "candidate_count": 2,
+        "city": "丽江",
+        "provider": "hotel_google_places",
+        "reason": null,
+        "status": "success"
+      }
+    ]
+  },
+  "provider": "hotel_google_places",
+  "sanitized": true,
+  "state": "available"
+}

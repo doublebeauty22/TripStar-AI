@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_lijiang_places_unavailable_v1",
+  "case_id": "gc_lijiang_places_unavailable",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d42/gc_lijiang_places_unavailable/gc_lijiang_places_unavailable.json",
+  "artifact_sha256": "sha256:20080b6627e4e197a582f35bb81b9e2b1c3fb20f7aa8666dd13fe7d00eb24e08",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-13T06:19:58Z",
+  "reviewed_at": "2026-08-13T06:19:58Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 3,
+    "pacing_quality": 2,
+    "usefulness": 3,
+    "explanation_quality": 4
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "自然风光偏好贯穿三天，情侣旅行场景也基本合适，古城、雪山、湖泊与乡村景观形成了明确的自然体验主线。但用户选择的 relaxed pace 落实不足，尤其 Day 1 和 Day 2 的活动密度与开始时间存在明显偏差，因此不评为 5。",
+    "itinerary_coherence": "三天主题结构基本成立，分别覆盖古城与湖畔、玉龙雪山、玉湖村周边自然景观。但 Day 1 可能产生束河后返回丽江古城的折返；Day 2 存在“玉龙雪山”作为整体景区和单独 POI 的概念混用；Day 3 的地理串联没有 route evidence。整体可理解，但有明显衔接与概念缺口。",
+    "pacing_quality": "Day 2 从 08:00 开始，三个 POI 停留合计 480 分钟，还没有计入市区至雪山往返、景区接驳、索道或排队、午餐及高海拔休息。Day 1 的 POI 停留也合计 450 分钟。多日的开始时间、活动密度和潜在移动负担明显偏离 relaxed pace，需要删除或重排主要活动。",
+    "usefulness": "POI grounding 为 8/9、provenance coverage 为 13/14，地点基础较强，行程也提供了可理解的三日框架。但 final route coverage 为 0/4，用户仍需重新确认雪山专线、景区接驳、索道、Day 3 包车和逐段交通，尚不能直接据此执行，因此属于基本可用但存在重要信息缺口。",
+    "explanation_quality": "计划对自然风光主题、交通建议和高海拔注意事项给出了较清楚的说明；尤其 provider 返回错误日期天气时，没有把 8 月数据冒充 12 月预报，并主动披露路线、天气和高海拔不确定性。主要不足是部分路线和执行事实仍需用户自行核实，因此保留改进空间。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "Artifact 包含预约时段、票价、电瓶车价格、酒店价格与评分、交通时间等具体外部事实，仅凭 workbook 无法确认每项 provenance 是否充分。因此不能判定存在某项明确 unsupported fact，也不能确认所有具体陈述均已获得可靠来源支持，verdict 为 uncertain。",
+  "additional_notes": null
+}

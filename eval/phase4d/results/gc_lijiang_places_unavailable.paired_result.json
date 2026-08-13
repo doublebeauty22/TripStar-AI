@@ -1,0 +1,40 @@
+{
+  "result_version": "phase4d.paired_result.v1",
+  "case_id": "gc_lijiang_places_unavailable",
+  "pair_level_outcome": "BETTER",
+  "baseline": {
+    "label": "Plan A", "planner_version": "planner_baseline_v1", "prompt_version": "planner_prompt_v1",
+    "artifact_sha256": "sha256:ccad40d98ff2bf2d2041da87d482041bd29496cab62a312fc85b82455fced79b",
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 4, "pacing_quality": 3, "usefulness": 4, "explanation_quality": 4}
+  },
+  "candidate": {
+    "label": "Plan B", "planner_version": "planner_pacing_v1", "prompt_version": "planner_prompt_pacing_v1",
+    "pacing_policy_version": "pacing.daily_load.v0.proposed", "pacing_revision_version": "pacing_revision.v1",
+    "artifact_sha256": "sha256:425ecd951579c63b4621905803b66f30cfdd68db19ef7fe179c96668e5674821",
+    "scores": {"preference_satisfaction": 5, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4}
+  },
+  "candidate_minus_baseline": {"preference_satisfaction": 1, "itinerary_coherence": 1, "pacing_quality": 1, "usefulness": 0, "explanation_quality": 0},
+  "blind_human_review": {
+    "paired_verdict": "plan_b_better", "unsupported_fact": {"Plan A": "uncertain", "Plan B": "uncertain"},
+    "blind_order_integrity": "limitation", "underpacked_detected": false, "core_preference_sacrifice_detected": false
+  },
+  "revision": {
+    "triggered": true, "status": "rejected", "failure_reason": "invalid_revision_output", "committed": false,
+    "typed_operations": [], "original_candidate_retained": true, "affected_day_indices": [1, 2], "protected_day_indices": [0],
+    "overload_remained_unresolved": true,
+    "attribution": "No human-rating improvement can be attributed to targeted Revision. Any descriptive difference applies to the initial pacing-aware Planner candidate."
+  },
+  "preference_and_pacing": {
+    "relaxed_preference_preserved": true, "core_natural_landscape_sacrifice_detected": false, "underpacked_detected": false,
+    "residual_limitation": "Candidate Day 2 remains potentially dense due to suburban travel, scenic-area access, queues, internal mobility and altitude burden; relaxed pacing is not fully solved."
+  },
+  "deterministic_candidate": {
+    "schema_valid": 1.0, "date_day_consistency": 1.0, "budget_arithmetic_consistency": 1.0,
+    "grounded_poi_rate": 0.875, "unverified_poi_rate": 0.125, "provenance_coverage": 0.9230769230769231,
+    "route_check_coverage": 0.0, "route_feasibility_rate": null, "actionable_risk_count": 2.0
+  },
+  "grounding_outcome_capture": "not_reached",
+  "comparability": {"status": "limited_provider_drift", "trip_request_equal": true, "provider_snapshot_exact": false, "causal_claim_allowed": false},
+  "resume_safe_claim": "In one Lijiang paired review, the pacing-aware candidate received higher human ratings for preference satisfaction, itinerary coherence, and pacing while preserving the couple-oriented natural-landscape experience; relaxed pacing remained imperfect on the mountain day, and causal attribution remains limited by live-provider drift.",
+  "prohibited_claims": ["statistically significant", "general user satisfaction improved", "Phase 4 is validated", "targeted Revision caused the improvement", "relaxed pacing is fully solved"]
+}

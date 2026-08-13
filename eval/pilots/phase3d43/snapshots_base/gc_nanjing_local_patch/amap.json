@@ -1,0 +1,79 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "endpoint": "weather",
+    "malformed_count": 0,
+    "results": [
+      {
+        "city": "南京",
+        "data_available": true,
+        "days": [
+          {
+            "city": "南京",
+            "data_source": "amap",
+            "date": "2026-08-12",
+            "day_temp": 30,
+            "day_weather": "小雨",
+            "degraded": true,
+            "night_temp": 24,
+            "night_weather": "小雨",
+            "precipitation_probability": null,
+            "verification_status": "verified",
+            "wind_direction": "东",
+            "wind_power": "1-3"
+          },
+          {
+            "city": "南京",
+            "data_source": "amap",
+            "date": "2026-08-13",
+            "day_temp": 29,
+            "day_weather": "小雨",
+            "degraded": true,
+            "night_temp": 24,
+            "night_weather": "大雨",
+            "precipitation_probability": null,
+            "verification_status": "verified",
+            "wind_direction": "东北",
+            "wind_power": "1-3"
+          },
+          {
+            "city": "南京",
+            "data_source": "amap",
+            "date": "2026-08-14",
+            "day_temp": 29,
+            "day_weather": "中雨",
+            "degraded": true,
+            "night_temp": 24,
+            "night_weather": "小雨",
+            "precipitation_probability": null,
+            "verification_status": "verified",
+            "wind_direction": "东",
+            "wind_power": "1-3"
+          },
+          {
+            "city": "南京",
+            "data_source": "amap",
+            "date": "2026-08-15",
+            "day_temp": 28,
+            "day_weather": "小雨",
+            "degraded": true,
+            "night_temp": 22,
+            "night_weather": "晴",
+            "precipitation_probability": null,
+            "verification_status": "verified",
+            "wind_direction": "北",
+            "wind_power": "1-3"
+          }
+        ],
+        "degraded": true,
+        "provider": "amap",
+        "reason": null,
+        "request_success": true
+      }
+    ]
+  },
+  "provider": "amap",
+  "sanitized": true,
+  "state": "degraded"
+}

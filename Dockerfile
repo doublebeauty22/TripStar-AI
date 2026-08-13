@@ -7,22 +7,24 @@ WORKDIR /build
 
 # 复制前端依赖文件并安装
 COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm install --registry=https://registry.npmmirror.com
+RUN npm ci --registry=https://registry.npmmirror.com
 
 # 复制前端代码并构建
 COPY frontend/ ./
 
 # 接收构建参数
 ARG VITE_AMAP_WEB_JS_KEY
-ARG VITE_AMAP_WEB_KEY
+ARG VITE_GOOGLE_MAPS_BROWSER_KEY
+ARG VITE_PUBLIC_DEMO_MODE=true
 
 # 设置构建时环境变量：API 使用相对路径(同源部署)
 ENV VITE_API_BASE_URL=""
 ENV VITE_AMAP_WEB_JS_KEY=${VITE_AMAP_WEB_JS_KEY:-your_amap_web_js_api_key_here}
-ENV VITE_AMAP_WEB_KEY=${VITE_AMAP_WEB_KEY:-your_amap_web_api_key_here}
+ENV VITE_GOOGLE_MAPS_BROWSER_KEY=${VITE_GOOGLE_MAPS_BROWSER_KEY:-}
+ENV VITE_PUBLIC_DEMO_MODE=${VITE_PUBLIC_DEMO_MODE}
 
-# 跳过 vue-tsc 类型检查，直接构建（类型错误不影响运行）
-RUN npx vite build
+# Use the committed production build contract, including TypeScript checking.
+RUN npm run build
 
 
 # ================================
@@ -47,12 +49,9 @@ RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com
 # 安装 gunicorn + uvicorn worker
 RUN uv pip install --system --no-cache gunicorn "uvicorn[standard]" -i https://mirrors.aliyun.com/pypi/simple/
 
-# 预下载 amap-mcp-server（避免首次请求时下载导致超时）
-RUN uvx amap-mcp-server --help || true
-
 # 复制后端代码并安装 Node.js 依赖
 COPY backend/ ./backend/
-RUN cd backend && npm install --registry=https://registry.npmmirror.com
+RUN cd backend && npm install --omit=dev --registry=https://registry.npmmirror.com
 
 # 从阶段一复制前端构建产物
 COPY --from=frontend-builder /build/dist ./frontend/dist

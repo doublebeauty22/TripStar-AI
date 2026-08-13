@@ -1,0 +1,71 @@
+{
+  "review_type": "paired_human_review",
+  "review_id": "paired_review_gc_kyoto_no_early_start_v1",
+  "case_id": "gc_kyoto_no_early_start",
+  "rubric_version": "human.v1",
+  "status": "revealed_complete",
+  "reviewer": "Yi Huang",
+  "reviewed_at": "2026-08-13T14:31:33Z",
+  "blind_material_reference": "eval/phase4d/blind_review/gc_kyoto_no_early_start/human_review.md",
+  "blind_material_sha256": "sha256:57179ef9364a8c19288625016f461bb9c3a882836caccc8ab80649877d4363f0",
+  "blind_plan_a_label": "Plan A",
+  "blind_plan_b_label": "Plan B",
+  "identity_revealed": true,
+  "identity_revealed_at": "2026-08-13T14:32:19Z",
+  "blind_review_completed_at": "2026-08-13T14:31:33Z",
+  "blind_order_integrity": "limitation",
+  "plan_a_review": {
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 4, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "The plan strongly preserves the couple-oriented historical/cultural preference and respects the explicit no-early-start constraint. It is broadly compatible with relaxed travel, although walking, queues and peak-season uncertainty prevent a perfect score.",
+      "itinerary_coherence": "The three-day structure is geographically and thematically coherent: Fushimi/Inari and southern Higashiyama, northwest/central Kyoto, then the core Higashiyama historical area. No material reordering is required.",
+      "pacing_quality": "The itinerary is generally compatible with relaxed pacing. Three activities per day remain manageable because several are geographically connected, although walking, queues and access uncertainty can still increase real burden.",
+      "usefulness": "The itinerary provides realistic visit durations and a clear executable structure. Some route, opening, booking and crowding details still require confirmation before travel.",
+      "explanation_quality": "Important uncertainty around crowds, weather, walking, opening conditions and public transport is disclosed without presenting unknown information as certain."
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "Most descriptions are plausible, but opening conditions, ticketing, reservations, seasonal crowding and other operational details require official verification closer to travel."
+  },
+  "plan_b_review": {
+    "scores": {"preference_satisfaction": 4, "itinerary_coherence": 5, "pacing_quality": 4, "usefulness": 3, "explanation_quality": 4},
+    "rationale_by_dimension": {
+      "preference_satisfaction": "The historical/cultural interest and explicit 10:00-or-later start constraint remain preserved, and no major POI is removed. However, shortened time at important cultural areas may slightly reduce depth of experience.",
+      "itinerary_coherence": "The geographic and thematic organization remains highly coherent and is effectively unchanged from Plan A.",
+      "pacing_quality": "The numerical daily load is lower, but the improvement comes primarily from compressing activity duration rather than introducing meaningful additional rest or restructuring movement. Therefore it is not clearly superior as a relaxed experience.",
+      "usefulness": "The itinerary remains usable, but 85 minutes at Fushimi Inari and 70 minutes in Gion may be aggressive for a first-time couple seeking relaxed historical/cultural exploration. These durations reduce execution margin and are not sufficiently justified by the plan.",
+      "explanation_quality": "The plan communicates major uncertainties appropriately, but it does not adequately explain why the shortened durations at Fushimi Inari and Gion remain sufficient for the intended experience."
+    },
+    "unsupported_fact": "uncertain",
+    "unsupported_fact_rationale": "Operational facts still require verification. The shortened visit durations should be treated as planning assumptions rather than verified facts."
+  },
+  "paired_verdict": "mixed",
+  "paired_rationale": "Plan B reduces numerical pacing load without deleting POIs, but the improvement is achieved mainly by shortening Fushimi Inari from 150 to 85 minutes and Gion from 120 to 70 minutes. This introduces a plausible over-correction and usefulness trade-off for a relaxed historical/cultural trip. Plan A provides more realistic exploration depth, while Plan B has lower modeled load. Therefore neither plan is clearly superior overall.",
+  "more_balanced_plan": "uncertain",
+  "more_executable_plan": "Plan A",
+  "core_preference_sacrifice_detected": false,
+  "underpacked_detected": false,
+  "metric_improvement_but_ux_regression": true,
+  "additional_notes": "Plan B is not clearly more relaxed despite lower modeled load. Neither plan is materially underpacked and no POI was deleted. Plan B has mild over-correction risk: 85 minutes at Fushimi Inari and 70 minutes in Gion may be too compressed. Preference is preserved, coherence is equivalent, and Plan A is more useful for execution. Historical blind ordering cannot be independently proven; this timestamp records schema registration with no identity fields present.",
+  "reveal": {
+    "plan_a_identity": {
+      "role": "baseline",
+      "artifact_reference": "eval/pilots/phase3d3/gc_kyoto_no_early_start/gc_kyoto_no_early_start.json",
+      "artifact_sha256": "sha256:9a7292cef4403e68f95d7c078523d41efca008d0b1bb8d39fc8d3d8a80b80808",
+      "planner_version": "planner_baseline_v1",
+      "prompt_version": "planner_prompt_v1",
+      "pacing_policy_version": null,
+      "pacing_revision_version": null
+    },
+    "plan_b_identity": {
+      "role": "candidate",
+      "artifact_reference": "eval/phase4d/cases/gc_kyoto_no_early_start/gc_kyoto_no_early_start.json",
+      "artifact_sha256": "sha256:2b804ad50c6123d0fdcbcc49e35fcfb3a985cbfffc2882780c32f757f2411729",
+      "planner_version": "planner_pacing_v1",
+      "prompt_version": "planner_prompt_pacing_v1",
+      "pacing_policy_version": "pacing.daily_load.v0.proposed",
+      "pacing_revision_version": "pacing_revision.v1"
+    },
+    "baseline_label": "Plan A",
+    "candidate_label": "Plan B"
+  }
+}

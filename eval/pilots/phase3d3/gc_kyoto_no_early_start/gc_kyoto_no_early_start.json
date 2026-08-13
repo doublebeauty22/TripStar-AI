@@ -1,0 +1,1650 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:24:25.616059+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T13:22:33.315591+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 3385,
+        "total_attractions": 25,
+        "total_hotels": 2250,
+        "total_inter_city_transport": 0,
+        "total_meals": 810,
+        "total_transportation": 300
+      },
+      "cities": [
+        "京都"
+      ],
+      "city": "京都",
+      "days": [
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "1-294 Kiyomizu, Higashiyama Ward, Kyoto, 605-0862日本",
+              "category": "历史文化遗产",
+              "description": "京都代表性古寺,可重点参观清水舞台、本堂及音羽山景观。候选攻略建议清水寺早到以避开旅行团,但本行程受不早起约束安排在10:00开始,建议优先进入核心区域,再沿东山街区下行游览。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "清水寺",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 25,
+              "visit_duration": 120
+            },
+            {
+              "address": "Kiyomizu 2-chome, Higashiyama Ward, Kyoto, 605-0862日本",
+              "category": "传统街区",
+              "description": "从清水寺步行下行经过的传统街区,沿途可见木造町屋、小店和石板坡道,适合安排午后慢逛、购买伴手礼并拍摄古都街景。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "三年坂",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            },
+            {
+              "address": "625 Gionmachi Kitagawa, Higashiyama Ward, Kyoto, 605-0073日本",
+              "category": "神社",
+              "description": "京都历史悠久的神社之一,交通便利。建议傍晚抵达,观赏灯笼亮起后的传统氛围,再从神社步行进入祇园区域用餐。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "八坂神社",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            }
+          ],
+          "city": "京都",
+          "date": "2026-11-09",
+          "day_index": 0,
+          "description": "以东山历史街区为主,按清水寺—三年坂—八坂神社方向游览,整体步行下坡较多,节奏舒缓,适合情侣慢慢逛町屋与古寺。",
+          "hotel": {
+            "address": "19-2 Shogoin Sannochō, Sakyo Ward, Kyoto, 606-8392日本",
+            "distance": "距离南禅寺约1公里,距离东山景区约2-3公里",
+            "estimated_cost": 750,
+            "location": {
+              "latitude": 35.0175473,
+              "longitude": 135.7794453
+            },
+            "name": "Guesthouse Waraku-an",
+            "price_range": "600-900元/晚",
+            "rating": "4.8",
+            "type": "民宿型旅舍"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "选择咖啡、吐司、鸡蛋或和式早餐,避免安排过早出门。",
+              "estimated_cost": 35,
+              "location": null,
+              "name": "民宿附近咖啡店早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "东山一带适合品尝湯豆腐、京都蔬菜定食等清淡料理,方便步行衔接下午行程。",
+              "estimated_cost": 80,
+              "location": null,
+              "name": "清水寺周边湯豆腐或定食",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "安排一顿较有仪式感的京都料理,建议提前确认营业时间及是否需要预约。",
+              "estimated_cost": 160,
+              "location": null,
+              "name": "祇园京料理或寿喜烧",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "从住宿地乘京都市巴士或地铁转巴士前往清水寺,景点之间以步行为主,晚间步行至祇园或乘巴士返回。"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "68 Fukakusa Yabunouchichō, Fushimi Ward, Kyoto, 612-0882日本",
+              "category": "神社与历史文化",
+              "description": "以千本鸟居和稻荷山参道闻名。建议根据体力向山上继续走一段,越往上游客通常越少、氛围越安静；不必强行走完全程,可在中途观景后原路或环线返回。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "伏见稻荷大社",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "Gionmachi Minamigawa, Higashiyama Ward, Kyoto, 605-0074日本",
+              "category": "传统街区",
+              "description": "祇园代表性古街,适合观察传统町屋建筑和街巷肌理。请遵守街区拍摄规定,不要尾随或偷拍艺伎及舞伎。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "花见小路",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "partial_match",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            },
+            {
+              "address": "日本京都府京都市鸭川",
+              "category": "城市景观与休闲",
+              "description": "适合作为晚餐后的放松散步点。可在河岸坐下休息,感受天色变蓝、沿岸店铺亮灯时的古都氛围；注意秋季夜间体感可能偏凉。",
+              "image_url": null,
+              "location": {
+                "latitude": 34.9804985,
+                "longitude": 135.7671783
+              },
+              "map_data_source": "google_places",
+              "name": "鸭川",
+              "photos": [],
+              "place_id": "ChIJKZsHV-QIAWARAwyExuxohlc",
+              "poi_id": "ChIJKZsHV-QIAWARAwyExuxohlc",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            }
+          ],
+          "city": "京都",
+          "date": "2026-11-10",
+          "day_index": 1,
+          "description": "上午前往伏见稻荷大社,下午转入祇园历史街区,晚上沿鸭川散步。景点密度适中,保留较多休息和自由活动时间。",
+          "hotel": {
+            "address": "19-2 Shogoin Sannochō, Sakyo Ward, Kyoto, 606-8392日本",
+            "distance": "距离祇园约2公里,公共交通前往伏见稻荷和鸭川较方便",
+            "estimated_cost": 750,
+            "location": {
+              "latitude": 35.0175473,
+              "longitude": 135.7794453
+            },
+            "name": "Guesthouse Waraku-an",
+            "price_range": "600-900元/晚",
+            "rating": "4.8",
+            "type": "民宿型旅舍"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "推荐饭团、味噌汤、玉子烧等便于出行的早餐组合。",
+              "estimated_cost": 35,
+              "location": null,
+              "name": "民宿附近日式早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "完成稻荷山步行后在车站周边用餐,选择热汤面或定食补充体力。",
+              "estimated_cost": 75,
+              "location": null,
+              "name": "伏见稻荷周边乌冬面或鳗鱼饭",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择京都风味小菜、烤物和清酒,建议根据预算提前查看菜单价格。",
+              "estimated_cost": 150,
+              "location": null,
+              "name": "祇园或先斗町居酒屋",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "乘JR或京都市巴士前往伏见稻荷大社；返回市中心后步行游览花见小路、祇园和鸭川,晚间乘公共交通返回住宿地。"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "Sagaogurayama Tabuchiyamacho, Ukyo Ward, Kyoto, 616-8394日本",
+              "category": "自然与文化景观",
+              "description": "岚山代表性竹林步道,竹林本身不长,建议抵达后先游览。候选攻略提示中午以后人流会明显增多,因此在10:00开始的前提下应把竹林安排在当天首站。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "竹林小径",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            },
+            {
+              "address": "日本〒616-0007 京都府京都市右京区 Arashiyama Genrokuzancho",
+              "category": "历史文化与自然景区",
+              "description": "岚山适合按区域慢慢探索,而不只停留在竹林。可在周边寺院、山林小路和河岸之间自由取舍,秋季可关注红叶变化,但具体观赏程度受当日实际情况影响。",
+              "image_url": null,
+              "location": {
+                "latitude": 35.009449,
+                "longitude": 135.666773
+              },
+              "map_data_source": "google_places",
+              "name": "岚山",
+              "photos": [],
+              "place_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs",
+              "poi_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs",
+              "poi_match_status": "verified",
+              "rating": 4.5,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "Arashiyama, Ukyo Ward, Kyoto, 616-8385日本",
+              "category": "历史景观与城市休闲",
+              "description": "作为岚山行程收尾,沿河眺望山景和水面。可在桥附近安排下午茶或河岸散步,保留充足时间休息后再返回京都市区。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "渡月桥",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": false,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 60
+            }
+          ],
+          "city": "京都",
+          "date": "2026-11-11",
+          "day_index": 2,
+          "description": "安排西部岚山半日到一日慢游,依次游览竹林、岚山区域和渡月桥,重点感受山水、寺社周边与秋季古都景观,不额外堆叠过多景点。",
+          "hotel": {
+            "address": "19-2 Shogoin Sannōchō, Sakyo Ward, Kyoto, 606-8392日本",
+            "distance": "距离岚山约9-10公里,乘JR或巴士前往较方便",
+            "estimated_cost": 750,
+            "location": {
+              "latitude": 35.0175473,
+              "longitude": 135.7794453
+            },
+            "name": "Guesthouse Waraku-an",
+            "price_range": "600-900元/晚",
+            "rating": "4.8",
+            "type": "民宿型旅舍"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "10:00开始主要行程,可在9:00左右从容用餐后出发。",
+              "estimated_cost": 35,
+              "location": null,
+              "name": "民宿附近咖啡与饭团",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "选择竹林或渡月桥附近的京都风味餐厅,建议避开正午最拥挤时段或提前取号。",
+              "estimated_cost": 85,
+              "location": null,
+              "name": "岚山湯豆腐或荞麦面",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "返程后在京都站周边用餐,选择交通便利、适合情侣轻松收尾的餐厅。",
+              "estimated_cost": 150,
+              "location": null,
+              "name": "京都站周边寿司或日式定食",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "乘JR嵯峨野线或京都市巴士前往岚山,景区内部以步行为主；竹林与渡月桥之间步行衔接,返程继续使用JR或巴士。"
+        }
+      ],
+      "end_date": "2026-11-11",
+      "overall_suggestions": "本次外部天气数据不可用,未提供逐日晴雨、温度或风力信息。11月京都通常进入秋季观光期,建议携带分层衣物、轻便防风外套和舒适防滑鞋,并根据出发前实际天气调整步行时长。每天主要行程均安排在10:00后,符合不早起约束；清水寺和竹林小径因热门,建议在当天首个景点优先游览。寺社、老街及鸭川周边以公共交通和步行为主,建议准备交通IC卡。清水寺、岚山等区域秋季可能较拥挤,餐厅和热门体验请提前确认营业时间及预约规则。预算按2人、人民币估算,不包含往返京都的大交通及购物费用。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:2",
+          "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2026-11-09",
+      "validation_status": "degraded",
+      "weather_info": [],
+      "weather_results": [
+        {
+          "city": "京都",
+          "data_available": false,
+          "days": [],
+          "degraded": true,
+          "provider": "unavailable",
+          "reason": "empty_forecast",
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a6b72b80000000005020116",
+              "source_url": "https://www.xiaohongshu.com/explore/6a6b72b80000000005020116",
+              "status": "detail_available",
+              "title": "京都景点从夯到拉纯主观排名"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a7a82ee0000000025015c69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7a82ee0000000025015c69",
+              "status": "detail_available",
+              "title": "🌸京都清水寺｜保姆级最全旅游攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a79bc20000000003400f64f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a79bc20000000003400f64f",
+              "status": "detail_available",
+              "title": "不赶景点的京都3日游，反而更好玩"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a75546a000000000502346f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a75546a000000000502346f",
+              "status": "detail_available",
+              "title": "京都一日游！不走回头路保姆级攻略"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "越往山上走游客越少，氛围也越安静",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "伏见稻荷大社",
+                  "recommendation_quote": "越往山上走游客越少，氛围也越安静"
+                }
+              ],
+              "identity_text": "伏见稻荷大社",
+              "location": {
+                "latitude": 34.9676945,
+                "longitude": 135.7791876
+              },
+              "location_status": "available",
+              "name": "伏见稻荷大社",
+              "name_en": "Fushimi Inari Taisha",
+              "name_zh": "伏见稻荷大社",
+              "recommendation": "越往山上走游客越少，氛围也越安静",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7a82ee0000000025015c69",
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "全程下坡，不用反复爬坡，轻松逛遍核心点位；清水寺建议早上8点前到达，避开旅行团大军",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7a82ee0000000025015c69",
+                  "identity_quote": "清水寺",
+                  "recommendation_quote": "全程下坡，不用反复爬坡，轻松逛遍核心点位"
+                },
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "清水寺",
+                  "recommendation_quote": "清水寺建议早上8点前到达，避开旅行团大军"
+                }
+              ],
+              "identity_text": "清水寺",
+              "location": {
+                "latitude": 34.9946662,
+                "longitude": 135.784661
+              },
+              "location_status": "available",
+              "name": "清水寺",
+              "name_en": "Kiyomizu-dera",
+              "name_zh": "清水寺",
+              "recommendation": "全程下坡，不用反复爬坡，轻松逛遍核心点位；清水寺建议早上8点前到达，避开旅行团大军",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "沿途是木造町屋、小店和石板坡道",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "三年坂",
+                  "recommendation_quote": "沿途是木造町屋、小店和石板坡道"
+                }
+              ],
+              "identity_text": "三年坂",
+              "location": {
+                "latitude": 34.9966644,
+                "longitude": 135.781008
+              },
+              "location_status": "available",
+              "name": "三年坂",
+              "name_en": "Sannenzaka",
+              "name_zh": "三年坂",
+              "recommendation": "沿途是木造町屋、小店和石板坡道",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "沿途是木造町屋、小店和石板坡道",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "二年坂",
+                  "recommendation_quote": "沿途是木造町屋、小店和石板坡道"
+                }
+              ],
+              "identity_text": "二年坂",
+              "location": {
+                "latitude": 34.996663,
+                "longitude": 135.7810078
+              },
+              "location_status": "available",
+              "name": "二年坂",
+              "name_en": "Ninenzaka",
+              "name_zh": "二年坂",
+              "recommendation": "沿途是木造町屋、小店和石板坡道",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "重要文化遗产，仰拍绝美",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "法观寺(八坂塔)",
+                  "recommendation_quote": "重要文化遗产，仰拍绝美"
+                }
+              ],
+              "identity_text": "法观寺(八坂塔)",
+              "location": {
+                "latitude": 34.998558,
+                "longitude": 135.7792358
+              },
+              "location_status": "available",
+              "name": "法观寺(八坂塔)",
+              "name_en": "Hokan-ji Temple (Yasaka Pagoda)",
+              "name_zh": "法观寺（八坂塔）",
+              "recommendation": "重要文化遗产，仰拍绝美",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "樱花/枫叶季限定美景",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "高台寺",
+                  "recommendation_quote": "樱花/枫叶季限定美景"
+                }
+              ],
+              "identity_text": "高台寺",
+              "location": {
+                "latitude": 35.0007687,
+                "longitude": 135.7812718
+              },
+              "location_status": "available",
+              "name": "高台寺",
+              "name_en": "Kodaiji Temple",
+              "name_zh": "高台寺",
+              "recommendation": "樱花/枫叶季限定美景",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116",
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "交通便利，也经常出现在京都旅行路线中；傍晚灯笼亮起，拍照自带复古滤镜",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "八坂神社",
+                  "recommendation_quote": "交通便利，也经常出现在京都旅行路线中"
+                },
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "八坂神社",
+                  "recommendation_quote": "傍晚灯笼亮起，拍照自带复古滤镜"
+                }
+              ],
+              "identity_text": "八坂神社",
+              "location": {
+                "latitude": 35.0036559,
+                "longitude": 135.7785534
+              },
+              "location_status": "available",
+              "name": "八坂神社",
+              "name_en": "Yasaka Shrine",
+              "name_zh": "八坂神社",
+              "recommendation": "交通便利，也经常出现在京都旅行路线中；傍晚灯笼亮起，拍照自带复古滤镜",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "白天适合闲逛，傍晚到夜晚氛围最佳",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "祇园",
+                  "recommendation_quote": "白天适合闲逛，傍晚到夜晚氛围最佳"
+                }
+              ],
+              "identity_text": "祇园",
+              "location": {
+                "latitude": 35.0037816,
+                "longitude": 135.777245
+              },
+              "location_status": "available",
+              "name": "祇园",
+              "name_en": "Gion",
+              "name_zh": "祇园",
+              "recommendation": "白天适合闲逛，傍晚到夜晚氛围最佳",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "古街漫步，偶遇艺伎概率超高",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "花见小路",
+                  "recommendation_quote": "古街漫步，偶遇艺伎概率超高"
+                }
+              ],
+              "identity_text": "花见小路",
+              "location": {
+                "latitude": 35.003611,
+                "longitude": 135.775037
+              },
+              "location_status": "available",
+              "name": "花见小路",
+              "name_en": "Hanamikoji Street",
+              "name_zh": "花见小路",
+              "recommendation": "古街漫步，偶遇艺伎概率超高",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f",
+                "6a75546a000000000502346f"
+              ],
+              "evidence_summary": "天刚变蓝、河边店铺亮灯的时候特别舒服；看日落，吹晚风",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "鸭川",
+                  "recommendation_quote": "天刚变蓝、河边店铺亮灯的时候特别舒服"
+                },
+                {
+                  "evidence_id": "6a75546a000000000502346f",
+                  "identity_quote": "鸭川",
+                  "recommendation_quote": "看日落，吹晚风"
+                }
+              ],
+              "identity_text": "鸭川",
+              "location": {
+                "latitude": 34.98149722143858,
+                "longitude": 135.7568430578226
+              },
+              "location_status": "available",
+              "name": "鸭川",
+              "name_en": "Kamo River",
+              "name_zh": "鸭川",
+              "recommendation": "天刚变蓝、河边店铺亮灯的时候特别舒服；看日落，吹晚风",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "真正值得推荐的是整个岚山，而不是竹林本身",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "岚山",
+                  "recommendation_quote": "真正值得推荐的是整个岚山，而不是竹林本身"
+                }
+              ],
+              "identity_text": "岚山",
+              "location": {
+                "latitude": 35.009449,
+                "longitude": 135.666773
+              },
+              "location_status": "available",
+              "name": "岚山",
+              "name_en": "Arashiyama",
+              "name_zh": "岚山",
+              "recommendation": "真正值得推荐的是整个岚山，而不是竹林本身",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "红叶季的小火车比较热门，建议提前预约并确认班次",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "岚山小火车",
+                  "recommendation_quote": "红叶季的小火车比较热门，建议提前预约并确认班次"
+                }
+              ],
+              "identity_text": "岚山小火车",
+              "location": {
+                "latitude": 35.021943,
+                "longitude": 135.6561758
+              },
+              "location_status": "available",
+              "name": "岚山小火车",
+              "name_en": "Sagano Romantic Train",
+              "name_zh": "岚山小火车",
+              "recommendation": "红叶季的小火车比较热门，建议提前预约并确认班次",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "竹林本身不算长，中午以后人会明显变多",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "竹林小径",
+                  "recommendation_quote": "竹林本身不算长，中午以后人会明显变多"
+                }
+              ],
+              "identity_text": "竹林小径",
+              "location": {
+                "latitude": 35.0168187,
+                "longitude": 135.6713013
+              },
+              "location_status": "available",
+              "name": "竹林小径",
+              "name_en": "Arashiyama Bamboo Grove",
+              "name_zh": "岚山竹林小径",
+              "recommendation": "竹林本身不算长，中午以后人会明显变多",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "最后走到渡月桥看河流和山景",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "渡月桥",
+                  "recommendation_quote": "最后走到渡月桥看河流和山景"
+                }
+              ],
+              "identity_text": "渡月桥",
+              "location": {
+                "latitude": 35.0128769,
+                "longitude": 135.6777748
+              },
+              "location_status": "available",
+              "name": "渡月桥",
+              "name_en": "Togetsukyo Bridge",
+              "name_zh": "渡月桥",
+              "recommendation": "最后走到渡月桥看河流和山景",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "南禅寺主打建筑和气势",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "南禅寺",
+                  "recommendation_quote": "南禅寺主打建筑和气势"
+                }
+              ],
+              "identity_text": "南禅寺",
+              "location": {
+                "latitude": 35.0114138,
+                "longitude": 135.7944841
+              },
+              "location_status": "available",
+              "name": "南禅寺",
+              "name_en": "Nanzen-ji Temple",
+              "name_zh": "南禅寺",
+              "recommendation": "南禅寺主打建筑和气势",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "水路阁的红砖拱桥和京都常见的木造寺院完全不同",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "水路阁",
+                  "recommendation_quote": "水路阁的红砖拱桥和京都常见的木造寺院完全不同"
+                }
+              ],
+              "identity_text": "水路阁",
+              "location": {
+                "latitude": 35.0105815,
+                "longitude": 135.7939463
+              },
+              "location_status": "available",
+              "name": "水路阁",
+              "name_en": "Suirokaku Aqueduct",
+              "name_zh": "水路阁",
+              "recommendation": "水路阁的红砖拱桥和京都常见的木造寺院完全不同",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116",
+                "6a79bc20000000003400f64f"
+              ],
+              "evidence_summary": "尤其红叶几乎是京都第一梯队；寺院闭门较早，夜间开放也会随季节调整",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "永观堂",
+                  "recommendation_quote": "尤其红叶几乎是京都第一梯队"
+                },
+                {
+                  "evidence_id": "6a79bc20000000003400f64f",
+                  "identity_quote": "永观堂",
+                  "recommendation_quote": "寺院闭门较早，夜间开放也会随季节调整"
+                }
+              ],
+              "identity_text": "永观堂",
+              "location": {
+                "latitude": 35.0148543,
+                "longitude": 135.7941588
+              },
+              "location_status": "available",
+              "name": "永观堂",
+              "name_en": "Eikando Temple",
+              "name_zh": "永观堂",
+              "recommendation": "尤其红叶几乎是京都第一梯队；寺院闭门较早，夜间开放也会随季节调整",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "虽然参观时间不长，但观赏体验足够出色",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "金阁寺",
+                  "recommendation_quote": "虽然参观时间不长，但观赏体验足够出色"
+                }
+              ],
+              "identity_text": "金阁寺",
+              "location": {
+                "latitude": 35.03937,
+                "longitude": 135.7292431
+              },
+              "location_status": "available",
+              "name": "金阁寺",
+              "name_en": "Kinkaku-ji (Golden Pavilion)",
+              "name_zh": "金阁寺",
+              "recommendation": "虽然参观时间不长，但观赏体验足够出色",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "青苔庭园、杉木古道、地藏佛像营造出非常宁静的氛围",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "三千院",
+                  "recommendation_quote": "青苔庭园、杉木古道、地藏佛像营造出非常宁静的氛围"
+                }
+              ],
+              "identity_text": "三千院",
+              "location": {
+                "latitude": 35.119726,
+                "longitude": 135.8344058
+              },
+              "location_status": "available",
+              "name": "三千院",
+              "name_en": "Sanzen-in Temple",
+              "name_zh": "三千院",
+              "recommendation": "青苔庭园、杉木古道、地藏佛像营造出非常宁静的氛围",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "非常适合半日避世之旅",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "贵船神社",
+                  "recommendation_quote": "非常适合半日避世之旅"
+                }
+              ],
+              "identity_text": "贵船神社",
+              "location": {
+                "latitude": 35.1220909,
+                "longitude": 135.7629101
+              },
+              "location_status": "available",
+              "name": "贵船神社",
+              "name_en": "Kifune Shrine",
+              "name_zh": "贵船神社",
+              "recommendation": "非常适合半日避世之旅",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a6b72b80000000005020116"
+              ],
+              "evidence_summary": "一年仅开放春、秋两个短季",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a6b72b80000000005020116",
+                  "identity_quote": "琉璃光院",
+                  "recommendation_quote": "一年仅开放春、秋两个短季"
+                }
+              ],
+              "identity_text": "琉璃光院",
+              "location": {
+                "latitude": 35.0635789,
+                "longitude": 135.8085416
+              },
+              "location_status": "available",
+              "name": "琉璃光院",
+              "name_en": "Ruriko-in Temple",
+              "name_zh": "琉璃光院",
+              "recommendation": "一年仅开放春、秋两个短季",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7a82ee0000000025015c69"
+              ],
+              "evidence_summary": "三道水流分别寓意健康、学业、姻缘，选一道取水祈福就好",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7a82ee0000000025015c69",
+                  "identity_quote": "音羽瀑布",
+                  "recommendation_quote": "三道水流分别寓意健康、学业、姻缘，选一道取水祈福就好"
+                }
+              ],
+              "identity_text": "音羽瀑布",
+              "location": {
+                "latitude": 35.041295,
+                "longitude": 135.458287
+              },
+              "location_status": "available",
+              "name": "音羽瀑布",
+              "name_en": "Otowa Waterfall",
+              "name_zh": "音羽瀑布",
+              "recommendation": "三道水流分别寓意健康、学业、姻缘，选一道取水祈福就好",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a7a82ee0000000025015c69"
+              ],
+              "evidence_summary": "求姻缘超灵！恋爱石闭眼走到对面",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a7a82ee0000000025015c69",
+                  "identity_quote": "地主神社",
+                  "recommendation_quote": "求姻缘超灵！恋爱石闭眼走到对面"
+                }
+              ],
+              "identity_text": "地主神社",
+              "location": {
+                "latitude": 34.9952291,
+                "longitude": 135.7850017
+              },
+              "location_status": "available",
+              "name": "地主神社",
+              "name_en": "Jishu-jinja Shrine",
+              "name_zh": "地主神社",
+              "recommendation": "求姻缘超灵！恋爱石闭眼走到对面",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_kyoto_no_early_start",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_kyoto_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable"
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": true,
+        "earliest_start_time": "10:00",
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "amap",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 2,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 9,
+        "verified": 2
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_directions",
+      "reason": "provider was not called",
+      "status": "not_called",
+      "summary": {
+        "attempted": 0,
+        "available": 0,
+        "eligible_legs": 6
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:2",
+        "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "三年坂",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "清水寺",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "八坂神社",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "三年坂",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "花见小路",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "伏见稻荷大社",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJKZsHV-QIAWARAwyExuxohlc",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "花见小路",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "竹林小径",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "渡月桥",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "origin_stable_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "verification_status": "unavailable"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "avoid_early_start",
+    "zh_input",
+    "revision_trigger"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:68464c39431d5fe3da576ebf67278da8c528d6297abfba09d999b7ea123b29b0",
+    "google_places": "sha256:b17b19a494d9191cb611f9eb1b53ef1d675653ccdca1217b2ba875dd5c4171a5",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:238b0cac11af9248dbe3602714b1ce36e927ceebc8c444bb270140f5f3b35d8d"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 112298
+  },
+  "trip_request": {
+    "accommodation": "民宿",
+    "cities": [
+      {
+        "city": "京都",
+        "days": 3
+      }
+    ],
+    "city": "京都",
+    "end_date": "2026-11-11",
+    "free_text_input": "每天十点以后再开始主要行程",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": true,
+        "earliest_start_time": "10:00",
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "历史文化"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "历史文化"
+    ],
+    "start_date": "2026-11-09",
+    "transportation": "公共交通",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 10469
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 13580
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 24049
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a6b72b80000000005020116",
+              "source_url": "https://www.xiaohongshu.com/explore/6a6b72b80000000005020116",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a7a82ee0000000025015c69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a7a82ee0000000025015c69",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a79bc20000000003400f64f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a79bc20000000003400f64f",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a75546a000000000502346f",
+              "source_url": "https://www.xiaohongshu.com/explore/6a75546a000000000502346f",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}

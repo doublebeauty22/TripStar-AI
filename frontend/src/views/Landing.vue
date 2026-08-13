@@ -30,6 +30,18 @@
 
     <section ref="formRef" class="form-section">
       <div class="form-panel" :style="[formRevealStyle, { minHeight: panelHeight === 'auto' ? 'auto' : panelHeight + 'px' }]" ref="panelRef">
+        <div v-if="generationError" class="generation-error" role="alert">
+          <h3>{{ t('home.taskFailure.title') }}</h3>
+          <p>{{ generationError }}</p>
+          <div class="generation-error-actions">
+            <button type="button" class="review-back-btn" @click="returnToEditAfterFailure">
+              {{ t('home.taskFailure.backToEdit') }}
+            </button>
+            <button type="button" class="btn btn-danger btn-round review-confirm-btn" @click="retryFailedTask">
+              {{ t('home.taskFailure.retry') }}
+            </button>
+          </div>
+        </div>
         <a-form v-show="!loading" :model="formData" layout="vertical" @finish="handleSubmit">
           <div class="step">
             <div class="step-head">
@@ -134,6 +146,62 @@
               </a-form-item>
             </div>
 
+            <div class="grid grid2">
+              <a-form-item name="party_type">
+                <template #label>
+                  <span class="field-label">{{ t('home.preference.partyTypeLabel') }}</span>
+                </template>
+                <a-select v-model:value="formData.party_type" size="large" class="field-select">
+                  <a-select-option v-for="item in partyOptions" :key="item.value" :value="item.value">
+                    {{ t(item.labelKey) }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+
+              <a-form-item name="party_size">
+                <template #label>
+                  <span class="field-label">{{ t('home.preference.partySizeLabel') }}</span>
+                </template>
+                <a-input-number
+                  v-model:value="formData.party_size"
+                  :min="1"
+                  :max="20"
+                  size="large"
+                  class="field-input"
+                  style="width: 100%"
+                />
+              </a-form-item>
+            </div>
+
+            <div class="grid grid2">
+              <a-form-item name="budget_cny">
+                <template #label>
+                  <span class="field-label">{{ t('home.preference.budgetLabel') }}</span>
+                </template>
+                <a-input-number
+                  v-model:value="formData.budget_cny"
+                  :min="1"
+                  :precision="0"
+                  size="large"
+                  class="field-input"
+                  style="width: 100%"
+                  :placeholder="t('home.preference.budgetPlaceholder')"
+                />
+                <p class="field-help">{{ t('home.preference.budgetHelp') }}</p>
+              </a-form-item>
+
+              <a-form-item name="pace">
+                <template #label>
+                  <span class="field-label">{{ t('home.preference.paceLabel') }}</span>
+                </template>
+                <a-select v-model:value="formData.pace" size="large" class="field-select">
+                  <a-select-option v-for="item in paceOptions" :key="item.value" :value="item.value">
+                    {{ t(item.labelKey) }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </div>
+
             <a-form-item name="preferences">
               <template #label>
                 <span class="field-label">{{ t('home.interestsLabel') }}</span>
@@ -173,14 +241,97 @@
           </div>
 
           <a-form-item>
-            <button type="submit" class="btn btn-danger btn-round submit-btn" :class="{ loading }" :disabled="loading">
-              <span v-if="!loading">{{ t('home.submit') }}</span>
+            <button
+              v-if="!preferenceProfile"
+              type="submit"
+              class="btn btn-danger btn-round submit-btn"
+              :class="{ loading: preferenceParsing }"
+              :disabled="preferenceParsing"
+            >
+              <span v-if="!preferenceParsing">{{ t('home.preference.understandButton') }}</span>
               <span v-else class="loading-row">
                 <i class="spinner"></i>
-                {{ t('home.submitting') }}
+                {{ t('home.preference.parsing') }}
               </span>
             </button>
           </a-form-item>
+
+          <section v-if="preferenceProfile" class="preference-review">
+            <div class="preference-review-head">
+              <div>
+                <p class="preference-review-eyebrow">{{ t('home.preference.reviewEyebrow') }}</p>
+                <h3>{{ t('home.preference.reviewTitle') }}</h3>
+              </div>
+              <span v-if="preferenceUsedLlm" class="ai-inferred-badge">{{ t('home.preference.aiAssisted') }}</span>
+            </div>
+
+            <p class="preference-review-boundary">{{ t('home.preference.reviewBoundary') }}</p>
+            <div class="preference-review-grid">
+              <div><span>{{ t('home.preference.partyTypeLabel') }}</span><strong>{{ partyLabel(preferenceProfile.party_type) }}</strong></div>
+              <div><span>{{ t('home.preference.partySizeLabel') }}</span><strong>{{ preferenceProfile.party_size }}</strong></div>
+              <div>
+                <span>{{ t('home.preference.budgetLabel') }}</span>
+                <strong>{{ preferenceProfile.budget_cny ? `¥${preferenceProfile.budget_cny}` : t('home.preference.notSet') }}</strong>
+              </div>
+              <div><span>{{ t('home.preference.paceLabel') }}</span><strong>{{ paceLabel(preferenceProfile.pace) }}</strong></div>
+            </div>
+
+            <div class="preference-review-block">
+              <span class="review-label">{{ t('home.interestsLabel') }}</span>
+              <div class="review-tags">
+                <span v-for="interest in preferenceProfile.interests" :key="`explicit-${interest}`" class="review-tag">
+                  {{ interest }}
+                </span>
+                <span
+                  v-for="interest in preferenceProfile.inferred_interests"
+                  :key="`inferred-${interest}`"
+                  class="review-tag inferred"
+                >
+                  {{ interest }} · {{ t('home.preference.aiInferred') }}
+                  <button type="button" :aria-label="t('home.preference.removeInferred')" @click="removeInferredInterest(interest)">×</button>
+                </span>
+                <span v-if="!preferenceProfile.interests.length && !preferenceProfile.inferred_interests.length">{{ t('home.preference.notSet') }}</span>
+              </div>
+            </div>
+
+            <div v-if="preferenceProfile.constraints.avoid_early_start" class="preference-review-block">
+              <span class="review-label">{{ t('home.preference.earliestStartLabel') }}</span>
+              <a-input
+                v-model:value="preferenceProfile.constraints.earliest_start_time"
+                type="time"
+                class="earliest-time-input"
+              />
+              <p v-if="!preferenceProfile.constraints.earliest_start_time" class="review-warning">
+                {{ t('home.preference.earliestStartRequired') }}
+              </p>
+            </div>
+
+            <div v-if="reviewConstraintNotes.length" class="preference-review-block">
+              <span class="review-label">{{ t('home.preference.specialAttention') }}</span>
+              <ul class="review-note-list">
+                <li v-for="note in reviewConstraintNotes" :key="note">{{ note }}</li>
+              </ul>
+            </div>
+
+            <div v-if="displayParsingNotes.length" class="preference-review-block">
+              <span class="review-label">{{ t('home.preference.parsingNotes') }}</span>
+              <ul class="review-note-list muted">
+                <li v-for="note in displayParsingNotes" :key="note">{{ note }}</li>
+              </ul>
+            </div>
+
+            <div class="preference-review-actions">
+              <button type="button" class="review-back-btn" @click="returnToForm">{{ t('home.preference.backToEdit') }}</button>
+              <button
+                type="button"
+                class="btn btn-danger btn-round review-confirm-btn"
+                :disabled="requiresEarliestStart"
+                @click="generateConfirmedTrip"
+              >
+                {{ t('home.preference.confirmGenerate') }}
+              </button>
+            </div>
+          </section>
         </a-form>
 
         <!-- Node Loading Stepper -->
@@ -245,7 +396,7 @@
       </div>
     </section>
 
-    <section class="history-section">
+    <section v-if="!publicDemoMode" class="history-section">
       <div class="history-panel">
         <div class="history-head">
           <div>
@@ -294,12 +445,19 @@ import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
-import { generateTripPlan, getTripHistory } from '@/services/api'
+import { generateTripPlan, getTripHistory, parsePreferenceProfile, resumeTripPlan } from '@/services/api'
 import { getCurrentLocale } from '@/i18n'
 import NavBar from '@/components/NavBar.vue'
-import type { TripFormData, TripTaskEvent, TripHistoryItem, CityStay } from '@/types'
+import type {
+  TripFormData,
+  TripTaskEvent,
+  TripHistoryItem,
+  CityStay,
+  PartyType,
+  TravelPace,
+  PreferenceProfile,
+} from '@/types'
 import type { Dayjs } from 'dayjs'
-import dayjs from 'dayjs'
 
 type LandingFormData = {
   cities: Array<{ city: string; days: number }>
@@ -308,7 +466,12 @@ type LandingFormData = {
   accommodation: string
   preferences: string[]
   free_text_input: string
+  party_type?: PartyType
+  party_size: number
+  budget_cny?: number | null
+  pace: TravelPace
 }
+const publicDemoMode = String(import.meta.env.VITE_PUBLIC_DEMO_MODE ?? '').toLowerCase() === 'true'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -324,6 +487,36 @@ const fogEnabled = ref(true)
 const planCode = ref('')
 const historyLoading = ref(false)
 const historyPlans = ref<TripHistoryItem[]>([])
+const preferenceParsing = ref(false)
+const preferenceProfile = ref<PreferenceProfile | null>(null)
+const preferenceUsedLlm = ref(false)
+const generationError = ref('')
+const generationId = ref('')
+
+const ACTIVE_TASK_ID_KEY = 'tripTaskId'
+const ACTIVE_TASK_REQUEST_KEY = 'tripTaskRequest'
+
+const createGenerationId = (): string => {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID()
+  }
+  return `gen-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`
+}
+
+const partyOptions: Array<{ value: PartyType; labelKey: string }> = [
+  { value: 'solo', labelKey: 'home.preference.partyTypes.solo' },
+  { value: 'couple', labelKey: 'home.preference.partyTypes.couple' },
+  { value: 'friends', labelKey: 'home.preference.partyTypes.friends' },
+  { value: 'family', labelKey: 'home.preference.partyTypes.family' },
+  { value: 'with_parents', labelKey: 'home.preference.partyTypes.withParents' },
+  { value: 'with_children', labelKey: 'home.preference.partyTypes.withChildren' },
+]
+
+const paceOptions: Array<{ value: TravelPace; labelKey: string }> = [
+  { value: 'intensive', labelKey: 'home.preference.paces.intensive' },
+  { value: 'balanced', labelKey: 'home.preference.paces.balanced' },
+  { value: 'relaxed', labelKey: 'home.preference.paces.relaxed' },
+]
 
 const getStageStatusText = (stage: TripTaskEvent['stage']) => {
   if (stage === 'submitted' || stage === 'initializing') return t('home.loading.initializing')
@@ -331,6 +524,10 @@ const getStageStatusText = (stage: TripTaskEvent['stage']) => {
   if (stage === 'weather_search') return t('home.loading.queryingWeather')
   if (stage === 'hotel_search') return t('home.loading.recommendingHotels')
   if (stage === 'planning') return t('home.loading.generatingPlan')
+  if (stage === 'validating') return t('home.loading.validatingPlan')
+  if (stage === 'critic') return t('home.loading.criticPlan')
+  if (stage === 'revising') return t('home.loading.revisingPlan')
+  if (stage === 'revalidating') return t('home.loading.revalidatingPlan')
   if (stage === 'graph_building') return t('home.loading.generatingPlan')
   if (stage === 'completed') return t('home.loading.done')
   return t('home.loading.initializing')
@@ -343,6 +540,11 @@ const interestOptions = [
   { value: '购物', labelKey: 'home.interests.shopping' },
   { value: '艺术', labelKey: 'home.interests.art' },
   { value: '休闲', labelKey: 'home.interests.leisure' },
+  { value: '拍照', labelKey: 'home.interests.photography' },
+  { value: '博物馆', labelKey: 'home.interests.museum' },
+  { value: '城市探索', labelKey: 'home.interests.cityExploration' },
+  { value: '夜生活', labelKey: 'home.interests.nightlife' },
+  { value: '小众景点', labelKey: 'home.interests.hiddenGems' },
 ]
 
 const formRules = computed(() => ({
@@ -356,7 +558,65 @@ const formData = reactive<LandingFormData>({
   accommodation: '经济型酒店',
   preferences: [],
   free_text_input: '',
+  party_type: undefined,
+  party_size: 2,
+  budget_cny: null,
+  pace: 'balanced',
 })
+
+watch(
+  formData,
+  () => {
+    if (preferenceProfile.value) {
+      preferenceProfile.value = null
+      preferenceUsedLlm.value = false
+    }
+  },
+  { deep: true },
+)
+
+const partyLabel = (value: PartyType) => {
+  const item = partyOptions.find(option => option.value === value)
+  return item ? t(item.labelKey) : value
+}
+
+const paceLabel = (value: TravelPace) => {
+  const item = paceOptions.find(option => option.value === value)
+  return item ? t(item.labelKey) : value
+}
+
+const reviewConstraintNotes = computed(() => {
+  const constraints = preferenceProfile.value?.constraints
+  if (!constraints) return []
+  return [
+    ...constraints.mobility_notes,
+    ...constraints.food_notes,
+    ...constraints.other_notes,
+  ]
+})
+
+const requiresEarliestStart = computed(() => Boolean(
+  preferenceProfile.value?.constraints.avoid_early_start
+  && !preferenceProfile.value?.constraints.earliest_start_time
+))
+
+const displayParsingNotes = computed(() => {
+  if (!preferenceProfile.value) return []
+  const hasTime = Boolean(preferenceProfile.value.constraints.earliest_start_time)
+  return preferenceProfile.value.parsing_notes.filter(note => !(
+    hasTime && note.includes('选择一个具体的最早出发时间')
+  ))
+})
+
+const removeInferredInterest = (interest: string) => {
+  if (!preferenceProfile.value) return
+  preferenceProfile.value.inferred_interests = preferenceProfile.value.inferred_interests.filter(item => item !== interest)
+}
+
+const returnToForm = () => {
+  preferenceProfile.value = null
+  preferenceUsedLlm.value = false
+}
 
 const totalDays = computed(() => formData.cities.reduce((sum, cs) => sum + (cs.days || 1), 0))
 
@@ -457,108 +717,231 @@ const loadHistoryPlans = async () => {
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
-  void loadHistoryPlans()
+  if (!publicDemoMode) void loadHistoryPlans()
+  void restoreActiveTask()
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
 })
 
-const handleSubmit = async () => {
+const validateBaseForm = (): boolean => {
   // 校验：至少一个城市名非空
   const validCities = formData.cities.filter(cs => cs.city.trim())
   if (validCities.length === 0) {
     message.error(t('home.atLeastOneCity'))
-    return
+    return false
   }
   if (!formData.start_date) {
     message.error(t('home.messages.selectDate'))
-    return
+    return false
   }
   if (totalDays.value > 30) {
     message.warning(t('home.messages.travelDaysTooLong'))
-    return
+    return false
+  }
+  if (!formData.party_type) {
+    message.error(t('home.preference.partyTypeRequired'))
+    return false
+  }
+  return true
+}
+
+const handleSubmit = async () => {
+  if (!validateBaseForm() || !formData.party_type) return
+
+  generationId.value = createGenerationId()
+  preferenceParsing.value = true
+  try {
+    const response = await parsePreferenceProfile({
+      party_type: formData.party_type,
+      party_size: formData.party_size,
+      budget_cny: formData.budget_cny ?? null,
+      pace: formData.pace,
+      interests: [...formData.preferences],
+      special_requirements: formData.free_text_input,
+      generation_id: generationId.value,
+    })
+    preferenceProfile.value = response.profile
+    preferenceUsedLlm.value = response.used_llm
+    if (response.message) message.success(response.message)
+  } catch (error: any) {
+    preferenceProfile.value = {
+      party_type: formData.party_type,
+      party_size: formData.party_size,
+      budget_cny: formData.budget_cny ?? null,
+      pace: formData.pace,
+      interests: [...formData.preferences],
+      special_requirements: formData.free_text_input,
+      constraints: {
+        avoid_early_start: false,
+        earliest_start_time: null,
+        mobility_notes: [],
+        food_notes: [],
+        other_notes: [],
+      },
+      inferred_interests: [],
+      parsing_notes: [t('home.preference.parseFallback')],
+    }
+    preferenceUsedLlm.value = false
+    message.warning(error.message || t('home.preference.parseFallback'))
+  } finally {
+    preferenceParsing.value = false
+  }
+}
+
+const updateTaskProgress = (event: TripTaskEvent) => {
+  if (event.plan_id) {
+    planCode.value = event.plan_id
+    sessionStorage.setItem('planId', event.plan_id)
+  }
+  if (Number.isFinite(event.progress)) {
+    loadingProgress.value = Math.max(0, Math.min(100, event.progress))
+  }
+  loadingStatus.value = event.message || getStageStatusText(event.stage)
+}
+
+const saveCompletedTrip = async (response: any, fallbackPlanId = '') => {
+  if (!response?.success || !response?.data) {
+    throw new Error(response?.message || t('home.messages.generateFailed'))
   }
 
+  const completedPlanId = response.plan_id || fallbackPlanId || planCode.value
+  loadingProgress.value = 100
+  loadingStatus.value = t('home.loading.done')
+  sessionStorage.setItem('tripPlan', JSON.stringify(response.data))
+  if (response.graph_data) {
+    sessionStorage.setItem('graphData', JSON.stringify(response.graph_data))
+  } else {
+    sessionStorage.removeItem('graphData')
+  }
+  if (completedPlanId) sessionStorage.setItem('planId', completedPlanId)
+  sessionStorage.removeItem(ACTIVE_TASK_ID_KEY)
+  sessionStorage.removeItem(ACTIVE_TASK_REQUEST_KEY)
+  generationError.value = ''
+  loading.value = false
+  panelHeight.value = 'auto'
+  message.success(t('home.messages.generateSuccess'))
+  await router.push(completedPlanId
+    ? { path: '/result', query: { plan_id: completedPlanId } }
+    : { path: '/result' })
+}
+
+const showTaskFailure = (error: unknown) => {
+  generationError.value = error instanceof Error
+    ? error.message
+    : String(error || t('home.messages.generateRetry'))
+  loading.value = false
+  loadingProgress.value = 0
+  loadingStatus.value = ''
+  panelHeight.value = 'auto'
+  message.error(generationError.value)
+}
+
+const startTripGeneration = async (requestData: TripFormData) => {
   if (panelRef.value) {
     panelHeight.value = panelRef.value.offsetHeight
   }
 
+  generationError.value = ''
   loading.value = true
   loadingProgress.value = 5
   loadingStatus.value = t('home.loading.initializing')
   planCode.value = ''
+  sessionStorage.removeItem('tripPlan')
+  sessionStorage.removeItem('graphData')
+  sessionStorage.removeItem('planId')
+  sessionStorage.setItem(ACTIVE_TASK_REQUEST_KEY, JSON.stringify(requestData))
 
   try {
-    sessionStorage.removeItem('tripPlan')
-    sessionStorage.removeItem('graphData')
-    sessionStorage.removeItem('planId')
-
-    const citiesPayload: CityStay[] = validCities.map(cs => ({ city: cs.city.trim(), days: cs.days || 1 }))
-    const endDate = computedEndDate.value!
-
-    const requestData: TripFormData = {
-      city: citiesPayload[0].city,
-      cities: citiesPayload,
-      start_date: formData.start_date.format('YYYY-MM-DD'),
-      end_date: endDate.format('YYYY-MM-DD'),
-      travel_days: totalDays.value,
-      transportation: formData.transportation,
-      accommodation: formData.accommodation,
-      preferences: formData.preferences,
-      free_text_input: formData.free_text_input,
-      language: getCurrentLocale(),
-    }
-
     const response = await generateTripPlan(requestData, {
       onTaskCreated: (task) => {
         planCode.value = task.plan_id || task.task_id
+        sessionStorage.setItem(ACTIVE_TASK_ID_KEY, task.task_id)
+        sessionStorage.setItem('planId', task.plan_id || task.task_id)
         loadingProgress.value = 5
         loadingStatus.value = t('home.loading.initializing')
       },
-      onTaskEvent: (event) => {
-        if (event.plan_id) planCode.value = event.plan_id
-        if (Number.isFinite(event.progress)) {
-          loadingProgress.value = Math.max(0, Math.min(100, event.progress))
-        }
-        loadingStatus.value = event.message || getStageStatusText(event.stage)
-      }
+      onTaskEvent: updateTaskProgress,
     })
-
-    loadingProgress.value = 100
-    loadingStatus.value = t('home.loading.done')
-
-    if (response.success && response.data) {
-      const planId = response.plan_id || planCode.value
-      sessionStorage.setItem('tripPlan', JSON.stringify(response.data))
-      if (response.graph_data) sessionStorage.setItem('graphData', JSON.stringify(response.graph_data))
-      if (planId) sessionStorage.setItem('planId', planId)
-      message.success(t('home.messages.generateSuccess'))
-      setTimeout(() => {
-        if (planId) {
-          router.push({ path: '/result', query: { plan_id: planId } })
-        } else {
-          router.push('/result')
-        }
-      }, 500)
-    } else {
-      sessionStorage.removeItem('tripPlan')
-      sessionStorage.removeItem('graphData')
-      sessionStorage.removeItem('planId')
-      message.error(response.message || t('home.messages.generateFailed'))
-    }
-  } catch (error: any) {
-    sessionStorage.removeItem('tripPlan')
-    sessionStorage.removeItem('graphData')
-    sessionStorage.removeItem('planId')
-    message.error(error.message || t('home.messages.generateRetry'))
-  } finally {
-    setTimeout(() => {
-      loading.value = false
-      loadingProgress.value = 0
-      loadingStatus.value = ''
-      panelHeight.value = 'auto'
-    }, 1000)
+    await saveCompletedTrip(response, planCode.value)
+  } catch (error) {
+    showTaskFailure(error)
   }
+}
+
+const generateConfirmedTrip = async () => {
+  if (!validateBaseForm() || !preferenceProfile.value) return
+  if (requiresEarliestStart.value) {
+    message.warning(t('home.preference.earliestStartRequired'))
+    return
+  }
+
+  const validCities = formData.cities.filter(cs => cs.city.trim())
+  const citiesPayload: CityStay[] = validCities.map(cs => ({ city: cs.city.trim(), days: cs.days || 1 }))
+  const confirmedProfile = JSON.parse(JSON.stringify(preferenceProfile.value)) as PreferenceProfile
+  const effectiveInterests = Array.from(new Set([
+    ...confirmedProfile.interests,
+    ...confirmedProfile.inferred_interests,
+  ]))
+  await startTripGeneration({
+    city: citiesPayload[0].city,
+    cities: citiesPayload,
+    start_date: formData.start_date!.format('YYYY-MM-DD'),
+    end_date: computedEndDate.value!.format('YYYY-MM-DD'),
+    travel_days: totalDays.value,
+    transportation: formData.transportation,
+    accommodation: formData.accommodation,
+    preferences: effectiveInterests,
+    free_text_input: formData.free_text_input,
+    language: getCurrentLocale(),
+    preference_profile: confirmedProfile,
+    generation_id: generationId.value,
+  })
+}
+
+const restoreActiveTask = async () => {
+  if (sessionStorage.getItem('tripPlan')) return
+  const taskId = sessionStorage.getItem(ACTIVE_TASK_ID_KEY) || sessionStorage.getItem('planId') || ''
+  if (!taskId) return
+
+  generationError.value = ''
+  loading.value = true
+  loadingProgress.value = 5
+  loadingStatus.value = t('home.loading.recovering')
+  planCode.value = sessionStorage.getItem('planId') || taskId
+  try {
+    const response = await resumeTripPlan(taskId, { onTaskEvent: updateTaskProgress })
+    await saveCompletedTrip(response, planCode.value || taskId)
+  } catch (error) {
+    showTaskFailure(error)
+  }
+}
+
+const returnToEditAfterFailure = () => {
+  generationError.value = ''
+  sessionStorage.removeItem(ACTIVE_TASK_ID_KEY)
+  sessionStorage.removeItem(ACTIVE_TASK_REQUEST_KEY)
+  sessionStorage.removeItem('planId')
+  loading.value = false
+  panelHeight.value = 'auto'
+  scrollToForm()
+}
+
+const retryFailedTask = async () => {
+  const savedRequest = sessionStorage.getItem(ACTIVE_TASK_REQUEST_KEY)
+  if (savedRequest) {
+    try {
+      const retryRequest = JSON.parse(savedRequest) as TripFormData
+      retryRequest.generation_id = createGenerationId()
+      generationId.value = retryRequest.generation_id
+      await startTripGeneration(retryRequest)
+      return
+    } catch {
+      // Fall through to the editable form when local recovery data is invalid.
+    }
+  }
+  returnToEditAfterFailure()
+  message.info(t('home.taskFailure.editBeforeRetry'))
 }
 </script>
 
@@ -570,6 +953,31 @@ const handleSubmit = async () => {
   position: relative;
   isolation: isolate;
   overflow-x: hidden; /* 防止水平溢出导致的出界感 */
+}
+
+.generation-error {
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid rgba(255, 107, 107, 0.45);
+  border-radius: 14px;
+  background: rgba(122, 35, 35, 0.18);
+  color: #f8dede;
+}
+
+.generation-error h3 {
+  margin: 0 0 8px;
+  color: #ffb5b5;
+}
+
+.generation-error p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.generation-error-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .lower-shade {
@@ -1268,6 +1676,154 @@ const handleSubmit = async () => {
   color: rgba(236, 243, 250, 0.54);
 }
 
+.field-help {
+  margin: 8px 0 0;
+  color: rgba(236, 243, 250, 0.56);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.preference-review {
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px solid rgba(215, 110, 66, 0.35);
+  border-radius: 18px;
+  background: rgba(12, 26, 34, 0.82);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+}
+
+.preference-review-head,
+.preference-review-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.preference-review-head h3 {
+  margin: 4px 0 0;
+  color: #f4f7fa;
+  font-size: 24px;
+}
+
+.preference-review-eyebrow,
+.review-label {
+  margin: 0;
+  color: #e17c50;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ai-inferred-badge,
+.review-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #edf3f7;
+  font-size: 12px;
+}
+
+.ai-inferred-badge,
+.review-tag.inferred {
+  background: rgba(215, 110, 66, 0.16);
+  color: #f3ae8f;
+}
+
+.review-tag button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.preference-review-boundary {
+  margin: 14px 0 20px;
+  color: rgba(236, 243, 250, 0.64);
+  font-size: 13px;
+}
+
+.preference-review-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.preference-review-grid > div {
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.preference-review-grid span,
+.preference-review-grid strong {
+  display: block;
+}
+
+.preference-review-grid span {
+  color: rgba(236, 243, 250, 0.5);
+  font-size: 12px;
+}
+
+.preference-review-grid strong {
+  margin-top: 6px;
+  color: #f4f7fa;
+}
+
+.preference-review-block {
+  margin-top: 20px;
+}
+
+.review-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.earliest-time-input {
+  width: 180px;
+  margin-top: 10px;
+}
+
+.review-warning {
+  margin: 8px 0 0;
+  color: #ffb38f;
+  font-size: 13px;
+}
+
+.review-note-list {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: #edf3f7;
+}
+
+.review-note-list.muted {
+  color: rgba(236, 243, 250, 0.62);
+}
+
+.preference-review-actions {
+  justify-content: flex-end;
+  margin-top: 26px;
+}
+
+.review-back-btn {
+  border: 0;
+  background: transparent;
+  color: rgba(236, 243, 250, 0.72);
+  cursor: pointer;
+}
+
+.review-confirm-btn {
+  width: auto;
+  min-width: 190px;
+  margin: 0;
+}
+
 :deep(.ant-form-item-label > label) {
   color: transparent !important;
 }
@@ -1315,6 +1871,10 @@ const handleSubmit = async () => {
   .grid-date {
     grid-template-columns: 1fr;
   }
+
+  .preference-review-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 520px) {
@@ -1333,6 +1893,19 @@ const handleSubmit = async () => {
 
   .interest-group {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .preference-review {
+    padding: 20px 16px;
+  }
+
+  .preference-review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preference-review-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
 </style>

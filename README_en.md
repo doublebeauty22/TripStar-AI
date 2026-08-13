@@ -149,7 +149,7 @@ The frontend renders dynamic Vue structures recursively by reading JSON data:
 It is highly recommended to start the project (both frontend and backend) via `docker-compose`. Ensure your `.env` variables are configured before starting:
 
 * The backend does NOT read the `backend/.env` file during container startup. All config is passed via environments setup.
-* `docker-compose.yaml` explicitly maps essential proxies and API keys, supporting variables like `GOOGLE_MAPS_API_KEY` and `GOOGLE_MAPS_PROXY`.
+* `docker-compose.yaml` separates server and browser keys: the backend uses `GOOGLE_MAPS_SERVER_API_KEY` and `AMAP_WEB_SERVICE_KEY`; the frontend build uses `VITE_GOOGLE_MAPS_BROWSER_KEY` and `VITE_AMAP_WEB_JS_KEY`.
 * Frontend build-time variable `VITE_AMAP_WEB_JS_KEY` is injected via `build.args`.
 
 **One-Click Start Command:**
@@ -186,9 +186,9 @@ uv pip install -r requirements.txt
 # Copy config and fill your API KEYs
 cp .env.example .env
 # [Required] LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_ID (pick a model good at JSON struct)
-# [Optional] VITE_AMAP_WEB_KEY
+# [Optional] AMAP_WEB_SERVICE_KEY
 # [Required] XHS_COOKIE
-# [Required] GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_PROXY
+# [Optional] GOOGLE_MAPS_SERVER_API_KEY, GOOGLE_MAPS_PROXY
 
 # Start FastAPI (Uvicorn recommended)
 uvicorn app.api.main:app --host 0.0.0.0 --port 8000 --reload
@@ -206,8 +206,8 @@ npm install
 
 # Copy config and fill your Keys
 cp .env.example .env
-# [Required] VITE_AMAP_WEB_KEY (Same as backend)
 # [Required] VITE_AMAP_WEB_JS_KEY 
+# [Optional] VITE_GOOGLE_MAPS_BROWSER_KEY (protect with referrer/API restrictions)
 # **MUST ALSO inject Security JSCode in index.html (AMap API v2.0 requirement)**
 
 # Run Vite dev server

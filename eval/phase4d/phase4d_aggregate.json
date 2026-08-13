@@ -1,0 +1,22 @@
+{
+  "aggregate_version": "phase4d.aggregate.v1",
+  "completed_pairs": 4,
+  "case_ids": ["gc_shenzhen_overbudget_revision", "gc_chengdu_budget", "gc_lijiang_places_unavailable", "gc_kyoto_no_early_start"],
+  "outcome_counts": {"BETTER": 3, "MIXED": 1, "WORSE": 0, "EQUIVALENT": 0},
+  "mean_candidate_minus_baseline": {"preference_satisfaction": 0.25, "itinerary_coherence": 0.5, "pacing_quality": 1.0, "usefulness": 0.25, "explanation_quality": 0.0},
+  "positive_pacing_delta_cases": 3,
+  "negative_usefulness_delta_cases": 1,
+  "revision_summary": {"triggered": 4, "committed": 2, "rejected": 2, "failure_reasons": {"retained_poi_grounding_regression": 1, "invalid_revision_output": 1}},
+  "initial_planner_improvement_cases": ["gc_shenzhen_overbudget_revision", "gc_lijiang_places_unavailable"],
+  "possible_over_correction_cases": ["gc_kyoto_no_early_start"],
+  "constraint_preservation": {"evaluable_cases": 4, "preserved_cases": 4, "rate": 1.0},
+  "all_pairs_comparability": "limited_provider_drift",
+  "statistical_claim_allowed": false,
+  "causal_claim_allowed": false,
+  "component_decisions": {"pacing_aware_planner": "PASS", "targeted_pacing_revision": "ITERATE", "phase4d_overall": "ITERATE"},
+  "decision_rationale": {
+    "pacing_aware_planner": "Human pacing increased in 3 of 4 pairs and never decreased; mean pacing delta was +1.0, preference mean delta was +0.25, and usefulness mean delta was +0.25. This is a descriptive evaluation pass, not a causal or production-release claim.",
+    "targeted_pacing_revision": "Two of four revisions committed, while one failed typed output and one was rejected for grounding regression. Kyoto shows that duration compression can improve modeled load without improving human pacing and can reduce usefulness.",
+    "phase4d_overall": "The planner signal is promising, but revision reliability, over-correction, grounding/provenance, route availability and offline resolution semantics require iteration before stronger claims or release decisions."
+  }
+}

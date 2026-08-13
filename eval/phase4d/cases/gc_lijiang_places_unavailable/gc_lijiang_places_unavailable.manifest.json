@@ -1,0 +1,14 @@
+{
+  "artifact": "gc_lijiang_places_unavailable.json",
+  "artifact_hash": "sha256:425ecd951579c63b4621905803b66f30cfdd68db19ef7fe179c96668e5674821",
+  "capture_status": "complete",
+  "case_id": "gc_lijiang_places_unavailable",
+  "snapshot_hashes": {
+    "amap": "sha256:1a7aa5f20ca3b5ec0b9d294654a46fa2beb964e303f449c7fc137479a0060591",
+    "google_directions": "sha256:1d5d6f50f90b2250208494572eb6fedcdcb1fb8ee94ea28308fc053d588918ff",
+    "google_places": "sha256:b116f27d3b5d090bd5930eacc122f849b2394298f2596cf39c2fbc8438860049",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:4d82359a4dd24ad48b952c6d6bdcb24798dc91a8b292b1c6c8affe6335245916",
+    "xhs": "sha256:bd84434aa6eb5612618b9a75911ce6242c9741f60b4cedcffb5a387168d12acf"
+  }
+}

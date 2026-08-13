@@ -1,0 +1,30 @@
+{
+  "admission_events": [],
+  "calls_completed": 0,
+  "capture_status": "failed",
+  "case_id": "gc_nanjing_local_patch",
+  "code_revision": "96b9c5e-dirty",
+  "completion_tokens": 0,
+  "configured_max_llm_calls": 4,
+  "configured_max_total_tokens": 60000,
+  "elapsed_latency_ms": 2,
+  "execution_completed_at": "2026-08-12T14:58:10.724929+00:00",
+  "execution_started_at": "2026-08-12T14:58:10.722743+00:00",
+  "failed_after_stage": null,
+  "failed_before_stage": null,
+  "failed_stage": "",
+  "failure_reason": "planner_execution_error",
+  "failure_type": "planner_execution_error",
+  "model": {
+    "reason": "model identity was not observed",
+    "status": "unknown",
+    "value": null
+  },
+  "planner_version": "planner_baseline_v1",
+  "prompt_tokens": 0,
+  "prompt_version": "planner_prompt_v1",
+  "retries": 0,
+  "run_status": "failed",
+  "sanitized": true,
+  "total_tokens": 0
+}

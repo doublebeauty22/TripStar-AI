@@ -1,0 +1,17 @@
+{
+  "summary_version": "phase3e.human_summary.v1",
+  "status": "complete",
+  "initial_planning_cases": 6,
+  "patch_cases": 1,
+  "product_failure_cases": 1,
+  "initial_dimension_aggregates": {
+    "preference_satisfaction": {"mean":3.833,"median":4,"minimum":3,"maximum":4,"lowest_cases":["gc_shenzhen_overbudget_revision"]},
+    "itinerary_coherence": {"mean":3.667,"median":4,"minimum":3,"maximum":4,"lowest_cases":["gc_shenzhen_overbudget_revision","gc_lijiang_places_unavailable"]},
+    "pacing_quality": {"mean":3.0,"median":3,"minimum":2,"maximum":4,"lowest_cases":["gc_shenzhen_overbudget_revision","gc_chengdu_budget","gc_lijiang_places_unavailable"]},
+    "usefulness": {"mean":2.833,"median":3,"minimum":2,"maximum":3,"lowest_cases":["gc_shenzhen_overbudget_revision"]},
+    "explanation_quality": {"mean":3.333,"median":3,"minimum":3,"maximum":4,"lowest_cases":["gc_beijing_baseline","gc_kyoto_no_early_start","gc_osaka_places_partial","gc_shenzhen_overbudget_revision"]}
+  },
+  "patch_scores": {"case_id":"gc_nanjing_local_patch","preference_satisfaction":4,"itinerary_coherence":2,"pacing_quality":3,"usefulness":2,"explanation_quality":2},
+  "product_failure": {"case_id":"gc_beijing_xian_multi_city","severity":"high","recoverability":"difficult","retry_guidance_present":"unknown","user_impact":"high"},
+  "notes": "Descriptive small-sample aggregate only; patch and failure are excluded from initial means; no overall score or significance claim."
+}

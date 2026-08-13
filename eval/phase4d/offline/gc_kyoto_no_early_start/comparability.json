@@ -1,0 +1,52 @@
+{
+  "baseline_identity": {
+    "capture_version": "capture.v1",
+    "case_id": "gc_kyoto_no_early_start",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_kyoto_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "candidate_identity": {
+    "capture_version": "capture.v2",
+    "case_id": "gc_kyoto_no_early_start",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase4d_kyoto_control_authorized_run_01_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_pacing_v1",
+    "prompt_version": "planner_prompt_pacing_v1"
+  },
+  "case_id": "gc_kyoto_no_early_start",
+  "causal_claim_allowed": false,
+  "comparability": "limited_provider_drift",
+  "mismatched_provider_snapshots": [
+    "google_places",
+    "xhs"
+  ],
+  "missing_provider_snapshots": [
+    "hotel_google_places"
+  ],
+  "provider_snapshot_exact": false,
+  "shared_provider_snapshots": [
+    "amap",
+    "google_places",
+    "google_weather",
+    "xhs"
+  ],
+  "trip_request_equal": true
+}

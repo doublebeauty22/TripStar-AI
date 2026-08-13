@@ -1,0 +1,155 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 30.65557,
+          "longitude": 104.077
+        },
+        "match_status": "verified",
+        "name": "春熙路",
+        "place_id": "ChIJ4VZ2pkDF7zYRxvjPNf59i64"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "太古里",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 30.655269299999997,
+          "longitude": 104.08416079999999
+        },
+        "match_status": "verified",
+        "name": "大慈寺",
+        "place_id": "ChIJRbj48EPF7zYR_fGN6Svj74M"
+      },
+      {
+        "location": {
+          "latitude": 30.643426199999997,
+          "longitude": 104.0846832
+        },
+        "match_status": "verified",
+        "name": "九眼桥",
+        "place_id": "ChIJAQCcw27F7zYR7E9sC4_Hqdw"
+      },
+      {
+        "location": {
+          "latitude": 30.65291,
+          "longitude": 104.0898
+        },
+        "match_status": "verified",
+        "name": "望平街",
+        "place_id": "ChIJbwYug1zF7zYRpFsw9fWwOFo"
+      },
+      {
+        "location": {
+          "latitude": 30.732969,
+          "longitude": 104.14581
+        },
+        "match_status": "verified",
+        "name": "熊猫基地",
+        "place_id": "ChIJ8VuaD-DQ7zYRd5EYh3BjzdM"
+      },
+      {
+        "location": {
+          "latitude": 30.674771,
+          "longitude": 104.07194799999999
+        },
+        "match_status": "verified",
+        "name": "文殊院",
+        "place_id": "ChIJvTWARcva7zYRPk9kGPy5G1E"
+      },
+      {
+        "location": {
+          "latitude": 30.66828,
+          "longitude": 104.05402
+        },
+        "match_status": "verified",
+        "name": "奎星楼街",
+        "place_id": "ChIJt8fX0CnF7zYRGqeWHJjuVWc"
+      },
+      {
+        "location": {
+          "latitude": 30.663751999999995,
+          "longitude": 104.04461800000001
+        },
+        "match_status": "verified",
+        "name": "成都博物馆",
+        "place_id": "ChIJkXHY-drE7zYRZYCcyqwKM8o"
+      },
+      {
+        "location": {
+          "latitude": 30.65949,
+          "longitude": 104.026538
+        },
+        "match_status": "verified",
+        "name": "杜甫草堂",
+        "place_id": "ChIJB-sN9r7E7zYRpO3Fn32G9dk"
+      },
+      {
+        "location": {
+          "latitude": 30.645802,
+          "longitude": 104.04942899999999
+        },
+        "match_status": "verified",
+        "name": "武侯祠",
+        "place_id": "ChIJHSK0oePE7zYRKcnSiomj91k"
+      },
+      {
+        "location": {
+          "latitude": 30.96216,
+          "longitude": 103.58999
+        },
+        "match_status": "verified",
+        "name": "熊猫谷",
+        "place_id": "ChIJnZ8eqAIB8DYRve8Dg_sTlS4"
+      },
+      {
+        "location": {
+          "latitude": 30.99324,
+          "longitude": 103.62312
+        },
+        "match_status": "verified",
+        "name": "仰天窝广场",
+        "place_id": "ChIJ8TNFyrIG8DYRXZtlQDvss6o"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "都江堰",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 30.988446,
+          "longitude": 103.646841
+        },
+        "match_status": "verified",
+        "name": "灌县古城",
+        "place_id": "ChIJnVQUOvgD8DYRUlLG5ecmuHQ"
+      },
+      {
+        "location": {
+          "latitude": 30.996782999999994,
+          "longitude": 103.616109
+        },
+        "match_status": "verified",
+        "name": "南桥",
+        "place_id": "ChIJYUbnVLQG8DYRF7eXmnu86bo"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

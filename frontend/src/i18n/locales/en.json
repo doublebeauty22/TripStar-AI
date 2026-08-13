@@ -128,6 +128,7 @@
     },
     "loading": {
       "initializing": "Initializing...",
+      "recovering": "Recovering your active trip plan...",
       "searchingAttractions": "Searching attractions...",
       "searchedAttractions": "Attractions found",
       "queryingWeather": "Checking weather...",
@@ -135,11 +136,21 @@
       "recommendingHotels": "Recommending hotels...",
       "recommendedHotels": "Hotels recommended",
       "generatingPlan": "Generating itinerary...",
+      "validatingPlan": "Checking constraints and map routes...",
+      "criticPlan": "Reviewing an issue that can be improved...",
+      "revisingPlan": "Making one targeted adjustment...",
+      "revalidatingPlan": "Rechecking the adjusted itinerary...",
       "planCode": "PLAN CODE {code}",
       "preparing": "Please wait, we are preparing for you...",
       "workingTogether": "Our AI agents are working together to craft your journey...",
       "donePrepare": "Done! Prepare for departure...",
       "done": "Done!"
+    },
+    "taskFailure": {
+      "title": "Trip plan generation failed",
+      "backToEdit": "Back to edit",
+      "retry": "Retry",
+      "editBeforeRetry": "The original request is unavailable. Please edit and generate again."
     },
     "messages": {
       "travelDaysTooLong": "Trip duration cannot exceed 30 days",
@@ -205,6 +216,24 @@
     "graphTitle": "Travel Knowledge Graph",
     "dailyTitle": "Daily Itinerary",
     "dayDescription": "Description:",
+    "dayStartTime": "Estimated start of first main activity:",
+    "risks": {
+      "title": "Issues found by AI checks",
+      "autoRevised": "AI automatically adjusted this itinerary once based on the checks",
+      "disclaimer": "Based on explicit constraints, plan cost estimates, and verified Google routes. Unknown data is not treated as passed.",
+      "status": {
+        "passed": "Basic checks passed",
+        "issues_found": "Issues need attention",
+        "degraded": "Some checks unavailable"
+      },
+      "severity": {
+        "info": "Info",
+        "warning": "Warning",
+        "blocking": "Explicit conflict"
+      },
+      "suggestion": "Suggestion",
+      "empty": "No basic rule conflicts found"
+    },
     "dayTransport": "Transportation:",
     "dayAccommodation": "Accommodation:",
     "attractionTitle": "Attractions",
@@ -239,6 +268,23 @@
       "quickSuitabilityQuestion": "Is this itinerary suitable for seniors?",
       "quickMealQuestion": "What are the prices of recommended restaurants?",
       "placeholder": "Ask your itinerary question...",
+      "modeLabel": "AI itinerary mode",
+      "qaMode": "Trip Q&A",
+      "patchMode": "Edit Trip",
+      "editWelcome": "Describe the day or item to change. Anything you do not mention will stay unchanged.",
+      "editPlaceholder": "For example: start day 2 at 11:00 and keep everything else unchanged",
+      "currentVersion": "Current itinerary version: v{version}",
+      "missingTaskInfo": "This itinerary is missing editable task information. Reopen the latest generated itinerary.",
+      "missingVersionInfo": "This itinerary is missing version information. Reopen the latest generated itinerary.",
+      "editModeOn": "Local edit mode is on",
+      "editModeOff": "Switch to local editing",
+      "understandingEdit": "Understanding your change…",
+      "updatingEdit": "Updating the affected itinerary…",
+      "revalidatingEdit": "Rechecking routes…",
+      "patchSuccess": "Local change completed",
+      "patchFailed": "The change could not be safely applied; the original plan is unchanged",
+      "requiresRegeneration": "This change affects the whole trip structure. Please regenerate the itinerary.",
+      "versionConflict": "The itinerary has changed. Refresh the latest version and try again",
       "send": "Send",
       "replyFallback": "Sorry, no reply was received. Please try again later",
       "networkError": "Network error, please check whether backend service is running"

@@ -1,0 +1,134 @@
+[
+  {
+    "case_id": "gc_beijing_baseline", "name": "北京单城市文化基础场景",
+    "scenario_tags": ["single_city", "multi_interest", "zh_input"], "language": "zh",
+    "trip_request": {"city": "北京", "cities": [{"city": "北京", "days": 3}], "start_date": "2026-10-12", "end_date": "2026-10-14", "travel_days": 3, "transportation": "公共交通", "accommodation": "舒适型酒店", "preferences": ["历史文化", "博物馆"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "couple", "party_size": 2, "pace": "balanced", "interests": ["历史文化", "博物馆"]}},
+    "expected_constraints": {},
+    "expected_deterministic_checks": ["schema_valid", "date_day_consistency", "grounded_poi_rate", "provenance_coverage", "route_check_coverage", "budget_arithmetic_consistency"],
+    "provider_fixtures": [{"provider": "xhs", "state": "available", "fixture_ref": "fixtures/xhs/beijing_culture_v1.json", "fixture_version": "v1"}, {"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/beijing_culture_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["preference_satisfaction", "itinerary_coherence", "usefulness"]
+  },
+  {
+    "case_id": "gc_shanghai_relaxed", "name": "上海松弛节奏城市体验",
+    "scenario_tags": ["single_city", "relaxed", "zh_input"], "language": "zh",
+    "trip_request": {"city": "上海", "cities": [{"city": "上海", "days": 4}], "start_date": "2026-10-19", "end_date": "2026-10-22", "travel_days": 4, "transportation": "公共交通", "accommodation": "舒适型酒店", "preferences": ["艺术", "休闲"], "free_text_input": "每天留出咖啡和休息时间", "language": "zh", "preference_profile": {"party_type": "friends", "party_size": 2, "pace": "relaxed", "interests": ["艺术", "休闲"], "special_requirements": "每天留出咖啡和休息时间", "constraints": {"other_notes": ["每天留出休息时间"]}}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "date_day_consistency", "route_feasibility_rate", "actionable_risk_count"],
+    "provider_fixtures": [{"provider": "google_directions", "state": "available", "fixture_ref": "fixtures/google_directions/shanghai_relaxed_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["pacing_quality", "preference_satisfaction", "itinerary_coherence"]
+  },
+  {
+    "case_id": "gc_tokyo_intensive_en", "name": "Tokyo intensive English itinerary",
+    "scenario_tags": ["single_city", "intensive", "en_input"], "language": "en",
+    "trip_request": {"city": "Tokyo", "cities": [{"city": "Tokyo", "days": 3}], "start_date": "2026-11-02", "end_date": "2026-11-04", "travel_days": 3, "transportation": "public transit", "accommodation": "business hotel", "preferences": ["city exploration", "food"], "free_text_input": "Prioritize full days and efficient neighbourhood grouping.", "language": "en", "preference_profile": {"party_type": "solo", "party_size": 1, "pace": "intensive", "interests": ["city exploration", "food"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "date_day_consistency", "grounded_poi_rate", "route_check_coverage", "route_feasibility_rate"],
+    "provider_fixtures": [{"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/tokyo_intensive_v1.json", "fixture_version": "v1"}, {"provider": "google_directions", "state": "available", "fixture_ref": "fixtures/google_directions/tokyo_intensive_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["pacing_quality", "itinerary_coherence", "usefulness"]
+  },
+  {
+    "case_id": "gc_kyoto_no_early_start", "name": "京都明确不早起约束",
+    "scenario_tags": ["single_city", "avoid_early_start", "zh_input", "revision_trigger"], "language": "zh",
+    "trip_request": {"city": "京都", "cities": [{"city": "京都", "days": 3}], "start_date": "2026-11-09", "end_date": "2026-11-11", "travel_days": 3, "transportation": "公共交通", "accommodation": "民宿", "preferences": ["历史文化"], "free_text_input": "每天十点以后再开始主要行程", "language": "zh", "preference_profile": {"party_type": "couple", "party_size": 2, "pace": "relaxed", "interests": ["历史文化"], "constraints": {"avoid_early_start": true, "earliest_start_time": "10:00"}}},
+    "expected_constraints": {"earliest_start_time": "10:00", "expected_actionable_risk_types": ["earliest_start"]},
+    "expected_deterministic_checks": ["earliest_start_satisfaction", "explicit_constraint_satisfaction_rate", "actionable_risk_count", "revision_risk_resolution_rate"],
+    "provider_fixtures": [{"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/kyoto_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["pacing_quality", "preference_satisfaction"]
+  },
+  {
+    "case_id": "gc_chengdu_budget", "name": "成都明确预算上限",
+    "scenario_tags": ["single_city", "budget_limit", "food_constraint", "zh_input", "revision_trigger"], "language": "zh",
+    "trip_request": {"city": "成都", "cities": [{"city": "成都", "days": 4}], "start_date": "2026-11-16", "end_date": "2026-11-19", "travel_days": 4, "transportation": "公共交通", "accommodation": "经济型酒店", "preferences": ["美食", "城市探索"], "free_text_input": "当地消费不超过3500元，不吃花生", "language": "zh", "preference_profile": {"party_type": "friends", "party_size": 2, "budget_cny": 3500, "pace": "balanced", "interests": ["美食", "城市探索"], "constraints": {"food_notes": ["不吃花生"]}}},
+    "expected_constraints": {"budget_limit_cny": 3500, "food_requirements": ["不吃花生"], "expected_actionable_risk_types": ["budget"]},
+    "expected_deterministic_checks": ["budget_arithmetic_consistency", "budget_limit_satisfaction", "explicit_constraint_satisfaction_rate", "revision_risk_resolution_rate"],
+    "provider_fixtures": [{"provider": "xhs", "state": "available", "fixture_ref": "fixtures/xhs/chengdu_food_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["preference_satisfaction", "usefulness", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_hangzhou_mobility", "name": "杭州行动能力约束",
+    "scenario_tags": ["single_city", "mobility", "relaxed", "zh_input"], "language": "zh",
+    "trip_request": {"city": "杭州", "cities": [{"city": "杭州", "days": 3}], "start_date": "2026-11-23", "end_date": "2026-11-25", "travel_days": 3, "transportation": "混合", "accommodation": "舒适型酒店", "preferences": ["自然风光"], "free_text_input": "和父母同行，避免连续长距离步行", "language": "zh", "preference_profile": {"party_type": "with_parents", "party_size": 3, "pace": "relaxed", "interests": ["自然风光"], "constraints": {"mobility_notes": ["避免连续长距离步行"]}}},
+    "expected_constraints": {"mobility_required": true, "expected_actionable_risk_types": ["mobility"]},
+    "expected_deterministic_checks": ["explicit_constraint_satisfaction_rate", "route_check_coverage", "route_feasibility_rate", "actionable_risk_count"],
+    "provider_fixtures": [{"provider": "google_directions", "state": "available", "fixture_ref": "fixtures/google_directions/hangzhou_mobility_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["pacing_quality", "preference_satisfaction", "usefulness"]
+  },
+  {
+    "case_id": "gc_beijing_xhs_unavailable", "name": "北京小红书不可用降级",
+    "scenario_tags": ["single_city", "xhs_unavailable", "zh_input"], "language": "zh",
+    "trip_request": {"city": "北京", "cities": [{"city": "北京", "days": 2}], "start_date": "2026-11-30", "end_date": "2026-12-01", "travel_days": 2, "transportation": "公共交通", "accommodation": "经济型酒店", "preferences": ["小众景点"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "solo", "party_size": 1, "pace": "balanced", "interests": ["小众景点"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "provenance_coverage", "grounded_poi_rate", "unverified_poi_rate"],
+    "provider_fixtures": [{"provider": "xhs", "state": "unavailable", "fixture_ref": "fixtures/xhs/unavailable_v1.json", "fixture_version": "v1", "notes": "Synthetic request_failed state"}],
+    "human_review_focus": ["usefulness", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_osaka_places_partial", "name": "大阪 Google Places 部分匹配",
+    "scenario_tags": ["single_city", "google_places_partial", "zh_input"], "language": "zh",
+    "trip_request": {"city": "大阪", "cities": [{"city": "大阪", "days": 3}], "start_date": "2026-12-07", "end_date": "2026-12-09", "travel_days": 3, "transportation": "公共交通", "accommodation": "经济型酒店", "preferences": ["美食", "购物"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "friends", "party_size": 3, "pace": "balanced", "interests": ["美食", "购物"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["grounded_poi_rate", "unverified_poi_rate", "route_check_coverage", "provenance_coverage"],
+    "provider_fixtures": [{"provider": "google_places", "state": "partial", "fixture_ref": "fixtures/google_places/osaka_partial_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["usefulness", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_lijiang_places_unavailable", "name": "丽江地图 POI 不可用",
+    "scenario_tags": ["single_city", "google_places_unavailable", "route_unavailable", "zh_input"], "language": "zh",
+    "trip_request": {"city": "丽江", "cities": [{"city": "丽江", "days": 3}], "start_date": "2026-12-14", "end_date": "2026-12-16", "travel_days": 3, "transportation": "混合", "accommodation": "民宿", "preferences": ["自然风光"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "couple", "party_size": 2, "pace": "relaxed", "interests": ["自然风光"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["grounded_poi_rate", "unverified_poi_rate", "route_check_coverage", "route_feasibility_rate", "actionable_risk_count"],
+    "provider_fixtures": [{"provider": "google_places", "state": "unavailable", "fixture_ref": "fixtures/google_places/unavailable_v1.json", "fixture_version": "v1"}, {"provider": "google_directions", "state": "unavailable", "fixture_ref": "fixtures/google_directions/unavailable_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["usefulness", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_guangzhou_route_unavailable", "name": "广州路线服务不可用",
+    "scenario_tags": ["single_city", "route_unavailable", "zh_input"], "language": "zh",
+    "trip_request": {"city": "广州", "cities": [{"city": "广州", "days": 3}], "start_date": "2027-01-04", "end_date": "2027-01-06", "travel_days": 3, "transportation": "公共交通", "accommodation": "舒适型酒店", "preferences": ["美食", "历史文化"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "family", "party_size": 4, "pace": "balanced", "interests": ["美食", "历史文化"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["route_check_coverage", "route_feasibility_rate", "actionable_risk_count", "provenance_coverage"],
+    "provider_fixtures": [{"provider": "google_directions", "state": "unavailable", "fixture_ref": "fixtures/google_directions/unavailable_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["itinerary_coherence", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_sydney_weather_fallback_en", "name": "Sydney weather fallback in English",
+    "scenario_tags": ["single_city", "weather_fallback", "en_input"], "language": "en",
+    "trip_request": {"city": "Sydney", "cities": [{"city": "Sydney", "days": 3}], "start_date": "2027-01-11", "end_date": "2027-01-13", "travel_days": 3, "transportation": "public transit", "accommodation": "mid-range hotel", "preferences": ["nature", "city exploration"], "free_text_input": "Keep weather-dependent advice clearly qualified.", "language": "en", "preference_profile": {"party_type": "couple", "party_size": 2, "pace": "balanced", "interests": ["nature", "city exploration"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "provenance_coverage", "date_day_consistency"],
+    "provider_fixtures": [{"provider": "google_weather", "state": "unavailable", "fixture_ref": "fixtures/google_weather/unavailable_v1.json", "fixture_version": "v1"}, {"provider": "amap", "state": "degraded", "fixture_ref": "fixtures/amap/sydney_weather_degraded_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["explanation_quality", "usefulness"]
+  },
+  {
+    "case_id": "gc_beijing_xian_multi_city", "name": "北京西安多城市文化行程",
+    "scenario_tags": ["multi_city", "multi_interest", "zh_input"], "language": "zh",
+    "trip_request": {"city": "北京", "cities": [{"city": "北京", "days": 2}, {"city": "西安", "days": 3}], "start_date": "2027-02-01", "end_date": "2027-02-05", "travel_days": 5, "transportation": "公共交通", "accommodation": "舒适型酒店", "preferences": ["历史文化", "博物馆", "美食"], "free_text_input": "城市切换日不要安排太满", "language": "zh", "preference_profile": {"party_type": "family", "party_size": 3, "pace": "balanced", "interests": ["历史文化", "博物馆", "美食"], "constraints": {"other_notes": ["城市切换日不要安排太满"]}}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "date_day_consistency", "grounded_poi_rate", "route_check_coverage", "budget_arithmetic_consistency"],
+    "provider_fixtures": [{"provider": "xhs", "state": "available", "fixture_ref": "fixtures/xhs/beijing_xian_v1.json", "fixture_version": "v1"}, {"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/beijing_xian_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["itinerary_coherence", "pacing_quality", "preference_satisfaction"]
+  },
+  {
+    "case_id": "gc_seoul_food_constraint_en", "name": "Seoul dietary constraint in English",
+    "scenario_tags": ["single_city", "food_constraint", "en_input"], "language": "en",
+    "trip_request": {"city": "Seoul", "cities": [{"city": "Seoul", "days": 3}], "start_date": "2027-02-08", "end_date": "2027-02-10", "travel_days": 3, "transportation": "public transit", "accommodation": "mid-range hotel", "preferences": ["food", "art"], "free_text_input": "Vegetarian meals only.", "language": "en", "preference_profile": {"party_type": "solo", "party_size": 1, "pace": "balanced", "interests": ["food", "art"], "constraints": {"food_notes": ["Vegetarian meals only"]}}},
+    "expected_constraints": {"food_requirements": ["Vegetarian meals only"]}, "expected_deterministic_checks": ["schema_valid", "explicit_constraint_satisfaction_rate", "provenance_coverage"],
+    "provider_fixtures": [{"provider": "xhs", "state": "available", "fixture_ref": "fixtures/xhs/seoul_food_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["preference_satisfaction", "usefulness", "explanation_quality"]
+  },
+  {
+    "case_id": "gc_nanjing_local_patch", "name": "南京局部修改保护其他日期",
+    "scenario_tags": ["single_city", "local_patch", "zh_input"], "language": "zh",
+    "trip_request": {"city": "南京", "cities": [{"city": "南京", "days": 4}], "start_date": "2027-02-15", "end_date": "2027-02-18", "travel_days": 4, "transportation": "公共交通", "accommodation": "舒适型酒店", "preferences": ["历史文化"], "free_text_input": "", "language": "zh", "preference_profile": {"party_type": "friends", "party_size": 2, "pace": "balanced", "interests": ["历史文化"]}},
+    "expected_constraints": {"protected_day_indices": [0, 1, 3]}, "expected_deterministic_checks": ["unaffected_day_preservation_rate", "grounded_poi_rate", "budget_arithmetic_consistency", "route_feasibility_rate"],
+    "provider_fixtures": [{"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/nanjing_patch_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["preference_satisfaction", "itinerary_coherence"], "patch_instruction": "只把第三天最后一个景点换成南京博物院，其他日期保持不变。"
+  },
+  {
+    "case_id": "gc_shenzhen_overbudget_revision", "name": "深圳超预算自动修复",
+    "scenario_tags": ["single_city", "budget_limit", "revision_trigger", "zh_input"], "language": "zh",
+    "trip_request": {"city": "深圳", "cities": [{"city": "深圳", "days": 3}], "start_date": "2027-02-22", "end_date": "2027-02-24", "travel_days": 3, "transportation": "公共交通", "accommodation": "经济型酒店", "preferences": ["城市探索"], "free_text_input": "当地消费控制在2000元", "language": "zh", "preference_profile": {"party_type": "solo", "party_size": 1, "budget_cny": 2000, "pace": "balanced", "interests": ["城市探索"]}},
+    "expected_constraints": {"budget_limit_cny": 2000, "expected_actionable_risk_types": ["budget"]}, "expected_deterministic_checks": ["budget_limit_satisfaction", "actionable_risk_count", "revision_risk_resolution_rate", "budget_arithmetic_consistency"],
+    "provider_fixtures": [{"provider": "google_places", "state": "available", "fixture_ref": "fixtures/google_places/shenzhen_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["usefulness", "preference_satisfaction", "pacing_quality"]
+  },
+  {
+    "case_id": "gc_hongkong_multi_interest_en", "name": "Hong Kong multi-interest English case",
+    "scenario_tags": ["single_city", "multi_interest", "en_input"], "language": "en",
+    "trip_request": {"city": "Hong Kong", "cities": [{"city": "Hong Kong", "days": 4}], "start_date": "2027-03-01", "end_date": "2027-03-04", "travel_days": 4, "transportation": "public transit", "accommodation": "mid-range hotel", "preferences": ["food", "photography", "nature", "shopping"], "free_text_input": "Balance neighbourhood photography with food stops.", "language": "en", "preference_profile": {"party_type": "friends", "party_size": 2, "pace": "balanced", "interests": ["food", "photography", "nature", "shopping"]}},
+    "expected_constraints": {}, "expected_deterministic_checks": ["schema_valid", "date_day_consistency", "grounded_poi_rate", "provenance_coverage", "logical_llm_calls", "total_tokens", "latency_ms"],
+    "provider_fixtures": [{"provider": "xhs", "state": "available", "fixture_ref": "fixtures/xhs/hongkong_multi_v1.json", "fixture_version": "v1"}],
+    "human_review_focus": ["preference_satisfaction", "itinerary_coherence", "pacing_quality"]
+  }
+]

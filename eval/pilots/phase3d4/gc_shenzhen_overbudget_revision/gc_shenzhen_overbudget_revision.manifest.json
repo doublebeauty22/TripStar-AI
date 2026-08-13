@@ -1,0 +1,13 @@
+{
+  "artifact": "gc_shenzhen_overbudget_revision.json",
+  "artifact_hash": "sha256:85a59d603ad37a69f12c13646fe7a3e4201ba48b594fb5fd17f55a5cc6dfbf52",
+  "capture_status": "complete",
+  "case_id": "gc_shenzhen_overbudget_revision",
+  "snapshot_hashes": {
+    "amap": "sha256:257c7a6becb830b716003d381ed2e1afacfe7802d1a9e043697b19bbd55ccf20",
+    "google_directions": "sha256:0918c207c9472c89de7ff54158896081af217b0e2cfc6527396405da8bf07b13",
+    "google_places": "sha256:422a2cb3cd1aefdd3920423b802555c0943e98c7cda973454b3bf40349ec504e",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:6ff1741e854f86bc66c6f9d59743f6c50880c5a7eb53f5bc8f9da7b3c77fa5d9"
+  }
+}

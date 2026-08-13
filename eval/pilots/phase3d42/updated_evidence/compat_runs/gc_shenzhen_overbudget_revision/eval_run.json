@@ -1,0 +1,299 @@
+{
+  "artifact_origin": "synthetic",
+  "badcases": [
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "constraint_violation",
+      "reason": "deterministically measurable explicit constraint result"
+    },
+    {
+      "detected": true,
+      "evidence_type": "automatic",
+      "label": "ungrounded_poi",
+      "reason": "one or more POIs are not grounded"
+    },
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "route_infeasible",
+      "reason": "checked route leg is infeasible"
+    },
+    {
+      "detected": true,
+      "evidence_type": "automatic",
+      "label": "route_unavailable",
+      "reason": "one or more required routes are unavailable"
+    },
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "budget_overrun",
+      "reason": "plan exceeds explicit budget limit"
+    },
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "budget_inconsistent",
+      "reason": "budget total differs from component sum"
+    },
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "revision_failed",
+      "reason": "one or more targeted revision risks remain"
+    },
+    {
+      "detected": true,
+      "evidence_type": "automatic",
+      "label": "provenance_missing",
+      "reason": "one or more applicable structured facts lack provenance"
+    },
+    {
+      "detected": false,
+      "evidence_type": "automatic",
+      "label": "patch_scope_drift",
+      "reason": "one or more protected days changed"
+    },
+    {
+      "detected": null,
+      "evidence_type": "not_evaluated",
+      "label": "excessive_cost",
+      "reason": "comparison threshold is provisional/config-required"
+    },
+    {
+      "detected": null,
+      "evidence_type": "not_evaluated",
+      "label": "excessive_latency",
+      "reason": "comparison threshold is provisional/config-required"
+    },
+    {
+      "detected": null,
+      "evidence_type": "human_required",
+      "label": "preference_miss",
+      "reason": "requires human preference review"
+    },
+    {
+      "detected": null,
+      "evidence_type": "human_required",
+      "label": "unsupported_fact",
+      "reason": "unrestricted prose has no claim/evidence contract in v1"
+    },
+    {
+      "detected": null,
+      "evidence_type": "human_required",
+      "label": "overpacked",
+      "reason": "v1 requires human pacing review"
+    },
+    {
+      "detected": null,
+      "evidence_type": "human_required",
+      "label": "underpacked",
+      "reason": "v1 requires human pacing review"
+    },
+    {
+      "detected": null,
+      "evidence_type": "human_required",
+      "label": "unnecessary_revision",
+      "reason": "requires human judgment of repair necessity"
+    }
+  ],
+  "completed_at": "2026-08-12T14:59:20.566467+00:00",
+  "error": null,
+  "eval_contract_version": "phase3a.v1",
+  "fixture_hashes": {
+    "amap": "sha256:257c7a6becb830b716003d381ed2e1afacfe7802d1a9e043697b19bbd55ccf20",
+    "google_directions": "sha256:0918c207c9472c89de7ff54158896081af217b0e2cfc6527396405da8bf07b13",
+    "google_places": "sha256:422a2cb3cd1aefdd3920423b802555c0943e98c7cda973454b3bf40349ec504e",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "xhs": "sha256:6ff1741e854f86bc66c6f9d59743f6c50880c5a7eb53f5bc8f9da7b3c77fa5d9"
+  },
+  "golden_case_version": "golden.v1",
+  "latency_ms": 115158,
+  "metadata": {
+    "case_id": "gc_shenzhen_overbudget_revision",
+    "eval_run_id": "eval_phase3d42_compat_shenzhen_overbudget_revision",
+    "fixture_set_version": "fixtures.v1",
+    "model": "gpt-5.6-luna",
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "metric_policy_version": "metrics.v2",
+  "metrics": [
+    {
+      "denominator": null,
+      "metric": "schema_valid",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 1.0
+    },
+    {
+      "denominator": null,
+      "metric": "date_day_consistency",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.0
+    },
+    {
+      "denominator": 1.0,
+      "metric": "explicit_constraint_satisfaction_rate",
+      "numerator": 1.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 1.0
+    },
+    {
+      "denominator": null,
+      "metric": "earliest_start_satisfaction",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": "no explicit earliest_start_time",
+      "status": "not_applicable",
+      "value": null
+    },
+    {
+      "denominator": null,
+      "metric": "budget_arithmetic_consistency",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 1.0
+    },
+    {
+      "denominator": null,
+      "metric": "budget_limit_satisfaction",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 1.0
+    },
+    {
+      "denominator": 9.0,
+      "metric": "grounded_poi_rate",
+      "numerator": 7.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.7777777777777778
+    },
+    {
+      "denominator": 9.0,
+      "metric": "unverified_poi_rate",
+      "numerator": 0.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.0
+    },
+    {
+      "denominator": 14.0,
+      "metric": "provenance_coverage",
+      "numerator": 12.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.8571428571428571
+    },
+    {
+      "denominator": 4.0,
+      "metric": "route_check_coverage",
+      "numerator": 2.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.5
+    },
+    {
+      "denominator": 2.0,
+      "metric": "route_feasibility_rate",
+      "numerator": 2.0,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 1.0
+    },
+    {
+      "denominator": null,
+      "metric": "actionable_risk_count",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 0.0
+    },
+    {
+      "denominator": null,
+      "metric": "revision_risk_resolution_rate",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": "no revision and no targeted risks",
+      "status": "not_applicable",
+      "value": null
+    },
+    {
+      "denominator": null,
+      "metric": "unaffected_day_preservation_rate",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": "case has no protected days",
+      "status": "not_applicable",
+      "value": null
+    },
+    {
+      "denominator": null,
+      "metric": "logical_llm_calls",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 2.0
+    },
+    {
+      "denominator": null,
+      "metric": "prompt_tokens",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 17811.0
+    },
+    {
+      "denominator": null,
+      "metric": "completion_tokens",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 13103.0
+    },
+    {
+      "denominator": null,
+      "metric": "total_tokens",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 30914.0
+    },
+    {
+      "denominator": null,
+      "metric": "latency_ms",
+      "numerator": null,
+      "policy_version": "metrics.v2",
+      "reason": null,
+      "status": "known",
+      "value": 115158.0
+    }
+  ],
+  "output_artifact_reference": "eval/pilots/phase3d4/gc_shenzhen_overbudget_revision/gc_shenzhen_overbudget_revision.json",
+  "run_status": "completed",
+  "runner_version": "runner.v1",
+  "started_at": "2026-08-12T14:59:20.566047+00:00"
+}

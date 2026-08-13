@@ -1,0 +1,83 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "伏见稻荷大社",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "清水寺",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 34.996663,
+          "longitude": 135.7810078
+        },
+        "match_status": "verified",
+        "name": "二年坂",
+        "place_id": "ChIJlwyrGNAIAWARNb5hUHdZruY"
+      },
+      {
+        "location": {
+          "latitude": 35.009449,
+          "longitude": 135.666773
+        },
+        "match_status": "verified",
+        "name": "岚山",
+        "place_id": "ChIJ49PvUVQHAWARTAF7WU_Wqqs"
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "金阁寺",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "高台寺",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "partial_match",
+        "name": "八坂神社",
+        "place_id": ""
+      },
+      {
+        "location": {
+          "latitude": 0.0,
+          "longitude": 0.0
+        },
+        "match_status": "unverified",
+        "name": "祇园",
+        "place_id": ""
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "partial"
+}

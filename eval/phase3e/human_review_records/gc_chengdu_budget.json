@@ -1,0 +1,30 @@
+{
+  "review_id": "review_gc_chengdu_budget_v1",
+  "case_id": "gc_chengdu_budget",
+  "planner_version": "planner_baseline_v1",
+  "status": "complete",
+  "artifact_reference": "eval/pilots/phase3d42/gc_chengdu_budget/gc_chengdu_budget.json",
+  "artifact_sha256": "sha256:f5426654890cae844f8d65291987cb2c36c9157c84b5d3142b0897274044784f",
+  "rubric_version": "human.v1",
+  "reviewer": "Yi Huang",
+  "timestamp": "2026-08-13T06:14:06Z",
+  "reviewed_at": "2026-08-13T06:14:06Z",
+  "scores": {
+    "preference_satisfaction": 4,
+    "itinerary_coherence": 4,
+    "pacing_quality": 2,
+    "usefulness": 3,
+    "explanation_quality": 4
+  },
+  "rationale": null,
+  "rationale_by_dimension": {
+    "preference_satisfaction": "行程围绕美食和城市探索展开，并将 3,500 元预算上限与“不吃花生”约束落实到具体计划中。饮食约束的满足不是基于关键词出现，而是计划在不同餐饮场景持续要求点餐前确认配料、避免花生碎、花生酱、花生油并检查火锅调料；同时没有直接保证任何餐馆绝对安全。用户未声明医学意义上的花生过敏，部分交叉污染提醒略偏保守，但不构成明显违反要求。主要扣分来自实际节奏明显偏离 balanced pace。",
+    "itinerary_coherence": "四天具有可理解的区域与主题组织，市区探索、熊猫基地、历史文化景点和都江堰方向一日游的安排整体连贯。Grounding 14/16、provenance 19/21，已验证路线均 feasible，也为行程结构提供了一定支持。但 Day 2 和 Day 4 的关键路线仍为 unknown，且 Day 4 的公共交通偏好与 driving route evidence 存在冲突，因此执行层面的连贯性仍有缺口。",
+    "pacing_quality": "行程明显偏离 balanced pace：Day 1 安排五个 POI、合计 480 分钟；Day 2 从 07:30 开始并包含长距离移动；Day 3 三个 POI 合计 450 分钟且步行较多；Day 4 五个 POI 合计 510 分钟，还需要成都—都江堰往返及当地接驳。多天活动密度和移动负担都需要明显削减或重排。",
+    "usefulness": "计划具有较好的地点基础，grounding 为 14/16、provenance 为 19/21，已验证路线均 feasible，饮食约束也转化为可执行提醒，因此具备基本使用价值。但 Day 2、Day 4 的关键路线仍存在 unknown，Day 4 公共交通偏好与 driving route evidence 冲突，且 inter-city transport 预算为 0 值得注意；再加上整体节奏过密，用户仍需核实并修正若干重要信息。",
+    "explanation_quality": "计划能够将预算、兴趣和“不吃花生”约束与每天安排联系起来，并针对不同餐饮场景给出确认配料、规避花生成分和检查调料等具体行动，同时没有过度保证餐馆绝对安全。解释整体具体且与用户要求相关，但尚未充分说明 Day 2、Day 4 路线 unknown、Day 4 交通证据冲突以及 inter-city transport 预算为 0 等限制，因此仍有改进空间。"
+  },
+  "unsupported_fact": "uncertain",
+  "unsupported_fact_rationale": "Workbook 中存在预约规则、熊猫活动时段、酒店价格与评分、交通时间等具体外部事实，但仅凭当前摘要不足以证明其 provenance 缺失，也不足以确认所有陈述均有充分来源支持，因此 verdict 为 uncertain。",
+  "additional_notes": "特殊饮食约束“不吃花生”的人工判断为 satisfied with caveats。依据不是关键词出现，而是计划在不同餐饮场景中持续将约束转化为点餐前确认配料、避免花生碎、花生酱、花生油及火锅调料检查等实际行动；同时没有直接保证任何餐馆绝对安全。用户没有声明医学意义上的花生过敏，因此部分交叉污染提醒略偏保守，但不构成明显违反要求。"
+}

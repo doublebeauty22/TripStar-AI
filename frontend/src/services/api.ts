@@ -1,32 +1,42 @@
 import axios from 'axios'
 import type {
   BackendRuntimeSettings,
+  PreferenceParseRequest,
+  PreferenceParseResponse,
   RuntimeSettings,
   TripFormData,
   TripHistoryItem,
   TripPlanResponse,
+  TripPatchResult,
   TripTaskEvent,
+  TripTaskStatusResponse,
 } from '@/types'
 import { i18n } from '@/i18n'
+import { monitorTripTask } from './tripTaskLifecycle'
 
 const ENV_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 const ENV_AMAP_WEB_JS_KEY = import.meta.env.VITE_AMAP_WEB_JS_KEY ?? ''
 const RUNTIME_API_BASE_STORAGE_KEY = 'tripstar.runtime.api_base_url'
 const RUNTIME_AMAP_WEB_JS_KEY_STORAGE_KEY = 'tripstar.runtime.amap_web_js_key'
-const RUNTIME_GOOGLE_MAPS_API_KEY_STORAGE_KEY = 'tripstar.runtime.google_maps_api_key'
+const LEGACY_GOOGLE_MAPS_API_KEY_STORAGE_KEY = 'tripstar.runtime.google_maps_api_key'
 const DEFAULT_RUNTIME_BACKEND_SETTINGS: BackendRuntimeSettings = {
-  vite_amap_web_key: '',
   vite_amap_web_js_key: '',
-  google_maps_api_key: '',
-  google_maps_proxy: '',
-  xhs_cookie: '',
-  openai_api_key: '',
+  google_maps_proxy_configured: false,
   openai_base_url: '',
   openai_model: '',
+  openai_configured: false,
+  xhs_configured: false,
+  amap_server_configured: false,
+  google_server_configured: false,
 }
 
 export const RUNTIME_SETTINGS_UPDATED_EVENT = 'tripstar:runtime-settings-updated'
 const t = i18n.global.t
+
+// Remove any Server Key cached by older frontend builds. It is never read or written again.
+if (typeof window !== 'undefined') {
+  window.localStorage.removeItem(LEGACY_GOOGLE_MAPS_API_KEY_STORAGE_KEY)
+}
 
 const normalizeBaseUrl = (value: string | null | undefined): string => {
   const text = String(value ?? '').trim()
@@ -49,7 +59,7 @@ const resolveDefaultApiBaseUrl = (): string => {
 const DEFAULT_API_BASE_URL = resolveDefaultApiBaseUrl()
 const DEFAULT_AMAP_WEB_JS_KEY = normalizeText(ENV_AMAP_WEB_JS_KEY)
 
-interface SubmitTripPlanResponse {
+export interface SubmitTripPlanResponse {
   task_id: string
   plan_id: string
   status: 'processing'
@@ -104,42 +114,25 @@ export const setRuntimeMapJsKey = (value: string): string => {
   return normalized
 }
 
-export const getRuntimeGoogleMapsApiKey = (): string => {
-  if (typeof window === 'undefined') return ''
-  return normalizeText(window.localStorage.getItem(RUNTIME_GOOGLE_MAPS_API_KEY_STORAGE_KEY))
-}
-
-export const setRuntimeGoogleMapsApiKey = (value: string): string => {
-  const normalized = normalizeText(value)
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(RUNTIME_GOOGLE_MAPS_API_KEY_STORAGE_KEY, normalized)
-  }
-  return normalized
-}
-
 const getWsBaseUrl = (): string => getRuntimeApiBaseUrl().replace(/^http/i, 'ws').replace(/\/+$/, '')
 
 const normalizeBackendRuntimeSettings = (
   data?: Partial<BackendRuntimeSettings>
 ): BackendRuntimeSettings => ({
-  vite_amap_web_key: normalizeText(data?.vite_amap_web_key ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.vite_amap_web_key),
   vite_amap_web_js_key: normalizeText(
     data?.vite_amap_web_js_key ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.vite_amap_web_js_key
   ),
-  google_maps_api_key: normalizeText(
-    data?.google_maps_api_key ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.google_maps_api_key
-  ),
-  google_maps_proxy: normalizeText(
-    data?.google_maps_proxy ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.google_maps_proxy
-  ),
-  xhs_cookie: normalizeText(data?.xhs_cookie ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.xhs_cookie),
-  openai_api_key: normalizeText(data?.openai_api_key ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.openai_api_key),
+  google_maps_proxy_configured: Boolean(data?.google_maps_proxy_configured),
   openai_base_url:
     normalizeText(data?.openai_base_url ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.openai_base_url) ||
     DEFAULT_RUNTIME_BACKEND_SETTINGS.openai_base_url,
   openai_model:
     normalizeText(data?.openai_model ?? DEFAULT_RUNTIME_BACKEND_SETTINGS.openai_model) ||
     DEFAULT_RUNTIME_BACKEND_SETTINGS.openai_model,
+  openai_configured: Boolean(data?.openai_configured),
+  xhs_configured: Boolean(data?.xhs_configured),
+  amap_server_configured: Boolean(data?.amap_server_configured),
+  google_server_configured: Boolean(data?.google_server_configured),
 })
 
 const emitRuntimeSettingsUpdated = () => {
@@ -175,6 +168,10 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     console.error('响应错误:', error.response?.status, error.message)
+    const publicMessage = error.response?.data?.error?.message
+    if (typeof publicMessage === 'string' && publicMessage.trim()) {
+      error.message = publicMessage
+    }
     return Promise.reject(error)
   }
 )
@@ -206,11 +203,6 @@ export async function getRuntimeSettings(): Promise<RuntimeSettings> {
   const apiBaseUrl = getRuntimeApiBaseUrl()
   const mapJsKey = getRuntimeMapJsKey() || backend.vite_amap_web_js_key
 
-  // 同步 Google Maps API Key 到 localStorage 供前端地图组件读取
-  if (backend.google_maps_api_key) {
-    setRuntimeGoogleMapsApiKey(backend.google_maps_api_key)
-  }
-
   return {
     api_base_url: apiBaseUrl,
     ...backend,
@@ -222,12 +214,7 @@ export async function saveRuntimeSettings(settings: RuntimeSettings): Promise<Ru
   const previousApiBaseUrl = getRuntimeApiBaseUrl()
   const targetApiBaseUrl = normalizeBaseUrl(settings.api_base_url) || previousApiBaseUrl
   const updates: Partial<BackendRuntimeSettings> = {
-    vite_amap_web_key: settings.vite_amap_web_key,
     vite_amap_web_js_key: settings.vite_amap_web_js_key,
-    google_maps_api_key: settings.google_maps_api_key,
-    google_maps_proxy: settings.google_maps_proxy,
-    xhs_cookie: settings.xhs_cookie,
-    openai_api_key: settings.openai_api_key,
     openai_base_url: settings.openai_base_url,
     openai_model: settings.openai_model,
   }
@@ -243,8 +230,6 @@ export async function saveRuntimeSettings(settings: RuntimeSettings): Promise<Ru
 
   const apiBaseUrl = setRuntimeApiBaseUrl(targetApiBaseUrl)
   const mapJsKey = setRuntimeMapJsKey(settings.vite_amap_web_js_key || backend.vite_amap_web_js_key)
-  setRuntimeGoogleMapsApiKey(settings.google_maps_api_key || backend.google_maps_api_key)
-
   emitRuntimeSettingsUpdated()
 
   return {
@@ -267,16 +252,50 @@ export async function submitTripPlan(formData: TripFormData): Promise<SubmitTrip
   }
 }
 
+/** 将特殊要求解析为可确认的最小 Preference Profile。 */
+export async function parsePreferenceProfile(
+  request: PreferenceParseRequest
+): Promise<PreferenceParseResponse> {
+  try {
+    const response = await apiClient.post<PreferenceParseResponse>('/api/preferences/parse', request)
+    return response.data
+  } catch (error: any) {
+    console.error('解析旅行偏好失败:', error)
+    throw new Error(error.response?.data?.detail || error.message || t('api.parsePreferenceFailed'))
+  }
+}
+
 /**
  * 轮询任务状态
  */
-export async function pollTaskStatus(taskId: string): Promise<any> {
+export async function pollTaskStatus(taskId: string): Promise<TripTaskStatusResponse> {
   try {
-    const response = await apiClient.get(`/api/trip/status/${taskId}`)
+    const response = await apiClient.get<TripTaskStatusResponse>(`/api/trip/status/${taskId}`)
     return response.data
   } catch (error: any) {
     console.error('查询任务状态失败:', error)
     throw new Error(error.response?.data?.detail || error.message || t('api.queryTaskStatusFailed'))
+  }
+}
+
+export async function patchTripPlan(
+  taskId: string,
+  instruction: string,
+  currentPlanVersion: number,
+  patchRequestId: string,
+): Promise<TripPatchResult> {
+  try {
+    const response = await apiClient.post<TripPatchResult>(`/api/trip/${taskId}/patch`, {
+      instruction,
+      current_plan_version: currentPlanVersion,
+      patch_request_id: patchRequestId,
+    })
+    return response.data
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      throw new Error(error.response?.data?.detail || t('result.chat.versionConflict'))
+    }
+    throw new Error(error.response?.data?.detail || error.message || t('result.chat.patchFailed'))
   }
 }
 
@@ -306,56 +325,26 @@ export async function generateTripPlan(
     ? task.ws_url
     : `${getWsBaseUrl()}${task.ws_url}`
 
-  return new Promise((resolve, reject) => {
-    let settled = false
-    const socket = new WebSocket(wsUrl)
-
-    const safeResolve = (value: TripPlanResponse) => {
-      if (settled) return
-      settled = true
-      socket.close()
-      resolve(value)
-    }
-
-    const safeReject = (error: unknown) => {
-      if (settled) return
-      settled = true
-      socket.close()
-      reject(error)
-    }
-
-    socket.onmessage = (ev) => {
-      try {
-        const event = JSON.parse(ev.data) as TripTaskEvent
-        options?.onTaskEvent?.(event)
-
-        if (event.status === 'completed') {
-          if (!event.result) {
-            safeReject(new Error(t('api.generateTripPlanFailed')))
-            return
-          }
-          safeResolve(event.result)
-          return
-        }
-
-        if (event.status === 'failed') {
-          safeReject(new Error(event.error || event.message || t('api.generateTripPlanFailed')))
-        }
-      } catch (err) {
-        safeReject(err)
-      }
-    }
-
-    socket.onerror = () => {
-      safeReject(new Error(t('api.generateTripPlanFailed')))
-    }
-
-    socket.onclose = () => {
-      if (!settled) {
-        safeReject(new Error(t('api.generateTripPlanFailed')))
-      }
-    }
+  return monitorTripTask(task, wsUrl, { onTaskEvent: options?.onTaskEvent }, {
+    createWebSocket: url => new WebSocket(url),
+    fetchStatus: pollTaskStatus,
   })
+}
+
+/** 恢复刷新或断线前已经提交的任务。 */
+export async function resumeTripPlan(
+  taskId: string,
+  options?: Pick<GenerateTripPlanOptions, 'onTaskEvent'>,
+): Promise<TripPlanResponse> {
+  return monitorTripTask(
+    { task_id: taskId, plan_id: taskId, ws_url: '' },
+    '',
+    { onTaskEvent: options?.onTaskEvent, useWebSocket: false },
+    {
+      createWebSocket: url => new WebSocket(url),
+      fetchStatus: pollTaskStatus,
+    },
+  )
 }
 
 /**
@@ -372,4 +361,3 @@ export async function healthCheck(): Promise<any> {
 }
 
 export default apiClient
-

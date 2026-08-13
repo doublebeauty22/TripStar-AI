@@ -1,0 +1,92 @@
+{
+  "captured_at": null,
+  "fixture_version": "v1",
+  "payload": {
+    "places": [
+      {
+        "location": {
+          "latitude": 39.9054895,
+          "longitude": 116.39763169999999
+        },
+        "match_status": "verified",
+        "name": "天安门广场",
+        "place_id": "ChIJ2XRD3Jh2YzYRE1lUrcku6io"
+      },
+      {
+        "location": {
+          "latitude": 39.9026706,
+          "longitude": 116.40879689999998
+        },
+        "match_status": "verified",
+        "name": "东交民巷",
+        "place_id": "ChIJuWdhSbdS8DURdMlBxuUEfuM"
+      },
+      {
+        "location": {
+          "latitude": 39.904799,
+          "longitude": 116.38967120000001
+        },
+        "match_status": "verified",
+        "name": "国家大剧院",
+        "place_id": "ChIJc6LnIo5S8DURh6oaL1vsdIs"
+      },
+      {
+        "location": {
+          "latitude": 39.916344699999996,
+          "longitude": 116.3971546
+        },
+        "match_status": "verified",
+        "name": "故宫博物院",
+        "place_id": "ChIJq4HNm91S8DURZGAQm-3qQ94"
+      },
+      {
+        "location": {
+          "latitude": 39.9250988,
+          "longitude": 116.39684329999999
+        },
+        "match_status": "verified",
+        "name": "景山公园",
+        "place_id": "ChIJiaRNz-BS8DURW2N_nAufVJU"
+      },
+      {
+        "location": {
+          "latitude": 39.933299999999996,
+          "longitude": 116.38183
+        },
+        "match_status": "verified",
+        "name": "什刹海",
+        "place_id": "ChIJtR0lmwJT8DURMT4IkpqHIlc"
+      },
+      {
+        "location": {
+          "latitude": 39.9050945,
+          "longitude": 116.4015829
+        },
+        "match_status": "verified",
+        "name": "中国国家博物馆",
+        "place_id": "ChIJ5xGxSrlS8DURCcbo8EFiRwI"
+      },
+      {
+        "location": {
+          "latitude": 39.8802793,
+          "longitude": 116.41053640000001
+        },
+        "match_status": "verified",
+        "name": "天坛公园",
+        "place_id": "ChIJq6qqqlFN8DURzScL9AR3y84"
+      },
+      {
+        "location": {
+          "latitude": 39.8971969,
+          "longitude": 116.39768759999998
+        },
+        "match_status": "verified",
+        "name": "前门大街与大栅栏",
+        "place_id": "ChIJXzOzRKJS8DURhVZf_wAXeKU"
+      }
+    ]
+  },
+  "provider": "google_places",
+  "sanitized": true,
+  "state": "available"
+}

@@ -24,7 +24,7 @@
               <a-menu-item key="knowledge-graph">
                 <span>{{ t('result.side.graph') }}</span>
               </a-menu-item>
-              <a-menu-item key="weather" v-if="tripPlan.weather_info && tripPlan.weather_info.length > 0">
+              <a-menu-item key="weather" v-if="(tripPlan.weather_info && tripPlan.weather_info.length > 0) || tripPlan.weather_results?.length">
                 <span>{{ t('result.side.weather') }}</span>
               </a-menu-item>
             </a-menu>
@@ -64,6 +64,8 @@
                   :key="`${item.dayArrayIndex}-${item.order}-${item.name}`"
                   :item="item"
                   :image-src="getAttractionImage(item.name, index)"
+                  :image-attributions="attractionPhotoAttributions[item.name] || []"
+                  :photo-source="attractionPhotoSources[item.name] || 'placeholder'"
                   :active="activeOverviewCard === index"
                   @hover="setActiveOverviewCard(index)"
                   @image-error="handleImageError"
@@ -84,6 +86,36 @@
               {{ tripPlan.overall_suggestions }}
             </span>
           </div>
+          <section v-if="tripPlan.validation_status" class="trip-risk-panel">
+            <div v-if="tripPlan.revision_count === 1" class="trip-risk-subtitle">
+              {{ t('result.risks.autoRevised') }}
+              <span v-if="tripPlan.revision_summary"> · {{ tripPlan.revision_summary }}</span>
+            </div>
+            <div class="trip-risk-heading">
+              <div>
+                <div class="trip-risk-title">{{ t('result.risks.title') }}</div>
+                <div class="trip-risk-subtitle">{{ t('result.risks.disclaimer') }}</div>
+              </div>
+              <span :class="['trip-risk-status', `is-${tripPlan.validation_status}`]">
+                {{ t(`result.risks.status.${tripPlan.validation_status}`) }}
+              </span>
+            </div>
+            <div v-if="tripPlan.risks?.length" class="trip-risk-list">
+              <article
+                v-for="risk in tripPlan.risks"
+                :key="risk.id"
+                :class="['trip-risk-item', `is-${risk.severity}`]"
+              >
+                <span class="trip-risk-severity">{{ t(`result.risks.severity.${risk.severity}`) }}</span>
+                <div class="trip-risk-copy">
+                  <strong>{{ risk.title }}</strong>
+                  <p>{{ risk.message }}</p>
+                  <small v-if="risk.suggestion">{{ t('result.risks.suggestion') }}：{{ risk.suggestion }}</small>
+                </div>
+              </article>
+            </div>
+            <div v-else class="trip-risk-empty">{{ t('result.risks.empty') }}</div>
+          </section>
         </a-card>
 
         <!-- 顶部信息区:预算/地图 -->
@@ -225,6 +257,13 @@
 
           <div class="right-map" v-show="activeSection === 'map'">
             <a-card id="map" :bordered="false" class="map-card section-shellless">
+              <a-alert
+                v-if="routeDegraded"
+                class="route-degraded-alert"
+                type="warning"
+                show-icon
+                message="真实路线数据不可用，仅连接景点位置"
+              />
               <div v-show="mapProviderType === 'google'" id="google-map-container" style="width: 100%; height: 100%"></div>
               <div v-show="mapProviderType === 'amap'" id="amap-container" style="width: 100%; height: 100%"></div>
             </a-card>
@@ -268,6 +307,10 @@
 
               <!-- 行程基本信息 -->
               <div class="day-info">
+                <div v-if="day.start_time" class="info-row">
+                  <span class="label">{{ t('result.dayStartTime') }}</span>
+                  <span class="value">{{ day.start_time }}</span>
+                </div>
                 <div class="info-row">
                   <span class="label">{{ t('result.dayDescription') }}</span>
                   <span class="value">{{ day.description }}</span>
@@ -321,7 +364,7 @@
                       <!-- 景点图片 -->
                       <div class="attraction-image-wrapper">
                         <img
-                          :src="item.image_url || getAttractionImage(item.name, index)"
+                          :src="getAttractionImage(item.name, index)"
                           :alt="item.name"
                           class="attraction-image"
                           @error="handleImageError"
@@ -331,6 +374,15 @@
                         </div>
                         <div v-if="item.ticket_price" class="price-tag">
                           ¥{{ item.ticket_price }}
+                        </div>
+                        <div v-if="attractionPhotoAttributions[item.name]?.length" class="photo-attribution">
+                          <a
+                            v-for="credit in attractionPhotoAttributions[item.name]"
+                            :key="credit.uri || credit.displayName"
+                            :href="credit.uri || undefined"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >{{ credit.displayName }}</a>
                         </div>
                       </div>
 
@@ -395,13 +447,16 @@
         </a-card>
 
         <a-card
-          v-show="activeSection === 'weather' && tripPlan.weather_info && tripPlan.weather_info.length > 0"
+          v-show="activeSection === 'weather'"
           id="weather"
-          v-if="tripPlan.weather_info && tripPlan.weather_info.length > 0"
+          v-if="(tripPlan.weather_info && tripPlan.weather_info.length > 0) || tripPlan.weather_results?.length"
           :bordered="false"
           class="section-shellless weather-section-card"
         >
           <div v-if="selectedWeather" class="weather-dashboard">
+            <div class="weather-provenance">
+              {{ selectedWeather.data_source === 'amap' ? '高德天气 · 降级数据源' : 'Google Weather' }}
+            </div>
             <section class="weather-side" :style="weatherSideStyle">
               <div class="weather-gradient"></div>
 
@@ -455,10 +510,13 @@
                     <div class="cloud"></div>
                     <div class="rain"></div>
                   </template>
-                  <template v-else>
+                  <template v-else-if="selectedWeatherIconKind === 'sunny'">
                     <div class="sun">
                       <div class="rays"></div>
                     </div>
+                  </template>
+                  <template v-else>
+                    <div class="unknown-weather-icon">—</div>
                   </template>
                 </div>
                 <h1 class="weather-temp">{{ formatWeatherTemp(selectedWeather.day_temp) }}</h1>
@@ -506,10 +564,13 @@
                         <div class="cloud"></div>
                         <div class="rain"></div>
                       </template>
-                      <template v-else>
+                      <template v-else-if="weatherItem._iconKind === 'sunny'">
                         <div class="sun">
                           <div class="rays"></div>
                         </div>
+                      </template>
+                      <template v-else>
+                        <div class="unknown-weather-icon">—</div>
                       </template>
                     </div>
                     <span class="day-name">{{ formatWeatherWeekday(weatherItem.date, true) }}</span>
@@ -530,11 +591,7 @@
                   </div>
                   <div class="today-info-item">
                     <span class="wea-title">{{ t('result.weatherPrecipitation') }}</span>
-                    <span class="value">{{ getWeatherPrecipitation(selectedWeather.day_weather) }}</span>
-                  </div>
-                  <div class="today-info-item">
-                    <span class="wea-title">{{ t('result.weatherHumidity') }}</span>
-                    <span class="value">{{ getWeatherHumidity(selectedWeather.day_weather) }}</span>
+                    <span class="value">{{ formatPrecipitationProbability(selectedWeather.precipitation_probability) }}</span>
                   </div>
                   <div class="today-info-item">
                     <span class="wea-title">{{ t('result.weatherWind') }}</span>
@@ -544,6 +601,7 @@
               </div>
             </section>
           </div>
+          <a-empty v-else description="天气数据暂不可用" />
         </a-card>
       </div>
 
@@ -564,7 +622,11 @@
       </div>
     </a-back-top>
 
-    <AIChat :trip-plan="tripPlan" />
+    <AIChat
+      :trip-plan="tripPlan"
+      :plan-id="planId"
+      @plan-updated="handlePatchedPlan"
+    />
   </div>
 </template>
 
@@ -586,8 +648,6 @@ import type { TripPlan, TripPlanResponse, KnowledgeGraphData, GraphCategory, Att
 import {
   getRuntimeApiBaseUrl,
   getRuntimeMapJsKey,
-  getRuntimeGoogleMapsApiKey,
-  getBackendRuntimeSettings,
   pollTaskStatus,
   RUNTIME_SETTINGS_UPDATED_EVENT,
 } from '@/services/api'
@@ -595,11 +655,14 @@ import {
 const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
+const GOOGLE_MAPS_BROWSER_KEY = String(import.meta.env.VITE_GOOGLE_MAPS_BROWSER_KEY ?? '').trim()
 const tripPlan = ref<TripPlan | null>(null)
 const planId = ref('')
 const editMode = ref(false)
 const originalPlan = ref<TripPlan | null>(null)
 const attractionPhotos = ref<Record<string, string>>({})
+const attractionPhotoAttributions = ref<Record<string, PhotoAttribution[]>>({})
+const attractionPhotoSources = ref<Record<string, 'google_places' | 'xhs' | 'placeholder'>>({})
 const activeSection = ref('overview')
 const activeDays = ref<number[]>([0]) // 默认展开第一天
 const activeOverviewCard = ref(1)
@@ -610,6 +673,7 @@ let googleMarkers: google.maps.Marker[] = []
 let googlePolylines: google.maps.Polyline[] = []
 let googleInfoWindows: google.maps.InfoWindow[] = []
 let googleDirectionsRenderers: google.maps.DirectionsRenderer[] = []
+const routeDegraded = ref(false)
 const mapProviderType = ref<'google' | 'amap'>('amap')
 let overviewSwiper: Swiper | null = null
 
@@ -622,6 +686,31 @@ type OverviewAttractionItem = {
   dayNumber: number
   dayArrayIndex: number
   order: number
+  city?: string
+  place_id?: string
+}
+
+type PhotoAttribution = {
+  displayName?: string
+  uri?: string
+  photoUri?: string
+}
+
+const hasVerifiedMapLocation = (attraction: Attraction): boolean => {
+  const source = attraction.map_data_source
+  const longitude = Number(attraction.location?.longitude)
+  const latitude = Number(attraction.location?.latitude)
+  const hasCoordinates = Boolean(
+    attraction.location
+    && Number.isFinite(longitude)
+    && Number.isFinite(latitude)
+    && longitude >= -180 && longitude <= 180
+    && latitude >= -90 && latitude <= 90
+    && !(longitude === 0 && latitude === 0)
+  )
+  return hasCoordinates
+    && attraction.poi_match_status === 'verified'
+    && (source === 'google_places' || source === 'amap')
 }
 
 type BudgetItemType = 'attraction' | 'hotel' | 'meal' | 'transport'
@@ -724,11 +813,12 @@ const formatWeatherWeekday = (rawDate: string, short = false): string => {
 }
 
 const formatWeatherTemp = (temperature: number | null | undefined): string => {
+  if (temperature === null || temperature === undefined) return '--'
   if (!Number.isFinite(Number(temperature))) return '--'
   return `${Math.round(Number(temperature))}°C`
 }
 
-type WeatherIconKind = 'sun-shower' | 'thunder-storm' | 'cloudy' | 'flurries' | 'sunny' | 'rainy'
+type WeatherIconKind = 'sun-shower' | 'thunder-storm' | 'cloudy' | 'flurries' | 'sunny' | 'rainy' | 'unknown'
 
 const getWeatherIconKind = (weatherText: string): WeatherIconKind => {
   const text = (weatherText || '').trim()
@@ -740,11 +830,12 @@ const getWeatherIconKind = (weatherText: string): WeatherIconKind => {
   if (hasRain && hasSun) return 'sun-shower'
   if (hasRain) return 'rainy'
   if (/(云|阴|cloud|overcast|雾|霾|fog|mist|haze|wind|breeze|gale)/i.test(text)) return 'cloudy'
-  return 'sunny'
+  if (hasSun) return 'sunny'
+  return 'unknown'
 }
 
 const selectedWeatherIconKind = computed<WeatherIconKind>(() => {
-  if (!selectedWeather.value) return 'sunny'
+  if (!selectedWeather.value) return 'unknown'
   return getWeatherIconKind(`${selectedWeather.value.day_weather || ''} ${selectedWeather.value.night_weather || ''}`)
 })
 
@@ -769,22 +860,9 @@ const getWeatherGradient = (weatherText: string): string => {
   return 'linear-gradient(140deg, #72edf2 0%, #5151e5 100%)'
 }
 
-const getWeatherPrecipitation = (weatherText: string): string => {
-  const text = (weatherText || '').toLowerCase()
-  if (/(雷|thunder|暴雨|storm)/.test(text)) return '85%'
-  if (/(雨|rain|shower|drizzle)/.test(text)) return '65%'
-  if (/(雪|snow|sleet|hail)/.test(text)) return '55%'
-  if (/(阴|cloud|overcast)/.test(text)) return '30%'
-  return '10%'
-}
-
-const getWeatherHumidity = (weatherText: string): string => {
-  const text = (weatherText || '').toLowerCase()
-  if (/(雷|thunder|暴雨|storm)/.test(text)) return '88%'
-  if (/(雨|rain|shower|drizzle)/.test(text)) return '78%'
-  if (/(雪|snow|sleet|hail)/.test(text)) return '72%'
-  if (/(阴|cloud|overcast|雾|霾|fog|mist|haze)/.test(text)) return '62%'
-  return '42%'
+const formatPrecipitationProbability = (value: number | null | undefined): string => {
+  if (!Number.isFinite(Number(value)) || value === null || value === undefined) return '暂无数据'
+  return `${Math.round(Number(value))}%`
 }
 
 const getWeatherWind = (weather: WeatherInfo | null): string => {
@@ -835,6 +913,8 @@ const overviewAttractions = computed<OverviewAttractionItem[]>(() => {
         dayNumber,
         dayArrayIndex,
         order,
+        city: day.city || tripPlan.value?.city,
+        place_id: attraction.place_id || attraction.poi_id,
       })
     })
   })
@@ -946,7 +1026,16 @@ const restoreTripPlanFromResponse = async (response?: TripPlanResponse | null) =
   return true
 }
 
+const handlePatchedPlan = async (plan: TripPlan, graph?: KnowledgeGraphData | null) => {
+  await applyTripPlanPayload({
+    plan,
+    graph: graph || null,
+    planId: planId.value,
+  })
+}
+
 const destroyCurrentMap = () => {
+  routeDegraded.value = false
   // 清理 Google Maps
   googleInfoWindows.forEach((iw) => { try { iw.close() } catch {} })
   googleInfoWindows = []
@@ -1236,18 +1325,9 @@ onMounted(async () => {
 
   const cachedPlanId = storedPlanId
   const data = sessionStorage.getItem('tripPlan')
-  const canUseCachedData = Boolean(data) && (!planId.value || !cachedPlanId || cachedPlanId === planId.value)
 
-  if (data && canUseCachedData) {
-    const gd = sessionStorage.getItem('graphData')
-    await applyTripPlanPayload({
-      plan: JSON.parse(data),
-      graph: gd ? JSON.parse(gd) : null,
-      planId: planId.value || cachedPlanId,
-    })
-    return
-  }
-
+  // A task ID makes the backend result canonical. Legacy sessionStorage may
+  // contain a pre-Phase-2C plan without plan_version, so refresh it first.
   if (planId.value) {
     try {
       const task = await pollTaskStatus(planId.value)
@@ -1261,6 +1341,18 @@ onMounted(async () => {
     } catch (error) {
       console.error('结果页从后端回补旅行计划失败:', error)
     }
+  }
+
+  const canUseCachedData = Boolean(data) && (
+    !planId.value || Boolean(cachedPlanId && cachedPlanId === planId.value)
+  )
+  if (data && canUseCachedData) {
+    const gd = sessionStorage.getItem('graphData')
+    await applyTripPlanPayload({
+      plan: JSON.parse(data),
+      graph: gd ? JSON.parse(gd) : null,
+      planId: planId.value || cachedPlanId,
+    })
   }
 })
 
@@ -1782,40 +1874,54 @@ const loadAttractionPhotos = async () => {
   if (!tripPlan.value) return
 
   const apiBase = getRuntimeApiBaseUrl()
-  const city = tripPlan.value.city
-  const uniqueNames = Array.from(
-    new Set(
-      tripPlan.value.days.flatMap((day) => day.attractions.map((attraction) => attraction.name))
-    )
-  ).filter((name) => name && !attractionPhotos.value[name])
+  const uniqueAttractions = Array.from(
+    tripPlan.value.days.reduce((items, day) => {
+      day.attractions.forEach((attraction) => {
+        if (attraction.name && !items.has(attraction.name)) {
+          items.set(attraction.name, {
+            name: attraction.name,
+            city: day.city || tripPlan.value?.city || '',
+            placeId: attraction.place_id || attraction.poi_id || '',
+          })
+        }
+      })
+      return items
+    }, new Map<string, { name: string; city: string; placeId: string }>()).values()
+  ).filter(item => !attractionPhotos.value[item.name])
 
-  if (uniqueNames.length === 0) return
+  if (uniqueAttractions.length === 0) return
 
   const concurrencyLimit = 4
   let currentIndex = 0
 
   const loadNextPhoto = async () => {
-    while (currentIndex < uniqueNames.length) {
+    while (currentIndex < uniqueAttractions.length) {
       const index = currentIndex
       currentIndex += 1
-      const name = uniqueNames[index]
+      const attraction = uniqueAttractions[index]
 
       try {
+        const placeIdParam = attraction.placeId
+          ? `&place_id=${encodeURIComponent(attraction.placeId)}`
+          : ''
         const response = await fetch(
-          `${apiBase}/api/poi/photo?name=${encodeURIComponent(name)}&city=${encodeURIComponent(city)}`
+          `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}`
         )
         const data = await response.json()
+        attractionPhotoSources.value[attraction.name] = data?.data?.source || 'placeholder'
         if (data.success && data.data.photo_url) {
-          attractionPhotos.value[name] = data.data.photo_url
+          attractionPhotos.value[attraction.name] = data.data.photo_url
+          attractionPhotoAttributions.value[attraction.name] = data.data.attributions || []
         }
       } catch (err) {
-        console.error(`获取${name}图片失败:`, err)
+        attractionPhotoSources.value[attraction.name] = 'placeholder'
+        console.error(`获取${attraction.name}图片失败:`, err)
       }
     }
   }
 
   const workers = Array.from(
-    { length: Math.min(concurrencyLimit, uniqueNames.length) },
+    { length: Math.min(concurrencyLimit, uniqueAttractions.length) },
     () => loadNextPhoto()
   )
   await Promise.all(workers)
@@ -1843,6 +1949,8 @@ const getAttractionImage = (name: string, _index: number): string => {
 // 图片加载失败时的处理
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
+  img.onerror = null
+  if (img.alt) attractionPhotoSources.value[img.alt] = 'placeholder'
   // 使用深色占位图
   const label = encodeURIComponent(t('result.imageLoadFailed'))
   img.src = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a262f"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="18" fill="rgba(255,255,255,0.4)"%3E${label}%3C/text%3E%3C/svg%3E`
@@ -1873,7 +1981,7 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
   tp.days.forEach((day, index) => {
     let attractionsHTML = ''
     day.attractions.forEach((a, ai) => {
-      const photoUrl = a.image_url || attractionPhotos.value[a.name] || ''
+      const photoUrl = attractionPhotos.value[a.name] || ''
       const durationText = t('result.export.durationLine', { duration: a.visit_duration || '—' })
       // 图片自适应：不压缩不裁剪，保持原始比例
       const imgTag = photoUrl
@@ -1959,13 +2067,13 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
             <div style="display:flex;align-items:center;margin-bottom:10px;">
               <div style="line-height:1.2;">
                 <div style="font-size:12px;color:#99b0c9;margin-bottom:2px;">${t('result.export.daytime')}</div>
-                <div style="font-size:14px;color:#fff;font-weight:600;">${w.day_weather} ${w.day_temp}°C</div>
+                <div style="font-size:14px;color:#fff;font-weight:600;">${w.day_weather} ${formatWeatherTemp(w.day_temp)}</div>
               </div>
             </div>
             <div style="display:flex;align-items:center;margin-bottom:12px;">
               <div style="line-height:1.2;">
                 <div style="font-size:12px;color:#99b0c9;margin-bottom:2px;">${t('result.export.nighttime')}</div>
-                <div style="font-size:14px;color:#fff;font-weight:600;">${w.night_weather} ${w.night_temp}°C</div>
+                <div style="font-size:14px;color:#fff;font-weight:600;">${w.night_weather} ${formatWeatherTemp(w.night_temp)}</div>
               </div>
             </div>
             <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;text-align:center;font-size:12px;color:#99b0c9;">
@@ -2523,32 +2631,14 @@ const searchRoutePath = (
 
 // 初始化地图入口
 const initMap = async () => {
-  // 1. 先尝试从 localStorage 读取 Google Maps API Key
-  let googleKey = getRuntimeGoogleMapsApiKey()
-
-  // 2. 如果 localStorage 没有缓存，主动从后端拉取一次
-  if (!googleKey) {
-    try {
-      const backendSettings = await getBackendRuntimeSettings()
-      if (backendSettings.google_maps_api_key) {
-        googleKey = backendSettings.google_maps_api_key
-        // 同步到 localStorage，下次不再需要请求后端
-        const { setRuntimeGoogleMapsApiKey: syncKey } = await import('@/services/api')
-        syncKey(googleKey)
-      }
-    } catch (err) {
-      console.warn('从后端获取 Google Maps 配置失败:', err)
-    }
-  }
-
-  // 3. 尝试初始化 Google Maps
-  if (googleKey) {
+  // Browser Key 仅来自 Vite 构建环境，后端 Server Key 不进入浏览器配置链路。
+  if (GOOGLE_MAPS_BROWSER_KEY) {
     try {
       // 超时控制：如果 5 秒内未加载完，强制 reject 以触发降级
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => reject(new Error('Google Maps 加载超时，可能由于网络环境限制')), 5000)
       })
-      const initPromise = initGoogleMap(googleKey)
+      const initPromise = initGoogleMap(GOOGLE_MAPS_BROWSER_KEY)
       await Promise.race([initPromise, timeoutPromise])
       return
     } catch (error) {
@@ -2559,7 +2649,7 @@ const initMap = async () => {
     }
   }
 
-  // 4. 降级/默认：初始化高德地图
+  // Browser Key 缺失或 Google Maps 加载失败时，沿用现有高德地图降级。
   await initAMap()
 }
 
@@ -2628,7 +2718,7 @@ const addGoogleAttractionMarkers = async () => {
   tripPlan.value.days.forEach((day, dayIndex) => {
     day.attractions.forEach((attraction, attrIndex) => {
       globalIndex++
-      if (attraction.location && attraction.location.longitude && attraction.location.latitude) {
+      if (hasVerifiedMapLocation(attraction)) {
         allAttractions.push({
           ...attraction,
           dayIndex,
@@ -2645,13 +2735,6 @@ const addGoogleAttractionMarkers = async () => {
     const position = { lat: attraction.location.latitude, lng: attraction.location.longitude }
     bounds.extend(position)
 
-    // 创建自定义 DOM 元素以模拟 AMap 的原生样式
-    const div = document.createElement('div')
-    div.innerHTML = buildMarkerContent(attraction.dayIndex + 1, attraction.attrIndex + 1)
-    // 为了使 HTML 居中在点上，可以用 Marker 的 icon 承载或者用 AdvancedMarkerElement (如果你需要标准 API)。
-    // 这里采用兼容大多数的简单的 svg data URI：
-    const svgContent = buildFeatherCircleSvgDataUrl(34, '#d76e42', '#a14625')
-    
     // 这里如果想完全复用 DOM 较为复杂，我们可以直接采用原生的 google.maps.Marker 与自定义 icon
     // 用一个简单的 SVG data URI 画一个有数字的 icon
     const markerText = `${attraction.dayIndex + 1}-${attraction.attrIndex + 1}`
@@ -2759,6 +2842,10 @@ const drawGoogleRoutes = async (attractions: any[]) => {
         googleDirectionsRenderers.push(renderer)
       } catch (err: any) {
         console.warn('Google 路线规划失败, 降级为直线:', err)
+        if (!routeDegraded.value) {
+          routeDegraded.value = true
+          message.warning('真实路线数据不可用，仅连接景点位置')
+        }
         const poly = new google.maps.Polyline({
           path: [origin, destination],
           strokeColor: '#ffffff',
@@ -2822,7 +2909,7 @@ const addAttractionMarkers = async (AMap: any) => {
   tripPlan.value.days.forEach((day, dayIndex) => {
     day.attractions.forEach((attraction, attrIndex) => {
       globalIndex++
-      if (attraction.location && attraction.location.longitude && attraction.location.latitude) {
+      if (hasVerifiedMapLocation(attraction)) {
         allAttractions.push({
           ...attraction,
           dayIndex,
@@ -2915,6 +3002,10 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
           : await searchRoutePath(AMap, preferredMode as Exclude<RouteMode, 'straight'>, startPoint, endPoint)
 
       const usePlannedRoute = Array.isArray(plannedPath) && plannedPath.length > 1
+      if (!usePlannedRoute && !routeDegraded.value) {
+        routeDegraded.value = true
+        message.warning('真实路线数据不可用，仅连接景点位置')
+      }
       const routeModeForStyle: RouteMode = usePlannedRoute ? preferredMode : 'straight'
       const path = usePlannedRoute ? plannedPath : [startPoint, endPoint]
       const style = ROUTE_STYLE_PRESETS[routeModeForStyle]
@@ -3112,6 +3203,23 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 
 .attraction-image-wrapper:hover .attraction-image {
   transform: scale(1.08);
+}
+
+.attraction-image-wrapper .photo-attribution {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.65);
+  font-size: 10px;
+}
+
+.attraction-image-wrapper .photo-attribution a {
+  color: #fff;
 }
 
 .attraction-badge {
@@ -4656,6 +4764,82 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   font-weight: 700;
   color: #ffffff !important;
 }
+
+.trip-risk-panel {
+  width: min(980px, 100%);
+  margin: 22px auto 0;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(10, 20, 28, 0.72);
+  text-align: left;
+}
+
+.trip-risk-heading,
+.trip-risk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.trip-risk-heading {
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.trip-risk-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.trip-risk-subtitle,
+.trip-risk-copy p,
+.trip-risk-copy small,
+.trip-risk-empty {
+  color: rgba(236, 243, 250, 0.68);
+}
+
+.trip-risk-subtitle {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.trip-risk-status,
+.trip-risk-severity {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.trip-risk-status.is-passed { color: #8de2b0; background: rgba(65, 184, 131, 0.14); }
+.trip-risk-status.is-issues_found { color: #ffd18a; background: rgba(245, 166, 35, 0.14); }
+.trip-risk-status.is-degraded { color: #b9c4ce; background: rgba(185, 196, 206, 0.12); }
+
+.trip-risk-list {
+  display: grid;
+  gap: 10px;
+}
+
+.trip-risk-item {
+  padding: 12px;
+  border-left: 3px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.trip-risk-item.is-blocking { border-left-color: #ff7a7a; }
+.trip-risk-item.is-warning { border-left-color: #f5b85c; }
+.trip-risk-item.is-info { border-left-color: #72b7e8; }
+.trip-risk-item.is-blocking .trip-risk-severity { color: #ff9b9b; background: rgba(255, 90, 90, 0.12); }
+.trip-risk-item.is-warning .trip-risk-severity { color: #ffd18a; background: rgba(245, 166, 35, 0.12); }
+.trip-risk-item.is-info .trip-risk-severity { color: #9fd7ff; background: rgba(67, 154, 214, 0.12); }
+
+.trip-risk-copy strong { color: #f5f8fb; }
+.trip-risk-copy p { margin: 5px 0; line-height: 1.6; }
+.trip-risk-copy small { display: block; line-height: 1.5; }
 
 #amap-container .amap-info-content {
   background: transparent !important;

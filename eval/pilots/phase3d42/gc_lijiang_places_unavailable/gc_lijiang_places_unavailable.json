@@ -1,0 +1,1913 @@
+{
+  "capture_mode": "record",
+  "execution_completed_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:57:42.365523+00:00"
+  },
+  "execution_started_at": {
+    "reason": null,
+    "status": "known",
+    "value": "2026-08-12T14:55:57.290295+00:00"
+  },
+  "final_trip_plan": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget": {
+        "total": 3050,
+        "total_attractions": 160,
+        "total_hotels": 1350,
+        "total_inter_city_transport": 0,
+        "total_meals": 1140,
+        "total_transportation": 400
+      },
+      "cities": [
+        "丽江"
+      ],
+      "city": "丽江",
+      "days": [
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市古城区玉缘路V6JR+QXH 邮政编码: 674100",
+              "category": "自然风光·城市公园",
+              "description": "湖水、古桥和雪山倒影构成丽江代表性的自然景观,环境安静舒适,适合清晨或上午散步拍照。景点推荐信息显示免费开放,具体开放安排以现场为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.881928000000002,
+                "longitude": 100.242474
+              },
+              "map_data_source": "google_places",
+              "name": "黑龙潭公园",
+              "photos": [],
+              "place_id": "ChIJ4eyIRRfKIDcRsgL6QmA0_kw",
+              "poi_id": "ChIJ4eyIRRfKIDcRsgL6QmA0_kw",
+              "poi_match_status": "verified",
+              "rating": 4.3,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            },
+            {
+              "address": "云南省丽江市古城区大研街道",
+              "category": "古镇街区·人文风情",
+              "description": "下午安排古城内慢逛,可沿水道、石板街和小巷随意探索。晚上古城灯光和街头驻唱氛围较好,适合情侣用餐及散步。古城内道路多为石板路,建议穿舒适防滑鞋。",
+              "image_url": null,
+              "location": {
+                "latitude": 0.0,
+                "longitude": 0.0
+              },
+              "map_data_source": "llm_unverified",
+              "name": "丽江古城",
+              "photos": [],
+              "place_id": "",
+              "poi_id": "",
+              "poi_match_status": "unverified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国云南省丽江市古城区束河路W684+2RM 邮政编码: 674101",
+              "category": "古镇街区·自然休闲",
+              "description": "相比大研古城节奏更舒缓,适合在水渠、石桥和绿意街巷间散步。可安排傍晚前往,避开过于拥挤的时段,体验更安静的古镇氛围。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "map_data_source": "google_places",
+              "name": "束河古镇",
+              "photos": [],
+              "place_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-14",
+          "day_index": 0,
+          "description": "以古城漫步和湖畔自然景观为主,安排较为松弛,适合情侣慢慢拍照、喝咖啡和感受纳西风情。晚上回到丽江古城欣赏夜景及街头驻唱。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37",
+            "distance": "距离丽江古城约1公里,距离黑龙潭公园约2公里",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "400-600元",
+            "rating": "4.9",
+            "type": "精品客栈民宿"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "两人可在客栈用简餐,或选择古城附近的云南米线、饵丝。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "客栈早餐或古城米线",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "推荐尝试腊排骨、纳西烤鱼或鸡豆凉粉,建议选择古城外围餐馆,价格通常更舒适。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "丽江古城纳西风味餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择火塘菜、纳西菜或牦牛肉料理,晚餐后在古镇慢逛。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "束河古镇特色餐馆",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "10:00",
+          "transfer_info": "",
+          "transportation": "酒店至黑龙潭公园步行或短途打车；黑龙潭公园至丽江古城步行；古城至束河古镇建议打车,约20-30分钟；返程打车或网约车。"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县4679+VHV 邮政编码: 674112",
+              "category": "高山自然风光",
+              "description": "云杉坪以高山草甸、云杉林和雪山景观为主,建议作为玉龙雪山景区的第一站。景点证据提示需要提前在小程序预约相关门票,建议预约15:30之前的时段；实际预约规则和入园安排请以官方平台为准。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.114732,
+                "longitude": 100.218927
+              },
+              "map_data_source": "google_places",
+              "name": "云杉坪",
+              "photos": [],
+              "place_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 60,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国丽江市玉龙纳西族自治县玉龙雪山 邮政编码: 674112",
+              "category": "雪山·高山景观",
+              "description": "可根据当天景区开放情况选择适合的雪山游览项目,重点体验高山雪景和开阔山地风光。高海拔活动需量力而行,若出现明显不适应立即下撤或寻求景区工作人员帮助。相关索道及项目费用可能另计。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "map_data_source": "google_places",
+              "name": "玉龙雪山",
+              "photos": [],
+              "place_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+              "poi_match_status": "verified",
+              "rating": 4.7,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 100,
+              "visit_duration": 180
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县46GV+8VM 邮政编码: 674106",
+              "category": "湖泊·山谷自然风光",
+              "description": "蓝月谷适合在天气较好时观赏湖水色彩和雪山背景,安排在云杉坪之后游览。步行游览后,如不想走回乘车点,可根据现场安排购买单程电瓶车票,参考价格为10元。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "map_data_source": "google_places",
+              "name": "蓝月谷",
+              "photos": [],
+              "place_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+              "poi_match_status": "verified",
+              "rating": 4.6,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-15",
+          "day_index": 1,
+          "description": "全天安排玉龙雪山景区,按照先云杉坪、后蓝月谷的顺序游览,减少折返并保留充足拍照时间。高海拔区域体感寒冷,行程以安全和舒适为优先。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37",
+            "distance": "距离丽江古城约1公里,适合作为玉龙雪山一日游返程住宿点",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "400-600元",
+            "rating": "4.9",
+            "type": "精品客栈民宿"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "建议早餐提前用餐,选择面包、鸡蛋、粥或米线等易消化食物,并准备饮用水。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "客栈早餐",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "玉龙雪山景区内以简餐为主,建议准备能量棒、水果和热饮,避免因排队影响游览。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "景区简餐或自带便携午餐",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "下山后适合吃热食恢复体力,可选择腊排骨火锅、菌菇锅或云南家常菜。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "古城暖锅或腊排骨火锅",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "08:00",
+          "transfer_info": "",
+          "transportation": "建议提前预订景区接驳或选择正规旅游专线前往玉龙雪山；景区内部按规定乘坐环保车、索道及接驳车。返程建议统一乘坐景区专线或网约车。"
+        },
+        {
+          "accommodation": "民宿",
+          "attractions": [
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县玉湖村 邮政编码: 674101",
+              "category": "乡村·山地风光",
+              "description": "玉湖村适合喜欢自然风光和安静乡村氛围的游客,能够看到村落、山地和玉龙雪山周边景观。建议放慢脚步,尊重当地村民生活,避免进入未开放区域。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.012895999999998,
+                "longitude": 100.213571
+              },
+              "map_data_source": "google_places",
+              "name": "玉湖村",
+              "photos": [],
+              "place_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+              "poi_match_status": "verified",
+              "rating": null,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 150
+            },
+            {
+              "address": "中国云南省丽江市玉龙纳西族自治县26CF+8J7 邮政编码: 674101",
+              "category": "湖泊·自然风光",
+              "description": "龙女湖规模较小,适合作为玉湖村周边的短暂停留点,重点欣赏开阔水面和山景,不建议抱有大型湖泊或长时间游览的预期。",
+              "image_url": null,
+              "location": {
+                "latitude": 27.020775,
+                "longitude": 100.22406199999999
+              },
+              "map_data_source": "google_places",
+              "name": "龙女湖",
+              "photos": [],
+              "place_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+              "poi_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+              "poi_match_status": "verified",
+              "rating": 4.4,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 90
+            },
+            {
+              "address": "中国丽江市古城区九鼎龙潭 邮政编码: 674101",
+              "category": "潭水·森林自然风光",
+              "description": "如当天体力和时间允许,可在返回古城途中前往九鼎龙谭,沿途感受满眼绿色和较为幽静的氤氲景致。雨后路面可能湿滑,建议穿防滑鞋并根据现场情况决定是否深入。",
+              "image_url": null,
+              "location": {
+                "latitude": 26.923935999999998,
+                "longitude": 100.20393899999999
+              },
+              "map_data_source": "google_places",
+              "name": "九鼎龙谭",
+              "photos": [],
+              "place_id": "ChIJu01Shw3JIDcRXMDy1v0jXTQ",
+              "poi_id": "ChIJu01Shw3JIDcRXMDy1v0jXTQ",
+              "poi_match_status": "verified",
+              "rating": 4.0,
+              "reservation_required": null,
+              "reservation_tips": "",
+              "ticket_price": 0,
+              "visit_duration": 120
+            }
+          ],
+          "city": "丽江",
+          "date": "2026-12-16",
+          "day_index": 2,
+          "description": "前往玉湖村及周边自然景观,避开热门景区的人流,安排乡村、湖泊和山地风光。整体节奏放缓,下午根据体力在玉湖村周边自由散步或提前返回古城。",
+          "hotel": {
+            "address": "中国云南省丽江市古城区七一街八一下段V69R+R37",
+            "distance": "位于古城周边,便于行程结束后休息及前往返程交通点",
+            "estimated_cost": 450,
+            "location": {
+              "latitude": 26.8695259,
+              "longitude": 100.2401654
+            },
+            "name": "丽江君泊轩微奢客栈",
+            "price_range": "400-600元",
+            "rating": "4.9",
+            "type": "精品客栈民宿"
+          },
+          "is_transfer_day": false,
+          "meals": [
+            {
+              "address": null,
+              "description": "可选择云南米线、饵块或豆浆鸡蛋,方便出发前补充能量。",
+              "estimated_cost": 60,
+              "location": null,
+              "name": "古城早餐铺",
+              "type": "breakfast"
+            },
+            {
+              "address": null,
+              "description": "建议选择当地家常菜、土鸡或时蔬,提前确认是否接待及菜品价格。",
+              "estimated_cost": 140,
+              "location": null,
+              "name": "玉湖村农家菜",
+              "type": "lunch"
+            },
+            {
+              "address": null,
+              "description": "可选择纳西菜、菌菇料理或环境安静的餐厅,作为行程收尾。",
+              "estimated_cost": 180,
+              "location": null,
+              "name": "丽江古城情侣晚餐",
+              "type": "dinner"
+            }
+          ],
+          "start_time": "09:30",
+          "transfer_info": "",
+          "transportation": "建议包车或网约车前往玉湖村及龙女湖,景点之间距离较分散,包车更适合情侣和松弛行程；返程回丽江古城约30-45分钟,具体以路况为准。"
+        }
+      ],
+      "end_date": "2026-12-16",
+      "overall_suggestions": "当前提供的天气数据日期为2026-08-12至2026-08-15,与本次行程日期2026-12-14至2026-12-16不匹配,因此不写入逐日天气信息。出发前建议重新查询对应日期的丽江天气及玉龙雪山景区公告。12月丽江通常昼夜温差较大,建议准备保暖外套、抓绒或薄羽绒、防晒霜、墨镜、润唇膏和保湿用品；玉龙雪山行程需关注索道、接驳车及预约名额,云杉坪相关信息提示需提前通过小程序预约,并建议选择15:30之前的时段。高海拔活动不要剧烈运动,情侣出行可优先选择包车或正规景区专线,避免自驾疲劳。以上门票、住宿、餐饮和市内交通费用为两人参考估算,具体价格以景区、酒店和餐厅实际收费为准。",
+      "plan_version": 1,
+      "revision_count": 0,
+      "revision_summary": null,
+      "risks": [
+        {
+          "day_index": 0,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:0",
+          "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 1,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:1",
+          "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        },
+        {
+          "day_index": 2,
+          "evidence": {
+            "required_source": "verified_google_places_and_google_directions"
+          },
+          "id": "validation_unavailable:route:2",
+          "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+          "related_poi_names": [],
+          "revisable": false,
+          "severity": "info",
+          "source": "rule_validator",
+          "suggestion": "确认景点地图匹配后再次检查路线。",
+          "title": "当天路线未能完整验证",
+          "type": "validation_unavailable"
+        }
+      ],
+      "start_date": "2026-12-14",
+      "validation_status": "degraded",
+      "weather_info": [
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-12",
+          "day_temp": 26,
+          "day_weather": "多云",
+          "degraded": true,
+          "night_temp": 15,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-13",
+          "day_temp": 27,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 13,
+          "night_weather": "中雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-14",
+          "day_temp": 26,
+          "day_weather": "小雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        },
+        {
+          "city": "丽江",
+          "data_source": "amap",
+          "date": "2026-08-15",
+          "day_temp": 25,
+          "day_weather": "阵雨",
+          "degraded": true,
+          "night_temp": 14,
+          "night_weather": "小雨",
+          "precipitation_probability": null,
+          "verification_status": "verified",
+          "wind_direction": "北",
+          "wind_power": "1-3"
+        }
+      ],
+      "weather_results": [
+        {
+          "city": "丽江",
+          "data_available": true,
+          "days": [
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-12",
+              "day_temp": 26,
+              "day_weather": "多云",
+              "degraded": true,
+              "night_temp": 15,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-13",
+              "day_temp": 27,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 13,
+              "night_weather": "中雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-14",
+              "day_temp": 26,
+              "day_weather": "小雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            },
+            {
+              "city": "丽江",
+              "data_source": "amap",
+              "date": "2026-08-15",
+              "day_temp": 25,
+              "day_weather": "阵雨",
+              "degraded": true,
+              "night_temp": 14,
+              "night_weather": "小雨",
+              "precipitation_probability": null,
+              "verification_status": "verified",
+              "wind_direction": "北",
+              "wind_power": "1-3"
+            }
+          ],
+          "degraded": true,
+          "provider": "amap",
+          "reason": null,
+          "request_success": true
+        }
+      ],
+      "xhs_research": [
+        {
+          "context": "",
+          "data_source": "xhs",
+          "degraded": false,
+          "evidence": [
+            {
+              "extracted_text": "",
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available",
+              "title": "丽江游完美结束～附一些小tips"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a69d08d000000000e036f2e",
+              "source_url": "https://www.xiaohongshu.com/explore/6a69d08d000000000e036f2e",
+              "status": "detail_available",
+              "title": "云南旅游攻略"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available",
+              "title": "丽江留5天绝对正确✅"
+            },
+            {
+              "extracted_text": "",
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available",
+              "title": "去丽江第一站☝️——直奔玉湖村"
+            }
+          ],
+          "extracted_items": [
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "黑龙潭公园",
+                  "recommendation_quote": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费"
+                }
+              ],
+              "identity_text": "黑龙潭公园",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "黑龙潭公园",
+              "name_en": "Black Dragon Pool Park",
+              "name_zh": "黑龙潭公园",
+              "recommendation": "非常推荐去黑龙潭公园转一圈，风景好气场舒适且免费",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68",
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "云杉坪—蓝月谷 要提前在小程序预约门票，建议约15:30之前的；建议的游玩顺序：先云杉坪再蓝月谷",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "云杉坪—蓝月谷 要提前在小程序预约门票，建议约15:30之前的"
+                },
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "云杉坪",
+                  "recommendation_quote": "建议的游玩顺序：先云杉坪再蓝月谷"
+                }
+              ],
+              "identity_text": "云杉坪",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "云杉坪",
+              "name_en": "Spruce Meadow",
+              "name_zh": "云杉坪",
+              "recommendation": "云杉坪—蓝月谷 要提前在小程序预约门票，建议约15:30之前的；建议的游玩顺序：先云杉坪再蓝月谷",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68",
+                "6a4f60040000000022008d69"
+              ],
+              "evidence_summary": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！；蓝月谷走到头可以买单程10元的电瓶车票回到乘大巴的地方",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "蓝月谷",
+                  "recommendation_quote": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！"
+                },
+                {
+                  "evidence_id": "6a4f60040000000022008d69",
+                  "identity_quote": "蓝月谷",
+                  "recommendation_quote": "蓝月谷走到头可以买单程10元的电瓶车票回到乘大巴的地方"
+                }
+              ],
+              "identity_text": "蓝月谷",
+              "location": {
+                "latitude": 27.125833,
+                "longitude": 100.244686
+              },
+              "location_status": "available",
+              "name": "蓝月谷",
+              "name_en": "Blue Moon Valley",
+              "name_zh": "蓝月谷",
+              "recommendation": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！；蓝月谷走到头可以买单程10元的电瓶车票回到乘大巴的地方",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e",
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "推荐（玉龙雪山）（蓝月谷）；这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "玉龙雪山",
+                  "recommendation_quote": "推荐（玉龙雪山）（蓝月谷）"
+                },
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "玉龙雪山",
+                  "recommendation_quote": "这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！"
+                }
+              ],
+              "identity_text": "玉龙雪山",
+              "location": {
+                "latitude": 27.0983333,
+                "longitude": 100.175
+              },
+              "location_status": "available",
+              "name": "玉龙雪山",
+              "name_en": "Jade Dragon Snow Mountain",
+              "name_zh": "玉龙雪山",
+              "recommendation": "推荐（玉龙雪山）（蓝月谷）；这两个景点都很看天气，我们去的时候太阳非常好，所以水特别的蓝，无敌漂亮！",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "丽江古城",
+                  "recommendation_quote": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动"
+                }
+              ],
+              "identity_text": "丽江古城",
+              "location": {
+                "latitude": 26.8718026,
+                "longitude": 100.2358502
+              },
+              "location_status": "available",
+              "name": "丽江古城",
+              "name_en": "Lijiang Old Town",
+              "name_zh": "丽江古城",
+              "recommendation": "晚上的古城很漂亮，花开伴柳并且有小哥哥和小姐姐在对着窗户驻唱互动",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "束河古镇我要打💯，非常好看，太美了",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "束河古镇",
+                  "recommendation_quote": "束河古镇我要打💯，非常好看，太美了"
+                }
+              ],
+              "identity_text": "束河古镇",
+              "location": {
+                "latitude": 26.915079,
+                "longitude": 100.207049
+              },
+              "location_status": "available",
+              "name": "束河古镇",
+              "name_en": "Shuhe Ancient Town",
+              "name_zh": "束河古镇",
+              "recommendation": "束河古镇我要打💯，非常好看，太美了",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "九鼎龙谭",
+                  "recommendation_quote": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感"
+                }
+              ],
+              "identity_text": "九鼎龙谭",
+              "location": {
+                "latitude": 26.923936,
+                "longitude": 100.203939
+              },
+              "location_status": "available",
+              "name": "九鼎龙谭",
+              "name_en": "Jiuding Longtan",
+              "name_zh": "九鼎龙谭",
+              "recommendation": "要走到九鼎龙谭，就能看到绝美的满眼绿色，独有的氤氲感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a67eac3000000000101ef0a"
+              ],
+              "evidence_summary": "来丽江不想人挤人的姐妹，直接冲玉湖村",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a67eac3000000000101ef0a",
+                  "identity_quote": "玉湖村",
+                  "recommendation_quote": "来丽江不想人挤人的姐妹，直接冲玉湖村"
+                }
+              ],
+              "identity_text": "玉湖村",
+              "location": {
+                "latitude": 27.012896,
+                "longitude": 100.213571
+              },
+              "location_status": "available",
+              "name": "玉湖村",
+              "name_en": "Yuhu Village",
+              "name_zh": "玉湖村",
+              "recommendation": "来丽江不想人挤人的姐妹，直接冲玉湖村",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a67eac3000000000101ef0a",
+                "6a4fa8f30000000015026c68"
+              ],
+              "evidence_summary": "必打卡龙女湖；龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a67eac3000000000101ef0a",
+                  "identity_quote": "龙女湖",
+                  "recommendation_quote": "必打卡龙女湖"
+                },
+                {
+                  "evidence_id": "6a4fa8f30000000015026c68",
+                  "identity_quote": "龙女湖",
+                  "recommendation_quote": "龙女湖像是一个人工水库，比较小，不要抱太大的预期"
+                }
+              ],
+              "identity_text": "龙女湖",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "龙女湖",
+              "name_en": "Longnv Lake",
+              "name_zh": "龙女湖",
+              "recommendation": "必打卡龙女湖；龙女湖像是一个人工水库，比较小，不要抱太大的预期",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "可以去（滇池）看看海鸥",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "滇池",
+                  "recommendation_quote": "可以去（滇池）看看海鸥"
+                }
+              ],
+              "identity_text": "滇池",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "滇池",
+              "name_en": "Dianchi Lake",
+              "name_zh": "滇池",
+              "recommendation": "可以去（滇池）看看海鸥",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "再去（昆明老街）吃点东西",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "昆明老街",
+                  "recommendation_quote": "再去（昆明老街）吃点东西"
+                }
+              ],
+              "identity_text": "昆明老街",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "昆明老街",
+              "name_en": "Kunming Old Street",
+              "name_zh": "昆明老街",
+              "recommendation": "再去（昆明老街）吃点东西",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "有很多便宜的花，喜欢花的女生的天堂，还可以做花环",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "斗南花市",
+                  "recommendation_quote": "有很多便宜的花，喜欢花的女生的天堂，还可以做花环"
+                }
+              ],
+              "identity_text": "斗南花市",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "斗南花市",
+              "name_en": "Dounan Flower Market",
+              "name_zh": "斗南花市",
+              "recommendation": "有很多便宜的花，喜欢花的女生的天堂，还可以做花环",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "之后住在（大理古城）附近，那里有很多民宿都挺便宜的，饿了就去（大理古城）买点吃的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "大理古城",
+                  "recommendation_quote": "之后住在（大理古城）附近，那里有很多民宿都挺便宜的，饿了就去（大理古城）买点吃的"
+                }
+              ],
+              "identity_text": "大理古城",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "大理古城",
+              "name_en": "Dali Ancient City",
+              "name_zh": "大理古城",
+              "recommendation": "之后住在（大理古城）附近，那里有很多民宿都挺便宜的，饿了就去（大理古城）买点吃的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "苍洱大道",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "苍洱大道",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "苍洱大道",
+              "name_en": "Cang'er Avenue",
+              "name_zh": "苍洱大道",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "龙龛码头",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "龙龛码头",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "龙龛码头",
+              "name_en": "Longkan Wharf",
+              "name_zh": "龙龛码头",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "s湾",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "s湾",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "s湾",
+              "name_en": "S Bay",
+              "name_zh": "S湾",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "廊桥古镇",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "廊桥古镇",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "廊桥古镇",
+              "name_en": "Langqiao Ancient Town",
+              "name_zh": "廊桥古镇",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "洱海公园",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "洱海公园",
+              "location": {
+                "latitude": 25.600331,
+                "longitude": 100.249036
+              },
+              "location_status": "available",
+              "name": "洱海公园",
+              "name_en": "Erhai Park",
+              "name_zh": "洱海公园",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "理想邦",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "理想邦",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "理想邦",
+              "name_en": "Ideal State",
+              "name_zh": "理想邦",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "文笔村",
+                  "recommendation_quote": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的"
+                }
+              ],
+              "identity_text": "文笔村",
+              "location": {
+                "latitude": 26.81893,
+                "longitude": 100.19723
+              },
+              "location_status": "available",
+              "name": "文笔村",
+              "name_en": "Wenbi Village",
+              "name_zh": "文笔村",
+              "recommendation": "我去了（苍洱大道）（龙龛码头）（s湾）（廊桥古镇）（洱海公园）（理想邦）（文笔村）每个地方都挺出片的",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "便宜一点可以做完妆造去（纳西部落）花35抱小羊，还有大经幡",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "纳西部落",
+                  "recommendation_quote": "便宜一点可以做完妆造去（纳西部落）花35抱小羊，还有大经幡"
+                }
+              ],
+              "identity_text": "纳西部落",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "纳西部落",
+              "name_en": "Naxi Tribe",
+              "name_zh": "纳西部落",
+              "recommendation": "便宜一点可以做完妆造去（纳西部落）花35抱小羊，还有大经幡",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "住（独克宗古城）里面，在这里可以吃牦牛吃到吐，晚上去古城里面逛有很多人跳舞唱歌，很有藏族氛围感",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "独克宗古城",
+                  "recommendation_quote": "住（独克宗古城）里面，在这里可以吃牦牛吃到吐，晚上去古城里面逛有很多人跳舞唱歌，很有藏族氛围感"
+                }
+              ],
+              "identity_text": "独克宗古城",
+              "location": {
+                "latitude": 27.8078181,
+                "longitude": 99.70933409999999
+              },
+              "location_status": "available",
+              "name": "独克宗古城",
+              "name_en": "Dukezong Ancient Town",
+              "name_zh": "独克宗古城",
+              "recommendation": "住（独克宗古城）里面，在这里可以吃牦牛吃到吐，晚上去古城里面逛有很多人跳舞唱歌，很有藏族氛围感",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "喜欢徒步可以去（虎跳峡）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "虎跳峡",
+                  "recommendation_quote": "喜欢徒步可以去（虎跳峡）"
+                }
+              ],
+              "identity_text": "虎跳峡",
+              "location": {
+                "latitude": 26.8775745,
+                "longitude": 100.2204403
+              },
+              "location_status": "available",
+              "name": "虎跳峡",
+              "name_en": "Tiger Leaping Gorge",
+              "name_zh": "虎跳峡",
+              "recommendation": "喜欢徒步可以去（虎跳峡）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "普达措公园",
+                  "recommendation_quote": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）"
+                }
+              ],
+              "identity_text": "普达措公园",
+              "location": {
+                "latitude": 27.8006835,
+                "longitude": 99.9071603
+              },
+              "location_status": "available",
+              "name": "普达措公园",
+              "name_en": "Pudacuo National Park",
+              "name_zh": "普达措国家公园",
+              "recommendation": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "梅里雪山",
+                  "recommendation_quote": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）"
+                }
+              ],
+              "identity_text": "梅里雪山",
+              "location": {
+                "latitude": 26.8564799,
+                "longitude": 100.2270999
+              },
+              "location_status": "available",
+              "name": "梅里雪山",
+              "name_en": "Meili Snow Mountain",
+              "name_zh": "梅里雪山",
+              "recommendation": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "纳帕海",
+                  "recommendation_quote": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）"
+                }
+              ],
+              "identity_text": "纳帕海",
+              "location": {
+                "latitude": 27.889698,
+                "longitude": 99.65366
+              },
+              "location_status": "available",
+              "name": "纳帕海",
+              "name_en": "Napa Lake",
+              "name_zh": "纳帕海",
+              "recommendation": "喜欢拍照可以去（普达措公园）（梅里雪山）（纳帕海）",
+              "reservation_required": null,
+              "reservation_tips": ""
+            },
+            {
+              "duration": null,
+              "evidence_ids": [
+                "6a69d08d000000000e036f2e"
+              ],
+              "evidence_summary": "（松赞林寺）需要预约，想逛寺庙的可以去",
+              "evidence_support": [
+                {
+                  "evidence_id": "6a69d08d000000000e036f2e",
+                  "identity_quote": "松赞林寺",
+                  "recommendation_quote": "（松赞林寺）需要预约，想逛寺庙的可以去"
+                }
+              ],
+              "identity_text": "松赞林寺",
+              "location": {
+                "latitude": 27.816877,
+                "longitude": 99.705421
+              },
+              "location_status": "available",
+              "name": "松赞林寺",
+              "name_en": "Songzanlin Monastery",
+              "name_zh": "松赞林寺",
+              "recommendation": "（松赞林寺）需要预约，想逛寺庙的可以去",
+              "reservation_required": null,
+              "reservation_tips": ""
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  },
+  "final_validation_result": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "status": "degraded"
+    }
+  },
+  "human_review": {
+    "review_id": null,
+    "reviewed_at": null,
+    "reviewer": null,
+    "rubric_version": "human.v1",
+    "status": "pending"
+  },
+  "identity": {
+    "capture_version": "capture.v2",
+    "case_id": "gc_lijiang_places_unavailable",
+    "code_revision": "96b9c5e-dirty",
+    "eval_contract_version": "phase3a.v1",
+    "eval_run_id": "capture_phase3d42_lijiang_0",
+    "fixture_version": "fixtures.v1",
+    "golden_case_version": "golden.v1",
+    "model": {
+      "reason": null,
+      "status": "known",
+      "value": "gpt-5.6-luna"
+    },
+    "planner_version": "planner_baseline_v1",
+    "prompt_version": "planner_prompt_v1"
+  },
+  "patch": {
+    "affected_day_indices": [],
+    "after": null,
+    "before": null,
+    "patch_request": null,
+    "plan_version_after": null,
+    "plan_version_before": null,
+    "protected_day_indices": [],
+    "reason": "initial generation is not a patch",
+    "status": "not_applicable",
+    "typed_operations": [],
+    "validation_result": null
+  },
+  "preference_profile": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "自然风光"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    }
+  },
+  "provider_statuses": [
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "xhs",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "available": 1,
+        "cities": 1
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_weather",
+      "reason": "weather result unavailable or malformed",
+      "status": "unavailable",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 0
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 4,
+      "provider": "amap",
+      "reason": "fallback provider result consumed",
+      "status": "degraded",
+      "summary": {
+        "calls": 1,
+        "endpoint": "weather",
+        "malformed": 0,
+        "usable": 1
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 8,
+      "provider": "google_places",
+      "reason": "one or more POIs were not verified",
+      "status": "partial",
+      "summary": {
+        "eligible": 9,
+        "verified": 8
+      }
+    },
+    {
+      "data_available": false,
+      "evidence_count": 0,
+      "provider": "google_directions",
+      "reason": "one or more route legs unavailable",
+      "status": "unavailable",
+      "summary": {
+        "attempted": 4,
+        "available": 0,
+        "eligible_final_intra_city_legs": 4,
+        "observed_final_legs": 6,
+        "validation_phase": "initial"
+      }
+    },
+    {
+      "data_available": true,
+      "evidence_count": 2,
+      "provider": "hotel_google_places",
+      "reason": null,
+      "status": "success",
+      "summary": {
+        "candidate_count": 2,
+        "cities": 1,
+        "endpoint": "hotel_search"
+      }
+    }
+  ],
+  "provider_statuses_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "revision": {
+    "after": null,
+    "before": null,
+    "initial_risks": [],
+    "initial_validation_result": null,
+    "post_revision_enrichment_state": null,
+    "post_revision_risks": [],
+    "protected_elements": [],
+    "reason": "revision was not triggered",
+    "revalidation_result": null,
+    "revision_instructions_metadata": [],
+    "status": "not_applicable",
+    "target_risk_ids": []
+  },
+  "risks": {
+    "reason": null,
+    "status": "known",
+    "value": [
+      {
+        "day_index": 0,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:0",
+        "message": "第 1 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 1,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:1",
+        "message": "第 2 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      },
+      {
+        "day_index": 2,
+        "evidence": {
+          "required_source": "verified_google_places_and_google_directions"
+        },
+        "id": "validation_unavailable:route:2",
+        "message": "第 3 天部分景点缺少 verified Google POI 或地图路线数据，因此不能判断整天路线是否合理。",
+        "related_poi_names": [],
+        "revisable": false,
+        "severity": "info",
+        "source": "rule_validator",
+        "suggestion": "确认景点地图匹配后再次检查路线。",
+        "title": "当天路线未能完整验证",
+        "type": "validation_unavailable"
+      }
+    ]
+  },
+  "route_checks": [
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "丽江古城",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ4eyIRRfKIDcRsgL6QmA0_kw",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 0,
+      "destination_stable_id": "ChIJzRJe13PJIDcRFfgIcCA7EWc",
+      "distance_m": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "invalid_or_unverified_poi",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "丽江古城",
+      "provider": "google_directions",
+      "reason": "invalid_or_unverified_poi",
+      "request_attempted": false,
+      "route_mode": "walking",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJLxt0CePAIDcRZ066OVmCLPM",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 1,
+      "destination_stable_id": "ChIJEztAwInAIDcRAsfQEHl9v4Q",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJceH5PNnDIDcRVokHk7oZHcQ",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJG60FYTXGIDcRWcYn9quWLek",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    },
+    {
+      "data_available": false,
+      "day_index": 2,
+      "destination_stable_id": "ChIJu01Shw3JIDcRXMDy1v0jXTQ",
+      "distance_m": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "duration_s": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "feasible": {
+        "reason": "route_unavailable",
+        "status": "unknown",
+        "value": null
+      },
+      "leg_type": "intra_city_poi_leg",
+      "origin_stable_id": "ChIJ5Rdz-bDHIDcRypiPNxnQksQ",
+      "provider": "google_directions",
+      "reason": "route_unavailable",
+      "request_attempted": true,
+      "route_mode": "transit",
+      "validation_pass_id": "validation.initial",
+      "validation_phase": "initial",
+      "verification_status": "unavailable"
+    }
+  ],
+  "route_checks_state": {
+    "reason": null,
+    "status": "known",
+    "value": true
+  },
+  "sanitized": true,
+  "scenario_tags": [
+    "single_city",
+    "google_places_unavailable",
+    "route_unavailable",
+    "zh_input"
+  ],
+  "snapshot_hashes": {
+    "amap": "sha256:f4412136ff5666da370b1a821968fa1497f074c688c05ba7c7ca4a41aa7983db",
+    "google_directions": "sha256:ef5c25898229921b2d55f709fd7e529d94fb5dd5d3ce1fe75fdb6ef44694cba8",
+    "google_places": "sha256:913a85ff31c66a794d34ad5116730c780f5c9721476232c22ca83fbe406b6c85",
+    "google_weather": "sha256:29704298cb0cdaae403ee651d8e9f7caffcf75baffb5e9cb2176e27bdb15ab36",
+    "hotel_google_places": "sha256:4d82359a4dd24ad48b952c6d6bdcb24798dc91a8b292b1c6c8affe6335245916",
+    "xhs": "sha256:8645b77a2d3e9321e0504f168a5d4273a607c03faa704bf1dbad5c4f43b80d81"
+  },
+  "stage_latency_ms": {
+    "reason": "stage latency not captured",
+    "status": "unknown",
+    "value": null
+  },
+  "total_latency_ms": {
+    "reason": null,
+    "status": "known",
+    "value": 105077
+  },
+  "trip_request": {
+    "accommodation": "民宿",
+    "cities": [
+      {
+        "city": "丽江",
+        "days": 3
+      }
+    ],
+    "city": "丽江",
+    "end_date": "2026-12-16",
+    "free_text_input": "",
+    "generation_id": null,
+    "language": "zh",
+    "preference_profile": {
+      "budget_cny": null,
+      "constraints": {
+        "avoid_early_start": false,
+        "earliest_start_time": null,
+        "food_notes": [],
+        "mobility_notes": [],
+        "other_notes": []
+      },
+      "inferred_interests": [],
+      "interests": [
+        "自然风光"
+      ],
+      "pace": "relaxed",
+      "parsing_notes": [],
+      "party_size": 2,
+      "party_type": "couple",
+      "special_requirements": ""
+    },
+    "preferences": [
+      "自然风光"
+    ],
+    "start_date": "2026-12-14",
+    "transportation": "混合",
+    "travel_days": 3
+  },
+  "usage": {
+    "completion_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 11494
+    },
+    "logical_llm_calls": {
+      "reason": null,
+      "status": "known",
+      "value": 2
+    },
+    "prompt_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 15087
+    },
+    "retries": {
+      "reason": null,
+      "status": "known",
+      "value": 0
+    },
+    "stages": [
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "xhs_research",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      },
+      {
+        "completion_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "latency_ms": {
+          "reason": "stage latency is not instrumented",
+          "status": "unknown",
+          "value": null
+        },
+        "logical_llm_calls": {
+          "reason": null,
+          "status": "known",
+          "value": 1
+        },
+        "prompt_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "retries": {
+          "reason": "retries are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        },
+        "stage": "planner",
+        "total_tokens": {
+          "reason": "tokens are aggregated across stages",
+          "status": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "total_tokens": {
+      "reason": null,
+      "status": "known",
+      "value": 26581
+    }
+  },
+  "xhs_evidence_metadata": {
+    "reason": null,
+    "status": "known",
+    "value": {
+      "cities": [
+        {
+          "evidence": [
+            {
+              "note_id": "6a4f60040000000022008d69",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4f60040000000022008d69",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a69d08d000000000e036f2e",
+              "source_url": "https://www.xiaohongshu.com/explore/6a69d08d000000000e036f2e",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a4fa8f30000000015026c68",
+              "source_url": "https://www.xiaohongshu.com/explore/6a4fa8f30000000015026c68",
+              "status": "detail_available"
+            },
+            {
+              "note_id": "6a67eac3000000000101ef0a",
+              "source_url": "https://www.xiaohongshu.com/explore/6a67eac3000000000101ef0a",
+              "status": "detail_available"
+            }
+          ],
+          "reason": null,
+          "status": "available",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  }
+}
