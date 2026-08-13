@@ -32,10 +32,10 @@
 
           <div class="top-switch-actions">
             <a-space size="middle" wrap>
-              <a-button v-if="!editMode" @click="toggleEditMode" type="default">
+              <a-button v-if="!editMode && !isExample" @click="toggleEditMode" type="default">
                 {{ t('result.editTrip') }}
               </a-button>
-              <a-button v-else @click="saveChanges" type="primary">
+              <a-button v-else-if="!isExample" @click="saveChanges" type="primary">
                 {{ t('result.saveChanges') }}
               </a-button>
               <a-button v-if="editMode" @click="cancelEdit" type="default">
@@ -56,6 +56,28 @@
           :bordered="false"
           class="overview-card section-shellless"
         >
+          <div v-if="isExample" class="example-banner" role="status">
+            <strong>{{ t('result.example.badge') }}</strong>
+            <span>{{ t('result.example.disclaimer') }}</span>
+          </div>
+          <section class="trip-summary-card" aria-label="Trip summary">
+            <div><span>{{ t('result.summary.destination') }}</span><strong>{{ tripPlan.city }}</strong></div>
+            <div><span>{{ t('result.summary.dates') }}</span><strong>{{ tripPlan.start_date }} – {{ tripPlan.end_date }}</strong></div>
+            <div><span>{{ t('result.summary.travelers') }}</span><strong>{{ travelerSummary }}</strong></div>
+            <div><span>{{ t('result.summary.pace') }}</span><strong>{{ paceStatusLabel }}</strong></div>
+            <div v-if="tripPlan.budget"><span>{{ t('result.summary.budget') }}</span><strong>¥{{ formatBudgetAmount(tripPlan.budget.total) }}</strong></div>
+          </section>
+          <section class="confidence-strip" aria-label="Evidence and itinerary status">
+            <div :class="['confidence-item', evidenceTone]">
+              <strong>{{ evidenceLabel }}</strong><span>{{ evidenceDetail }}</span>
+            </div>
+            <div :class="['confidence-item', pacingTone]">
+              <strong>{{ t('result.summary.pacing') }} · {{ paceStatusLabel }}</strong><span>{{ t('result.summary.pacingBasis') }}</span>
+            </div>
+            <div :class="['confidence-item', uncertaintyTone]">
+              <strong>{{ uncertaintyLabel }}</strong><span>{{ uncertaintyDetail }}</span>
+            </div>
+          </section>
           <div v-if="overviewAttractions.length > 0" ref="overviewSwiperContainerRef" class="overview-swiper">
             <div class="swiper">
               <div class="swiper-wrapper">
@@ -78,9 +100,6 @@
           <div class="overview-meta">
             <span class="overview-meta-item" style="color: #ffd5c6; font-weight: 700;">
               {{ t('result.dateRange', { start: tripPlan.start_date, end: tripPlan.end_date }) }}
-            </span>
-            <span v-if="planId" class="overview-meta-item">
-              Plan ID: {{ planId }}
             </span>
             <span v-if="tripPlan.overall_suggestions" class="overview-meta-item">
               {{ tripPlan.overall_suggestions }}
@@ -108,9 +127,9 @@
               >
                 <span class="trip-risk-severity">{{ t(`result.risks.severity.${risk.severity}`) }}</span>
                 <div class="trip-risk-copy">
-                  <strong>{{ risk.title }}</strong>
-                  <p>{{ risk.message }}</p>
-                  <small v-if="risk.suggestion">{{ t('result.risks.suggestion') }}：{{ risk.suggestion }}</small>
+                  <strong>{{ getPublicRiskTitle(risk) }}</strong>
+                  <p>{{ getPublicRiskMessage(risk) }}</p>
+                  <small v-if="risk.suggestion">{{ t('result.risks.suggestion') }}：{{ getPublicRiskSuggestion(risk) }}</small>
                 </div>
               </article>
             </div>
@@ -622,7 +641,7 @@
       </div>
     </a-back-top>
 
-    <AIChat
+    <AIChat v-if="!isExample"
       :trip-plan="tripPlan"
       :plan-id="planId"
       @plan-updated="handlePatchedPlan"
@@ -644,8 +663,9 @@ import { EffectCoverflow, Keyboard, Mousewheel } from 'swiper/modules'
 import NavBar from '@/components/NavBar.vue'
 import OverviewAttractionCard from '@/components/OverviewAttractionCard.vue'
 import AIChat from '@/components/AIChat.vue'
-import type { TripPlan, TripPlanResponse, KnowledgeGraphData, GraphCategory, Attraction, Meal, Hotel, WeatherInfo } from '@/types'
+import type { TripPlan, TripPlanResponse, PortfolioExampleTrip, KnowledgeGraphData, GraphCategory, Attraction, Meal, Hotel, WeatherInfo, RiskItem } from '@/types'
 import {
+  getExampleTrip,
   getRuntimeApiBaseUrl,
   getRuntimeMapJsKey,
   pollTaskStatus,
@@ -658,6 +678,8 @@ const { t, locale } = useI18n()
 const GOOGLE_MAPS_BROWSER_KEY = String(import.meta.env.VITE_GOOGLE_MAPS_BROWSER_KEY ?? '').trim()
 const tripPlan = ref<TripPlan | null>(null)
 const planId = ref('')
+const exampleMeta = ref<PortfolioExampleTrip | null>(null)
+const isExample = computed(() => route.query.example === '1' || Boolean(exampleMeta.value?.example))
 const editMode = ref(false)
 const originalPlan = ref<TripPlan | null>(null)
 const attractionPhotos = ref<Record<string, string>>({})
@@ -676,6 +698,63 @@ let googleDirectionsRenderers: google.maps.DirectionsRenderer[] = []
 const routeDegraded = ref(false)
 const mapProviderType = ref<'google' | 'amap'>('amap')
 let overviewSwiper: Swiper | null = null
+
+const tripSummary = computed(() => {
+  if (exampleMeta.value) {
+    return {
+      travelers: exampleMeta.value.demo_request.travelers,
+      pace: exampleMeta.value.demo_request.pace,
+      budget_cny: null,
+    }
+  }
+  try { return JSON.parse(sessionStorage.getItem('tripstar.tripSummary') || '{}') }
+  catch { return {} }
+})
+const travelerSummary = computed(() => tripSummary.value.travelers || t('result.summary.notProvided'))
+const pacingRisk = computed(() => tripPlan.value?.risks?.find(risk => risk.type === 'pacing'))
+const paceStatusLabel = computed(() => {
+  if (pacingRisk.value?.severity === 'blocking') return t('result.pacing.tight')
+  if (pacingRisk.value?.severity === 'warning') return t('result.pacing.tight')
+  const pace = tripSummary.value.pace
+  if (pace === 'relaxed') return t('result.pacing.relaxed')
+  if (pace === 'intensive') return t('result.pacing.full')
+  return t('result.pacing.balanced')
+})
+const pacingTone = computed(() => pacingRisk.value ? 'is-warning' : 'is-good')
+const allAttractions = computed(() => tripPlan.value?.days.flatMap(day => day.attractions) || [])
+const verifiedAttractionCount = computed(() => allAttractions.value.filter(item => item.poi_match_status === 'verified').length)
+const evidenceTone = computed(() => verifiedAttractionCount.value === allAttractions.value.length && allAttractions.value.length ? 'is-good' : 'is-warning')
+const evidenceLabel = computed(() => verifiedAttractionCount.value === allAttractions.value.length && allAttractions.value.length
+  ? t('result.evidence.verified') : t('result.evidence.partial'))
+const evidenceDetail = computed(() => exampleMeta.value?.grounding_summary.message
+  || t('result.evidence.detail', { verified: verifiedAttractionCount.value, total: allAttractions.value.length }))
+const hasRouteUncertainty = computed(() => Boolean(
+  exampleMeta.value?.route_uncertainty
+  || tripPlan.value?.validation_status === 'degraded'
+  || tripPlan.value?.risks?.some(risk => risk.type === 'route_feasibility' || risk.type === 'validation_unavailable')
+))
+const uncertaintyTone = computed(() => hasRouteUncertainty.value ? 'is-warning' : 'is-good')
+const uncertaintyLabel = computed(() => hasRouteUncertainty.value ? t('result.uncertainty.checkRoutes') : t('result.uncertainty.noKnownRouteIssue'))
+const uncertaintyDetail = computed(() => exampleMeta.value?.route_uncertainty || (hasRouteUncertainty.value
+  ? t('result.uncertainty.routeDetail') : t('result.uncertainty.clearDetail')))
+
+const getPublicRiskTitle = (risk: RiskItem) => {
+  if (risk.type === 'route_feasibility') return t('result.publicRisks.routeTitle')
+  if (risk.type === 'validation_unavailable') return t('result.publicRisks.providerTitle')
+  if (risk.type === 'pacing') return t('result.publicRisks.pacingTitle')
+  if (risk.type === 'budget') return t('result.publicRisks.budgetTitle')
+  if (risk.type === 'earliest_start') return t('result.publicRisks.startTitle')
+  if (risk.type === 'mobility') return t('result.publicRisks.mobilityTitle')
+  return t('result.publicRisks.generalTitle')
+}
+const getPublicRiskMessage = (risk: RiskItem) => {
+  if (risk.type === 'route_feasibility') return t('result.publicRisks.routeMessage')
+  if (risk.type === 'validation_unavailable') return t('result.publicRisks.providerMessage')
+  if (risk.type === 'pacing') return t('result.publicRisks.pacingMessage')
+  return risk.message
+}
+const getPublicRiskSuggestion = (risk: RiskItem) => risk.type === 'route_feasibility'
+  ? t('result.publicRisks.routeSuggestion') : risk.suggestion
 
 type OverviewAttractionItem = {
   name: string
@@ -1010,7 +1089,13 @@ const applyTripPlanPayload = async (payload: {
     sessionStorage.removeItem('graphData')
   }
 
-  await loadAttractionPhotos()
+  if (!isExample.value) {
+    await loadAttractionPhotos()
+  } else {
+    attractionPhotos.value = {}
+    attractionPhotoAttributions.value = {}
+    attractionPhotoSources.value = {}
+  }
   if (activeSection.value === 'map') await ensureMapReady()
   if (activeSection.value === 'knowledge-graph') await ensureGraphReady()
   if (activeSection.value === 'overview') await initOverviewSwiper()
@@ -1316,6 +1401,22 @@ const buildKgBoundaryPositionMap = (
 onMounted(async () => {
   if (typeof window !== 'undefined') {
     window.addEventListener(RUNTIME_SETTINGS_UPDATED_EVENT, handleRuntimeSettingsUpdated)
+  }
+  if (route.query.example === '1') {
+    try {
+      const cachedMeta = sessionStorage.getItem('tripstar.exampleMeta')
+      const example = cachedMeta ? JSON.parse(cachedMeta) as PortfolioExampleTrip : await getExampleTrip()
+      if (!example?.example || !example.result?.data) throw new Error(t('api.exampleTripInvalid'))
+      exampleMeta.value = example
+      planId.value = ''
+      sessionStorage.removeItem('planId')
+      sessionStorage.setItem('tripstar.exampleMode', 'true')
+      sessionStorage.setItem('tripstar.exampleMeta', JSON.stringify(example))
+      await applyTripPlanPayload({ plan: example.result.data, graph: example.result.graph_data || null })
+      return
+    } catch (error: any) {
+      message.error(error?.message || t('api.exampleTripUnavailable'))
+    }
   }
   const storedPlanId = String(sessionStorage.getItem('planId') || '')
   planId.value = String(route.query.plan_id || storedPlanId || '')
@@ -3041,6 +3142,54 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   position: relative;
   isolation: isolate;
   overflow-x: hidden;
+}
+
+.example-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  margin: 0 0 18px;
+  padding: 13px 16px;
+  border: 1px solid rgba(245, 180, 96, .35);
+  border-radius: 14px;
+  background: rgba(111, 69, 22, .22);
+  color: #fff1d6;
+}
+.example-banner span { color: rgba(255, 241, 214, .78); }
+
+.trip-summary-card {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.trip-summary-card > div,
+.confidence-item {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(203, 227, 255, .14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .045);
+}
+.trip-summary-card span,
+.confidence-item span { display: block; color: rgba(225, 237, 246, .65); font-size: 12px; }
+.trip-summary-card strong,
+.confidence-item strong { display: block; margin-top: 5px; color: #f6fbff; line-height: 1.35; }
+.confidence-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.confidence-item { border-left-width: 4px; }
+.confidence-item.is-good { border-left-color: #5dc89f; }
+.confidence-item.is-warning { border-left-color: #e6aa62; }
+.confidence-item span { margin-top: 6px; line-height: 1.45; }
+
+@media (max-width: 900px) {
+  .trip-summary-card { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .confidence-strip { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 390px) {
+  .trip-summary-card { grid-template-columns: 1fr; }
+  .example-banner { align-items: flex-start; }
 }
 
 .lower-shade {

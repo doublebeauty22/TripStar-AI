@@ -7,6 +7,7 @@ import type {
   TripFormData,
   TripHistoryItem,
   TripPlanResponse,
+  PortfolioExampleTrip,
   TripPatchResult,
   TripTaskEvent,
   TripTaskStatusResponse,
@@ -52,8 +53,8 @@ const resolveDefaultApiBaseUrl = (): string => {
   if (typeof window !== 'undefined' && window.location) {
     return normalizeBaseUrl(window.location.origin) || ''
   }
-  // 仅本地开发 fallback
-  return 'http://localhost:8000'
+  // Same-origin is also safe for SSR/test contexts; Vite can proxy it in development.
+  return ''
 }
 
 const DEFAULT_API_BASE_URL = resolveDefaultApiBaseUrl()
@@ -275,6 +276,26 @@ export async function pollTaskStatus(taskId: string): Promise<TripTaskStatusResp
   } catch (error: any) {
     console.error('查询任务状态失败:', error)
     throw new Error(error.response?.data?.detail || error.message || t('api.queryTaskStatusFailed'))
+  }
+}
+
+/** Load the pre-generated public example without creating a planning task. */
+export async function getExampleTrip(): Promise<PortfolioExampleTrip> {
+  try {
+    const response = await apiClient.get<PortfolioExampleTrip>('/api/demo/example-trip')
+    const payload = response.data
+    if (
+      payload?.example !== true
+      || payload.schema_version !== 'portfolio.example_trip.v1'
+      || !payload.result?.success
+      || !payload.result.data
+    ) {
+      throw new Error(t('api.exampleTripInvalid'))
+    }
+    return payload
+  } catch (error: any) {
+    const message = error?.response?.data?.error?.message || error?.message
+    throw new Error(message || t('api.exampleTripUnavailable'))
   }
 }
 

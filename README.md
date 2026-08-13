@@ -2,7 +2,7 @@
 
 Grounded, pacing-aware AI travel planning with deterministic validation, targeted revision, and reproducible product evaluation.
 
-[English](README_en.md) · [日本語](README_ja.md) · Public demo: **coming soon — Render URL will be added here**
+[GitHub repository](https://github.com/doublebeauty22/TripStar-AI) · [English](README_en.md) · [日本語](README_ja.md) · Public demo: **coming soon — Render URL will be added here**
 
 ## Product overview
 

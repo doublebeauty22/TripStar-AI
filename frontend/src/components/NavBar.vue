@@ -15,6 +15,12 @@
       </div>
       <div class="navbar-collapse landing-navbar-collapse" id="navbarToggler">
         <ul class="navbar-nav ml-auto landing-nav">
+          <li class="nav-item nav-desktop-link">
+            <button type="button" class="nav-link landing-nav-btn" @click="handleBrandClick">{{ t('home.nav.home') }}</button>
+          </li>
+          <li class="nav-item nav-desktop-link">
+            <button type="button" class="nav-link landing-nav-btn" @click="handleHowClick">{{ t('home.nav.how') }}</button>
+          </li>
           <li class="nav-item">
             <a
               class="nav-link"
@@ -176,6 +182,7 @@ const settingsForm = reactive<RuntimeSettings>({
 const emit = defineEmits<{
   (e: 'brand-click'): void
   (e: 'cta-click'): void
+  (e: 'how-click'): void
 }>()
 
 const handleBrandClick = () => {
@@ -185,6 +192,8 @@ const handleBrandClick = () => {
 const handleCtaClick = () => {
   emit('cta-click')
 }
+
+const handleHowClick = () => emit('how-click')
 
 const applyRuntimeSettings = (settings: RuntimeSettings) => {
   settingsForm.api_base_url = settings.api_base_url || ''
@@ -368,6 +377,14 @@ const saveSettingsNow = async () => {
   padding: 0 !important;
   line-height: 1 !important;
   opacity: 1 !important;
+}
+
+@media (max-width: 760px) {
+  .nav-desktop-link,
+  .landing-cta { display: none !important; }
+  .landing-navbar .container { padding-inline: 14px; }
+  .landing-nav { gap: 5px; }
+  .lang-select-nav { width: 94px; }
 }
 
 .landing-nav-btn {

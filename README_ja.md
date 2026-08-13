@@ -1,5 +1,7 @@
 # TripStar-AI
 
+[GitHub リポジトリ](https://github.com/doublebeauty22/TripStar-AI)
+
 根拠付き POI、ペース認識型プランニング、決定論的検証、安全な対象限定リビジョンを備えた AI 旅行計画ポートフォリオです。
 
 [Portfolio README](README.md) · [English](README_en.md) · 公開デモ：**準備中**

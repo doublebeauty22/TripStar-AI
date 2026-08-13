@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "TripStar-AI",
+    "title": "TripStar-AI — Grounded & Pacing-aware AI Travel Planner",
     "brand": "TripStar-AI",
     "subBrand": "Grounded · Pacing-aware Travel Planning",
     "badge": "AI Travel Agent",
@@ -30,6 +30,8 @@
     "submitTripPlanFailed": "Failed to submit trip plan",
     "queryTaskStatusFailed": "Failed to query task status",
     "generateTripPlanFailed": "Failed to generate trip plan",
+    "exampleTripInvalid": "The example trip format could not be read.",
+    "exampleTripUnavailable": "The example trip is temporarily unavailable. Please try again.",
     "healthCheckFailed": "Health check failed"
   },
   "settings": {
@@ -64,10 +66,18 @@
   },
   "home": {
     "heroBadge": "AI Intelligent Itinerary Engine",
-    "titleLine": "Unlock Every Possibility",
-    "heroDesc": "Tell me your destination and preferences, and AI will craft a unique travel plan for you",
+    "titleLine": "Turn travel preferences into grounded, practical, well-paced itineraries",
+    "heroDesc": "More than itinerary generation: TripStar-AI checks place evidence, pacing, budgets, and constraints to create plans you can act on.",
+    "planCta": "Plan My Trip",
+    "exampleCta": "View Example Trip",
+    "liveTiming": "Live generation usually takes about 1–2 minutes; timing depends on data-service availability.",
+    "capabilities": { "planning": "AI itinerary planning", "grounding": "Grounded place evidence", "pacing": "Pacing-aware planning", "validation": "Budget & constraint checks" },
+    "how": { "eyebrow": "HOW IT WORKS", "title": "From preferences to a practical itinerary", "step1": "Tell us your preferences", "step2": "Research and ground places", "step3": "Build and validate the itinerary", "step4": "Adjust pacing and constraints" },
+    "evidence": { "eyebrow": "EVALUATED, NOT JUST GENERATED", "title": "Product changes tested through controlled review", "pairs": "controlled paired reviews", "delta": "mean human pacing delta", "positive": "pairs with positive pacing delta", "constraints": "evaluable pairs preserved explicit constraints", "disclaimer": "Controlled descriptive evaluation; not production traffic or statistical significance." },
     "nav": {
       "cta": "Start Planning",
+      "home": "Home",
+      "how": "How It Works",
       "fogOn": "Fog On",
       "fogOff": "Fog Off"
     },
@@ -127,6 +137,8 @@
       "loadFailed": "Failed to load plan history"
     },
     "loading": {
+      "title": "Preparing your trip plan",
+      "resumeHint": "Once created, this task can be recovered after a refresh or when you return later.",
       "initializing": "Initializing...",
       "recovering": "Recovering your active trip plan...",
       "searchingAttractions": "Searching attractions...",
@@ -150,6 +162,11 @@
       "title": "Trip plan generation failed",
       "backToEdit": "Back to edit",
       "retry": "Retry",
+      "viewExample": "View Example Trip",
+      "rateLimited": "A trip is currently being generated. Please try again shortly.",
+      "timeout": "This generation is taking longer than expected. Retry or view the example trip.",
+      "providerUnavailable": "Some live data services are temporarily unavailable. Retry later or view the example trip.",
+      "internalError": "Live generation is temporarily unavailable. Retry later or view the example trip.",
       "editBeforeRetry": "The original request is unavailable. Please edit and generate again."
     },
     "messages": {
@@ -162,6 +179,12 @@
     }
   },
   "result": {
+    "example": { "badge": "Pre-generated Example", "disclaimer": "This is a pre-generated example, not a live result for this session." },
+    "summary": { "destination": "Destination", "dates": "Dates", "travelers": "Travelers", "pace": "Pace", "budget": "Estimated total", "pacing": "Pacing", "pacingBasis": "Assessed from activities, travel, meals, and rest", "notProvided": "Not provided" },
+    "pacing": { "relaxed": "Relaxed", "balanced": "Balanced", "full": "Full", "tight": "Tight" },
+    "evidence": { "verified": "Places verified", "partial": "Some places need confirmation", "detail": "{verified}/{total} itinerary places are verified; confirm the others before departure." },
+    "uncertainty": { "checkRoutes": "Some routes need confirmation", "noKnownRouteIssue": "No known route issue", "routeDetail": "Some live route data is unavailable, so the plan may use conservative estimates.", "clearDetail": "Recheck operating schedules on the day of travel." },
+    "publicRisks": { "routeTitle": "Route information needs confirmation", "routeMessage": "A reliable map result is not available for this route. Check it again before departure.", "routeSuggestion": "Confirm with a map and the transport operator on the day.", "providerTitle": "Some live data is unavailable", "providerMessage": "The plan preserves this uncertainty and uses conservative estimates where needed.", "pacingTitle": "This day may feel tight", "pacingMessage": "Shorten or end optional activities based on energy, while keeping priority experiences.", "budgetTitle": "Budget needs attention", "startTitle": "Confirm the start time", "mobilityTitle": "Mobility load needs attention", "generalTitle": "Check before departure" },
     "backHome": "Back to Home",
     "editTrip": "Edit Itinerary",
     "saveChanges": "Save Changes",
@@ -218,9 +241,9 @@
     "dayDescription": "Description:",
     "dayStartTime": "Estimated start of first main activity:",
     "risks": {
-      "title": "Issues found by AI checks",
+      "title": "Before-you-go checks",
       "autoRevised": "AI automatically adjusted this itinerary once based on the checks",
-      "disclaimer": "Based on explicit constraints, plan cost estimates, and verified Google routes. Unknown data is not treated as passed.",
+      "disclaimer": "Based on your stated needs, budget estimates, and currently available place and route information. Unknowns remain visible.",
       "status": {
         "passed": "Basic checks passed",
         "issues_found": "Issues need attention",

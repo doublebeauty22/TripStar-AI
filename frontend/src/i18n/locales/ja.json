@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "TripStar-AI",
+    "title": "TripStar-AI — Grounded & Pacing-aware AI Travel Planner",
     "brand": "TripStar-AI",
     "subBrand": "根拠付き・ペース重視の旅行計画",
     "badge": "AI 旅行アシスタント",
@@ -30,6 +30,8 @@
     "submitTripPlanFailed": "旅行プランの送信に失敗しました",
     "queryTaskStatusFailed": "タスク状態の取得に失敗しました",
     "generateTripPlanFailed": "旅行プランの生成に失敗しました",
+    "exampleTripInvalid": "サンプル旅程の形式を読み取れませんでした。",
+    "exampleTripUnavailable": "サンプル旅程は一時的に利用できません。",
     "healthCheckFailed": "ヘルスチェックに失敗しました"
   },
   "settings": {
@@ -64,10 +66,18 @@
   },
   "home": {
     "heroBadge": "AI 旅行プランニングエンジン",
-    "titleLine": "世界を巡るあらゆる可能性へ",
-    "heroDesc": "目的地と好みを教えてください。AI があなた専用の旅程を作成します",
+    "titleLine": "旅行の好みを、根拠があり実行しやすい旅程へ",
+    "heroDesc": "場所の根拠、ペース、予算、制約を確認し、実行しやすいAI旅程を作成します。",
+    "planCta": "AI旅程を作成",
+    "exampleCta": "サンプル旅程を見る",
+    "liveTiming": "リアルタイム生成は通常約1〜2分です。データサービスの状況により変動します。",
+    "capabilities": { "planning": "AI旅程作成", "grounding": "場所の根拠確認", "pacing": "ペースを考慮", "validation": "予算・制約チェック" },
+    "how": { "eyebrow": "HOW IT WORKS", "title": "希望から実行可能な旅程へ", "step1": "旅行の希望を入力", "step2": "目的地情報を検索・確認", "step3": "旅程を作成・検証", "step4": "ペースと制約を調整" },
+    "evidence": { "eyebrow": "EVALUATED, NOT JUST GENERATED", "title": "管理されたレビューで改善を検証", "pairs": "組のペアレビュー", "delta": "人手ペース評価の平均差", "positive": "組でペース評価が向上", "constraints": "組で明示制約を維持", "disclaimer": "4組の管理されたA/Bブラインド評価による記述的結果であり、本番トラフィックや統計的有意性を示すものではありません。" },
     "nav": {
       "cta": "プランを始める",
+      "home": "ホーム",
+      "how": "仕組み",
       "fogOn": "霧オン",
       "fogOff": "霧オフ"
     },
@@ -127,6 +137,8 @@
       "loadFailed": "履歴プランの読み込みに失敗しました"
     },
     "loading": {
+      "title": "旅行プランを準備中",
+      "resumeHint": "タスク作成後は、更新または後で戻っても進捗を復元できます。",
       "initializing": "初期化中...",
       "searchingAttractions": "観光地を検索中...",
       "searchedAttractions": "観光地の検索完了",
@@ -145,6 +157,7 @@
       "donePrepare": "完了！出発の準備をしてください...",
       "done": "完了！"
     },
+    "taskFailure": { "title": "旅行プランを生成できませんでした", "backToEdit": "編集に戻る", "retry": "再試行", "viewExample": "サンプル旅程を見る", "rateLimited": "現在別の旅程を生成中です。しばらくして再試行してください。", "timeout": "生成に時間がかかっています。再試行するかサンプルをご覧ください。", "providerUnavailable": "一部のリアルタイムデータが一時的に利用できません。", "internalError": "リアルタイム生成は一時的に利用できません。", "editBeforeRetry": "元のリクエストが見つかりません。編集して再生成してください。" },
     "messages": {
       "travelDaysTooLong": "旅行日数は 30 日以内にしてください",
       "endDateEarlier": "終了日は開始日より後にしてください",
@@ -155,6 +168,12 @@
     }
   },
   "result": {
+    "example": { "badge": "事前生成サンプル", "disclaimer": "これはリアルタイム生成結果ではなく、事前生成されたサンプルです。" },
+    "summary": { "destination": "目的地", "dates": "日程", "travelers": "同行者", "pace": "ペース", "budget": "予算合計", "pacing": "ペース評価", "pacingBasis": "観光・移動・食事・休憩を総合評価", "notProvided": "未入力" },
+    "pacing": { "relaxed": "ゆったり", "balanced": "バランス", "full": "充実", "tight": "ややタイト" },
+    "evidence": { "verified": "場所を確認済み", "partial": "一部の場所は要確認", "detail": "{total}件中{verified}件を確認済み。未確認の場所は出発前に再確認してください。" },
+    "uncertainty": { "checkRoutes": "一部ルートは要確認", "noKnownRouteIssue": "明確なルート問題なし", "routeDetail": "一部のリアルタイムルートデータが利用できず、保守的な推定を使う場合があります。", "clearDetail": "出発当日に運行情報を再確認してください。" },
+    "publicRisks": { "routeTitle": "ルート情報を再確認してください", "routeMessage": "信頼できる地図結果がないため、出発前に再確認してください。", "routeSuggestion": "当日に地図と交通事業者の情報を確認してください。", "providerTitle": "一部のリアルタイムデータが利用できません", "providerMessage": "不確実性を保持し、必要に応じて保守的な推定を使用しています。", "pacingTitle": "この日はややタイトです", "pacingMessage": "体力に応じて任意の滞在を短縮し、重要な体験を優先してください。", "budgetTitle": "予算に注意", "startTitle": "開始時刻を確認", "mobilityTitle": "移動負荷に注意", "generalTitle": "出発前に確認" },
     "backHome": "ホームへ戻る",
     "editTrip": "旅程を編集",
     "saveChanges": "変更を保存",
@@ -211,9 +230,9 @@
     "dayDescription": "プラン説明:",
     "dayStartTime": "最初の主なアクティビティの開始予定時刻:",
     "risks": {
-      "title": "AIチェックで見つかった問題",
+      "title": "出発前の確認事項",
       "autoRevised": "AIがチェック結果に基づいて旅程を1回自動調整しました",
-      "disclaimer": "明示された制約、計画の予算見積もり、検証済みのGoogleルートに基づきます。未確認データは合格扱いにしません。",
+      "disclaimer": "明示された希望、予算見積もり、現在利用可能な場所・ルート情報に基づき、不明点も表示します。",
       "status": {
         "passed": "基本チェック合格",
         "issues_found": "確認が必要な問題あり",

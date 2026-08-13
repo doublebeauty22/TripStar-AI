@@ -1,32 +1,48 @@
 <template>
   <div class="landing-page">
     <div class="lower-shade" :style="lowerShadeStyle"></div>
-    <NavBar @brand-click="scrollToTop" @cta-click="scrollToForm" />
+    <NavBar @brand-click="scrollToTop" @cta-click="scrollToForm" @how-click="scrollToHow" />
 
     <div class="wrapper">
       <div class="page-header section-dark landing-header" :style="pageHeaderStyle">
         <div class="filter"></div>
         <div class="content-center" :style="heroContentStyle">
           <div class="container">
-            <!-- <p class="landing-hero-badge text-center">{{ t('home.heroBadge') }}</p> -->
+            <p class="landing-hero-badge text-center">{{ t('home.heroBadge') }}</p>
             <div class="title-brand">
               <h1 class="presentation-title">
                 TRIPSTAR-AI
               </h1>
             </div>
             <h2 class="presentation-subtitle text-center">{{ t('home.titleLine') }}</h2>
+            <p class="hero-description">{{ t('home.heroDesc') }}</p>
+            <div class="hero-capabilities" aria-label="Product capabilities">
+              <span v-for="capability in heroCapabilities" :key="capability">{{ capability }}</span>
+            </div>
+            <div class="hero-actions">
+              <button type="button" class="hero-primary" @click="scrollToForm">{{ t('home.planCta') }}</button>
+              <button type="button" class="hero-secondary" :disabled="exampleLoading" @click="openExampleTrip">
+                {{ exampleLoading ? t('common.loading') : t('home.exampleCta') }}
+              </button>
+            </div>
+            <p class="hero-timing">{{ t('home.liveTiming') }}</p>
           </div>
-        </div>
-        <div class="moving-clouds" :style="movingCloudsStyle"></div>
-        <div class="fog-low" :style="fogLowStyle">
-          <img src="https://demos.creative-tim.com/paper-kit-2/assets/img/clouds.png" alt="fog" />
-        </div>
-        <div class="fog-low right" :style="fogLowRightStyle">
-          <img src="https://demos.creative-tim.com/paper-kit-2/assets/img/clouds.png" alt="fog" />
         </div>
         <div class="hero-bottom-shade" :style="heroBottomShadeStyle"></div>
       </div>
     </div>
+
+    <section ref="howRef" class="portfolio-intro">
+      <div class="portfolio-section-inner">
+        <p class="portfolio-eyebrow">{{ t('home.how.eyebrow') }}</p>
+        <h2>{{ t('home.how.title') }}</h2>
+        <div class="how-grid">
+          <article v-for="(step, index) in howSteps" :key="step" class="how-card">
+            <span>0{{ index + 1 }}</span><p>{{ step }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <section ref="formRef" class="form-section">
       <div class="form-panel" :style="[formRevealStyle, { minHeight: panelHeight === 'auto' ? 'auto' : panelHeight + 'px' }]" ref="panelRef">
@@ -39,6 +55,9 @@
             </button>
             <button type="button" class="btn btn-danger btn-round review-confirm-btn" @click="retryFailedTask">
               {{ t('home.taskFailure.retry') }}
+            </button>
+            <button type="button" class="review-back-btn" :disabled="exampleLoading" @click="openExampleTrip">
+              {{ t('home.taskFailure.viewExample') }}
             </button>
           </div>
         </div>
@@ -337,8 +356,9 @@
         <!-- Node Loading Stepper -->
         <div v-show="loading" class="stepper-wrapper">
           <div class="stepper-header">
-            <h2 class="stepper-title">{{ t('home.loading.planCode', { code: planCode }) }}</h2>
+            <h2 class="stepper-title">{{ t('home.loading.title') }}</h2>
             <p class="stepper-subtitle">{{ t('home.loading.preparing') }}</p>
+            <p class="stepper-resume">{{ t('home.loading.resumeHint') }}</p>
           </div>
           
           <div class="stepper-container">
@@ -396,6 +416,22 @@
       </div>
     </section>
 
+    <section class="portfolio-evidence">
+      <div class="portfolio-section-inner evidence-inner">
+        <div>
+          <p class="portfolio-eyebrow">{{ t('home.evidence.eyebrow') }}</p>
+          <h2>{{ t('home.evidence.title') }}</h2>
+        </div>
+        <div class="evidence-stats">
+          <div><strong>4</strong><span>{{ t('home.evidence.pairs') }}</span></div>
+          <div><strong>+1.00</strong><span>{{ t('home.evidence.delta') }}</span></div>
+          <div><strong>3/4</strong><span>{{ t('home.evidence.positive') }}</span></div>
+          <div><strong>4/4</strong><span>{{ t('home.evidence.constraints') }}</span></div>
+        </div>
+        <small>{{ t('home.evidence.disclaimer') }}</small>
+      </div>
+    </section>
+
     <section v-if="!publicDemoMode" class="history-section">
       <div class="history-panel">
         <div class="history-head">
@@ -445,7 +481,7 @@ import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
-import { generateTripPlan, getTripHistory, parsePreferenceProfile, resumeTripPlan } from '@/services/api'
+import { generateTripPlan, getExampleTrip, getTripHistory, parsePreferenceProfile, resumeTripPlan } from '@/services/api'
 import { getCurrentLocale } from '@/i18n'
 import NavBar from '@/components/NavBar.vue'
 import type {
@@ -481,6 +517,7 @@ const loadingProgress = ref(0)
 const loadingStatus = ref('')
 const scrollY = ref(0)
 const formRef = ref<HTMLElement | null>(null)
+const howRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelHeight = ref<number | string>('auto')
 const fogEnabled = ref(true)
@@ -492,9 +529,23 @@ const preferenceProfile = ref<PreferenceProfile | null>(null)
 const preferenceUsedLlm = ref(false)
 const generationError = ref('')
 const generationId = ref('')
+const exampleLoading = ref(false)
 
 const ACTIVE_TASK_ID_KEY = 'tripTaskId'
 const ACTIVE_TASK_REQUEST_KEY = 'tripTaskRequest'
+const EXAMPLE_MODE_KEY = 'tripstar.exampleMode'
+const EXAMPLE_META_KEY = 'tripstar.exampleMeta'
+const TRIP_SUMMARY_KEY = 'tripstar.tripSummary'
+
+const heroCapabilities = computed(() => [
+  t('home.capabilities.planning'),
+  t('home.capabilities.grounding'),
+  t('home.capabilities.pacing'),
+  t('home.capabilities.validation'),
+])
+const howSteps = computed(() => [
+  t('home.how.step1'), t('home.how.step2'), t('home.how.step3'), t('home.how.step4'),
+])
 
 const createGenerationId = (): string => {
   if (typeof globalThis.crypto?.randomUUID === 'function') {
@@ -638,20 +689,10 @@ const removeCity = (index: number) => {
 const heroProgress = computed(() => Math.min(scrollY.value / 320, 1))
 const toneProgress = computed(() => Math.min(Math.max((scrollY.value - 20) / 360, 0), 1))
 const pageHeaderStyle = computed(() => ({
-  backgroundImage: "url('http://demos.creative-tim.com/paper-kit-2/assets/img/antoine-barres.jpg')",
+  backgroundImage: "radial-gradient(circle at 75% 22%, rgba(215,110,66,.3), transparent 34%), radial-gradient(circle at 20% 18%, rgba(72,134,171,.25), transparent 32%), linear-gradient(145deg, #07131b 0%, #142c38 52%, #111b25 100%)",
   backgroundPosition: `center ${Math.max(-scrollY.value * 0.08, -120)}px`,
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-}))
-const movingCloudsStyle = computed(() => ({
-  backgroundImage: "url('https://demos.creative-tim.com/paper-kit-2/assets/img/clouds.png')",
-  opacity: fogEnabled.value ? '0.55' : '0',
-}))
-const fogLowStyle = computed(() => ({
-  opacity: fogEnabled.value ? '0.82' : '0',
-}))
-const fogLowRightStyle = computed(() => ({
-  opacity: fogEnabled.value ? '0.72' : '0',
 }))
 const heroContentStyle = computed(() => ({
   opacity: `${1 - heroProgress.value * 0.95}`,
@@ -685,6 +726,28 @@ const scrollToForm = () => {
   if (formRef.value) {
     const y = formRef.value.getBoundingClientRect().top + window.scrollY - 65
     window.scrollTo({ top: y, behavior: 'smooth' })
+  }
+}
+const scrollToHow = () => howRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+const openExampleTrip = async () => {
+  exampleLoading.value = true
+  try {
+    const example = await getExampleTrip()
+    sessionStorage.setItem('tripPlan', JSON.stringify(example.result.data))
+    sessionStorage.setItem('graphData', JSON.stringify(example.result.graph_data || { nodes: [], edges: [], categories: [] }))
+    sessionStorage.removeItem('planId')
+    sessionStorage.removeItem(ACTIVE_TASK_ID_KEY)
+    sessionStorage.removeItem(ACTIVE_TASK_REQUEST_KEY)
+    sessionStorage.setItem(EXAMPLE_MODE_KEY, 'true')
+    sessionStorage.setItem(EXAMPLE_META_KEY, JSON.stringify(example))
+    await router.push({ path: '/result', query: { example: '1' } })
+  } catch (error: any) {
+    generationError.value = error?.message || t('api.exampleTripUnavailable')
+    message.error(generationError.value)
+    scrollToForm()
+  } finally {
+    exampleLoading.value = false
   }
 }
 
@@ -827,9 +890,17 @@ const saveCompletedTrip = async (response: any, fallbackPlanId = '') => {
 }
 
 const showTaskFailure = (error: unknown) => {
-  generationError.value = error instanceof Error
-    ? error.message
-    : String(error || t('home.messages.generateRetry'))
+  const raw = error instanceof Error ? error.message : String(error || '')
+  const normalized = raw.toLowerCase()
+  if (/rate.?limit|too many|已有行程|cooldown|capacity/.test(normalized)) {
+    generationError.value = t('home.taskFailure.rateLimited')
+  } else if (/timeout|timed out|超时/.test(normalized)) {
+    generationError.value = t('home.taskFailure.timeout')
+  } else if (/provider|service unavailable|temporarily unavailable|数据.*不可用/.test(normalized)) {
+    generationError.value = t('home.taskFailure.providerUnavailable')
+  } else {
+    generationError.value = t('home.taskFailure.internalError')
+  }
   loading.value = false
   loadingProgress.value = 0
   loadingStatus.value = ''
@@ -850,7 +921,17 @@ const startTripGeneration = async (requestData: TripFormData) => {
   sessionStorage.removeItem('tripPlan')
   sessionStorage.removeItem('graphData')
   sessionStorage.removeItem('planId')
+  sessionStorage.removeItem(EXAMPLE_MODE_KEY)
+  sessionStorage.removeItem(EXAMPLE_META_KEY)
   sessionStorage.setItem(ACTIVE_TASK_REQUEST_KEY, JSON.stringify(requestData))
+  sessionStorage.setItem(TRIP_SUMMARY_KEY, JSON.stringify({
+    travelers: requestData.preference_profile
+      ? `${requestData.preference_profile.party_size} · ${requestData.preference_profile.party_type}`
+      : '',
+    party_size: requestData.preference_profile?.party_size,
+    pace: requestData.preference_profile?.pace,
+    budget_cny: requestData.preference_profile?.budget_cny,
+  }))
 
   try {
     const response = await generateTripPlan(requestData, {
@@ -1191,6 +1272,79 @@ const retryFailedTask = async () => {
   justify-self: center;
 }
 
+.hero-description {
+  max-width: 720px;
+  margin: 14px auto 0;
+  color: rgba(240, 247, 252, 0.88);
+  font-size: clamp(16px, 2vw, 21px);
+  line-height: 1.55;
+}
+
+.hero-capabilities {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin: 24px auto 0;
+}
+
+.hero-capabilities span {
+  border: 1px solid rgba(218, 235, 247, 0.24);
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: rgba(5, 16, 23, 0.35);
+  color: #eaf4fa;
+  font-size: 12px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.hero-primary,
+.hero-secondary {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero-primary { border: 1px solid #e07a50; background: #d76e42; color: white; }
+.hero-secondary { border: 1px solid rgba(236, 243, 250, 0.45); background: rgba(7, 19, 27, 0.58); color: white; }
+.hero-primary:hover, .hero-secondary:hover { transform: translateY(-1px); }
+.hero-secondary:disabled { opacity: .65; cursor: wait; }
+
+.hero-timing {
+  margin: 12px 0 0;
+  color: rgba(224, 235, 243, 0.7);
+  font-size: 12px;
+}
+
+.portfolio-intro,
+.portfolio-evidence {
+  position: relative;
+  z-index: 3;
+  padding: 72px 20px;
+}
+
+.portfolio-section-inner { max-width: 1080px; margin: 0 auto; }
+.portfolio-section-inner h2 { margin: 0 0 28px; color: #f6fbff; font-size: clamp(28px, 4vw, 42px); }
+.portfolio-eyebrow { margin: 0 0 8px; color: #e58a62; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.how-card { padding: 22px; border: 1px solid rgba(203,227,255,.14); border-radius: 18px; background: rgba(255,255,255,.04); }
+.how-card span { color: #e58a62; font-weight: 800; }
+.how-card p { margin: 18px 0 0; color: #eff7fc; line-height: 1.5; }
+.portfolio-evidence { background: rgba(5, 13, 19, .56); }
+.evidence-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.evidence-stats div { padding: 20px; border-radius: 16px; background: rgba(255,255,255,.05); display: grid; gap: 6px; }
+.evidence-stats strong { color: #fff; font-size: 28px; }
+.evidence-stats span, .evidence-inner small { color: rgba(229,241,249,.72); }
+.evidence-inner small { display: block; margin-top: 18px; line-height: 1.5; }
+
 .hero-bottom-shade {
   position: absolute;
   inset: auto 0 0 0;
@@ -1208,10 +1362,28 @@ const retryFailedTask = async () => {
 
 
 .form-section {
-  margin-top: -112px;
+  margin-top: 0;
   padding: 0 20px 86px;
   position: relative;
   z-index: 3;
+}
+
+@media (max-width: 760px) {
+  .landing-header { min-height: 760px; height: 100svh; }
+  .landing-header .content-center { height: 100%; padding: 72px 18px 28px; }
+  .landing-header .content-center .container { transform: none; }
+  .landing-header .presentation-title { font-size: clamp(38px, 13vw, 58px); }
+  .hero-actions { flex-direction: column; align-items: stretch; max-width: 320px; margin-inline: auto; }
+  .hero-capabilities span { font-size: 11px; }
+  .how-grid, .evidence-stats { grid-template-columns: 1fr 1fr; }
+  .portfolio-intro, .portfolio-evidence { padding: 52px 18px; }
+  .generation-error-actions { flex-direction: column; align-items: stretch; }
+}
+
+@media (max-width: 390px) {
+  .how-grid, .evidence-stats { grid-template-columns: 1fr; }
+  .hero-capabilities { gap: 6px; }
+  .hero-capabilities span { padding: 6px 9px; }
 }
 
 .form-panel {

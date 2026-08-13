@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "TripStar-AI",
+    "title": "TripStar-AI — Grounded & Pacing-aware AI Travel Planner",
     "brand": "TripStar-AI",
     "subBrand": "可溯源 · 节奏感知的 AI 旅行规划",
     "badge": "AI 文旅智能体",
@@ -30,6 +30,8 @@
     "submitTripPlanFailed": "提交旅行计划失败",
     "queryTaskStatusFailed": "查询任务状态失败",
     "generateTripPlanFailed": "生成旅行计划失败",
+    "exampleTripInvalid": "示例行程格式暂时无法读取。",
+    "exampleTripUnavailable": "示例行程暂时不可用，请稍后重试。",
     "healthCheckFailed": "健康检查失败",
     "parsePreferenceFailed": "解析旅行偏好失败"
   },
@@ -65,10 +67,38 @@
   },
   "home": {
     "heroBadge": "AI 智能行程规划引擎",
-    "titleLine": "探索世界的每一种可能",
-    "heroDesc": "告诉我你的目的地与偏好，AI 将为你定制一份独一无二的旅程方案",
+    "titleLine": "把旅行偏好变成可执行、可验证、节奏合理的 AI 行程",
+    "heroDesc": "不只生成行程：结合地点依据、移动与休息负荷、预算和约束检查，给你更能落地的旅行方案。",
+    "planCta": "生成我的 AI 行程",
+    "exampleCta": "查看示例行程",
+    "liveTiming": "实时生成通常需要约 1–2 分钟，实际时间取决于数据服务状态。",
+    "capabilities": {
+      "planning": "AI 行程规划",
+      "grounding": "地点依据与验证",
+      "pacing": "节奏感知规划",
+      "validation": "预算与约束检查"
+    },
+    "how": {
+      "eyebrow": "HOW IT WORKS",
+      "title": "从偏好到可执行行程",
+      "step1": "输入旅行偏好",
+      "step2": "检索并验证目的地信息",
+      "step3": "生成并校验行程",
+      "step4": "优化节奏与约束"
+    },
+    "evidence": {
+      "eyebrow": "EVALUATED, NOT JUST GENERATED",
+      "title": "用受控评审检验产品改进",
+      "pairs": "组受控配对评审",
+      "delta": "平均人工节奏评分变化",
+      "positive": "配对的节奏评分提升",
+      "constraints": "可评估配对保留明确约束",
+      "disclaimer": "基于 4 组受控 A/B 盲评的描述性结果，不代表线上用户统计或显著性检验。"
+    },
     "nav": {
       "cta": "开始定制",
+      "home": "首页",
+      "how": "工作方式",
       "fogOn": "雾气开启",
       "fogOff": "雾气关闭"
     },
@@ -172,6 +202,8 @@
       "loadFailed": "读取历史计划失败"
     },
     "loading": {
+      "title": "正在准备你的旅行计划",
+      "resumeHint": "任务创建后可刷新或稍后返回，系统会继续恢复进度。",
       "initializing": "正在初始化...",
       "recovering": "正在恢复未完成的旅行计划...",
       "searchingAttractions": "正在搜索景点...",
@@ -195,6 +227,11 @@
       "title": "旅行计划生成失败",
       "backToEdit": "返回修改",
       "retry": "重试",
+      "viewExample": "查看示例行程",
+      "rateLimited": "当前已有行程正在生成，请稍后再试。",
+      "timeout": "本次生成等待时间较长，你可以重试或先查看示例行程。",
+      "providerUnavailable": "部分实时数据服务暂不可用，你可以稍后重试或先查看示例行程。",
+      "internalError": "实时生成暂时不可用，请稍后重试或查看示例行程。",
       "editBeforeRetry": "未找到可重试的请求，请修改后重新生成。"
     },
     "messages": {
@@ -207,6 +244,45 @@
     }
   },
   "result": {
+    "example": {
+      "badge": "示例行程 / Pre-generated Example",
+      "disclaimer": "这是预生成示例，不是本次实时生成结果。"
+    },
+    "summary": {
+      "destination": "目的地",
+      "dates": "日期",
+      "travelers": "同行",
+      "pace": "行程节奏",
+      "budget": "预计总预算",
+      "pacing": "节奏评估",
+      "pacingBasis": "综合游览、移动、用餐和休息时间评估",
+      "notProvided": "未提供"
+    },
+    "pacing": { "relaxed": "轻松", "balanced": "适中", "full": "充实", "tight": "偏紧" },
+    "evidence": {
+      "verified": "地点已验证",
+      "partial": "部分地点待确认",
+      "detail": "已验证 {verified}/{total} 个行程地点；未验证地点请在出发前复核。"
+    },
+    "uncertainty": {
+      "checkRoutes": "部分路线待确认",
+      "noKnownRouteIssue": "未发现明确路线异常",
+      "routeDetail": "部分实时路线数据暂不可用，行程可能使用保守估计。",
+      "clearDetail": "仍建议在出发当天复核交通班次。"
+    },
+    "publicRisks": {
+      "routeTitle": "路线信息需要复核",
+      "routeMessage": "这段路线暂未获得可靠地图结果，出发前建议再次确认。",
+      "routeSuggestion": "出发当天使用地图和交通运营方信息确认。",
+      "providerTitle": "部分实时数据暂不可用",
+      "providerMessage": "行程已保留不确定性，并在需要时使用保守估计。",
+      "pacingTitle": "当天安排可能偏紧",
+      "pacingMessage": "可根据体力减少停留或提前结束，优先保留最重要的体验。",
+      "budgetTitle": "预算需要留意",
+      "startTitle": "出发时间需要确认",
+      "mobilityTitle": "移动负担需要留意",
+      "generalTitle": "出发前需要确认"
+    },
     "backHome": "返回首页",
     "editTrip": "编辑行程",
     "saveChanges": "保存修改",
@@ -263,9 +339,9 @@
     "dayDescription": "行程描述:",
     "dayStartTime": "第一个主要活动预计开始时间:",
     "risks": {
-      "title": "AI 检查到的问题",
+      "title": "出发前提醒",
       "autoRevised": "AI 已根据检查结果自动调整 1 次",
-      "disclaimer": "基于用户明确约束、计划预算估算和已验证的 Google 地图路线；未知数据不会被视为已通过。",
+      "disclaimer": "结合你的明确要求、预算估算和当前可用的地点与路线信息；未知信息会继续标明。",
       "status": {
         "passed": "基础检查通过",
         "issues_found": "发现需注意的问题",

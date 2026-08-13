@@ -227,6 +227,28 @@ export interface TripPlanResponse {
   graph_data?: KnowledgeGraphData
 }
 
+export interface PortfolioExampleTrip {
+  schema_version: 'portfolio.example_trip.v1'
+  example: true
+  generated_at: string
+  source_semantics: string
+  demo_request: {
+    destination: string
+    dates: string
+    travelers: string
+    pace: TravelPace
+    interests: string[]
+    transportation: string
+  }
+  grounding_summary: {
+    status: 'verified' | 'partial' | 'unverified'
+    message: string
+  }
+  route_uncertainty: string
+  pacing_summary: string
+  result: TripPlanResponse
+}
+
 export interface TripHistoryItem {
   plan_id: string
   task_id: string
