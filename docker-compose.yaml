@@ -7,7 +7,7 @@ services:
         VITE_AMAP_WEB_JS_KEY: ${VITE_AMAP_WEB_JS_KEY:-your_amap_web_js_api_key_here}
         VITE_GOOGLE_MAPS_BROWSER_KEY: ${VITE_GOOGLE_MAPS_BROWSER_KEY:-}
         VITE_PUBLIC_DEMO_MODE: ${VITE_PUBLIC_DEMO_MODE:-true}
-    container_name: helloagents-trip-planner
+    container_name: tripstar-ai
     ports:
       - "7860:7860"
     environment:

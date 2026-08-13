@@ -1,6 +1,6 @@
-# TripStar 当前架构分析
+# TripStar-AI 当前架构分析
 
-> 分析范围：当前本地仓库 `/Users/huangyi/Desktop/TripStar`，而非仅依据 GitHub README。
+> 分析范围：当前 TripStar-AI 本地仓库；该仓库为 upstream TripStar 的 GPL v2 派生项目。
 > 分析日期：2026-08-08
 > 当前阶段：STEP 1 — Repository Analysis
 > 约束：本文只记录现状，不包含代码改造，也不代表后续方案已经实施。

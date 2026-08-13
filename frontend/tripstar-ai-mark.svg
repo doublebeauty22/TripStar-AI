@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">TripStar-AI</title>
+  <desc id="desc">A route crossing a four-point star</desc>
+  <rect width="64" height="64" rx="16" fill="#0d171d"/>
+  <path d="M14 45c8-2 8-12 17-12s9 10 19 6" fill="none" stroke="#72edf2" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="14" cy="45" r="4" fill="#d76e42"/>
+  <circle cx="50" cy="39" r="4" fill="#d76e42"/>
+  <path d="m34 12 3.2 9.8L47 25l-9.8 3.2L34 38l-3.2-9.8L21 25l9.8-3.2Z" fill="#ffd699"/>
+</svg>

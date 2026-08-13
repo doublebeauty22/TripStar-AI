@@ -1,6 +1,6 @@
 # Phase 1 Implementation Plan — Preference Profile
 
-> 项目：旅伴 AI（基于 TripStar 二次开发）
+> 项目：TripStar-AI（基于 upstream TripStar 的 GPL v2 派生开发）
 > 阶段：STEP 3 / Phase 1 规划
 > 日期：2026-08-08
 > 状态：等待确认，尚未开始编码

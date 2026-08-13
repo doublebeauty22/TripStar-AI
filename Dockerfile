@@ -60,7 +60,7 @@ COPY --from=frontend-builder /build/dist ./frontend/dist
 COPY start.sh ./start.sh
 RUN chmod +x ./start.sh
 
-# 魔搭创空间要求端口 7860
+# Default container port; Render supplies PORT at runtime.
 EXPOSE 7860
 
 CMD ["./start.sh"]

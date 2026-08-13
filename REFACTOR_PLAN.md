@@ -1,6 +1,6 @@
-# 旅伴 AI：TripStar 产品重构计划
+# TripStar-AI 产品重构计划
 
-> 基于：`CURRENT_ARCHITECTURE.md` 与当前本地 TripStar repository
+> 基于：`CURRENT_ARCHITECTURE.md` 与 TripStar-AI repository
 > 阶段：STEP 2 — Product Refactor Planning
 > 日期：2026-08-08
 > 本文性质：产品与技术实施蓝图，不代表任何功能已经开发
@@ -8,7 +8,7 @@
 
 ## 0. Executive Decision
 
-新的产品暂定名为 **「旅伴 AI」**，目标不是把 TripStar 汉化，也不是增加更多看起来像 Agent 的类，而是把现有的“AI 生成旅行攻略”升级为“AI 辅助用户做旅行决策”。
+产品名为 **TripStar-AI**。目标不是简单替换 upstream TripStar branding，也不是增加更多看起来像 Agent 的类，而是把现有的“AI 生成旅行攻略”升级为“AI 辅助用户做旅行决策”。
 
 核心重构原则：
 
