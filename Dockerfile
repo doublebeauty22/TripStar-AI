@@ -51,6 +51,7 @@ RUN uv pip install --system --no-cache gunicorn "uvicorn[standard]" -i https://m
 
 # 复制后端代码并安装 Node.js 依赖
 COPY backend/ ./backend/
+COPY portfolio/examples/example_trip_v1.json ./portfolio/examples/example_trip_v1.json
 RUN cd backend && npm install --omit=dev --registry=https://registry.npmmirror.com
 
 # 从阶段一复制前端构建产物
