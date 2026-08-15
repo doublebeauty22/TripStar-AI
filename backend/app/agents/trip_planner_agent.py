@@ -1,4 +1,4 @@
-"""多智能体旅行规划系统"""
+"""有界顺序式 LLM 旅行规划编排与确定性服务集成。"""
 
 import json
 import asyncio
@@ -191,10 +191,10 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
 
 
 class MultiAgentTripPlanner:
-    """多智能体旅行规划系统"""
+    """顺序编排行程研究、LLM Planner、grounding、validation 与 revision。"""
 
     def __init__(self):
-        """初始化多智能体系统"""
+        """初始化有界规划编排器及确定性 provider 适配器。"""
         print("🔄 开始初始化多智能体旅行规划系统...")
 
         try:
@@ -525,7 +525,7 @@ class MultiAgentTripPlanner:
         progress_callback: Optional[Callable[[str, str, int], Awaitable[None] | None]] = None
     ) -> TripPlan:
         """
-        使用多智能体协作生成旅行计划（多城市支持版）
+        使用有界顺序式 LLM 编排与确定性服务生成旅行计划（支持多城市）。
 
         按 request.cities 逐城市搜集景点/天气/酒店信息，
         然后统一交给 LLM 生成跨城行程。
@@ -1589,12 +1589,12 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
         )
 
 
-# 全局多智能体系统实例
+# 全局规划编排器实例（保留既有类名以维持兼容）
 _multi_agent_planner = None
 
 
 def get_trip_planner_agent() -> MultiAgentTripPlanner:
-    """获取多智能体旅行规划系统实例(单例模式)"""
+    """获取旅行规划编排器单例。"""
     global _multi_agent_planner
 
     if _multi_agent_planner is None:
@@ -1604,6 +1604,6 @@ def get_trip_planner_agent() -> MultiAgentTripPlanner:
 
 
 def reset_trip_planner_agent() -> None:
-    """重置旅行规划多智能体实例（用于运行时配置更新后热生效）。"""
+    """重置旅行规划编排器实例（用于运行时配置更新后热生效）。"""
     global _multi_agent_planner
     _multi_agent_planner = None

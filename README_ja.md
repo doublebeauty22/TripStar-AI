@@ -8,7 +8,7 @@
 
 ## 主な変更
 
-この派生プロジェクトでは、上流 TripStar を基盤として、Preference Profile、provider 可観測性、grounding/provenance、daily-load policy、pacing-aware Planner、Validator、fail-closed revision、protected-day patch、offline evaluation、blind paired review、public-demo hardening、Render 向け単一サービス構成を追加しました。
+この派生プロジェクトでは、上流 TripStar を基盤として、Preference Profile、provider 可観測性、grounding/provenance、daily-load policy、pacing-aware Planner、Validator、fail-closed revision、protected-day patch、offline evaluation、blind paired review、public-demo hardening、Render 互換の単一サービス構成を追加しました。これはリポジトリ内の構成を示すもので、稼働中または正常な本番サービスの証拠ではありません。外部 provider の資格情報や実際の動作も baseline では検証していません。
 
 ## 評価サマリー
 

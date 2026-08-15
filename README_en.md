@@ -8,7 +8,7 @@ Grounded, pacing-aware AI travel planning with deterministic validation, targete
 
 ## What I changed
 
-This derivative extends the upstream TripStar foundation with structured preference parsing, provider observability, grounded POIs and provenance, a deterministic daily-load model, pacing-aware planning, rule-based validation, fail-closed targeted revision, protected-day patching, offline capture, blind paired review, public-demo security controls, and a Render-compatible single-service deployment path.
+This derivative extends the upstream TripStar foundation with structured preference parsing, provider observability, grounded POIs and provenance, a deterministic daily-load model, pacing-aware planning, rule-based validation, fail-closed targeted revision, protected-day patching, offline capture, blind paired review, public-demo security controls, and a Render-compatible single-service deployment path. This is checked-in configuration, not evidence of a live or healthy production service; external provider credentials and behavior were not verified by the repository baseline.
 
 ## Controlled evaluation snapshot
 

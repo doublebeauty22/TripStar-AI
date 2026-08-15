@@ -45,3 +45,12 @@ This changelog tracks evidence-backed development steps from the project-memory 
 - **Result:** **COMPLETE.** All required checks passed before the documentation-only commit.
 - **Commit:** Created by STEP 2A with message `docs: establish project memory baseline`; see Git history for the resulting SHA.
 - **Notes:** No application/business code changed. Known baseline inconsistencies remain intentionally deferred.
+
+## STEP 2B — Documentation Consistency Cleanup
+
+- **Goal:** Align legacy documentation and explanatory terminology with the verified repository baseline.
+- **Changes:** Updated `CURRENT_ARCHITECTURE.md`, `README.md`, `README_en.md`, `README_ja.md`, Planner explanatory docstrings/comments, `docs/PROJECT_BASELINE.md`, `docs/PROJECT_MASTER.md`, and this changelog. Replaced the stale root architecture narrative with a current compatibility reference, clarified provider/deployment evidence boundaries, and corrected autonomy-overstating explanatory terminology without renaming code identifiers or changing runtime behavior.
+- **Verification:** Cross-checked README, root/current architecture, project baseline/master, ADRs, metrics, and resume evidence; searched for stale capability statements, autonomy overstatement, unsupported metrics, unverified live-deployment claims, machine-local paths, and common secret/token patterns; inspected the Python diff to confirm docstring/comment-only changes; `git diff --check` passed; intended Git scope verified.
+- **Result:** **COMPLETE.** Legacy documentation and explanatory terminology now align with the verified project-memory baseline.
+- **Commit:** Created by STEP 2B with message `docs: align legacy documentation with verified architecture`; see Git history for the resulting SHA.
+- **Notes:** The stale backend commit assertion remains intentionally unchanged.

@@ -6,7 +6,7 @@ Grounded, pacing-aware AI travel planning with deterministic validation, targete
 
 ## Product overview
 
-TripStar-AI turns a structured trip request and natural-language preferences into an executable itinerary. The product does more than generate prose: it preserves explicit constraints, grounds POIs against map providers, models daily load, exposes uncertainty, validates risks deterministically, and applies narrow fail-closed revisions only when their safety gates pass.
+TripStar-AI turns a structured trip request and natural-language preferences into a structured day-by-day itinerary. The product does more than generate prose: it carries explicit constraints into planning and validation, grounds POIs against map providers, models daily load, exposes uncertainty, validates risks deterministically, and applies narrow fail-closed revisions only when their safety gates pass. The result remains a planning aid rather than a guarantee of current availability or feasibility.
 
 The current portfolio build includes:
 
@@ -81,7 +81,7 @@ Revision is deliberately narrow. It can operate only on eligible overloaded days
 
 ## Public demo architecture
 
-The deployment target is one Render Docker Web Service:
+The repository's deployment configuration targets one Render-compatible Docker Web Service:
 
 ```text
 Browser (Vue static build)
@@ -97,6 +97,8 @@ FastAPI + Gunicorn/Uvicorn, one worker
 
 Public-demo mode makes runtime settings read-only, disables shared history, sanitizes provider errors, limits live generations, and exposes a clearly labelled pre-generated Example Trip that never calls the Planner or providers.
 
+This section describes the checked-in deployment path, not a verified live service. The repository currently provides no public URL or evidence of production health, uptime, traffic, deployed credentials, or live provider reliability. The `/health` endpoint is a shallow process/configuration check and does not probe the LLM, Google Maps, AMap, XHS, or persistent storage.
+
 ## Tech stack
 
 - Frontend: Vue 3, TypeScript, Vite, Ant Design Vue, ECharts, Google Maps JS, AMap JS.
@@ -104,6 +106,8 @@ Public-demo mode makes runtime settings read-only, disables shared history, sani
 - AI and data: OpenAI-compatible LLM, XHS research adapter, Google Places/Directions/Weather, AMap fallback.
 - Quality: deterministic validators, unittest-based regression suite, offline evaluation contracts, canonical JSON captures and manifests.
 - Deployment: multi-stage Docker build, same-origin static/API hosting, Render-compatible `PORT` binding.
+
+Provider names above mean the repository contains adapters and configuration for those services. Local tests primarily use mocks; they do not establish credential validity, quota, billing, data freshness, or production availability. Hotel support is provider place search and itinerary context, not booking, inventory, or authoritative live pricing.
 
 ## Run locally
 
@@ -140,7 +144,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Core live generation requires an OpenAI-compatible model credential. XHS, Google Maps, and AMap credentials enable optional research, grounding, route, weather, hotel, image, and map capabilities. Browser map keys must use referrer restrictions, API scope restrictions, and billing caps.
+Core live generation requires a valid OpenAI-compatible model credential. When valid and enabled by the respective providers, XHS, Google Maps, and AMap credentials can enable optional research, grounding, route, weather, hotel-place search, image, and map capabilities. The repository does not verify those credentials or services during normal local tests. Browser map keys must use referrer restrictions, API scope restrictions, and billing caps.
 
 ## Major modifications
 

@@ -47,7 +47,7 @@ STEP 0 at HEAD `449d0fa` recorded:
 - Grounding is strongest for POIs/XHS evidence but incomplete for planner prose, meals, hotels, ticket prices, budgets, and chat suggestions.
 - One backend regression test is stale; test imports require a specific `PYTHONPATH` because import styles are mixed.
 - No full browser E2E suite; build warnings and large bundles remain.
-- `CURRENT_ARCHITECTURE.md` materially predates current preference, validation, patching, observability, and polling-recovery implementation.
+- The root `CURRENT_ARCHITECTURE.md` is a compatibility entry; `docs/ARCHITECTURE.md` is the canonical architecture reference.
 
 ## Project phase
 
