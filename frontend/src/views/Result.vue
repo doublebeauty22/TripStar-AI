@@ -685,6 +685,15 @@ const originalPlan = ref<TripPlan | null>(null)
 const attractionPhotos = ref<Record<string, string>>({})
 const attractionPhotoAttributions = ref<Record<string, PhotoAttribution[]>>({})
 const attractionPhotoSources = ref<Record<string, 'google_places' | 'xhs' | 'placeholder'>>({})
+type AttractionPhotoReason =
+  | 'grounding_unverified'
+  | 'google_no_photo'
+  | 'google_provider_error'
+  | 'xhs_no_result'
+  | 'xhs_provider_error'
+  | 'image_request_error'
+  | 'browser_load_error'
+const attractionPhotoReasons = ref<Record<string, AttractionPhotoReason | undefined>>({})
 const activeSection = ref('overview')
 const activeDays = ref<number[]>([0]) // 默认展开第一天
 const activeOverviewCard = ref(1)
@@ -1095,6 +1104,7 @@ const applyTripPlanPayload = async (payload: {
     attractionPhotos.value = {}
     attractionPhotoAttributions.value = {}
     attractionPhotoSources.value = {}
+    attractionPhotoReasons.value = {}
   }
   if (activeSection.value === 'map') await ensureMapReady()
   if (activeSection.value === 'knowledge-graph') await ensureGraphReady()
@@ -1983,11 +1993,13 @@ const loadAttractionPhotos = async () => {
             name: attraction.name,
             city: day.city || tripPlan.value?.city || '',
             placeId: attraction.place_id || attraction.poi_id || '',
+            address: attraction.address || '',
+            category: attraction.category || '',
           })
         }
       })
       return items
-    }, new Map<string, { name: string; city: string; placeId: string }>()).values()
+    }, new Map<string, { name: string; city: string; placeId: string; address: string; category: string }>()).values()
   ).filter(item => !attractionPhotos.value[item.name])
 
   if (uniqueAttractions.length === 0) return
@@ -2005,17 +2017,25 @@ const loadAttractionPhotos = async () => {
         const placeIdParam = attraction.placeId
           ? `&place_id=${encodeURIComponent(attraction.placeId)}`
           : ''
+        const addressParam = attraction.address
+          ? `&address=${encodeURIComponent(attraction.address)}`
+          : ''
+        const categoryParam = attraction.category
+          ? `&category=${encodeURIComponent(attraction.category)}`
+          : ''
         const response = await fetch(
-          `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}`
+          `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}${addressParam}${categoryParam}`
         )
         const data = await response.json()
         attractionPhotoSources.value[attraction.name] = data?.data?.source || 'placeholder'
+        attractionPhotoReasons.value[attraction.name] = data?.data?.reason
         if (data.success && data.data.photo_url) {
           attractionPhotos.value[attraction.name] = data.data.photo_url
           attractionPhotoAttributions.value[attraction.name] = data.data.attributions || []
         }
       } catch (err) {
         attractionPhotoSources.value[attraction.name] = 'placeholder'
+        attractionPhotoReasons.value[attraction.name] = 'image_request_error'
         console.error(`获取${attraction.name}图片失败:`, err)
       }
     }
@@ -2051,7 +2071,10 @@ const getAttractionImage = (name: string, _index: number): string => {
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
   img.onerror = null
-  if (img.alt) attractionPhotoSources.value[img.alt] = 'placeholder'
+  if (img.alt) {
+    attractionPhotoSources.value[img.alt] = 'placeholder'
+    attractionPhotoReasons.value[img.alt] = 'browser_load_error'
+  }
   // 使用深色占位图
   const label = encodeURIComponent(t('result.imageLoadFailed'))
   img.src = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a262f"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="18" fill="rgba(255,255,255,0.4)"%3E${label}%3C/text%3E%3C/svg%3E`

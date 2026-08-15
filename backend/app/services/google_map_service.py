@@ -37,8 +37,15 @@ def _log_http_failure(endpoint: str, exc: Exception) -> None:
         category = "network_error"
     else:
         category = "unexpected_error"
+    retryable = bool(
+        isinstance(exc, (httpx.TimeoutException, httpx.RequestError))
+        or (isinstance(status, int) and (status == 429 or status >= 500))
+    )
     status_text = str(status) if status is not None else "none"
-    print(f"❌ provider=google endpoint={endpoint} category={category} status={status_text}")
+    print(
+        f"❌ provider=google endpoint={endpoint} category={category} "
+        f"status={status_text} retryable={str(retryable).lower()}"
+    )
 
 
 class GoogleMapService:
@@ -652,30 +659,46 @@ class GoogleMapService:
         name: str = "",
         city: str = "",
         max_width_px: int = 1200,
+        match_result: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        """Resolve one Google Place photo URI and its required attribution."""
+        """Resolve one Google Place photo URI and its required attribution.
+
+        ``match_result`` may only contain a result produced by this service in
+        the current request. Reusing it avoids a second Text Search for
+        photo-only partial matches without trusting a client Place ID.
+        """
         photo_name = ""
         attributions: List[Dict[str, Any]] = []
         resolved_place_id = place_id
         match_status = "verified" if place_id else "unverified"
 
         if place_id:
-            detail_url = f"{self.PLACES_BASE}/{place_id}"
-            detail_response = self._client.get(
-                detail_url,
-                headers={
-                    "X-Goog-Api-Key": self.api_key,
-                    "X-Goog-FieldMask": "id,photos",
-                },
-            )
-            detail_response.raise_for_status()
-            detail = detail_response.json()
-            photos = detail.get("photos") or []
-            if photos:
-                photo_name = photos[0].get("name", "")
-                attributions = photos[0].get("authorAttributions") or []
+            try:
+                detail_url = f"{self.PLACES_BASE}/{place_id}"
+                detail_response = self._client.get(
+                    detail_url,
+                    headers={
+                        "X-Goog-Api-Key": self.api_key,
+                        "X-Goog-FieldMask": "id,photos",
+                    },
+                )
+                detail_response.raise_for_status()
+                detail = detail_response.json()
+                photos = detail.get("photos") or []
+                if photos:
+                    photo_name = photos[0].get("name", "")
+                    attributions = photos[0].get("authorAttributions") or []
+            except Exception as exc:
+                _log_http_failure("place_details_photo", exc)
+                return {
+                    "photo_url": "",
+                    "place_id": resolved_place_id,
+                    "attributions": [],
+                    "match_status": match_status,
+                    "reason": "google_provider_error",
+                }
         elif name:
-            match = self.match_poi(name, city)
+            match = match_result if match_result is not None else self.match_poi(name, city)
             poi = match.get("poi")
             can_use_for_photo = bool(
                 poi
@@ -704,6 +727,7 @@ class GoogleMapService:
                 "place_id": resolved_place_id,
                 "attributions": attributions,
                 "match_status": match_status,
+                "reason": "google_no_photo",
             }
 
         media_url = f"https://places.googleapis.com/v1/{photo_name}/media"
@@ -715,11 +739,14 @@ class GoogleMapService:
         try:
             resp = self._client.get(media_url, params=params)
             resp.raise_for_status()
+            payload = resp.json()
+            photo_url = payload.get("photoUri", "")
             return {
-                "photo_url": resp.json().get("photoUri", ""),
+                "photo_url": photo_url,
                 "place_id": resolved_place_id,
                 "attributions": attributions,
                 "match_status": match_status,
+                "reason": None if photo_url else "google_no_photo",
             }
         except Exception as exc:
             _log_http_failure("place_photo", exc)
@@ -728,6 +755,7 @@ class GoogleMapService:
                 "place_id": resolved_place_id,
                 "attributions": attributions,
                 "match_status": match_status,
+                "reason": "google_provider_error",
             }
 
     # ======================== 天气查询 ========================

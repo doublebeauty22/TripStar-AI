@@ -10,6 +10,17 @@ from ...services.amap_service import get_amap_service
 router = APIRouter(prefix="/poi", tags=["POI"])
 
 
+def _log_photo_event(
+    *, provider: str, stage: str, category: str, match_status: str, retryable: bool
+) -> None:
+    """Emit stable image telemetry without request data or provider details."""
+    print(
+        "PHOTO_EVENT "
+        f"provider={provider} stage={stage} category={category} "
+        f"match_status={match_status} retryable={str(retryable).lower()}"
+    )
+
+
 class POIDetailResponse(BaseModel):
     """POI详情响应"""
     success: bool
@@ -101,6 +112,8 @@ async def get_attraction_photo(
     name: str,
     city: Optional[str] = None,
     place_id: Optional[str] = None,
+    address: Optional[str] = None,
+    category: Optional[str] = None,
 ):
     """
     获取景点图片
@@ -115,6 +128,8 @@ async def get_attraction_photo(
     # Never echo or trust a client-provided Place ID. Only a value returned by
     # the server-side matcher/photo lookup may cross this trust boundary.
     resolved_place_id = ""
+    match_status = "unverified"
+    failure_reasons: List[str] = []
 
     # 1. Google Places 是首选图片事实源。
     try:
@@ -123,9 +138,16 @@ async def get_attraction_photo(
         google_service = get_google_map_service()
         if google_service is not None:
             trusted_place_id = ""
-            match = await asyncio.to_thread(google_service.match_poi, name, city or "")
+            match = await asyncio.to_thread(
+                google_service.match_poi,
+                name,
+                city or "",
+                address or "",
+                category or "",
+            )
             matched_poi = match.get("poi")
             server_match_status = match.get("status", "unverified")
+            match_status = server_match_status
             from ...models.schemas import has_valid_verified_coordinates
             if (
                 match.get("status") == "verified"
@@ -141,15 +163,26 @@ async def get_attraction_photo(
                 # a verified label without a valid server-side coordinate is
                 # not sufficient to start a second Google lookup.
                 server_match_status = "unverified"
+                match_status = "unverified"
             if server_match_status in {"verified", "partial_match"}:
                 google_photo = await asyncio.to_thread(
                     google_service.get_place_photo,
                     place_id=trusted_place_id,
                     name="" if trusted_place_id else name,
                     city=city or "",
+                    match_result=match,
                 )
             else:
-                google_photo = {"photo_url": "", "place_id": "", "attributions": [], "match_status": "unverified"}
+                failure_reasons.append("grounding_unverified")
+                _log_photo_event(
+                    provider="google", stage="grounding",
+                    category="grounding_unverified", match_status="unverified",
+                    retryable=False,
+                )
+                google_photo = {
+                    "photo_url": "", "place_id": "", "attributions": [],
+                    "match_status": "unverified", "reason": "grounding_unverified",
+                }
             resolved_place_id = google_photo.get("place_id") or ""
             if google_photo.get("photo_url"):
                 return {
@@ -163,10 +196,31 @@ async def get_attraction_photo(
                         "source": "google_places",
                         "match_status": google_photo.get("match_status") or "unverified",
                         "attributions": google_photo.get("attributions") or [],
+                        "reason": None,
+                        "failure_reasons": [],
                     },
                 }
-    except Exception as exc:
-        print(f"⚠️ [PHOTO_FALLBACK] Google Places 图片不可用 ({name}): {exc}")
+            google_reason = google_photo.get("reason")
+            if google_reason and google_reason not in failure_reasons:
+                failure_reasons.append(google_reason)
+                _log_photo_event(
+                    provider="google", stage="photo", category=google_reason,
+                    match_status=google_photo.get("match_status") or match_status,
+                    retryable=google_reason == "google_provider_error",
+                )
+        else:
+            failure_reasons.append("google_provider_error")
+            _log_photo_event(
+                provider="google", stage="configuration",
+                category="google_provider_error", match_status=match_status,
+                retryable=False,
+            )
+    except Exception:
+        failure_reasons.append("google_provider_error")
+        _log_photo_event(
+            provider="google", stage="photo", category="google_provider_error",
+            match_status=match_status, retryable=True,
+        )
 
     # 2. XHS 仅作为可选的用户经验图片增强源。
     try:
@@ -184,13 +238,28 @@ async def get_attraction_photo(
                     "photo_url": photo_url,
                     "source": "xhs",
                     "attributions": [],
+                    "reason": failure_reasons[-1] if failure_reasons else None,
+                    "failure_reasons": failure_reasons,
                 },
             }
-    except Exception as exc:
-        print(f"⚠️ [PHOTO_FALLBACK] XHS 图片不可用 ({name}): {exc}")
+        failure_reasons.append("xhs_no_result")
+        _log_photo_event(
+            provider="xhs", stage="photo", category="xhs_no_result",
+            match_status=match_status, retryable=False,
+        )
+    except Exception:
+        failure_reasons.append("xhs_provider_error")
+        _log_photo_event(
+            provider="xhs", stage="photo", category="xhs_provider_error",
+            match_status=match_status, retryable=True,
+        )
 
     # 3. placeholder 由前端本地渲染；这里不伪造真实 photo_url。
-    print(f"⚠️ [PHOTO_FALLBACK] {name}: 无真实图片，使用前端本地 placeholder")
+    final_reason = failure_reasons[-1] if failure_reasons else "xhs_no_result"
+    _log_photo_event(
+        provider="frontend", stage="fallback", category=final_reason,
+        match_status=match_status, retryable=False,
+    )
     return {
         "success": True,
         "message": "没有可用的真实图片，使用本地占位图",
@@ -201,5 +270,7 @@ async def get_attraction_photo(
             "photo_url": "",
             "source": "placeholder",
             "attributions": [],
+            "reason": final_reason,
+            "failure_reasons": failure_reasons,
         },
     }

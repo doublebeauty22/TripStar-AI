@@ -670,8 +670,10 @@ def get_xhs_photo_sync(keyword: str) -> str:
                 if first_img:
                     return first_img
 
-    except Exception as e:
-        print(f"小红书单图抓取失败 ({keyword}): {e}")
+    except Exception:
+        # The route owns stable failure classification. Never log the keyword,
+        # cookie-related detail, or a raw provider response here.
+        raise
     return ""
 
 

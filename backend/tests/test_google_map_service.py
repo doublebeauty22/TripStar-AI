@@ -452,6 +452,22 @@ class GoogleMapServiceTests(unittest.TestCase):
         self.assertEqual(result["place_id"], "place-asakusa")
         self.assertEqual(len(self.service._client.calls), 1)
 
+    def test_partial_photo_reuses_existing_match_result(self):
+        partial = _poi("浅草文化观光中心")
+        self.service._client = _FakeClient(get_payloads=[
+            {"photoUri": "https://lh3.googleusercontent.com/partial-photo"},
+        ])
+        match = {"status": "partial_match", "score": 0.7, "poi": partial}
+        with patch.object(
+            self.service, "match_poi", side_effect=AssertionError("must not search twice")
+        ):
+            result = self.service.get_place_photo(
+                name="浅草文化中心", city="东京", match_result=match
+            )
+
+        self.assertEqual(result["photo_url"], "https://lh3.googleusercontent.com/partial-photo")
+        self.assertEqual(result["match_status"], "partial_match")
+
     def test_verified_place_id_photo_path_does_not_text_search(self):
         self.service._client = _FakeClient(get_payloads=[
             {"photos": [{"name": "places/place-asakusa/photos/photo-1"}]},

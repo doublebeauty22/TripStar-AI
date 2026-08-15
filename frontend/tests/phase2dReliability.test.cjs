@@ -57,4 +57,8 @@ test('photo cards label Google, XHS and placeholder sources', () => {
   assert.match(card, /小红书图片/)
   assert.match(card, /Google Places 图片/)
   assert.match(card, /占位图/)
+  assert.match(result, /addressParam/)
+  assert.match(result, /categoryParam/)
+  assert.match(result, /browser_load_error/)
+  assert.match(result, /attractionPhotoReasons/)
 })
