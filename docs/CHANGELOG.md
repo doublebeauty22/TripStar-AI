@@ -63,3 +63,12 @@ This changelog tracks evidence-backed development steps from the project-memory 
 - **Result:** **COMPLETE.** The stale assertion was repaired without changing application behavior, and all required verification gates passed.
 - **Commit:** Created by STEP 2C with message `test: repair stale baseline assertion`; see Git history for the resulting SHA.
 - **Notes:** Provider failure lines in backend output are expected mocked failure-path logs. The live Tokyo/Google E2E test remains skipped.
+
+## STEP 2D — Debug / Badcase Knowledge System
+
+- **Goal:** Establish a long-term Debug and Badcase knowledge system so important issues can form a traceable Problem → Root Cause → Fix → Verification → Metrics → Resume Evidence chain.
+- **Changes:** Created `docs/DEBUG_LOG.md`; defined case inclusion/exclusion standards, sequential `DBG-XXX` IDs, a uniform case template, evidence and maintenance rules, and the cross-document evidence lifecycle. Added `DBG-001` for the evidence-backed stale evaluation-capture revision assertion. Added DEBUG_LOG to the project memory map and clarified its conditional role as an input to future resume/interview evidence.
+- **Verification:** Cross-checked DEBUG_LOG against PROJECT_MASTER, CHANGELOG, METRICS, RESUME_EVIDENCE, the STEP 2C test/implementation, and Git history; confirmed the historical investigation boundary and root cause evidence; found no fabricated metrics or exaggerated resume claims; common secret/token scan found no candidates; machine-local absolute path scan found none; evidence references are repository-relative; `git diff --check` passed; documentation-only Git scope verified.
+- **Result:** **COMPLETE.** The Debug/Badcase knowledge layer is initialized with one evidence-backed historical case and durable maintenance rules.
+- **Commit:** Created by STEP 2D with message `docs: add debug and badcase knowledge system`; see Git history for the resulting SHA.
+- **Notes:** No application/business logic changes. No speculative provider, grounding, async recovery, or AI hallucination history was added.

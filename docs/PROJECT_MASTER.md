@@ -69,3 +69,14 @@ The STEP 0 failure remains recorded above as audit history; STEP 2C is the later
 ## Source-of-truth rule
 
 Future AI-assisted work must inspect current code and Git state before contradicting or updating this document. Evidence priority is: current code/Git, `docs/PROJECT_BASELINE.md`, current documentation, then historical documentation/comments. Update this file only when repository evidence changes, and record the change in `docs/CHANGELOG.md` and, where applicable, `docs/DECISIONS.md` or `docs/METRICS.md`.
+
+## Project memory map
+
+- `docs/PROJECT_MASTER.md`: concise current-state entry point.
+- `docs/PROJECT_BASELINE.md`: repository audit and later verification notes.
+- `docs/ARCHITECTURE.md`: canonical current architecture.
+- `docs/DECISIONS.md`: evidence-backed product and architecture decisions.
+- `docs/CHANGELOG.md`: STEP-by-STEP development record.
+- `docs/METRICS.md`: measured, reproducible quantitative results only.
+- `docs/DEBUG_LOG.md`: important Debug and AI/Product badcases, root cause, fix, verification, and reusable lessons.
+- `docs/RESUME_EVIDENCE.md`: conservative claims and future evidence candidates.

@@ -2,6 +2,8 @@
 
 This document separates repository-supported facts from future measurement opportunities. It is not marketing copy. `docs/PROJECT_BASELINE.md` and current code are authoritative when a claim changes.
 
+High-quality cases in `docs/DEBUG_LOG.md` may become inputs to future resume/interview evidence only after their root cause and verification are sufficiently supported. A DEBUG_LOG entry alone does not justify a claim, and every quantitative claim must still satisfy the methodology, sample-size, baseline, result, date, and evidence requirements below.
+
 ## Verified project facts
 
 - TripStar-AI is a Vue 3/TypeScript and FastAPI/Python travel-planning application.
