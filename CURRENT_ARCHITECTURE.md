@@ -169,6 +169,8 @@ STEP 0 在 application baseline `449d0fa584b99f61386b980fe76aac53848de871` 上�
 
 这些测试多数不访问真实 provider，前端测试不是完整 browser E2E。详细命令和边界见 `docs/PROJECT_BASELINE.md` 与 `docs/METRICS.md`。
 
+STEP 2C 在 2026-08-16 修复了该过时的 repository-revision test assertion，并重新验证 Backend 327 tests：326 passed、0 failed、1 skipped。STEP 0 结果仍作为历史审计记录保留。
+
 ## 12. 当前重要限制
 
 1. 单进程任务架构，不支持安全多 worker/水平扩容。
@@ -178,7 +180,7 @@ STEP 0 在 application baseline `449d0fa584b99f61386b980fe76aac53848de871` 上�
 5. Grounding 为部分覆盖，不是所有 recommendation/price/prose 的逐字段证据系统。
 6. 没有 booking、inventory、authoritative live price、Undo 或可靠产品 analytics。
 7. 大型集中模块增加维护风险；没有完整 browser E2E。
-8. Backend 测试仍有一个过时 commit SHA assertion，本次文档清理不处理该问题。
+8. 测试 import 风格混合，完整 Backend suite 仍需显式设置 `PYTHONPATH=.:backend`。
 
 ## 13. 维护规则
 

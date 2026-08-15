@@ -16,6 +16,17 @@ Only measured or repository-verifiable values belong here. Each future quantitat
 - **Boundary:** Provider tests are largely mocked; the skipped test is the live Tokyo/Google E2E path.
 - **Evidence:** `docs/PROJECT_BASELINE.md` §8 and STEP 0 command output.
 
+#### STEP 2C verification
+
+- **Date/pre-step HEAD:** 2026-08-16, `ff37f93531bf03233bc8da86f0696ec2cb127da8`.
+- **Repair:** Replaced the historical `96b9c5e` pin with an assertion against the independently queried current short Git HEAD and optional `-dirty` suffix.
+- **Targeted command:** `PYTHONPATH=.:backend ./backend/.venv/bin/python -m unittest backend.tests.test_phase3d1_capture.CaptureTests.test_dry_run_contract_identity_revision_and_unknown_semantics -v`
+- **Targeted result:** 1 executed, 1 passed, 0 failed, 0 skipped.
+- **Full command:** `PYTHONPATH=.:backend ./backend/.venv/bin/python -m unittest discover -s backend/tests`
+- **Full result:** 327 executed, 326 passed, 0 failed, 1 skipped.
+- **Skipped test:** live Tokyo/Google E2E path.
+- **Output note:** Provider error/degradation messages are emitted by mocked failure-path tests and did not fail the suite.
+
 ### Frontend
 
 - **Date/HEAD:** STEP 0, 2026-08-16, `449d0fa584b99f61386b980fe76aac53848de871`.
@@ -25,10 +36,17 @@ Only measured or repository-verifiable values belong here. Each future quantitat
 - **Boundary:** These are Node source/contract and lifecycle tests, not full browser E2E tests.
 - **Evidence:** `docs/PROJECT_BASELINE.md` §8 and STEP 0 command output.
 
+#### STEP 2C verification
+
+- **Date/pre-step HEAD:** 2026-08-16, `ff37f93531bf03233bc8da86f0696ec2cb127da8`.
+- **Command:** `node --test tests/*.test.cjs` from `frontend/`.
+- **Result:** 34/34 passed; 0 failed, skipped, or todo.
+
 ### Repository diff validation
 
 - **Command:** `git diff --check`.
 - **Result:** Passed in STEP 0.
+- **STEP 2C result:** Passed.
 
 ## Frontend build
 
@@ -36,6 +54,12 @@ Only measured or repository-verifiable values belong here. Each future quantitat
 - **Result:** Passed in STEP 0 (`vue-tsc` plus Vite; 3,848 modules transformed).
 - **Warnings:** unresolved legacy image/font paths remained for runtime resolution; two generated JavaScript chunks exceeded the 500 kB warning threshold.
 - **Evidence:** `docs/PROJECT_BASELINE.md` §8 and STEP 0 command output.
+
+### STEP 2C verification
+
+- **Command:** `npm run build` from `frontend/`.
+- **Result:** Passed; 3,848 modules transformed.
+- **Warnings:** unchanged unresolved legacy image/font paths and two JavaScript chunks above the 500 kB warning threshold. Warnings did not prevent the build.
 
 ## Evaluation metrics
 

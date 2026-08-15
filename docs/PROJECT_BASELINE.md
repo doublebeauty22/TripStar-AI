@@ -128,6 +128,20 @@ The main confirmed user journey is:
 
 No lint script, backend static type check, Playwright/Cypress browser E2E suite, or repository CI workflow was found. Backend tests are unittest-based and heavily mock external providers. Evaluation modules and frozen artifacts exist, but this audit did not re-run paid/live evaluations or reinterpret committed human-review results.
 
+### Later verification: STEP 2C (2026-08-16)
+
+STEP 2C established that the original backend failure was a stale repository-metadata assertion. `PlannerArtifactCapture` obtains `code_revision` from `current_code_revision()`, which reads the current short Git HEAD and appends `-dirty` when the worktree is dirty. The test instead hard-coded historical commit `96b9c5e`, so it failed whenever the repository advanced.
+
+The repair preserved the test's purpose by independently querying the current short Git HEAD and accepting exactly that value or its documented `-dirty` form. It did not change application behavior or capture production code.
+
+- Targeted test: 1 executed, 1 passed, 0 failed/skipped.
+- Full backend: 327 executed, 326 passed, 0 failed, 1 skipped.
+- Frontend: 34/34 passed.
+- Frontend production build: passed with the same unresolved legacy asset/font and oversized-chunk warnings.
+- `git diff --check`: passed.
+
+The original STEP 0 table above remains unchanged as the audit-time result.
+
 ## 9. Deployment evidence
 
 - `Dockerfile` proves a build recipe: Node 18 builds the Vue app; Python 3.10 installs backend dependencies and Gunicorn/Uvicorn; backend JS dependencies support XHS signing; the example trip is copied; built static files and API share one image.
@@ -139,7 +153,7 @@ No lint script, backend static type check, Playwright/Cypress browser E2E suite,
 
 ## 10. Known risks / technical debt
 
-1. **Test baseline drift:** one backend test hard-codes commit `96b9c5e`, so the current suite cannot pass at HEAD.
+1. **Test baseline drift at STEP 0 (resolved in STEP 2C):** the backend test hard-coded commit `96b9c5e`. STEP 2C replaced the pin with a current-repository metadata assertion and the full backend suite passed.
 2. **Import-path fragility:** test files mix `backend.app.*` and `app.*` imports. The suite requires `PYTHONPATH=.:backend`; common discovery invocations fail with import errors, and no canonical backend test command is documented in package metadata.
 3. **Single-process task architecture:** active tasks, subscriber queues, dedupe maps, locks, cooldowns, and generation accounting are process-local. JSON persistence records terminal data but cannot resume work. Multi-worker/horizontal deployment is unsafe without shared coordination.
 4. **No authentication/authorization:** persisted task IDs are effectively locators, not ownership credentials. UUID entropy and public-client dedupe isolation do not provide access control.
@@ -205,6 +219,6 @@ No lint script, backend static type check, Playwright/Cypress browser E2E suite,
 
 ## 14. Baseline summary
 
-TripStar is a functioning local portfolio-grade travel-planning application, not merely a mock: it has a buildable Vue frontend, FastAPI APIs, structured preference and itinerary contracts, bounded LLM orchestration, optional real provider adapters, deterministic validation/pacing, guarded revisions and patches, asynchronous progress/recovery, local persistence, visualization, Q&A, and an isolated example trip. Local frontend tests and build pass. The backend regression suite is broad but currently fails one stale commit-identity assertion.
+TripStar is a functioning local portfolio-grade travel-planning application, not merely a mock: it has a buildable Vue frontend, FastAPI APIs, structured preference and itinerary contracts, bounded LLM orchestration, optional real provider adapters, deterministic validation/pacing, guarded revisions and patches, asynchronous progress/recovery, local persistence, visualization, Q&A, and an isolated example trip. At STEP 0 the backend suite failed one stale commit-identity assertion; STEP 2C repaired that test-maintenance issue and verified 326 passing tests with 1 skipped out of 327. Local frontend tests and build pass.
 
 The strongest boundary is operational: the repository proves implementation and deployment configuration, not a healthy production service or valid external integrations. It is deliberately single-process, has no authentication or database/job queue, cannot resume in-flight tasks after restart, and provides partial rather than universal evidence grounding. STEP 2B aligned the root README and legacy architecture entry with these boundaries; `docs/ARCHITECTURE.md` is the canonical architecture reference.

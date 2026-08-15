@@ -1,6 +1,7 @@
 import asyncio
 import copy
 import json
+import subprocess
 import tempfile
 import unittest
 from datetime import date, timedelta
@@ -113,7 +114,14 @@ class CaptureTests(unittest.TestCase):
             (BASELINE_PLANNER_VERSION, BASELINE_PLANNER_PROMPT_VERSION),
             ("planner_baseline_v1", "planner_prompt_v1"),
         )
-        self.assertIn("96b9c5e", artifact.identity.code_revision)
+        expected_revision = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        ).stdout.strip()
+        self.assertIn(
+            artifact.identity.code_revision,
+            {expected_revision, f"{expected_revision}-dirty"},
+        )
         self.assertEqual(artifact.identity.model.status, "unknown")
         self.assertEqual(artifact.final_trip_plan.status, "unknown")
         self.assertEqual(artifact.total_latency_ms.status, "not_applicable")

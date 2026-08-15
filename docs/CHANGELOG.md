@@ -54,3 +54,12 @@ This changelog tracks evidence-backed development steps from the project-memory 
 - **Result:** **COMPLETE.** Legacy documentation and explanatory terminology now align with the verified project-memory baseline.
 - **Commit:** Created by STEP 2B with message `docs: align legacy documentation with verified architecture`; see Git history for the resulting SHA.
 - **Notes:** The stale backend commit assertion remains intentionally unchanged.
+
+## STEP 2C — Repair Stale Baseline Assertion
+
+- **Goal:** Repair the stale repository-revision expectation and re-verify the complete baseline without changing application behavior.
+- **Changes:** Updated `CaptureTests.test_dry_run_contract_identity_revision_and_unknown_semantics` to compare captured revision metadata with an independently queried current short Git HEAD, allowing only the function's documented optional `-dirty` suffix. Updated project-memory verification records while preserving the original STEP 0 failure.
+- **Verification:** Targeted backend test: 1 passed, 0 failed/skipped. Full backend command `PYTHONPATH=.:backend ./backend/.venv/bin/python -m unittest discover -s backend/tests`: 327 executed, 326 passed, 0 failed, 1 skipped. Frontend `node --test tests/*.test.cjs`: 34/34 passed. Frontend `npm run build`: passed with existing unresolved legacy asset/font and oversized-chunk warnings. `git diff --check` passed; changed-file scope verified.
+- **Result:** **COMPLETE.** The stale assertion was repaired without changing application behavior, and all required verification gates passed.
+- **Commit:** Created by STEP 2C with message `test: repair stale baseline assertion`; see Git history for the resulting SHA.
+- **Notes:** Provider failure lines in backend output are expected mocked failure-path logs. The live Tokyo/Google E2E test remains skipped.

@@ -38,6 +38,15 @@ STEP 0 at HEAD `449d0fa` recorded:
 - Frontend `npm run build`: passed, with unresolved legacy asset/font paths and oversized chunk warnings.
 - `git diff --check`: passed.
 
+STEP 2C on 2026-08-16 repaired the stale repository-revision assertion without changing application behavior and established the current verification result:
+
+- Backend: 327 tests run; 326 passed, 0 failed, 1 skipped.
+- Frontend: 34/34 Node tests passed.
+- Frontend production build: passed with the existing unresolved asset/font and oversized-chunk warnings.
+- `git diff --check`: passed.
+
+The STEP 0 failure remains recorded above as audit history; STEP 2C is the later verified state.
+
 ## Known limitations
 
 - Single-process coordination does not safely support multiple workers or horizontal scaling.
@@ -45,7 +54,7 @@ STEP 0 at HEAD `449d0fa` recorded:
 - No authentication, task ownership enforcement, database, reliable queue, or user accounts.
 - External integrations and deployment health are not live-verified; most provider tests use mocks.
 - Grounding is strongest for POIs/XHS evidence but incomplete for planner prose, meals, hotels, ticket prices, budgets, and chat suggestions.
-- One backend regression test is stale; test imports require a specific `PYTHONPATH` because import styles are mixed.
+- Backend test imports still require `PYTHONPATH=.:backend` because import styles are mixed.
 - No full browser E2E suite; build warnings and large bundles remain.
 - The root `CURRENT_ARCHITECTURE.md` is a compatibility entry; `docs/ARCHITECTURE.md` is the canonical architecture reference.
 
