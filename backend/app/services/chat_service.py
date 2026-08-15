@@ -1,14 +1,14 @@
 """
 AI 行程问答服务
-基于 httpx 直接调用 OpenAI 兼容的 Chat Completions API，
+复用项目统一的 OpenAI-compatible Chat Completions 调用链，
 将当前旅行计划作为上下文注入,实现针对行程的智能问答
 """
 
-import os
+import asyncio
 import json
-import httpx
 from typing import List, Optional, Dict, Any
 from ..config import get_settings
+from .llm_service import _error_category, create_chat_completion, get_llm
 
 # ============ System Prompt ============
 SYSTEM_PROMPT = """你是一个专业且贴心的私人旅行管家「TripStar-AI」。
@@ -23,38 +23,6 @@ SYSTEM_PROMPT = """你是一个专业且贴心的私人旅行管家「TripStar-A
 3. 回答要有温度、条理清晰，适当使用 emoji 增加亲切感 🌟。
 4. 回答尽量简洁，控制在200字以内，除非用户要求详细展开。
 5. 使用中文回答。"""
-
-
-def _get_llm_runtime_config() -> Dict[str, Any]:
-    """按请求实时读取 LLM 配置，支持前端设置页热更新。"""
-    settings = get_settings()
-
-    api_key = (
-        settings.openai_api_key
-        or os.getenv("LLM_API_KEY")
-        or os.getenv("OPENAI_API_KEY")
-        or ""
-    )
-    base_url = (
-        settings.openai_base_url
-        or os.getenv("LLM_BASE_URL")
-        or os.getenv("OPENAI_BASE_URL")
-        or "https://api.openai.com/v1"
-    )
-    model_id = (
-        settings.openai_model
-        or os.getenv("LLM_MODEL_ID")
-        or os.getenv("OPENAI_MODEL")
-        or "gpt-4"
-    )
-    timeout = int(os.getenv("LLM_TIMEOUT", "120"))
-
-    return {
-        "api_key": api_key.strip(),
-        "base_url": base_url.rstrip("/"),
-        "model_id": model_id.strip(),
-        "timeout": timeout,
-    }
 
 
 def _build_context_message(trip_plan_dict: Dict[str, Any]) -> str:
@@ -79,9 +47,10 @@ async def chat_with_trip_context(
         AI 的回复文本
     """
     # 构造消息列表
-    llm_config = _get_llm_runtime_config()
-    if not llm_config["api_key"]:
+    settings = get_settings()
+    if not settings.openai_api_key:
         return "抱歉，AI 服务尚未配置 API Key，请先在设置页面中完成配置。"
+    llm = get_llm()
 
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -99,34 +68,30 @@ async def chat_with_trip_context(
     # 追加本次用户提问
     messages.append({"role": "user", "content": message})
 
-    # 调用 LLM
-    url = f"{llm_config['base_url']}/chat/completions"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {llm_config['api_key']}",
-    }
-    payload = {
-        "model": llm_config["model_id"],
-        "messages": messages,
-        "temperature": 0.7,
-        "max_tokens": 1024,
-    }
-
     try:
-        async with httpx.AsyncClient(timeout=llm_config["timeout"]) as client:
-            response = await client.post(url, json=payload, headers=headers)
-            response.raise_for_status()
-            data = response.json()
-
-            reply = data["choices"][0]["message"]["content"]
-            return reply.strip()
-
-    except httpx.HTTPStatusError as e:
-        print(f"❌ provider=llm endpoint=chat_completions category=http_status status={e.response.status_code}")
-        return f"抱歉，AI 服务暂时出现问题 (HTTP {e.response.status_code})，请稍后重试 🙏"
-    except httpx.TimeoutException:
-        print("❌ LLM API 请求超时")
-        return "抱歉，AI 回复超时了，请稍后再试 ⏳"
-    except Exception:
-        print("❌ provider=llm endpoint=chat_completions category=unexpected_error status=none")
-        return f"抱歉，AI 出现了意外错误，请稍后重试 🙏"
+        response = await asyncio.to_thread(
+            create_chat_completion,
+            stage="chat",
+            model=llm.model,
+            messages=messages,
+            llm_instance=llm,
+            temperature=0.7,
+            max_tokens=1024,
+            stage_max_token_exposure=1024,
+        )
+        reply = response.choices[0].message.content
+        return reply.strip()
+    except Exception as exc:
+        category, retryable = _error_category(exc)
+        status = getattr(exc, "status_code", None)
+        status_text = str(status) if isinstance(status, int) else "none"
+        print(
+            "❌ provider=llm endpoint=chat_completions "
+            f"category={category} status={status_text} "
+            f"retryable={str(retryable).lower()}"
+        )
+        if category == "transient_network":
+            return "抱歉，AI 回复超时了，请稍后再试 ⏳"
+        if isinstance(status, int):
+            return f"抱歉，AI 服务暂时出现问题 (HTTP {status})，请稍后重试 🙏"
+        return "抱歉，AI 出现了意外错误，请稍后重试 🙏"
