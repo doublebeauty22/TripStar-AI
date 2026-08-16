@@ -29,9 +29,10 @@ class XHSCookieExpiredError(Exception):
 
 
 class XHSRequestError(Exception):
-    def __init__(self, reason: str, message: str):
+    def __init__(self, reason: str, message: str, *, retryable: Optional[bool] = None):
         super().__init__(message)
         self.reason = reason
+        self.retryable = retryable
 
 
 _XHS_RETRYABLE = {
@@ -46,13 +47,23 @@ _XHS_RETRYABLE = {
     "malformed_response": False,
     "no_result": False,
     "unexpected_error": False,
+    "http_error": False,
+    "business_rejected": False,
+    "request_error": False,
 }
 
 
-def _log_xhs_event(*, request_id: str, stage: str, category: str) -> None:
+def _log_xhs_event(
+    *, request_id: str, stage: str, category: str,
+    retryable_override: Optional[bool] = None,
+) -> None:
     """Emit only stable diagnostic metadata; never provider or request data."""
     safe_request_id = request_id if re.fullmatch(r"[0-9a-f]{12}", request_id or "") else "unknown"
-    retryable = _XHS_RETRYABLE.get(category, False)
+    retryable = (
+        retryable_override
+        if retryable_override is not None
+        else _XHS_RETRYABLE.get(category, False)
+    )
     print(
         "XHS_EVENT "
         f"request_id={safe_request_id} stage={stage} category={category} "
@@ -187,6 +198,11 @@ class XhsNativeClient:
             raise XHSRequestError("permission_denied", "小红书访问被拒绝")
         if response.status_code == 429:
             raise XHSRequestError("rate_limited", "小红书请求频率受限")
+        if 400 <= response.status_code < 600:
+            raise XHSRequestError(
+                "http_error", "小红书搜索 HTTP 请求失败",
+                retryable=response.status_code >= 500,
+            )
         response.raise_for_status()
         res_json = response.json()
 
@@ -197,7 +213,7 @@ class XhsNativeClient:
                 raise XHSCookieExpiredError(
                     f"小红书 Cookie 已被风控拦截 (code={code}): {msg}。请更换 Cookie 后重试。"
                 )
-            raise Exception(f"小红书搜索失败 (code={code}): {msg}")
+            raise XHSRequestError("business_rejected", "小红书搜索业务请求被拒绝")
 
         return res_json
 
@@ -642,6 +658,8 @@ def _photo_error_category(exc: Exception) -> str:
         return "timeout"
     if isinstance(exc, (requests.ConnectionError, httpx.NetworkError)):
         return "network_error"
+    if isinstance(exc, requests.RequestException):
+        return "request_error"
     if isinstance(exc, (json.JSONDecodeError, ValueError, TypeError, KeyError, AttributeError)):
         return "malformed_response"
     return "unexpected_error"
@@ -686,7 +704,13 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
         except Exception as exc:
             category = _photo_error_category(exc)
             stage = _photo_error_stage(category, "search")
-            _log_xhs_event(request_id=request_id, stage=stage, category=category)
+            retryable_override = (
+                exc.retryable if isinstance(exc, XHSRequestError) else None
+            )
+            _log_xhs_event(
+                request_id=request_id, stage=stage, category=category,
+                retryable_override=retryable_override,
+            )
             raise
         try:
             data = _require_mapping(_require_mapping(res_json).get("data", {}))

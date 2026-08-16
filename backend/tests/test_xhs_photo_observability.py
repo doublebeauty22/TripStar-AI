@@ -164,6 +164,18 @@ class _Response:
 
 
 class XHSNativeClientClassificationTests(unittest.TestCase):
+    def _photo_for_response(self, response):
+        client = xhs_service.XhsNativeClient("not-logged")
+        output = io.StringIO()
+        with redirect_stdout(output), patch.object(
+            xhs_service, "get_xhs_client", return_value=client
+        ), patch.object(xhs_service, "_sign_request", return_value=({}, {}, "{}")), patch.object(
+            xhs_service, "_new_search_id", return_value="safe"
+        ), patch.object(xhs_service.requests, "post", return_value=response):
+            with self.assertRaises(Exception):
+                xhs_service.get_xhs_photo_sync("not-logged", request_id=REQUEST_ID)
+        return output.getvalue()
+
     def test_http_statuses_are_typed(self):
         cases = [(401, "authentication_failed"), (403, "permission_denied"),
                  (429, "rate_limited")]
@@ -190,6 +202,48 @@ class XHSNativeClientClassificationTests(unittest.TestCase):
                 xhs_service.get_xhs_photo_sync("not-logged", request_id=REQUEST_ID)
         self.assertIn("stage=search category=risk_control retryable=false", output.getvalue())
         self.assertNotIn("not logged", output.getvalue())
+
+    def test_other_http_errors_are_classified_by_retryability(self):
+        for status, retryable in [(400, False), (422, False), (500, True), (503, True)]:
+            with self.subTest(status=status):
+                output = self._photo_for_response(_Response(status=status))
+                self.assertIn(
+                    f"stage=search category=http_error retryable={str(retryable).lower()}",
+                    output,
+                )
+
+    def test_unknown_business_failures_are_business_rejected(self):
+        cases = [
+            {"success": False, "code": 399999, "msg": "ordinary rejection"},
+            {"success": False, "msg": "ordinary message"},
+        ]
+        for payload in cases:
+            with self.subTest(payload_keys=sorted(payload)):
+                output = self._photo_for_response(_Response(payload=payload))
+                self.assertIn(
+                    "stage=search category=business_rejected retryable=false", output
+                )
+                if "code" in payload:
+                    self.assertNotIn(str(payload["code"]), output)
+                self.assertNotIn(payload["msg"], output)
+
+    def test_other_request_exceptions_are_request_error(self):
+        for request_error in [
+            requests.TooManyRedirects("redirect target must not be logged"),
+            requests.RequestException("raw request failure must not be logged"),
+        ]:
+            with self.subTest(error_type=type(request_error).__name__):
+                client = _Client(search_error=request_error)
+                output = io.StringIO()
+                with redirect_stdout(output), patch.object(
+                    xhs_service, "get_xhs_client", return_value=client
+                ):
+                    with self.assertRaises(requests.RequestException):
+                        xhs_service.get_xhs_photo_sync("not-logged", request_id=REQUEST_ID)
+                self.assertIn(
+                    "stage=search category=request_error retryable=false", output.getvalue()
+                )
+                self.assertNotIn(str(request_error), output.getvalue())
 
     def test_signature_exception_is_typed(self):
         with patch.dict("sys.modules", {"backend.app.services.xhs_sign.sign_util": None}):
