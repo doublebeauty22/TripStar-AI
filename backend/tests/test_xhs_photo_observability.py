@@ -203,6 +203,12 @@ class XHSNativeClientClassificationTests(unittest.TestCase):
         self.assertIn("stage=search category=risk_control retryable=false", output.getvalue())
         self.assertNotIn("not logged", output.getvalue())
 
+    def test_string_300011_is_also_risk_control(self):
+        response = _Response(payload={"success": False, "code": "300011", "msg": "safe"})
+        output = self._photo_for_response(response)
+        self.assertIn("stage=search category=risk_control retryable=false", output)
+        self.assertNotIn("business_code=", output)
+
     def test_other_http_errors_are_classified_by_retryability(self):
         for status, retryable in [(400, False), (422, False), (500, True), (503, True)]:
             with self.subTest(status=status):
@@ -214,18 +220,41 @@ class XHSNativeClientClassificationTests(unittest.TestCase):
 
     def test_unknown_business_failures_are_business_rejected(self):
         cases = [
-            {"success": False, "code": 399999, "msg": "ordinary rejection"},
-            {"success": False, "msg": "ordinary message"},
+            ({"success": False, "code": 399999, "msg": "ordinary rejection"}, "399999"),
+            ({"success": False, "code": "SAFE_CODE-1.2", "msg": "ordinary message"}, "SAFE_CODE-1.2"),
+            ({"success": False, "msg": "missing code"}, "missing"),
+            ({"success": False, "code": None, "msg": "null code"}, "missing"),
         ]
-        for payload in cases:
+        for payload, safe_code in cases:
             with self.subTest(payload_keys=sorted(payload)):
                 output = self._photo_for_response(_Response(payload=payload))
                 self.assertIn(
-                    "stage=search category=business_rejected retryable=false", output
+                    "stage=search category=business_rejected "
+                    f"business_code={safe_code} retryable=false", output
                 )
-                if "code" in payload:
-                    self.assertNotIn(str(payload["code"]), output)
                 self.assertNotIn(payload["msg"], output)
+
+    def test_unsafe_business_codes_are_redacted(self):
+        unsafe_codes = [
+            {"secret": "value"}, ["secret"], "A" * 33, "has space",
+            "has\nnewline", "has=value", "control\x01value",
+        ]
+        for code in unsafe_codes:
+            with self.subTest(code_type=type(code).__name__):
+                payload = {
+                    "success": False, "code": code,
+                    "msg": "provider message must not be logged",
+                    "message": "alternate message must not be logged",
+                    "body_secret": "response body must not be logged",
+                }
+                output = self._photo_for_response(_Response(payload=payload))
+                self.assertIn(
+                    "stage=search category=business_rejected "
+                    "business_code=redacted retryable=false", output
+                )
+                for sensitive in payload.values():
+                    if isinstance(sensitive, str) and sensitive != "redacted":
+                        self.assertNotIn(sensitive, output)
 
     def test_other_request_exceptions_are_request_error(self):
         for request_error in [

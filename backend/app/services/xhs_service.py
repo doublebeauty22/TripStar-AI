@@ -29,10 +29,14 @@ class XHSCookieExpiredError(Exception):
 
 
 class XHSRequestError(Exception):
-    def __init__(self, reason: str, message: str, *, retryable: Optional[bool] = None):
+    def __init__(
+        self, reason: str, message: str, *, retryable: Optional[bool] = None,
+        business_code: Optional[str] = None,
+    ):
         super().__init__(message)
         self.reason = reason
         self.retryable = retryable
+        self.business_code = business_code
 
 
 _XHS_RETRYABLE = {
@@ -56,6 +60,7 @@ _XHS_RETRYABLE = {
 def _log_xhs_event(
     *, request_id: str, stage: str, category: str,
     retryable_override: Optional[bool] = None,
+    business_code: Optional[str] = None,
 ) -> None:
     """Emit only stable diagnostic metadata; never provider or request data."""
     safe_request_id = request_id if re.fullmatch(r"[0-9a-f]{12}", request_id or "") else "unknown"
@@ -67,9 +72,21 @@ def _log_xhs_event(
     print(
         "XHS_EVENT "
         f"request_id={safe_request_id} stage={stage} category={category} "
+        f"{f'business_code={business_code} ' if business_code is not None else ''}"
         f"retryable={str(retryable).lower()}",
         flush=True,
     )
+
+
+def _sanitize_xhs_business_code(code: Any) -> str:
+    """Return a bounded token safe for logs, never arbitrary provider content."""
+    if code is None:
+        return "missing"
+    if type(code) is int:
+        return str(code)
+    if isinstance(code, str) and re.fullmatch(r"[A-Za-z0-9_.-]{1,32}", code):
+        return code
+    return "redacted"
 
 
 def _sign_request(cookies_str: str, api: str, data: dict):
@@ -207,13 +224,16 @@ class XhsNativeClient:
         res_json = response.json()
 
         if not res_json.get("success"):
-            code = res_json.get("code", "")
+            code = res_json.get("code")
             msg = res_json.get("msg", "")
-            if code == 300011 or "异常" in msg:
+            if code == 300011 or code == "300011" or "异常" in msg:
                 raise XHSCookieExpiredError(
                     f"小红书 Cookie 已被风控拦截 (code={code}): {msg}。请更换 Cookie 后重试。"
                 )
-            raise XHSRequestError("business_rejected", "小红书搜索业务请求被拒绝")
+            raise XHSRequestError(
+                "business_rejected", "小红书搜索业务请求被拒绝",
+                business_code=_sanitize_xhs_business_code(code),
+            )
 
         return res_json
 
@@ -707,9 +727,13 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
             retryable_override = (
                 exc.retryable if isinstance(exc, XHSRequestError) else None
             )
+            business_code = (
+                exc.business_code if isinstance(exc, XHSRequestError) else None
+            )
             _log_xhs_event(
                 request_id=request_id, stage=stage, category=category,
                 retryable_override=retryable_override,
+                business_code=business_code,
             )
             raise
         try:
