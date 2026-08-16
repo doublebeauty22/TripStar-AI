@@ -1,6 +1,7 @@
 """POI相关API路由"""
 
 import asyncio
+import uuid
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -11,13 +12,30 @@ router = APIRouter(prefix="/poi", tags=["POI"])
 
 
 def _log_photo_event(
-    *, provider: str, stage: str, category: str, match_status: str, retryable: bool
+    *, request_id: str, provider: str, stage: str, category: str,
+    match_status: str, retryable: bool
 ) -> None:
     """Emit stable image telemetry without request data or provider details."""
     print(
         "PHOTO_EVENT "
-        f"provider={provider} stage={stage} category={category} "
-        f"match_status={match_status} retryable={str(retryable).lower()}"
+        f"request_id={request_id} provider={provider} stage={stage} "
+        f"category={category} match_status={match_status} "
+        f"retryable={str(retryable).lower()}",
+        flush=True,
+    )
+
+
+def _log_photo_terminal(
+    *, request_id: str, outcome: str, source: str, category: str,
+    match_status: str, retryable: bool
+) -> None:
+    """Emit one safe, machine-parseable backend retrieval outcome."""
+    print(
+        "PHOTO_TERMINAL "
+        f"request_id={request_id} outcome={outcome} source={source} "
+        f"category={category} match_status={match_status} "
+        f"retryable={str(retryable).lower()}",
+        flush=True,
     )
 
 
@@ -130,6 +148,30 @@ async def get_attraction_photo(
     resolved_place_id = ""
     match_status = "unverified"
     failure_reasons: List[str] = []
+    request_id = uuid.uuid4().hex[:12]
+    terminal_emitted = False
+
+    def emit_terminal(
+        *, outcome: str, source: str, category: str, retryable: bool
+    ) -> None:
+        """Guard the request-level terminal outcome against duplicate emission."""
+        nonlocal terminal_emitted
+        if terminal_emitted:
+            return
+        terminal_emitted = True
+        safe_match_status = (
+            match_status
+            if match_status in {"verified", "partial_match", "unverified"}
+            else "unknown"
+        )
+        _log_photo_terminal(
+            request_id=request_id,
+            outcome=outcome,
+            source=source,
+            category=category,
+            match_status=safe_match_status,
+            retryable=retryable,
+        )
 
     # 1. Google Places 是首选图片事实源。
     try:
@@ -175,6 +217,7 @@ async def get_attraction_photo(
             else:
                 failure_reasons.append("grounding_unverified")
                 _log_photo_event(
+                    request_id=request_id,
                     provider="google", stage="grounding",
                     category="grounding_unverified", match_status="unverified",
                     retryable=False,
@@ -185,6 +228,11 @@ async def get_attraction_photo(
                 }
             resolved_place_id = google_photo.get("place_id") or ""
             if google_photo.get("photo_url"):
+                match_status = google_photo.get("match_status") or match_status
+                emit_terminal(
+                    outcome="success", source="google_places",
+                    category="success", retryable=False,
+                )
                 return {
                     "success": True,
                     "message": "Google Places 图片获取成功",
@@ -204,6 +252,7 @@ async def get_attraction_photo(
             if google_reason and google_reason not in failure_reasons:
                 failure_reasons.append(google_reason)
                 _log_photo_event(
+                    request_id=request_id,
                     provider="google", stage="photo", category=google_reason,
                     match_status=google_photo.get("match_status") or match_status,
                     retryable=google_reason == "google_provider_error",
@@ -211,6 +260,7 @@ async def get_attraction_photo(
         else:
             failure_reasons.append("google_provider_error")
             _log_photo_event(
+                request_id=request_id,
                 provider="google", stage="configuration",
                 category="google_provider_error", match_status=match_status,
                 retryable=False,
@@ -218,6 +268,7 @@ async def get_attraction_photo(
     except Exception:
         failure_reasons.append("google_provider_error")
         _log_photo_event(
+            request_id=request_id,
             provider="google", stage="photo", category="google_provider_error",
             match_status=match_status, retryable=True,
         )
@@ -228,6 +279,10 @@ async def get_attraction_photo(
 
         photo_url = await get_photo_from_xhs(f"{name} 风景")
         if photo_url:
+            emit_terminal(
+                outcome="success", source="xhs",
+                category="success", retryable=False,
+            )
             return {
                 "success": True,
                 "message": "已使用小红书图片降级方案",
@@ -244,12 +299,14 @@ async def get_attraction_photo(
             }
         failure_reasons.append("xhs_no_result")
         _log_photo_event(
+            request_id=request_id,
             provider="xhs", stage="photo", category="xhs_no_result",
             match_status=match_status, retryable=False,
         )
     except Exception:
         failure_reasons.append("xhs_provider_error")
         _log_photo_event(
+            request_id=request_id,
             provider="xhs", stage="photo", category="xhs_provider_error",
             match_status=match_status, retryable=True,
         )
@@ -257,8 +314,13 @@ async def get_attraction_photo(
     # 3. placeholder 由前端本地渲染；这里不伪造真实 photo_url。
     final_reason = failure_reasons[-1] if failure_reasons else "xhs_no_result"
     _log_photo_event(
+        request_id=request_id,
         provider="frontend", stage="fallback", category=final_reason,
         match_status=match_status, retryable=False,
+    )
+    emit_terminal(
+        outcome="placeholder", source="placeholder", category=final_reason,
+        retryable=final_reason in {"google_provider_error", "xhs_provider_error"},
     )
     return {
         "success": True,
