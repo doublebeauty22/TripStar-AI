@@ -17,8 +17,6 @@ from ..models.schemas import (
     XHSEvidence, XHSEvidenceSupport, XHSExtractedItem, XHSResearchResult,
 )
 from .llm_service import get_llm
-from .xhs_sign.sign_util import generate_request_params, splice_str, generate_x_b3_traceid, trans_cookies
-
 logger = logging.getLogger(__name__)
 _FABRICATED_CONSENSUS_TERMS = (
     "大家都推荐", "小红书普遍认为", "小红书用户普遍推荐", "热门必去",
@@ -34,6 +32,50 @@ class XHSRequestError(Exception):
     def __init__(self, reason: str, message: str):
         super().__init__(message)
         self.reason = reason
+
+
+_XHS_RETRYABLE = {
+    "missing_config": False,
+    "authentication_failed": False,
+    "permission_denied": False,
+    "rate_limited": True,
+    "risk_control": False,
+    "sign_error": False,
+    "timeout": True,
+    "network_error": True,
+    "malformed_response": False,
+    "no_result": False,
+    "unexpected_error": False,
+}
+
+
+def _log_xhs_event(*, request_id: str, stage: str, category: str) -> None:
+    """Emit only stable diagnostic metadata; never provider or request data."""
+    safe_request_id = request_id if re.fullmatch(r"[0-9a-f]{12}", request_id or "") else "unknown"
+    retryable = _XHS_RETRYABLE.get(category, False)
+    print(
+        "XHS_EVENT "
+        f"request_id={safe_request_id} stage={stage} category={category} "
+        f"retryable={str(retryable).lower()}",
+        flush=True,
+    )
+
+
+def _sign_request(cookies_str: str, api: str, data: dict):
+    """Keep signing failures separate from HTTP/provider failures."""
+    try:
+        from .xhs_sign.sign_util import generate_request_params
+        return generate_request_params(cookies_str, api, data, "POST")
+    except Exception as exc:
+        raise XHSRequestError("sign_error", "XHS request signing failed") from exc
+
+
+def _new_search_id() -> str:
+    try:
+        from .xhs_sign.sign_util import generate_x_b3_traceid
+        return generate_x_b3_traceid(21)
+    except Exception as exc:
+        raise XHSRequestError("sign_error", "XHS request signing failed") from exc
 
 
 # ============ Cookie 处理 ============
@@ -116,7 +158,7 @@ class XhsNativeClient:
             "keyword": keyword,
             "page": page,
             "page_size": page_size,
-            "search_id": generate_x_b3_traceid(21),
+            "search_id": _new_search_id(),
             "sort": "general",
             "note_type": 0,
             "ext_flags": [],
@@ -131,9 +173,7 @@ class XhsNativeClient:
             "image_formats": ["jpg", "webp", "avif"],
         }
 
-        headers, cookies, serialized_data = generate_request_params(
-            self.cookies_str, api, data, "POST"
-        )
+        headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
         response = requests.post(
             self.BASE_URL + api,
             headers=headers,
@@ -183,9 +223,7 @@ class XhsNativeClient:
             "xsec_token": xsec_token,
         }
 
-        headers, cookies, serialized_data = generate_request_params(
-            self.cookies_str, api, data, "POST"
-        )
+        headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
         response = requests.post(
             self.BASE_URL + api,
             headers=headers,
@@ -222,6 +260,8 @@ def get_xhs_client() -> XhsNativeClient:
     if not settings.xhs_cookie:
         raise XHSCookieExpiredError("XHS_COOKIE 未在后端环境中配置")
     cookie_str = normalize_xhs_cookie(settings.xhs_cookie)
+    if not cookie_str:
+        raise XHSCookieExpiredError("XHS_COOKIE 未在后端环境中配置")
     return XhsNativeClient(cookie_str)
 
 
@@ -593,79 +633,159 @@ JSON 返回示例:
 
 # ============ 景点搜图 ============
 
-def get_xhs_photo_sync(keyword: str) -> str:
+def _photo_error_category(exc: Exception) -> str:
+    if isinstance(exc, XHSCookieExpiredError):
+        return "risk_control"
+    if isinstance(exc, XHSRequestError):
+        return exc.reason if exc.reason in _XHS_RETRYABLE else "unexpected_error"
+    if isinstance(exc, (requests.Timeout, httpx.TimeoutException)):
+        return "timeout"
+    if isinstance(exc, (requests.ConnectionError, httpx.NetworkError)):
+        return "network_error"
+    if isinstance(exc, (json.JSONDecodeError, ValueError, TypeError, KeyError, AttributeError)):
+        return "malformed_response"
+    return "unexpected_error"
+
+
+def _photo_error_stage(category: str, default_stage: str) -> str:
+    if category == "sign_error":
+        return "sign"
+    if category == "malformed_response":
+        return "parse"
+    return default_stage
+
+
+def _require_mapping(value: Any) -> Dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ValueError("malformed provider mapping")
+    return value
+
+
+def _require_list(value: Any) -> List[Any]:
+    if not isinstance(value, list):
+        raise ValueError("malformed provider list")
+    return value
+
+
+def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
     """根据关键词从小红书搜索一张首图URL
 
     使用原生签名客户端搜索最新帖子，然后通过原生 API 或 SSR 抓取首张图片。
     """
     try:
-        client = get_xhs_client()
+        try:
+            client = get_xhs_client()
+        except Exception as exc:
+            category = "missing_config" if isinstance(exc, XHSCookieExpiredError) else _photo_error_category(exc)
+            _log_xhs_event(request_id=request_id, stage="configuration", category=category)
+            raise
 
         # 搜图时强制按"最新"排序，避开综合高赞的含文字攻略图
-        res_json = client.search_notes(keyword=keyword, sort_type=0)
-        items = res_json.get("data", {}).get("items", [])
+        try:
+            res_json = client.search_notes(keyword=keyword, sort_type=0)
+        except Exception as exc:
+            category = _photo_error_category(exc)
+            stage = _photo_error_stage(category, "search")
+            _log_xhs_event(request_id=request_id, stage=stage, category=category)
+            raise
+        try:
+            data = _require_mapping(_require_mapping(res_json).get("data", {}))
+            items = _require_list(data.get("items", []))
+        except Exception:
+            _log_xhs_event(request_id=request_id, stage="parse", category="malformed_response")
+            raise
 
         target_note_id = None
         target_xsec_token = ""
         for note in items:
+            if not isinstance(note, dict):
+                _log_xhs_event(request_id=request_id, stage="parse", category="malformed_response")
+                raise ValueError("malformed note item")
             if note.get("model_type") == "note":
                 target_note_id = note.get("id")
                 target_xsec_token = note.get("xsec_token", "")
                 break
 
         if not target_note_id:
+            _log_xhs_event(request_id=request_id, stage="search", category="no_result")
             return ""
 
         # 方案 A: 通过原生 API 获取笔记详情和图片
         try:
-            detail_res = client.get_note_detail(
-                target_note_id, target_xsec_token
-            )
-            detail_items = detail_res.get("data", {}).get("items", [])
+            detail_res = client.get_note_detail(target_note_id, target_xsec_token)
+            detail_data = _require_mapping(_require_mapping(detail_res).get("data", {}))
+            detail_items = _require_list(detail_data.get("items", []))
             if detail_items:
-                note_card = detail_items[0].get("note_card", {})
-                image_list = note_card.get("image_list", [])
+                note_card = _require_mapping(_require_mapping(detail_items[0]).get("note_card", {}))
+                image_list = _require_list(note_card.get("image_list", []))
                 if image_list:
                     # 取第一张图的 URL
-                    first_img = image_list[0]
+                    first_img = _require_mapping(image_list[0])
                     # 优先 info_list 中的高清图
-                    info_list = first_img.get("info_list", [])
+                    info_list = _require_list(first_img.get("info_list", []))
                     if len(info_list) > 1:
-                        return info_list[1].get("url", "")
+                        photo_url = _require_mapping(info_list[1]).get("url", "")
+                        if photo_url:
+                            return photo_url
+                        _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                        return ""
                     elif info_list:
-                        return info_list[0].get("url", "")
+                        photo_url = _require_mapping(info_list[0]).get("url", "")
+                        if photo_url:
+                            return photo_url
+                        _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                        return ""
                     # 降级到其他字段
-                    return (
+                    photo_url = (
                         first_img.get("url_default", "")
                         or first_img.get("url_pre", "")
                         or first_img.get("url", "")
                     )
-        except Exception:
-            pass
+                    if photo_url:
+                        return photo_url
+                    _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                    return ""
+        except Exception as exc:
+            _log_xhs_event(
+                request_id=request_id,
+                stage=_photo_error_stage(_photo_error_category(exc), "detail"),
+                category=_photo_error_category(exc),
+            )
 
         # 方案 B: 降级到 SSR 抓取
         url = f"https://www.xiaohongshu.com/explore/{target_note_id}"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
-        resp = httpx.get(url, headers=headers, timeout=10)
+        try:
+            resp = httpx.get(url, headers=headers, timeout=10)
+        except Exception as exc:
+            category = _photo_error_category(exc)
+            _log_xhs_event(
+                request_id=request_id,
+                stage=_photo_error_stage(category, "ssr"), category=category,
+            )
+            raise
 
         match = re.search(r'window\.__INITIAL_STATE__=({.*?})</script>', resp.text)
         if match:
             state_json_str = match.group(1).replace("undefined", "null")
-            state_json = json.loads(state_json_str)
-            note_data = (
-                state_json.get("note", {})
-                .get("noteDetailMap", {})
-                .get(target_note_id, {})
-                .get("note", {})
-            )
-            img_list = note_data.get("imageList", [])
+            try:
+                state_json = _require_mapping(json.loads(state_json_str))
+                note = _require_mapping(state_json.get("note", {}))
+                detail_map = _require_mapping(note.get("noteDetailMap", {}))
+                note_entry = _require_mapping(detail_map.get(target_note_id, {}))
+                note_data = _require_mapping(note_entry.get("note", {}))
+                img_list = _require_list(note_data.get("imageList", []))
+            except Exception:
+                _log_xhs_event(request_id=request_id, stage="parse", category="malformed_response")
+                raise
             if img_list:
+                first_image = _require_mapping(img_list[0])
                 first_img = (
-                    img_list[0].get("urlDefault")
-                    or img_list[0].get("urlPattern")
-                    or img_list[0].get("url")
+                    first_image.get("urlDefault")
+                    or first_image.get("urlPattern")
+                    or first_image.get("url")
                 )
                 if first_img:
                     return first_img
@@ -674,10 +794,11 @@ def get_xhs_photo_sync(keyword: str) -> str:
         # The route owns stable failure classification. Never log the keyword,
         # cookie-related detail, or a raw provider response here.
         raise
+    _log_xhs_event(request_id=request_id, stage="ssr", category="no_result")
     return ""
 
 
-async def get_photo_from_xhs(keyword: str) -> str:
+async def get_photo_from_xhs(keyword: str, *, request_id: str = "") -> str:
     """供异步环境调用的小红书图片搜索API"""
     import asyncio
-    return await asyncio.to_thread(get_xhs_photo_sync, keyword)
+    return await asyncio.to_thread(get_xhs_photo_sync, keyword, request_id=request_id)

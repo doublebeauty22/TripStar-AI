@@ -277,7 +277,9 @@ async def get_attraction_photo(
     try:
         from ...services.xhs_service import get_photo_from_xhs
 
-        photo_url = await get_photo_from_xhs(f"{name} 风景")
+        photo_url = await get_photo_from_xhs(
+            f"{name} 风景", request_id=request_id
+        )
         if photo_url:
             emit_terminal(
                 outcome="success", source="xhs",
