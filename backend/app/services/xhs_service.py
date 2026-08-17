@@ -16,6 +16,7 @@ from ..config import get_settings
 from ..models.schemas import (
     XHSEvidence, XHSEvidenceSupport, XHSExtractedItem, XHSResearchResult,
 )
+from .timing import timed_stage
 from .llm_service import get_llm
 logger = logging.getLogger(__name__)
 _FABRICATED_CONSENSUS_TERMS = (
@@ -337,14 +338,16 @@ def get_note_detail_ssr(note_id: str) -> dict:
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
-    try:
-        resp = httpx.get(url, headers=headers, timeout=8)
-        match = re.search(r'window\.__INITIAL_STATE__=({.*?})</script>', resp.text)
-        if match:
-            state_json = json.loads(match.group(1).replace('undefined', 'null'))
-            return state_json.get("note", {}).get("noteDetailMap", {}).get(note_id, {}).get("note", {})
-    except Exception as e:
-        print(f"SSR详情提取失败 {note_id}: {e}")
+    with timed_stage("xhs_stage_timing", "research_ssr") as timing:
+        try:
+            resp = httpx.get(url, headers=headers, timeout=8)
+            match = re.search(r'window\.__INITIAL_STATE__=({.*?})</script>', resp.text)
+            if match:
+                state_json = json.loads(match.group(1).replace('undefined', 'null'))
+                return state_json.get("note", {}).get("noteDetailMap", {}).get(note_id, {}).get("note", {})
+        except Exception as e:
+            timing.mark_failed()
+            print(f"SSR详情提取失败 {note_id}: {e}")
     return {}
 
 
@@ -440,7 +443,8 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
 
     try:
         # 使用原生签名客户端搜索
-        res_json = client.search_notes(keyword=query)
+        with timed_stage("xhs_stage_timing", "research_search"):
+            res_json = client.search_notes(keyword=query)
         items = res_json.get("data", {}).get("items", [])[:4]
 
         combined_text = ""
@@ -458,7 +462,8 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
                 try:
                     xsec_token = note.get("xsec_token", "")
                     if note_id:
-                        detail_res = client.get_note_detail(note_id, xsec_token)
+                        with timed_stage("xhs_stage_timing", "research_detail"):
+                            detail_res = client.get_note_detail(note_id, xsec_token)
                         detail_items = detail_res.get("data", {}).get("items", [])
                         if detail_items:
                             note_data = detail_items[0].get("note_card", {})
@@ -574,13 +579,14 @@ JSON 返回示例:
 """
     try:
         from .llm_service import create_chat_completion
-        response = create_chat_completion(
-            stage="xhs_research",
-            model=llm.model,
-            messages=[{"role": "user", "content": extract_prompt}],
-            llm_instance=llm,
-            temperature=0.1,
-        )
+        with timed_stage("xhs_stage_timing", "research_llm_extraction"):
+            response = create_chat_completion(
+                stage="xhs_research",
+                model=llm.model,
+                messages=[{"role": "user", "content": extract_prompt}],
+                llm_instance=llm,
+                temperature=0.1,
+            )
         content = response.choices[0].message.content
 
         json_match = re.search(r'\[.*\]', content, re.DOTALL)
@@ -613,7 +619,8 @@ JSON 返回示例:
             # 获取中英文名称，用于精准地理编码（Google用英文，高德用中文）
             name_zh = item.get("name_zh", name)
             name_en = item.get("name_en", name)
-            loc = geocode_amap(name, city, name_zh=name_zh, name_en=name_en)
+            with timed_stage("xhs_stage_timing", "research_geocoding"):
+                loc = geocode_amap(name, city, name_zh=name_zh, name_en=name_en)
             supported_items.append(XHSExtractedItem(
                 name=name,
                 identity_text=item["identity_text"],
@@ -720,7 +727,8 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
 
         # 搜图时强制按"最新"排序，避开综合高赞的含文字攻略图
         try:
-            res_json = client.search_notes(keyword=keyword, sort_type=0)
+            with timed_stage("xhs_stage_timing", "image_search"):
+                res_json = client.search_notes(keyword=keyword, sort_type=0)
         except Exception as exc:
             category = _photo_error_category(exc)
             stage = _photo_error_stage(category, "search")
@@ -760,39 +768,40 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
 
         # 方案 A: 通过原生 API 获取笔记详情和图片
         try:
-            detail_res = client.get_note_detail(target_note_id, target_xsec_token)
-            detail_data = _require_mapping(_require_mapping(detail_res).get("data", {}))
-            detail_items = _require_list(detail_data.get("items", []))
-            if detail_items:
-                note_card = _require_mapping(_require_mapping(detail_items[0]).get("note_card", {}))
-                image_list = _require_list(note_card.get("image_list", []))
-                if image_list:
-                    # 取第一张图的 URL
-                    first_img = _require_mapping(image_list[0])
-                    # 优先 info_list 中的高清图
-                    info_list = _require_list(first_img.get("info_list", []))
-                    if len(info_list) > 1:
-                        photo_url = _require_mapping(info_list[1]).get("url", "")
+            with timed_stage("xhs_stage_timing", "image_detail"):
+                detail_res = client.get_note_detail(target_note_id, target_xsec_token)
+                detail_data = _require_mapping(_require_mapping(detail_res).get("data", {}))
+                detail_items = _require_list(detail_data.get("items", []))
+                if detail_items:
+                    note_card = _require_mapping(_require_mapping(detail_items[0]).get("note_card", {}))
+                    image_list = _require_list(note_card.get("image_list", []))
+                    if image_list:
+                        # 取第一张图的 URL
+                        first_img = _require_mapping(image_list[0])
+                        # 优先 info_list 中的高清图
+                        info_list = _require_list(first_img.get("info_list", []))
+                        if len(info_list) > 1:
+                            photo_url = _require_mapping(info_list[1]).get("url", "")
+                            if photo_url:
+                                return photo_url
+                            _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                            return ""
+                        elif info_list:
+                            photo_url = _require_mapping(info_list[0]).get("url", "")
+                            if photo_url:
+                                return photo_url
+                            _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                            return ""
+                        # 降级到其他字段
+                        photo_url = (
+                            first_img.get("url_default", "")
+                            or first_img.get("url_pre", "")
+                            or first_img.get("url", "")
+                        )
                         if photo_url:
                             return photo_url
                         _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
                         return ""
-                    elif info_list:
-                        photo_url = _require_mapping(info_list[0]).get("url", "")
-                        if photo_url:
-                            return photo_url
-                        _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
-                        return ""
-                    # 降级到其他字段
-                    photo_url = (
-                        first_img.get("url_default", "")
-                        or first_img.get("url_pre", "")
-                        or first_img.get("url", "")
-                    )
-                    if photo_url:
-                        return photo_url
-                    _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
-                    return ""
         except Exception as exc:
             _log_xhs_event(
                 request_id=request_id,
@@ -806,7 +815,26 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         try:
-            resp = httpx.get(url, headers=headers, timeout=10)
+            with timed_stage("xhs_stage_timing", "image_ssr"):
+                resp = httpx.get(url, headers=headers, timeout=10)
+                match = re.search(r'window\.__INITIAL_STATE__=({.*?})</script>', resp.text)
+                if match:
+                    state_json_str = match.group(1).replace("undefined", "null")
+                    state_json = _require_mapping(json.loads(state_json_str))
+                    note = _require_mapping(state_json.get("note", {}))
+                    detail_map = _require_mapping(note.get("noteDetailMap", {}))
+                    note_entry = _require_mapping(detail_map.get(target_note_id, {}))
+                    note_data = _require_mapping(note_entry.get("note", {}))
+                    img_list = _require_list(note_data.get("imageList", []))
+                    if img_list:
+                        first_image = _require_mapping(img_list[0])
+                        first_img = (
+                            first_image.get("urlDefault")
+                            or first_image.get("urlPattern")
+                            or first_image.get("url")
+                        )
+                        if first_img:
+                            return first_img
         except Exception as exc:
             category = _photo_error_category(exc)
             _log_xhs_event(
@@ -814,29 +842,6 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
                 stage=_photo_error_stage(category, "ssr"), category=category,
             )
             raise
-
-        match = re.search(r'window\.__INITIAL_STATE__=({.*?})</script>', resp.text)
-        if match:
-            state_json_str = match.group(1).replace("undefined", "null")
-            try:
-                state_json = _require_mapping(json.loads(state_json_str))
-                note = _require_mapping(state_json.get("note", {}))
-                detail_map = _require_mapping(note.get("noteDetailMap", {}))
-                note_entry = _require_mapping(detail_map.get(target_note_id, {}))
-                note_data = _require_mapping(note_entry.get("note", {}))
-                img_list = _require_list(note_data.get("imageList", []))
-            except Exception:
-                _log_xhs_event(request_id=request_id, stage="parse", category="malformed_response")
-                raise
-            if img_list:
-                first_image = _require_mapping(img_list[0])
-                first_img = (
-                    first_image.get("urlDefault")
-                    or first_image.get("urlPattern")
-                    or first_image.get("url")
-                )
-                if first_img:
-                    return first_img
 
     except Exception:
         # The route owns stable failure classification. Never log the keyword,

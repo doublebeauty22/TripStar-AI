@@ -16,6 +16,11 @@ _ALLOWED_STAGES = {
     "image_stage_timing": {
         "image_total", "google_grounding", "google_photo", "xhs_image",
     },
+    "xhs_stage_timing": {
+        "research_search", "research_detail", "research_ssr",
+        "research_llm_extraction", "research_geocoding", "image_search",
+        "image_detail", "image_ssr",
+    },
 }
 
 
