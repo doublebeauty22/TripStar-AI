@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from ...services.amap_service import get_amap_service
+from ...services.timing import timed_async_stage, timed_stage
 
 router = APIRouter(prefix="/poi", tags=["POI"])
 
@@ -126,6 +127,7 @@ async def search_poi(keywords: str, city: str = "北京"):
     summary="获取景点图片",
     description="按 Google Places → 小红书 → 前端本地占位图的顺序获取图片"
 )
+@timed_async_stage("image_stage_timing", "image_total")
 async def get_attraction_photo(
     name: str,
     city: Optional[str] = None,
@@ -180,13 +182,14 @@ async def get_attraction_photo(
         google_service = get_google_map_service()
         if google_service is not None:
             trusted_place_id = ""
-            match = await asyncio.to_thread(
-                google_service.match_poi,
-                name,
-                city or "",
-                address or "",
-                category or "",
-            )
+            with timed_stage("image_stage_timing", "google_grounding"):
+                match = await asyncio.to_thread(
+                    google_service.match_poi,
+                    name,
+                    city or "",
+                    address or "",
+                    category or "",
+                )
             matched_poi = match.get("poi")
             server_match_status = match.get("status", "unverified")
             match_status = server_match_status
@@ -207,13 +210,14 @@ async def get_attraction_photo(
                 server_match_status = "unverified"
                 match_status = "unverified"
             if server_match_status in {"verified", "partial_match"}:
-                google_photo = await asyncio.to_thread(
-                    google_service.get_place_photo,
-                    place_id=trusted_place_id,
-                    name="" if trusted_place_id else name,
-                    city=city or "",
-                    match_result=match,
-                )
+                with timed_stage("image_stage_timing", "google_photo"):
+                    google_photo = await asyncio.to_thread(
+                        google_service.get_place_photo,
+                        place_id=trusted_place_id,
+                        name="" if trusted_place_id else name,
+                        city=city or "",
+                        match_result=match,
+                    )
             else:
                 failure_reasons.append("grounding_unverified")
                 _log_photo_event(
@@ -277,9 +281,10 @@ async def get_attraction_photo(
     try:
         from ...services.xhs_service import get_photo_from_xhs
 
-        photo_url = await get_photo_from_xhs(
-            f"{name} 风景", request_id=request_id
-        )
+        with timed_stage("image_stage_timing", "xhs_image"):
+            photo_url = await get_photo_from_xhs(
+                f"{name} 风景", request_id=request_id
+            )
         if photo_url:
             emit_terminal(
                 outcome="success", source="xhs",

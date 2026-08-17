@@ -14,6 +14,7 @@ from ..services.llm_service import (
 )
 from ..models.schemas import TripRequest, TripPlan, DayPlan, Attraction, Meal, WeatherResult, XHSResearchResult, Location, Hotel, has_valid_verified_coordinates
 from ..config import get_google_maps_server_api_key, get_settings
+from ..services.timing import timed_stage
 
 # ============ Agent提示词 (动态模版化，支持 amap / google 双供应商) ============
 
@@ -578,13 +579,14 @@ class MultiAgentTripPlanner:
                     f"正在搜索 {city} 的景点...{city_label}",
                     progress_base
                 )
-                attraction_response = await self._search_attractions_with_xhs_fallback(
-                    city,
-                    keywords,
-                    _lang,
-                    progress_callback,
-                    progress_base,
-                )
+                with timed_stage("trip_stage_timing", "xhs_research"):
+                    attraction_response = await self._search_attractions_with_xhs_fallback(
+                        city,
+                        keywords,
+                        _lang,
+                        progress_callback,
+                        progress_base,
+                    )
                 all_attractions[city] = attraction_response
                 print(f"📍 {city} 景点搜索结果: {attraction_response[:150]}...")
 
@@ -595,7 +597,8 @@ class MultiAgentTripPlanner:
                     f"正在查询 {city} 的天气...{city_label}",
                     progress_base + progress_step
                 )
-                weather_response = await self._retrieve_weather_context(city)
+                with timed_stage("trip_stage_timing", "weather"):
+                    weather_response = await self._retrieve_weather_context(city)
                 print(f"🌤️  {city} 天气查询结果: {weather_response[:150]}...")
                 all_weather[city] = weather_response
 
@@ -606,7 +609,10 @@ class MultiAgentTripPlanner:
                     f"正在搜索 {city} 的酒店...{city_label}",
                     progress_base + progress_step * 2
                 )
-                hotel_response = await self._retrieve_hotel_context(city, request.accommodation)
+                with timed_stage("trip_stage_timing", "hotel_search"):
+                    hotel_response = await self._retrieve_hotel_context(
+                        city, request.accommodation
+                    )
                 all_hotels[city] = hotel_response
                 print(f"🏨 {city} 酒店搜索结果: {hotel_response[:150]}...")
 
@@ -617,12 +623,13 @@ class MultiAgentTripPlanner:
             print(f"📋 步骤4: {planning_label}")
             await self._emit_progress(progress_callback, "planning", planning_label, 85)
 
-            planner_response = await self._run_planner_with_retry(
-                request,
-                all_attractions,
-                all_weather,
-                all_hotels,
-            )
+            with timed_stage("trip_stage_timing", "planner"):
+                planner_response = await self._run_planner_with_retry(
+                    request,
+                    all_attractions,
+                    all_weather,
+                    all_hotels,
+                )
             print(f"行程规划结果: {planner_response[:300]}...\n")
 
             # 解析最终计划
@@ -659,7 +666,8 @@ class MultiAgentTripPlanner:
 
             # Phase 1.5: Planner 完成后用 Google Places 确定性补全地图事实。
             # 此步骤 fail-open，不改变景点选择，也不让地图故障阻断既有 Planner。
-            trip_plan = await self._enrich_trip_plan_pois(trip_plan)
+            with timed_stage("trip_stage_timing", "poi_enrichment"):
+                trip_plan = await self._enrich_trip_plan_pois(trip_plan)
 
             # Phase 2A: deterministic validation only. Fail-open preserves the
             # existing Planner result when validation infrastructure is unavailable.
@@ -674,7 +682,10 @@ class MultiAgentTripPlanner:
                 )
                 from ..services.planner_observation import observe_revision, validation_pass
                 with validation_pass("validation.initial", "initial"):
-                    validation = await get_trip_validator_service().validate(request, trip_plan)
+                    with timed_stage("trip_stage_timing", "validator"):
+                        validation = await get_trip_validator_service().validate(
+                            request, trip_plan
+                        )
                 trip_plan.risks = validation.risks
                 trip_plan.validation_status = validation.status
                 trip_plan.pacing_policy_version = validation.pacing_policy_version
@@ -713,9 +724,10 @@ class MultiAgentTripPlanner:
                             progress_callback, "pacing_revision",
                             "检测到单日节奏过载，正在进行受影响日期内的调整...", 95,
                         )
-                        proposal = await pacing_service.propose(
-                            request, trip_plan, pacing_risks
-                        )
+                        with timed_stage("trip_stage_timing", "revision"):
+                            proposal = await pacing_service.propose(
+                                request, trip_plan, pacing_risks
+                            )
                         observe_revision(
                             "pacing_revision_proposal",
                             target_risk_ids=list(proposal.target_risk_ids),
@@ -729,7 +741,8 @@ class MultiAgentTripPlanner:
                         async def enrich_affected(candidate, affected):
                             partial = candidate.model_copy(deep=True)
                             partial.days = [candidate.days[index].model_copy(deep=True) for index in affected]
-                            partial = await self._enrich_trip_plan_pois(partial)
+                            with timed_stage("trip_stage_timing", "poi_enrichment"):
+                                partial = await self._enrich_trip_plan_pois(partial)
                             enriched = candidate.model_copy(deep=True)
                             for position, day_index in enumerate(affected):
                                 enriched.days[day_index] = partial.days[position]
@@ -737,7 +750,10 @@ class MultiAgentTripPlanner:
 
                         async def revalidate(req, candidate):
                             with validation_pass("validation.post_pacing_revision", "post_revision"):
-                                return await get_trip_validator_service().validate(req, candidate)
+                                with timed_stage("trip_stage_timing", "validator"):
+                                    return await get_trip_validator_service().validate(
+                                        req, candidate
+                                    )
 
                         outcome = await pacing_service.execute(
                             request, trip_plan, validation.risks, proposal,
@@ -823,13 +839,14 @@ class MultiAgentTripPlanner:
                                     for city, value in all_hotels.items()
                                 },
                             }
-                            revised_plan = await revision_service.run_revision(
-                                request,
-                                trip_plan,
-                                actionable_risks,
-                                critic,
-                                compact_research,
-                            )
+                            with timed_stage("trip_stage_timing", "revision"):
+                                revised_plan = await revision_service.run_revision(
+                                    request,
+                                    trip_plan,
+                                    actionable_risks,
+                                    critic,
+                                    compact_research,
+                                )
                             # Weather/XHS provenance comes from deterministic
                             # connectors, never from the revision model.
                             revised_plan.weather_results = [
@@ -843,7 +860,8 @@ class MultiAgentTripPlanner:
                             ]
                             # Never reuse old map facts: the parsed revision has
                             # deterministic fields stripped and is fully enriched again.
-                            revised_plan = await self._enrich_trip_plan_pois(revised_plan)
+                            with timed_stage("trip_stage_timing", "poi_enrichment"):
+                                revised_plan = await self._enrich_trip_plan_pois(revised_plan)
                             observe_revision(
                                 "post_revision_enrichment",
                                 state="complete",
@@ -854,9 +872,10 @@ class MultiAgentTripPlanner:
                                 "正在重新验证调整后的行程...", 98,
                             )
                             with validation_pass("validation.post_revision", "post_revision"):
-                                validation_2 = await get_trip_validator_service().validate(
-                                    request, revised_plan
-                                )
+                                with timed_stage("trip_stage_timing", "validator"):
+                                    validation_2 = await get_trip_validator_service().validate(
+                                        request, revised_plan
+                                    )
                             revised_plan.risks = validation_2.risks
                             revised_plan.validation_status = validation_2.status
                             revised_plan.pacing_policy_version = validation_2.pacing_policy_version

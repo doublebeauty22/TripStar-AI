@@ -25,6 +25,7 @@ from ...services.llm_service import (
 )
 from ...config import get_settings
 from ...services.public_demo_guard import client_identity, public_demo_guard, public_error
+from ...services.timing import timed_stage
 
 router = APIRouter(prefix="/trip", tags=["旅行规划"])
 
@@ -404,11 +405,11 @@ async def _update_task_state(
     message: str | None = None,
     result: Any = None,
     error: str | None = None,
-) -> None:
+) -> bool:
     """更新任务状态并广播事件。"""
     task = _tasks.get(task_id)
     if not task:
-        return
+        return False
 
     if status is not None:
         task["status"] = status
@@ -423,9 +424,10 @@ async def _update_task_state(
     if error is not None:
         task["error"] = error
 
-    _persist_task_state(task_id, task)
+    persisted = _persist_task_state(task_id, task)
     event = _build_task_event(task_id, task, include_result=True)
     _broadcast_task_event(task_id, event)
+    return persisted
 
 
 @router.post(
@@ -515,6 +517,14 @@ async def plan_trip(request: TripRequest, http_request: Request = None):
 
 
 async def _run_trip_planning(task_id: str, request: TripRequest):
+    """Measure the complete backend planning task without changing its behavior."""
+    with timed_stage("trip_stage_timing", "total_trip") as timing:
+        await _run_trip_planning_impl(task_id, request)
+        if _tasks.get(task_id, {}).get("status") != "completed":
+            timing.mark_failed()
+
+
+async def _run_trip_planning_impl(task_id: str, request: TripRequest):
     """后台执行旅行规划并推送进度。"""
     try:
         await _update_task_state(
@@ -569,7 +579,10 @@ async def _run_trip_planning(task_id: str, request: TripRequest):
             progress=95,
             message="正在构建知识图谱...",
         )
-        graph_data = build_knowledge_graph(trip_plan, language=getattr(request, 'language', 'zh') or 'zh')
+        with timed_stage("trip_stage_timing", "knowledge_graph"):
+            graph_data = build_knowledge_graph(
+                trip_plan, language=getattr(request, 'language', 'zh') or 'zh'
+            )
 
         trip_result = TripPlanResponse(
             success=True,
@@ -580,14 +593,17 @@ async def _run_trip_planning(task_id: str, request: TripRequest):
         )
 
         print(f"✅ 任务 {task_id} 完成")
-        await _update_task_state(
-            task_id,
-            status="completed",
-            stage="completed",
-            progress=100,
-            message="旅行计划生成成功",
-            result=trip_result,
-        )
+        with timed_stage("trip_stage_timing", "persistence") as timing:
+            persisted = await _update_task_state(
+                task_id,
+                status="completed",
+                stage="completed",
+                progress=100,
+                message="旅行计划生成成功",
+                result=trip_result,
+            )
+            if not persisted:
+                timing.mark_failed()
     except Exception as e:
         print(f"❌ 任务 {task_id} 失败: {e}")
         traceback.print_exc()
