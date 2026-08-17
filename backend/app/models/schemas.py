@@ -290,6 +290,10 @@ class WeatherResult(BaseModel):
     data_available: bool
     degraded: bool
     reason: Optional[WeatherFailureReason] = None
+    primary_failure_reason: Optional[WeatherFailureReason] = Field(
+        default=None,
+        description="Primary provider reason that triggered a fallback, if any",
+    )
     days: List[WeatherInfo] = Field(default_factory=list)
 
 

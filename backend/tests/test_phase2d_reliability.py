@@ -21,8 +21,8 @@ from backend.app.api.routes.settings import (
     save_settings,
 )
 from backend.app.models.schemas import (
-    AmapGeocodeResult, Attraction, DayPlan, Location, TripPlan, WeatherResult, XHSEvidence,
-    XHSResearchResult,
+    AmapGeocodeResult, Attraction, DayPlan, Location, TripPlan, TripPlanResponse,
+    WeatherInfo, WeatherResult, XHSEvidence, XHSResearchResult,
 )
 from backend.app.services import xhs_service
 from backend.app.services.google_map_service import GoogleMapService
@@ -241,6 +241,102 @@ class Phase2DAmapWeatherTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(empty.reason, "empty_forecast")
         timeout = await self._fetch(error=httpx.TimeoutException("timeout"))
         self.assertEqual(timeout.reason, "timeout")
+
+
+class Phase2DWeatherFallbackTests(unittest.IsolatedAsyncioTestCase):
+    async def _retrieve_after_google_404(self, amap_result):
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        planner.map_provider = "google"
+        planner._weather_results = {}
+        planner._google_service = SimpleNamespace(get_weather=lambda _city: WeatherResult(
+            provider="google_weather", city="京都", request_success=True,
+            data_available=False, degraded=True, reason="unsupported_location",
+        ))
+        planner._amap_service = SimpleNamespace(
+            get_weather=lambda _city, degraded=True: amap_result,
+        )
+        await planner._retrieve_weather_context("京都")
+        return planner._weather_results["京都"]
+
+    async def test_google_404_still_falls_back_to_successful_amap(self):
+        amap = WeatherResult(
+            provider="amap", city="京都", request_success=True,
+            data_available=True, degraded=True, days=[WeatherInfo(
+                date="2026-08-17", city="京都", day_weather="晴",
+                night_weather="多云", day_temp=30, night_temp=24,
+                data_source="amap", verification_status="verified", degraded=True,
+            )],
+        )
+        result = await self._retrieve_after_google_404(amap)
+        self.assertIs(result, amap)
+        self.assertEqual(result.provider, "amap")
+        self.assertTrue(result.data_available)
+        self.assertEqual(len(result.days), 1)
+        self.assertEqual(result.primary_failure_reason, "unsupported_location")
+
+    async def test_google_404_still_preserves_failed_amap_fallback(self):
+        amap = WeatherResult(
+            provider="unavailable", city="京都", request_success=True,
+            data_available=False, degraded=True, reason="empty_forecast",
+        )
+        result = await self._retrieve_after_google_404(amap)
+        self.assertIs(result, amap)
+        self.assertEqual(result.provider, "unavailable")
+        self.assertFalse(result.data_available)
+        self.assertEqual(result.reason, "empty_forecast")
+        self.assertEqual(result.primary_failure_reason, "unsupported_location")
+
+    async def test_ordinary_google_failure_does_not_become_unsupported(self):
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        planner.map_provider = "google"
+        planner._weather_results = {}
+        planner._google_service = SimpleNamespace(get_weather=lambda _city: WeatherResult(
+            provider="google_weather", city="测试市", request_success=False,
+            data_available=False, degraded=True, reason="timeout",
+        ))
+        amap = WeatherResult(
+            provider="unavailable", city="测试市", request_success=False,
+            data_available=False, degraded=True, reason="network_error",
+        )
+        planner._amap_service = SimpleNamespace(
+            get_weather=lambda _city, degraded=True: amap,
+        )
+
+        await planner._retrieve_weather_context("测试市")
+
+        result = planner._weather_results["测试市"]
+        self.assertEqual(result.reason, "network_error")
+        self.assertEqual(result.primary_failure_reason, "timeout")
+
+    async def test_supported_google_weather_reaches_trip_api_contract(self):
+        day = WeatherInfo(
+            date="2026-08-17", city="支持地区", day_weather="晴",
+            night_weather="多云", day_temp=28, night_temp=21,
+            data_source="google_weather", verification_status="verified",
+        )
+        google = WeatherResult(
+            provider="google_weather", city="支持地区", request_success=True,
+            data_available=True, degraded=False, days=[day],
+        )
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        planner.map_provider = "google"
+        planner._weather_results = {}
+        planner._google_service = SimpleNamespace(get_weather=lambda _city: google)
+        planner._amap_service = SimpleNamespace(
+            get_weather=lambda *_args, **_kwargs: self.fail("AMap fallback must not run"),
+        )
+
+        await planner._retrieve_weather_context("支持地区")
+
+        plan = _plan_with_malicious_map_facts()
+        plan.weather_results = [planner._weather_results["支持地区"]]
+        plan.weather_info = list(plan.weather_results[0].days)
+        payload = TripPlanResponse(success=True, data=plan).model_dump(mode="json")
+        self.assertEqual(payload["data"]["weather_info"][0]["date"], "2026-08-17")
+        self.assertEqual(
+            payload["data"]["weather_info"][0]["data_source"],
+            "google_weather",
+        )
 
 
 class Phase2DXHSTests(unittest.IsolatedAsyncioTestCase):

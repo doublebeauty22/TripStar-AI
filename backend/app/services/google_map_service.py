@@ -906,6 +906,16 @@ class GoogleMapService:
                 return WeatherResult(provider="google_weather", request_success=False, data_available=False, degraded=True, reason="authentication_failed")
             if status == 403:
                 return WeatherResult(provider="google_weather", request_success=False, data_available=False, degraded=True, reason="permission_denied")
+            if status == 404:
+                print(
+                    "❌ provider=google endpoint=weather_forecast "
+                    "category=unsupported_location status=404 retryable=false"
+                )
+                return WeatherResult(
+                    provider="google_weather", request_success=True,
+                    data_available=False, degraded=True,
+                    reason="unsupported_location",
+                )
             if status == 429:
                 return WeatherResult(provider="google_weather", request_success=False, data_available=False, degraded=True, reason="rate_limited")
             resp.raise_for_status()

@@ -1,5 +1,7 @@
 import json
+import io
 import unittest
+from contextlib import redirect_stdout
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -132,8 +134,31 @@ class GoogleWeatherParserTests(unittest.TestCase):
         self.assertEqual(result.days, [])
 
     def test_http_regressions(self):
+        self.assertEqual(self.result(Response({}, 401)).reason, "authentication_failed")
         self.assertEqual(self.result(Response({}, 403)).reason, "permission_denied")
         self.assertEqual(self.result(Response({}, 429)).reason, "rate_limited")
+
+    def test_unsupported_location_404_is_safe_and_non_retryable(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            result = self.result(Response({"message": "provider detail"}, 404))
+
+        self.assertEqual(result.provider, "google_weather")
+        self.assertTrue(result.request_success)
+        self.assertFalse(result.data_available)
+        self.assertTrue(result.degraded)
+        self.assertEqual(result.reason, "unsupported_location")
+        rendered = output.getvalue()
+        self.assertIn(
+            "provider=google endpoint=weather_forecast "
+            "category=unsupported_location status=404 retryable=false",
+            rendered,
+        )
+        for forbidden in (
+            "fake-key", "example.invalid", "provider detail", "test city",
+            str(self.location.latitude), str(self.location.longitude),
+        ):
+            self.assertNotIn(forbidden, rendered)
 
 
 if __name__ == "__main__":

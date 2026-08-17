@@ -386,6 +386,8 @@ class MultiAgentTripPlanner:
                     return self._compact_json(result)
                 fallback = await self._fallback_amap_weather(city)
                 fallback.city = city
+                if isinstance(result, WeatherResult):
+                    fallback.primary_failure_reason = result.reason
                 self._weather_results[city] = fallback
                 return self._compact_json(fallback)
 
@@ -403,6 +405,7 @@ class MultiAgentTripPlanner:
                 ))
                 fallback = await self._fallback_amap_weather(city)
                 fallback.city = city
+                fallback.primary_failure_reason = "network_error"
                 self._weather_results[city] = fallback
                 return self._compact_json(fallback)
             unavailable = WeatherResult(provider="unavailable", city=city, request_success=False, data_available=False, degraded=True, reason="network_error")

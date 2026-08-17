@@ -620,7 +620,7 @@
               </div>
             </section>
           </div>
-          <a-empty v-else description="天气数据暂不可用" />
+          <a-empty v-else :description="weatherUnavailableDescription" />
         </a-card>
       </div>
 
@@ -664,6 +664,7 @@ import NavBar from '@/components/NavBar.vue'
 import OverviewAttractionCard from '@/components/OverviewAttractionCard.vue'
 import AIChat from '@/components/AIChat.vue'
 import type { TripPlan, TripPlanResponse, PortfolioExampleTrip, KnowledgeGraphData, GraphCategory, Attraction, Meal, Hotel, WeatherInfo, RiskItem } from '@/types'
+import { getWeatherUnavailableDescription } from '@/utils/weatherAvailability'
 import {
   getExampleTrip,
   getRuntimeApiBaseUrl,
@@ -854,6 +855,10 @@ const localeTag = computed(() => {
 })
 
 const weatherList = computed<WeatherInfo[]>(() => tripPlan.value?.weather_info ?? [])
+const weatherUnavailableDescription = computed(() => getWeatherUnavailableDescription(
+  weatherList.value,
+  tripPlan.value?.weather_results ?? [],
+))
 
 const selectedWeather = computed<WeatherInfo | null>(() => {
   const list = weatherList.value

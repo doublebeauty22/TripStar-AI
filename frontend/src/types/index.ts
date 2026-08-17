@@ -133,6 +133,7 @@ export interface WeatherResult {
   data_available: boolean
   degraded: boolean
   reason?: string | null
+  primary_failure_reason?: string | null
   days: WeatherInfo[]
 }
 
