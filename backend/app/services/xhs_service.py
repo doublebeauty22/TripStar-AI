@@ -9,8 +9,10 @@ import re
 import math
 import random
 import logging
+import threading
 import requests
 import httpx
+from concurrent.futures import ThreadPoolExecutor
 from typing import List, Dict, Any, Optional
 from ..config import get_settings
 from ..models.schemas import (
@@ -19,6 +21,8 @@ from ..models.schemas import (
 from .timing import timed_stage
 from .llm_service import get_llm
 logger = logging.getLogger(__name__)
+_XHS_SIGNING_LOCK = threading.Lock()
+_XHS_IMAGE_FALLBACK_SEMAPHORE = threading.Semaphore(1)
 _FABRICATED_CONSENSUS_TERMS = (
     "大家都推荐", "小红书普遍认为", "小红书用户普遍推荐", "热门必去",
 )
@@ -202,7 +206,11 @@ class XhsNativeClient:
             "image_formats": ["jpg", "webp", "avif"],
         }
 
-        headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
+        # The imported PyExecJS contexts are process-global and do not document
+        # concurrent-call safety. Serialize signing only; HTTP waits remain free
+        # to overlap across the bounded research workers.
+        with _XHS_SIGNING_LOCK:
+            headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
         response = requests.post(
             self.BASE_URL + api,
             headers=headers,
@@ -260,7 +268,8 @@ class XhsNativeClient:
             "xsec_token": xsec_token,
         }
 
-        headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
+        with _XHS_SIGNING_LOCK:
+            headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
         response = requests.post(
             self.BASE_URL + api,
             headers=headers,
@@ -354,6 +363,56 @@ def get_note_detail_ssr(note_id: str) -> dict:
 def _normalize_evidence_text(value: Any) -> str:
     """Normalize only superficial formatting; never guess aliases or entities."""
     return re.sub(r"[\W_]+", "", str(value or "").casefold(), flags=re.UNICODE)
+
+
+def _research_note(
+    client: XhsNativeClient,
+    indexed_note: tuple[int, dict],
+) -> tuple[Optional[XHSEvidence], str, str]:
+    """Process one selected note while preserving its existing detail fallback."""
+    index, note = indexed_note
+    note_card = note.get("note_card", {})
+    title = note_card.get("display_title", "")
+    note_id = note.get("id", "")
+    source_url = f"https://www.xiaohongshu.com/explore/{note_id}" if note_id else ""
+
+    desc = ""
+    try:
+        xsec_token = note.get("xsec_token", "")
+        if note_id:
+            with timed_stage("xhs_stage_timing", "research_detail"):
+                detail_res = client.get_note_detail(note_id, xsec_token)
+            detail_items = detail_res.get("data", {}).get("items", [])
+            if detail_items:
+                note_data = detail_items[0].get("note_card", {})
+                desc = note_data.get("desc", "")
+    except Exception:
+        try:
+            if note_id:
+                detail = get_note_detail_ssr(note_id)
+                desc = detail.get("desc", "")
+        except Exception:
+            desc = ""
+
+    evidence = None
+    source_text = ""
+    if note_id:
+        source_text = f"{title}\n{desc}"
+        evidence = XHSEvidence(
+            note_id=note_id,
+            title=title,
+            source_url=source_url,
+            status="detail_available" if desc else "detail_unavailable",
+            extracted_text=desc[:500] if desc else "",
+        )
+
+    combined = ""
+    if title or desc:
+        combined = (
+            f"\n笔记{index + 1}:\nnote_id: {note_id}\n标题: {title}"
+            f"\n正文内容: {desc}\n来源: {source_url}\n"
+        )
+    return evidence, source_text, combined
 
 
 def _validate_xhs_extracted_items(
@@ -450,48 +509,27 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
         combined_text = ""
         evidence: List[XHSEvidence] = []
         evidence_source_text: Dict[str, str] = {}
-        for i, note in enumerate(items):
-            if note.get("model_type") == "note":
-                note_card = note.get("note_card", {})
-                title = note_card.get("display_title", "")
-                note_id = note.get("id", "")
-                source_url = f"https://www.xiaohongshu.com/explore/{note_id}" if note_id else ""
-
-                # 尝试通过原生 API 获取笔记详情
-                desc = ""
-                try:
-                    xsec_token = note.get("xsec_token", "")
-                    if note_id:
-                        with timed_stage("xhs_stage_timing", "research_detail"):
-                            detail_res = client.get_note_detail(note_id, xsec_token)
-                        detail_items = detail_res.get("data", {}).get("items", [])
-                        if detail_items:
-                            note_data = detail_items[0].get("note_card", {})
-                            desc = note_data.get("desc", "")
-                except Exception:
-                    # 降级到 SSR 抓取
-                    try:
-                        note_id = note.get("id", "")
-                        if note_id:
-                            detail = get_note_detail_ssr(note_id)
-                            desc = detail.get("desc", "")
-                    except Exception:
-                        desc = ""
-
-                if note_id:
-                    evidence_source_text[note_id] = f"{title}\n{desc}"
-                    evidence.append(XHSEvidence(
-                        note_id=note_id,
-                        title=title,
-                        source_url=source_url,
-                        status="detail_available" if desc else "detail_unavailable",
-                        extracted_text=desc[:500] if desc else "",
-                    ))
-                if title or desc:
-                    combined_text += (
-                        f"\n笔记{i+1}:\nnote_id: {note_id}\n标题: {title}"
-                        f"\n正文内容: {desc}\n来源: {source_url}\n"
-                    )
+        selected_notes = [
+            (index, note)
+            for index, note in enumerate(items)
+            if note.get("model_type") == "note"
+        ]
+        if selected_notes:
+            # executor.map preserves input order even when detail calls finish
+            # out of order. Extraction therefore sees the same evidence order.
+            with ThreadPoolExecutor(
+                max_workers=min(2, len(selected_notes)),
+                thread_name_prefix="xhs-research-detail",
+            ) as executor:
+                note_results = executor.map(
+                    lambda indexed_note: _research_note(client, indexed_note),
+                    selected_notes,
+                )
+                for note_evidence, source_text, combined in note_results:
+                    if note_evidence is not None:
+                        evidence_source_text[note_evidence.note_id] = source_text
+                        evidence.append(note_evidence)
+                    combined_text += combined
 
     except XHSCookieExpiredError:
         raise
@@ -712,7 +750,7 @@ def _require_list(value: Any) -> List[Any]:
     return value
 
 
-def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
+def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
     """根据关键词从小红书搜索一张首图URL
 
     使用原生签名客户端搜索最新帖子，然后通过原生 API 或 SSR 抓取首张图片。
@@ -849,6 +887,17 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
         raise
     _log_xhs_event(request_id=request_id, stage="ssr", category="no_result")
     return ""
+
+
+def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
+    """Run one complete XHS image fallback under a process-local permit.
+
+    This is deliberately not a distributed/global Provider limiter. The
+    production deployment currently uses one worker; every process owns its
+    own single permit.
+    """
+    with _XHS_IMAGE_FALLBACK_SEMAPHORE:
+        return _get_xhs_photo_sync_unbounded(keyword, request_id=request_id)
 
 
 async def get_photo_from_xhs(keyword: str, *, request_id: str = "") -> str:
