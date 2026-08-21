@@ -2,7 +2,9 @@
 
 import json
 import asyncio
+import copy
 import os
+import re
 from typing import Dict, Any, List, Callable, Awaitable, Optional
 from hello_agents import SimpleAgent
 from pydantic import ValidationError
@@ -1467,6 +1469,136 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
             )
             return broken_json
 
+    @staticmethod
+    def _safe_schema_errors(exc: ValidationError, limit: int = 5) -> List[Dict[str, str]]:
+        """Extract bounded Pydantic metadata without values, messages, or context."""
+        safe_errors: List[Dict[str, str]] = []
+        for item in exc.errors(
+            include_url=False, include_context=False, include_input=False,
+        )[:max(0, min(limit, 5))]:
+            parts = []
+            for component in item.get("loc", ()):
+                raw = "*" if isinstance(component, int) else str(component)
+                cleaned = re.sub(r"[^A-Za-z0-9_*-]", "_", raw)[:48]
+                parts.append(cleaned or "unknown")
+            field = ".".join(parts)[:200] or "root"
+            error_type = re.sub(
+                r"[^A-Za-z0-9_.-]", "_", str(item.get("type") or "unknown"),
+            )[:80]
+            safe_errors.append({"field": field, "error_type": error_type or "unknown"})
+        return safe_errors
+
+    @staticmethod
+    def _log_schema_errors(stage: str, errors: List[Dict[str, str]]) -> None:
+        safe_stage = stage if stage in {"planner_parse", "schema_repair"} else "planner_parse"
+        for item in errors[:5]:
+            print(
+                "event=planner_schema_event "
+                f"stage={safe_stage} field={item['field']} "
+                f"error_type={item['error_type']} success=false",
+                flush=True,
+            )
+
+    @staticmethod
+    def _normalize_planner_schema_data(data: Any) -> Any:
+        """Apply only repository-proven, semantics-preserving normalization."""
+        normalized = copy.deepcopy(data)
+        if not isinstance(normalized, dict):
+            return normalized
+        days = normalized.get("days")
+        if not isinstance(days, list):
+            return normalized
+        for day in days:
+            if isinstance(day, dict) and day.get("start_time") == "":
+                # Optional start_time consumers already treat empty as absent.
+                day["start_time"] = None
+        return normalized
+
+    def _llm_repair_schema(
+        self, data: Any, errors: List[Dict[str, str]],
+    ) -> Any:
+        """Perform one bounded schema-only repair on already-decoded JSON."""
+        llm = get_llm()
+        bounded_errors = errors[:5]
+        repair_prompt = (
+            "Repair the decoded TripPlan JSON so it satisfies the existing schema.\n"
+            "Preserve all factual content and change only fields required by the listed errors.\n"
+            "Do not add unsupported facts. Do not invent weather, coordinates, POI IDs, "
+            "routes, prices, attractions, or itinerary days. Return JSON only.\n"
+            f"Schema errors: {json.dumps(bounded_errors, ensure_ascii=False, separators=(',', ':'))}\n"
+            "Complete decoded JSON:\n"
+            f"{json.dumps(data, ensure_ascii=False, separators=(',', ':'))}"
+        )
+        response = create_chat_completion(
+            stage="schema_repair",
+            model=llm.model,
+            messages=[{"role": "user", "content": repair_prompt}],
+            llm_instance=llm,
+            temperature=0.0,
+            max_tokens=6000,
+            stage_max_token_exposure=6000,
+        )
+        metadata = structured_output_metadata(response, 6000)
+        if metadata["finish_reason"] == "length":
+            log_structured_output_event(
+                stage="schema_repair", category="output_limit_reached",
+                metadata=metadata, success=False,
+            )
+            raise StructuredOutputLimitReached("schema repair output limit reached")
+        content = response.choices[0].message.content or ""
+        if "```json" in content:
+            start = content.find("```json") + 7
+            end = content.find("```", start)
+            content = content[start:end].strip() if end > start else content[start:].strip()
+        elif "```" in content:
+            start = content.find("```") + 3
+            end = content.find("```", start)
+            content = content[start:end].strip() if end > start else content[start:].strip()
+        else:
+            match = re.search(r"\{[\s\S]*\}", content)
+            content = match.group() if match else content
+        try:
+            return json.loads(self._sanitize_json_str(content))
+        except json.JSONDecodeError:
+            log_structured_output_event(
+                stage="schema_repair", category="json_decode_failed",
+                metadata=metadata, success=False,
+            )
+            raise ValueError("行程 schema repair decode failed") from None
+
+    def _validate_or_repair_planner_schema(
+        self, data: Any, planner_metadata: Dict[str, Any],
+    ) -> TripPlan:
+        try:
+            return TripPlan.model_validate(data)
+        except ValidationError as exc:
+            errors = self._safe_schema_errors(exc)
+            self._log_schema_errors("planner_parse", errors)
+            log_structured_output_event(
+                stage="planner_parse", category="schema_validation_failed",
+                metadata=planner_metadata, success=False,
+            )
+
+        normalized = self._normalize_planner_schema_data(data)
+        if normalized != data:
+            try:
+                return TripPlan.model_validate(normalized)
+            except ValidationError as exc:
+                errors = self._safe_schema_errors(exc)
+                self._log_schema_errors("planner_parse", errors)
+
+        repaired = self._llm_repair_schema(normalized, errors)
+        try:
+            return TripPlan.model_validate(repaired)
+        except ValidationError as exc:
+            repair_errors = self._safe_schema_errors(exc)
+            self._log_schema_errors("schema_repair", repair_errors)
+            metadata = get_last_structured_output("schema_repair")
+            log_structured_output_event(
+                stage="schema_repair", category="schema_validation_failed",
+                metadata=metadata, success=False,
+            )
+            raise ValueError("行程 schema repair validation failed") from None
     def _parse_response(self, response: str, request: TripRequest) -> TripPlan:
         """
         解析Agent响应，带有多层容错清理
@@ -1554,14 +1686,7 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 except json.JSONDecodeError:
                     continue
                 decoded_any = True
-                try:
-                    return TripPlan.model_validate(data)
-                except ValidationError:
-                    log_structured_output_event(
-                        stage="planner_parse", category="schema_validation_failed",
-                        metadata=planner_metadata, success=False,
-                    )
-                    raise ValueError("行程 JSON schema validation failed") from None
+                return self._validate_or_repair_planner_schema(data, planner_metadata)
 
             if not decoded_any:
                 log_structured_output_event(

@@ -56,15 +56,18 @@ class PlannerStructuredOutputTests(unittest.TestCase):
         self.assertEqual(result.city, "Safe City")
         repair.assert_not_called()
 
-    def test_valid_json_schema_failure_does_not_invoke_syntax_repair(self):
+    def test_valid_json_schema_failure_uses_schema_not_syntax_repair(self):
         output = io.StringIO()
         with redirect_stdout(output), patch(
             "backend.app.agents.trip_planner_agent.get_last_structured_output",
             return_value=_metadata(),
-        ), patch.object(self.planner, "_llm_repair_json") as repair:
-            with self.assertRaisesRegex(ValueError, "schema validation failed"):
+        ), patch.object(self.planner, "_llm_repair_json") as syntax_repair, patch.object(
+            self.planner, "_llm_repair_schema", return_value={"city": "Safe City"},
+        ) as schema_repair:
+            with self.assertRaisesRegex(ValueError, "schema repair validation failed"):
                 self.planner._parse_response('{"city":"Safe City"}', _request())
-        repair.assert_not_called()
+        syntax_repair.assert_not_called()
+        schema_repair.assert_called_once()
         self.assertIn("category=schema_validation_failed", output.getvalue())
         self.assertNotIn("Safe City", output.getvalue())
 

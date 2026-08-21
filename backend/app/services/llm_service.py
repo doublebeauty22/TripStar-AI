@@ -38,8 +38,10 @@ class StructuredOutputLimitReached(RuntimeError):
     """Raised when a Provider confirms that structured output hit its limit."""
 
 
-_STRUCTURED_STAGES = {"planner", "json_repair", "xhs_research"}
-_STRUCTURED_EVENT_STAGES = {"planner_parse", "json_repair", "xhs_extraction"}
+_STRUCTURED_STAGES = {"planner", "json_repair", "schema_repair", "xhs_research"}
+_STRUCTURED_EVENT_STAGES = {
+    "planner_parse", "json_repair", "schema_repair", "xhs_extraction",
+}
 _STRUCTURED_EVENT_CATEGORIES = {
     "json_decode_failed", "schema_validation_failed",
     "output_limit_reached", "repair_exhausted",
