@@ -10,7 +10,9 @@
 
 import json
 import math
+import random
 import re
+import time
 import unicodedata
 from difflib import SequenceMatcher
 from typing import Dict, Any, List, Optional
@@ -157,8 +159,15 @@ class GoogleMapService:
             "maxResultCount": 5,
         }
         try:
-            resp = self._client.post(url, headers=headers, json=body)
-            resp.raise_for_status()
+            for attempt in range(2):
+                resp = self._client.post(url, headers=headers, json=body)
+                try:
+                    resp.raise_for_status()
+                    break
+                except httpx.HTTPStatusError as exc:
+                    if exc.response.status_code != 429 or attempt == 1:
+                        raise
+                    time.sleep(random.uniform(0.3, 0.8))
             data = resp.json()
             results: List[POIInfo] = []
             places = data.get("places", []) if isinstance(data, dict) else []

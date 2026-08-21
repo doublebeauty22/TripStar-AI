@@ -2028,8 +2028,11 @@ const loadAttractionPhotos = async () => {
         const categoryParam = attraction.category
           ? `&category=${encodeURIComponent(attraction.category)}`
           : ''
+        const planIdParam = planId.value
+          ? `&plan_id=${encodeURIComponent(planId.value)}`
+          : ''
         const response = await fetch(
-          `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}${addressParam}${categoryParam}`
+          `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}${addressParam}${categoryParam}${planIdParam}`
         )
         const data = await response.json()
         attractionPhotoSources.value[attraction.name] = data?.data?.source || 'placeholder'

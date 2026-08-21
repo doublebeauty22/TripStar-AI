@@ -1,6 +1,7 @@
 """POI相关API路由"""
 
 import asyncio
+import threading
 import uuid
 
 from fastapi import APIRouter, HTTPException
@@ -10,6 +11,58 @@ from ...services.amap_service import get_amap_service
 from ...services.timing import timed_async_stage, timed_stage
 
 router = APIRouter(prefix="/poi", tags=["POI"])
+
+# Image requests arrive concurrently from the result page. Bound only the
+# fallback Text Search matcher; trusted Place Details/Photo calls stay outside.
+_GOOGLE_PHOTO_GROUNDING_SEMAPHORE = threading.Semaphore(2)
+
+
+def _match_poi_for_photo(service, *args):
+    with _GOOGLE_PHOTO_GROUNDING_SEMAPHORE:
+        return service.match_poi(*args)
+
+
+def _trusted_task_place_id(
+    *, plan_id: str, name: str, city: str, client_place_id: str
+) -> str:
+    """Resolve a Place ID only from the server-owned completed TripPlan.
+
+    Client fields are selectors used to prove association; the returned value
+    always comes from the persisted/in-memory task result.
+    """
+    if not plan_id or not client_place_id:
+        return ""
+    if len(plan_id) > 64 or any(not (char.isalnum() or char in "-_") for char in plan_id):
+        return ""
+    try:
+        from .trip import _get_task, _task_trip_plan
+        from ...models.schemas import has_valid_verified_coordinates
+
+        task = _get_task(plan_id)
+        if not task or task.get("status") != "completed":
+            return ""
+        plan = _task_trip_plan(task)
+        expected_name = name.strip().casefold()
+        expected_city = city.strip().casefold()
+        candidates = []
+        for day in plan.days:
+            day_city = (day.city or plan.city or "").strip().casefold()
+            for attraction in day.attractions:
+                if attraction.name.strip().casefold() != expected_name:
+                    continue
+                if expected_city and day_city != expected_city:
+                    continue
+                if (
+                    attraction.poi_match_status == "verified"
+                    and attraction.map_data_source == "google_places"
+                    and attraction.place_id
+                    and attraction.place_id == client_place_id
+                    and has_valid_verified_coordinates(attraction.location)
+                ):
+                    candidates.append(attraction.place_id)
+        return candidates[0] if candidates and len(set(candidates)) == 1 else ""
+    except Exception:
+        return ""
 
 
 def _log_photo_event(
@@ -176,6 +229,7 @@ async def get_attraction_photo(
     place_id: Optional[str] = None,
     address: Optional[str] = None,
     category: Optional[str] = None,
+    plan_id: Optional[str] = None,
 ):
     """
     获取景点图片
@@ -223,34 +277,37 @@ async def get_attraction_photo(
 
         google_service = get_google_map_service()
         if google_service is not None:
-            trusted_place_id = ""
-            with timed_stage("image_stage_timing", "google_grounding"):
-                match = await asyncio.to_thread(
-                    google_service.match_poi,
-                    name,
-                    city or "",
-                    address or "",
-                    category or "",
-                )
-            matched_poi = match.get("poi")
-            server_match_status = match.get("status", "unverified")
+            trusted_place_id = _trusted_task_place_id(
+                plan_id=plan_id or "", name=name, city=city or "",
+                client_place_id=place_id or "",
+            )
+            match = {"status": "verified", "poi": None, "evidence": {}}
+            server_match_status = "verified" if trusted_place_id else "unverified"
             match_status = server_match_status
-            from ...models.schemas import has_valid_verified_coordinates
-            if (
-                match.get("status") == "verified"
-                and matched_poi is not None
-                and matched_poi.id
-                and has_valid_verified_coordinates(matched_poi.location)
-            ):
-                # A client-supplied place_id is only a hint. The server-side
-                # deterministic matcher is the trust boundary.
-                trusted_place_id = matched_poi.id
-            elif server_match_status == "verified":
-                # A defensive boundary for malformed/custom matcher results:
-                # a verified label without a valid server-side coordinate is
-                # not sufficient to start a second Google lookup.
-                server_match_status = "unverified"
-                match_status = "unverified"
+            if not trusted_place_id:
+                with timed_stage("image_stage_timing", "google_grounding"):
+                    match = await asyncio.to_thread(
+                        _match_poi_for_photo,
+                        google_service,
+                        name,
+                        city or "",
+                        address or "",
+                        category or "",
+                    )
+                matched_poi = match.get("poi")
+                server_match_status = match.get("status", "unverified")
+                match_status = server_match_status
+                from ...models.schemas import has_valid_verified_coordinates
+                if (
+                    match.get("status") == "verified"
+                    and matched_poi is not None
+                    and matched_poi.id
+                    and has_valid_verified_coordinates(matched_poi.location)
+                ):
+                    trusted_place_id = matched_poi.id
+                elif server_match_status == "verified":
+                    server_match_status = "unverified"
+                    match_status = "unverified"
             if server_match_status in {"verified", "partial_match"}:
                 with timed_stage("image_stage_timing", "google_photo"):
                     google_photo = await asyncio.to_thread(
