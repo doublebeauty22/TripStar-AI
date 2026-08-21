@@ -34,6 +34,18 @@ class LLMCallBudgetExceeded(RuntimeError):
         self.failed_after_stage = failed_after_stage
 
 
+class StructuredOutputLimitReached(RuntimeError):
+    """Raised when a Provider confirms that structured output hit its limit."""
+
+
+_STRUCTURED_STAGES = {"planner", "json_repair", "xhs_research"}
+_STRUCTURED_EVENT_STAGES = {"planner_parse", "json_repair", "xhs_extraction"}
+_STRUCTURED_EVENT_CATEGORIES = {
+    "json_decode_failed", "schema_validation_failed",
+    "output_limit_reached", "repair_exhausted",
+}
+
+
 @dataclass
 class LLMExecutionUsage:
     execution_id: str
@@ -53,6 +65,7 @@ class LLMExecutionUsage:
     updated_at: float = field(default_factory=time.monotonic)
     on_update: Optional[Callable[["LLMExecutionUsage"], None]] = None
     stage_calls: dict[str, int] = field(default_factory=dict)
+    structured_outputs: dict[str, dict[str, Any]] = field(default_factory=dict)
     lock: threading.RLock = field(default_factory=threading.RLock, repr=False)
 
     def snapshot(self) -> dict[str, Any]:
@@ -65,6 +78,9 @@ class LLMExecutionUsage:
                 "generation_id": self.generation_id or self.execution_id,
                 "task_id": self.task_id,
                 "stage_calls": dict(self.stage_calls),
+                "structured_outputs": {
+                    key: dict(value) for key, value in self.structured_outputs.items()
+                },
                 "prompt_tokens": self.prompt_tokens,
                 "completion_tokens": self.completion_tokens,
                 "total_tokens": self.total_tokens,
@@ -237,6 +253,83 @@ def _usage_value(response: Any, name: str) -> Any:
     return value
 
 
+def normalize_finish_reason(response: Any) -> str:
+    """Normalize Provider termination metadata without inspecting generated text."""
+    choices = getattr(response, "choices", None)
+    if not choices:
+        return "missing"
+    raw = getattr(choices[0], "finish_reason", None)
+    if raw is None and isinstance(choices[0], dict):
+        raw = choices[0].get("finish_reason")
+    normalized = str(raw or "").strip().lower()
+    if not normalized:
+        return "missing"
+    if normalized == "stop":
+        return "stop"
+    if normalized in {"length", "max_tokens", "max_completion_tokens"}:
+        return "length"
+    return "other"
+
+
+def structured_output_metadata(response: Any, configured_output_limit: Any) -> dict[str, Any]:
+    """Return bounded structured-output metadata; never include generated content."""
+    completion_tokens = _usage_value(response, "completion_tokens")
+    if completion_tokens is None:
+        completion_tokens = _usage_value(response, "output_tokens")
+    try:
+        safe_tokens = max(0, int(completion_tokens)) if completion_tokens is not None else None
+    except (TypeError, ValueError, OverflowError):
+        safe_tokens = None
+    try:
+        safe_limit = max(0, int(configured_output_limit))
+    except (TypeError, ValueError, OverflowError):
+        safe_limit = 0
+    return {
+        "finish_reason": normalize_finish_reason(response),
+        "configured_output_limit": safe_limit,
+        "completion_tokens": safe_tokens,
+        "limit_observed": bool(
+            safe_limit and safe_tokens is not None and safe_tokens == safe_limit
+        ),
+    }
+
+
+def get_last_structured_output(stage: str) -> dict[str, Any]:
+    usage = get_current_llm_usage()
+    if usage is None:
+        return {
+            "finish_reason": "missing", "configured_output_limit": 0,
+            "completion_tokens": None, "limit_observed": False,
+        }
+    with usage.lock:
+        return dict(usage.structured_outputs.get(stage, {
+            "finish_reason": "missing", "configured_output_limit": 0,
+            "completion_tokens": None, "limit_observed": False,
+        }))
+
+
+def log_structured_output_event(
+    *, stage: str, category: str, metadata: dict[str, Any], success: bool,
+) -> None:
+    """Emit only bounded parser state; never prompts, output, or exceptions."""
+    safe_stage = stage if stage in _STRUCTURED_EVENT_STAGES else "planner_parse"
+    safe_category = category if category in _STRUCTURED_EVENT_CATEGORIES else "repair_exhausted"
+    finish_reason = metadata.get("finish_reason")
+    if finish_reason not in {"stop", "length", "other", "missing"}:
+        finish_reason = "other"
+    limit = metadata.get("configured_output_limit")
+    limit = limit if isinstance(limit, int) and limit >= 0 else 0
+    tokens = metadata.get("completion_tokens")
+    tokens_text = str(tokens) if isinstance(tokens, int) and tokens >= 0 else "unknown"
+    print(
+        "event=structured_output_event "
+        f"stage={safe_stage} category={safe_category} "
+        f"finish_reason={finish_reason} configured_output_limit={limit} "
+        f"completion_tokens={tokens_text} success={str(success).lower()}",
+        flush=True,
+    )
+
+
 def create_chat_completion(
     *,
     stage: str,
@@ -248,6 +341,7 @@ def create_chat_completion(
     """Make one budgeted logical invocation with at most one transient retry."""
     usage = get_current_llm_usage()
     stage_max_token_exposure = kwargs.pop("stage_max_token_exposure", None)
+    configured_output_limit = kwargs.get("max_completion_tokens", kwargs.get("max_tokens", 0))
     if usage is not None:
         with usage.lock:
             event = {
@@ -318,6 +412,10 @@ def create_chat_completion(
             total_tokens = _usage_value(response, 'total_tokens')
             if total_tokens is None and (prompt_tokens is not None or completion_tokens is not None):
                 total_tokens = int(prompt_tokens or 0) + int(completion_tokens or 0)
+            structured_metadata = (
+                structured_output_metadata(response, configured_output_limit)
+                if stage in _STRUCTURED_STAGES else None
+            )
             if usage is not None:
                 with usage.lock:
                     usage.prompt_tokens += int(prompt_tokens or 0)
@@ -330,6 +428,8 @@ def create_chat_completion(
                     )
                     if exceeded:
                         usage.budget_exceeded = True
+                    if stage in _STRUCTURED_STAGES:
+                        usage.structured_outputs[stage] = dict(structured_metadata)
                 usage.notify()
             print(
                 "LLM_CALL "
@@ -339,6 +439,12 @@ def create_chat_completion(
                 f"prompt_tokens={prompt_tokens} "
                 f"completion_tokens={completion_tokens} "
                 f"total_tokens={total_tokens}"
+                + (
+                    f" finish_reason={structured_metadata['finish_reason']} "
+                    f"configured_output_limit={structured_metadata['configured_output_limit']} "
+                    f"limit_observed={str(structured_metadata['limit_observed']).lower()}"
+                    if structured_metadata is not None else ""
+                )
             )
             if usage is not None and exceeded:
                 raise LLMCallBudgetExceeded(

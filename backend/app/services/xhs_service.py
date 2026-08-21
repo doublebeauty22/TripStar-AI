@@ -19,13 +19,15 @@ from ..models.schemas import (
     XHSEvidence, XHSEvidenceSupport, XHSExtractedItem, XHSResearchResult,
 )
 from .timing import timed_stage
-from .llm_service import get_llm
+from .llm_service import (
+    get_llm, log_structured_output_event, structured_output_metadata,
+)
 logger = logging.getLogger(__name__)
 _XHS_SIGNING_LOCK = threading.Lock()
 _XHS_IMAGE_FALLBACK_CONCURRENCY = 2
 _XHS_IMAGE_FALLBACK_SEMAPHORE = threading.Semaphore(_XHS_IMAGE_FALLBACK_CONCURRENCY)
 _XHS_EXTRACTION_NOTE_CHARS = 500
-_XHS_EXTRACTION_MAX_TOKENS = 2500
+_XHS_EXTRACTION_MAX_TOKENS = 4000
 _FABRICATED_CONSENSUS_TERMS = (
     "大家都推荐", "小红书普遍认为", "小红书用户普遍推荐", "热门必去",
 )
@@ -622,13 +624,35 @@ name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理
                 max_tokens=_XHS_EXTRACTION_MAX_TOKENS,
                 stage_max_token_exposure=_XHS_EXTRACTION_MAX_TOKENS,
             )
+        output_metadata = structured_output_metadata(
+            response, _XHS_EXTRACTION_MAX_TOKENS,
+        )
+        if output_metadata["finish_reason"] == "length":
+            log_structured_output_event(
+                stage="xhs_extraction", category="output_limit_reached",
+                metadata=output_metadata, success=False,
+            )
+            return XHSResearchResult(
+                status="unavailable", verification_status="unavailable", degraded=True,
+                reason="output_truncated", evidence=evidence, context="",
+            )
         content = response.choices[0].message.content
 
-        json_match = re.search(r'\[.*\]', content, re.DOTALL)
-        if json_match:
-            extracted = json.loads(json_match.group())
-        else:
-            extracted = json.loads(content)
+        try:
+            json_match = re.search(r'\[.*\]', content, re.DOTALL)
+            if json_match:
+                extracted = json.loads(json_match.group())
+            else:
+                extracted = json.loads(content)
+        except json.JSONDecodeError:
+            log_structured_output_event(
+                stage="xhs_extraction", category="json_decode_failed",
+                metadata=output_metadata, success=False,
+            )
+            return XHSResearchResult(
+                status="unavailable", verification_status="unavailable", degraded=True,
+                reason="extraction_failed", evidence=evidence, context="",
+            )
 
         evidence_lookup = {item.note_id: item for item in evidence}
         supported_items: List[XHSExtractedItem] = []
@@ -721,8 +745,7 @@ name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理
             context=final_result,
         )
 
-    except Exception as e:
-        print(f"❌ 大模型提纯小红书数据异常: {e}")
+    except Exception:
         return XHSResearchResult(
             status="unavailable", verification_status="unavailable", degraded=True,
             reason="extraction_failed", evidence=evidence, context="",

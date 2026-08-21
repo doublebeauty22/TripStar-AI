@@ -6,6 +6,8 @@ from hello_agents import HelloAgentsLLM
 from backend.app.services.llm_service import (
     OpenAICompatibilityClient,
     _sanitize_chat_completion_kwargs,
+    normalize_finish_reason,
+    structured_output_metadata,
 )
 
 
@@ -29,6 +31,18 @@ def _recording_client():
 
 
 class LlmCompatibilityTests(unittest.TestCase):
+    def test_finish_reason_normalization_and_limit_evidence(self):
+        for raw, expected in (("stop", "stop"), ("length", "length"), ("tool_calls", "other"), (None, "missing")):
+            with self.subTest(raw=raw):
+                response = SimpleNamespace(
+                    choices=[SimpleNamespace(finish_reason=raw)],
+                    usage=SimpleNamespace(completion_tokens=4000),
+                )
+                metadata = structured_output_metadata(response, 4000)
+                self.assertEqual(normalize_finish_reason(response), expected)
+                self.assertTrue(metadata["limit_observed"])
+        self.assertEqual(normalize_finish_reason(SimpleNamespace(choices=[])), "missing")
+
     def test_unset_max_tokens_is_omitted(self):
         request = _sanitize_chat_completion_kwargs(
             {"model": "gpt-4.1", "messages": [], "max_tokens": None}

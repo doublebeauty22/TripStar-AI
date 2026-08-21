@@ -5,12 +5,17 @@ import asyncio
 import os
 from typing import Dict, Any, List, Callable, Awaitable, Optional
 from hello_agents import SimpleAgent
+from pydantic import ValidationError
 from ..services.llm_service import (
     LLMCallBudgetExceeded,
+    StructuredOutputLimitReached,
     TaskScopedLLM,
     create_chat_completion,
+    get_last_structured_output,
     get_llm,
+    log_structured_output_event,
     record_application_retry,
+    structured_output_metadata,
 )
 from ..models.schemas import TripRequest, TripPlan, DayPlan, Attraction, Meal, WeatherResult, XHSResearchResult, Location, Hotel, has_valid_verified_coordinates
 from ..config import get_google_maps_server_api_key, get_settings
@@ -630,7 +635,7 @@ class MultiAgentTripPlanner:
                     all_weather,
                     all_hotels,
                 )
-            print(f"行程规划结果: {planner_response[:300]}...\n")
+            print("Planner 响应已返回，开始结构化校验。\n")
 
             # 解析最终计划
             trip_plan = self._parse_response(planner_response, request)
@@ -1406,20 +1411,12 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
     def _llm_repair_json(self, broken_json: str) -> str:
         """使用 LLM 修复无法自动修复的 JSON（最后手段）"""
         llm = get_llm()
-        # 只发送尾部 2000 字符以节省 token
-        tail = broken_json[-2000:] if len(broken_json) > 2000 else broken_json
-        head = broken_json[:500] if len(broken_json) > 500 else broken_json
 
         repair_prompt = f"""以下是一段被截断的旅行计划 JSON，请你补全它使其成为合法的 JSON。
 只输出修复后的完整 JSON，不要输出任何解释文字。
 
-开头部分:
-{head}
-
-...(中间省略)...
-
-尾部被截断部分:
-{tail}
+需要修复的完整 JSON:
+{broken_json}
 """
         try:
             response = create_chat_completion(
@@ -1428,8 +1425,16 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 messages=[{"role": "user", "content": repair_prompt}],
                 llm_instance=llm,
                 temperature=0.0,
-                max_tokens=1500,
+                max_tokens=6000,
+                stage_max_token_exposure=6000,
             )
+            metadata = structured_output_metadata(response, 6000)
+            if metadata["finish_reason"] == "length":
+                log_structured_output_event(
+                    stage="json_repair", category="output_limit_reached",
+                    metadata=metadata, success=False,
+                )
+                raise StructuredOutputLimitReached("json repair output limit reached")
             content = response.choices[0].message.content or ""
             # 从修复结果中提取 JSON
             import re as _re
@@ -1450,8 +1455,16 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
         except LLMCallBudgetExceeded:
             print("⚠️  LLM 调用预算已用尽，跳过 JSON repair")
             return broken_json
-        except Exception as e:
-            print(f"⚠️  LLM 修复 JSON 失败: {e}")
+        except StructuredOutputLimitReached:
+            raise
+        except Exception:
+            log_structured_output_event(
+                stage="json_repair", category="repair_exhausted",
+                metadata={
+                    "finish_reason": "missing", "configured_output_limit": 6000,
+                    "completion_tokens": None,
+                }, success=False,
+            )
             return broken_json
 
     def _parse_response(self, response: str, request: TripRequest) -> TripPlan:
@@ -1467,6 +1480,13 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
         """
         import re as _re
         try:
+            planner_metadata = get_last_structured_output("planner")
+            if planner_metadata["finish_reason"] == "length":
+                log_structured_output_event(
+                    stage="planner_parse", category="output_limit_reached",
+                    metadata=planner_metadata, success=False,
+                )
+                raise StructuredOutputLimitReached("planner output limit reached")
             # 尝试从响应中提取JSON
             if "```json" in response:
                 json_start = response.find("```json") + 7
@@ -1525,44 +1545,58 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 if brutal_repaired != brutal:
                     parse_attempts.append(("正则+截断修复", brutal_repaired))
 
-            # 依次尝试每种修复
-            last_error = None
+            # 依次尝试每种本地语法修复。JSON syntax 和 schema validation
+            # 必须分开：语法有效但 schema 无效时不调用通用 JSON repair。
+            decoded_any = False
             for attempt_name, candidate in parse_attempts:
                 try:
                     data = json.loads(candidate)
-                    if attempt_name != "基础清理":
-                        print(f"✅ JSON 通过「{attempt_name}」成功解析")
-                    # 转换为TripPlan对象
-                    return TripPlan(**data)
-                except (json.JSONDecodeError, Exception) as e:
-                    last_error = e
-                    if attempt_name == "基础清理":
-                        pos = e.pos if hasattr(e, 'pos') else 0
-                        context_start = max(0, pos - 60)
-                        context_end = min(len(candidate), pos + 60)
-                        print(f"⚠️  首次 JSON 解析失败: {e}")
-                        print(f"   出错位置附近内容: ...{candidate[context_start:context_end]}...")
-                    else:
-                        print(f"⚠️  「{attempt_name}」仍失败: {e}")
+                except json.JSONDecodeError:
+                    continue
+                decoded_any = True
+                try:
+                    return TripPlan.model_validate(data)
+                except ValidationError:
+                    log_structured_output_event(
+                        stage="planner_parse", category="schema_validation_failed",
+                        metadata=planner_metadata, success=False,
+                    )
+                    raise ValueError("行程 JSON schema validation failed") from None
+
+            if not decoded_any:
+                log_structured_output_event(
+                    stage="planner_parse", category="json_decode_failed",
+                    metadata=planner_metadata, success=False,
+                )
 
             # ====== 最终手段：LLM 修复 ======
-            print("🔧 所有本地修复均失败，尝试使用 LLM 修复 JSON...")
             llm_fixed = self._llm_repair_json(json_str)
             llm_fixed = self._sanitize_json_str(llm_fixed)
             try:
                 data = json.loads(llm_fixed)
-                print("✅ JSON 通过 LLM 修复成功解析")
-                return TripPlan(**data)
-            except Exception as e_llm:
-                print(f"⚠️  LLM 修复后仍然解析失败: {e_llm}")
-                # 最终 raise 最初的错误
-                raise ValueError(f"行程 JSON 解析失败: {str(last_error)}") from last_error
+            except json.JSONDecodeError:
+                repair_metadata = get_last_structured_output("json_repair")
+                log_structured_output_event(
+                    stage="json_repair", category="json_decode_failed",
+                    metadata=repair_metadata, success=False,
+                )
+                raise ValueError("行程 JSON repair decode failed") from None
+            try:
+                return TripPlan.model_validate(data)
+            except ValidationError:
+                repair_metadata = get_last_structured_output("json_repair")
+                log_structured_output_event(
+                    stage="json_repair", category="schema_validation_failed",
+                    metadata=repair_metadata, success=False,
+                )
+                raise ValueError("行程 JSON repair schema validation failed") from None
             
         except ValueError:
             raise
-        except Exception as e:
-            print(f"⚠️  解析响应失败: {str(e)}")
-            raise ValueError(f"行程 JSON 解析失败: {str(e)}") from e
+        except StructuredOutputLimitReached:
+            raise
+        except Exception:
+            raise ValueError("行程 JSON 解析失败") from None
     
     def _create_fallback_plan(self, request: TripRequest) -> TripPlan:
         """创建备用计划(当Agent失败时)"""

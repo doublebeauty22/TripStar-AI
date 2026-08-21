@@ -41,8 +41,8 @@ def _four_item_completion():
             }],
         })
     return SimpleNamespace(choices=[SimpleNamespace(
-        message=SimpleNamespace(content=json.dumps(items)),
-    )])
+        finish_reason="stop", message=SimpleNamespace(content=json.dumps(items)),
+    )], usage=SimpleNamespace(completion_tokens=1200))
 
 
 class XHSExtractionWorkloadTests(unittest.TestCase):
@@ -91,6 +91,39 @@ class XHSExtractionWorkloadTests(unittest.TestCase):
             captured["stage_max_token_exposure"],
             xhs_service._XHS_EXTRACTION_MAX_TOKENS,
         )
+        self.assertEqual(xhs_service._XHS_EXTRACTION_MAX_TOKENS, 4000)
+
+    def test_known_truncated_parseable_prefix_is_rejected(self):
+        completion = _four_item_completion()
+        completion.choices[0].finish_reason = "length"
+        completion.usage.completion_tokens = 4000
+        with patch.object(
+            xhs_service, "get_xhs_client", return_value=_BoundedExtractionClient()
+        ), patch.object(
+            xhs_service, "get_llm", return_value=SimpleNamespace(model="fake-model")
+        ), patch(
+            "backend.app.services.llm_service.create_chat_completion",
+            return_value=completion,
+        ):
+            result = xhs_service.search_xhs_attractions("Private City", "Private Query")
+        self.assertEqual(result.status, "unavailable")
+        self.assertEqual(result.reason, "output_truncated")
+        self.assertEqual(result.extracted_items, [])
+
+    def test_equal_limit_with_stop_is_not_false_truncation(self):
+        completion = _four_item_completion()
+        completion.usage.completion_tokens = 4000
+        with patch.object(
+            xhs_service, "get_xhs_client", return_value=_BoundedExtractionClient()
+        ), patch.object(
+            xhs_service, "get_llm", return_value=SimpleNamespace(model="fake-model")
+        ), patch(
+            "backend.app.services.llm_service.create_chat_completion",
+            return_value=completion,
+        ), patch.object(xhs_service, "geocode_amap", return_value=None):
+            result = xhs_service.search_xhs_attractions("Private City", "Private Query")
+        self.assertEqual(result.status, "available")
+        self.assertEqual(len(result.extracted_items), 4)
 
     def test_invalid_or_truncated_json_still_fails_open(self):
         completion = SimpleNamespace(choices=[SimpleNamespace(
