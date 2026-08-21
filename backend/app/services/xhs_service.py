@@ -22,7 +22,10 @@ from .timing import timed_stage
 from .llm_service import get_llm
 logger = logging.getLogger(__name__)
 _XHS_SIGNING_LOCK = threading.Lock()
-_XHS_IMAGE_FALLBACK_SEMAPHORE = threading.Semaphore(1)
+_XHS_IMAGE_FALLBACK_CONCURRENCY = 2
+_XHS_IMAGE_FALLBACK_SEMAPHORE = threading.Semaphore(_XHS_IMAGE_FALLBACK_CONCURRENCY)
+_XHS_EXTRACTION_NOTE_CHARS = 500
+_XHS_EXTRACTION_MAX_TOKENS = 2500
 _FABRICATED_CONSENSUS_TERMS = (
     "大家都推荐", "小红书普遍认为", "小红书用户普遍推荐", "热门必去",
 )
@@ -408,9 +411,10 @@ def _research_note(
 
     combined = ""
     if title or desc:
+        extraction_desc = desc[:_XHS_EXTRACTION_NOTE_CHARS]
         combined = (
             f"\n笔记{index + 1}:\nnote_id: {note_id}\n标题: {title}"
-            f"\n正文内容: {desc}\n来源: {source_url}\n"
+            f"\n正文内容: {extraction_desc}\n来源: {source_url}\n"
         )
     return evidence, source_text, combined
 
@@ -566,9 +570,8 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
     if _lang != "zh" and _lang in _lang_names:
         translation_instruction = f"""
 **极其重要的翻译要求:**
-目标语言为 {_lang_names[_lang]}。你必须将 "recommendation" 和 "reservation_tips" 翻译为 {_lang_names[_lang]}。
+目标语言为 {_lang_names[_lang]}。
 - "name" 和 "identity_text" 必须保留证据原文中的名称，不得翻译；译名仅写入 name_zh/name_en。
-- "duration" 和 "reservation_required" 保持原始数值/布尔值不变。
 - **注意**: "name_zh" 必须始终保持简体中文名称，"name_en" 必须始终保持英文名称，不受目标语言影响！
 - 严格保持 JSON schema 格式不变！
 """
@@ -584,19 +587,15 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
 "identity_text": 与 name 完全相同的证据原始名称
 "name_zh": 景点的中文简体名称(必须是简体中文，例如 "故宫博物院"。此字段始终为中文，不受目标语言影响)
 "name_en": 景点的英文名称(必须是英文，使用景点在国际上通用的官方英文名，例如 "The Palace Museum"。此字段始终为英文，不受目标语言影响)
-"recommendation": 该笔记明确支持的真实评价/避坑指南
-"duration": 游玩时长(数字, 分钟)
-"reservation_required": 是否需要提前预约(布尔值 true/false)。请根据游记中提到的"需要预约"、"提前预约"、"抢票"、"约满"、"官方预约"等关键词判断，如果游记未提及则默认为 false
-"reservation_tips": 预约相关提示(字符串)。如果需要预约，请提取预约渠道、提前天数等具体信息；如果不需要预约则填空字符串
-"evidence_ids": 支持该景点和 recommendation 的 note_id 数组，至少包含一个值
-"evidence_support": 数组；每个 evidence_id 对应一个对象，包含 evidence_id、identity_quote、recommendation_quote。两个 quote 都必须是该笔记正文中的简短逐字片段
+"evidence_ids": 支持该景点和评价引文的 note_id 数组，至少包含一个值
+"evidence_support": 数组；每个 evidence_id 对应一个对象，包含 "evidence_id"、"identity_quote"、"recommendation_quote"。两个 quote 都必须是该笔记正文中的简短逐字片段
 
 **证据约束（必须遵守）:**
 - evidence_ids 只能从上方输入笔记明确提供的 note_id 中选择，不得生成或改写 note_id。
 - attraction identity 必须由对应笔记明确支持。不得把模糊/umbrella 名称具体化成某个分店、园区、场馆或变体。
 - evidence 只写泛称时，name 和 identity_text 必须保持同样粒度；无法明确确认 identity 时不要输出。
-- recommendation 中的每个具体 claim 必须由至少一个关联 evidence 的 recommendation_quote 支持。
-- recommendation 只能保守复述 recommendation_quote，不得加入新的天气、楼层、路线、时间或规划推断。最终服务会以验证后的 recommendation_quote 重建 evidence summary，模型自由文本不具有事实权威。
+- 每条评价信息必须直接放在 recommendation_quote 中，并由对应 evidence 支持。
+- recommendation_quote 必须是原文逐字片段，不得加入新的天气、楼层、路线、时间或规划推断。最终服务会以验证后的 recommendation_quote 重建 evidence summary。
 - 每个 evidence_id 都必须有对应 evidence_support，并同时提供支持 identity 和 recommendation 的原文短片段。
 - 不得为了增加可信度附加不相关 evidence；不得因为多篇笔记都提到同一目的地，就把全部 note_id 挂到所有 item。
 - 无法找到对应 note_id 的候选不得输出。不要输出 unsupported item。
@@ -610,10 +609,6 @@ name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理
 游记杂文内容如下:
 {combined_text}
 
-JSON 返回示例:
-[
-  {{"name": "故宫博物院", "identity_text": "故宫博物院", "name_zh": "故宫博物院", "name_en": "The Palace Museum", "recommendation": "建议走中轴线。", "duration": 240, "reservation_required": true, "reservation_tips": "按笔记中的渠道提前预约", "evidence_ids": ["输入中的真实note_id"], "evidence_support": [{{"evidence_id": "输入中的真实note_id", "identity_quote": "故宫博物院", "recommendation_quote": "建议走中轴线"}}]}}
-]
 """
     try:
         from .llm_service import create_chat_completion
@@ -624,6 +619,8 @@ JSON 返回示例:
                 messages=[{"role": "user", "content": extract_prompt}],
                 llm_instance=llm,
                 temperature=0.1,
+                max_tokens=_XHS_EXTRACTION_MAX_TOKENS,
+                stage_max_token_exposure=_XHS_EXTRACTION_MAX_TOKENS,
             )
         content = response.choices[0].message.content
 
@@ -635,8 +632,28 @@ JSON 返回示例:
 
         evidence_lookup = {item.note_id: item for item in evidence}
         supported_items: List[XHSExtractedItem] = []
+        extraction_candidates = []
+        if isinstance(extracted, list):
+            for raw_item in extracted:
+                if not isinstance(raw_item, dict):
+                    extraction_candidates.append(raw_item)
+                    continue
+                candidate = dict(raw_item)
+                raw_support = candidate.get("evidence_support")
+                if isinstance(raw_support, list) and not str(
+                    candidate.get("recommendation") or candidate.get("reason") or ""
+                ).strip():
+                    candidate["recommendation"] = "；".join(
+                        str(support.get("recommendation_quote") or "").strip()
+                        for support in raw_support
+                        if isinstance(support, dict)
+                        and str(support.get("recommendation_quote") or "").strip()
+                    )
+                extraction_candidates.append(candidate)
+        else:
+            extraction_candidates = extracted
         validated_items = _validate_xhs_extracted_items(
-            extracted, evidence, evidence_source_text,
+            extraction_candidates, evidence, evidence_source_text,
         )
         for item in validated_items:
             name = item.get("name", "")
@@ -750,6 +767,65 @@ def _require_list(value: Any) -> List[Any]:
     return value
 
 
+def _positive_dimension(value: Any) -> Optional[int]:
+    """Accept only finite positive integer-like provider dimensions."""
+    if isinstance(value, bool):
+        return None
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return parsed if parsed > 0 else None
+
+
+def _image_dimensions(image: Dict[str, Any]) -> tuple[Optional[int], Optional[int]]:
+    return _positive_dimension(image.get("width")), _positive_dimension(image.get("height"))
+
+
+def _detail_image_url(image: Dict[str, Any]) -> str:
+    info_list = _require_list(image.get("info_list", []))
+    if len(info_list) > 1:
+        url = _require_mapping(info_list[1]).get("url", "")
+        if url:
+            return url
+    if info_list:
+        url = _require_mapping(info_list[0]).get("url", "")
+        if url:
+            return url
+    return image.get("url_default", "") or image.get("url_pre", "") or image.get("url", "")
+
+
+def _ssr_image_url(image: Dict[str, Any]) -> str:
+    return image.get("urlDefault", "") or image.get("urlPattern", "") or image.get("url", "")
+
+
+def _select_cover_image(images: List[Any], url_getter) -> str:
+    """Prefer a non-tall cover using validated dimensions, without inspecting content.
+
+    Unknown-dimension candidates preserve the provider's deterministic order. If
+    every usable candidate has reliable dimensions and is clearly portrait
+    (width / height < 0.8), no XHS cover is returned and the route may use its
+    existing placeholder fallback.
+    """
+    balanced: List[str] = []
+    unknown: List[str] = []
+    for raw_image in images:
+        image = _require_mapping(raw_image)
+        url = url_getter(image)
+        if not url:
+            continue
+        width, height = _image_dimensions(image)
+        if width is None or height is None:
+            unknown.append(url)
+        elif width / height >= 0.8:
+            balanced.append(url)
+    if balanced:
+        return balanced[0]
+    if unknown:
+        return unknown[0]
+    return ""
+
+
 def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
     """根据关键词从小红书搜索一张首图URL
 
@@ -814,28 +890,7 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                     note_card = _require_mapping(_require_mapping(detail_items[0]).get("note_card", {}))
                     image_list = _require_list(note_card.get("image_list", []))
                     if image_list:
-                        # 取第一张图的 URL
-                        first_img = _require_mapping(image_list[0])
-                        # 优先 info_list 中的高清图
-                        info_list = _require_list(first_img.get("info_list", []))
-                        if len(info_list) > 1:
-                            photo_url = _require_mapping(info_list[1]).get("url", "")
-                            if photo_url:
-                                return photo_url
-                            _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
-                            return ""
-                        elif info_list:
-                            photo_url = _require_mapping(info_list[0]).get("url", "")
-                            if photo_url:
-                                return photo_url
-                            _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
-                            return ""
-                        # 降级到其他字段
-                        photo_url = (
-                            first_img.get("url_default", "")
-                            or first_img.get("url_pre", "")
-                            or first_img.get("url", "")
-                        )
+                        photo_url = _select_cover_image(image_list, _detail_image_url)
                         if photo_url:
                             return photo_url
                         _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
@@ -865,14 +920,9 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                     note_data = _require_mapping(note_entry.get("note", {}))
                     img_list = _require_list(note_data.get("imageList", []))
                     if img_list:
-                        first_image = _require_mapping(img_list[0])
-                        first_img = (
-                            first_image.get("urlDefault")
-                            or first_image.get("urlPattern")
-                            or first_image.get("url")
-                        )
-                        if first_img:
-                            return first_img
+                        photo_url = _select_cover_image(img_list, _ssr_image_url)
+                        if photo_url:
+                            return photo_url
         except Exception as exc:
             category = _photo_error_category(exc)
             _log_xhs_event(
@@ -894,7 +944,7 @@ def get_xhs_photo_sync(keyword: str, *, request_id: str = "") -> str:
 
     This is deliberately not a distributed/global Provider limiter. The
     production deployment currently uses one worker; every process owns its
-    own single permit.
+    own bounded pair of permits.
     """
     with _XHS_IMAGE_FALLBACK_SEMAPHORE:
         return _get_xhs_photo_sync_unbounded(keyword, request_id=request_id)

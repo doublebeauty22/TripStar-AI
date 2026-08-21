@@ -202,7 +202,7 @@ class _GoogleSuccessService:
 
 
 class ImageFallbackConcurrencyTests(unittest.IsolatedAsyncioTestCase):
-    async def test_xhs_image_chains_are_process_local_serial(self):
+    async def test_xhs_image_chains_are_process_local_bounded_at_two(self):
         active = 0
         max_active = 0
         lock = threading.Lock()
@@ -223,10 +223,11 @@ class ImageFallbackConcurrencyTests(unittest.IsolatedAsyncioTestCase):
             results = await asyncio.gather(
                 xhs_service.get_photo_from_xhs("one"),
                 xhs_service.get_photo_from_xhs("two"),
+                xhs_service.get_photo_from_xhs("three"),
             )
 
-        self.assertEqual(results, ["one", "two"])
-        self.assertEqual(max_active, 1)
+        self.assertEqual(results, ["one", "two", "three"])
+        self.assertEqual(max_active, 2)
 
     async def test_xhs_permit_releases_after_empty_result_and_exception(self):
         outcomes = ["", RuntimeError("offline"), "recovered"]
