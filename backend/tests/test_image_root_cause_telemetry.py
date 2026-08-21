@@ -93,12 +93,14 @@ class XHSImageRootCauseTelemetryTests(unittest.TestCase):
             "xhs_detail_url_missing",
         )
 
-    def test_detail_portrait_rejection_bypasses_ssr(self):
+    def test_detail_portrait_fallback_returns_image_and_is_observable(self):
         image = {"width": 600, "height": 1200, "info_list": [{"url": "private-url"}]}
-        self._assert_one_empty_category(
-            _XHSClient([_note()], _detail([image])),
-            "xhs_detail_image_rejected",
-        )
+        result, output = self._run(_XHSClient([_note()], _detail([image])))
+        self.assertEqual(result, "private-url")
+        lines = _event_lines(output, "XHS_IMAGE_EVENT ")
+        self.assertEqual(len(lines), 1)
+        self.assertIn("category=xhs_detail_portrait_fallback", lines[0])
+        self.assertNotIn("PRIVATE", output)
 
     def test_ssr_state_missing_after_detail_empty(self):
         self._assert_one_empty_category(
@@ -113,18 +115,22 @@ class XHSImageRootCauseTelemetryTests(unittest.TestCase):
             _ssr_response(state=_ssr_state([])),
         )
 
-    def test_ssr_url_missing_and_portrait_rejection_are_distinct(self):
-        cases = (
-            ([{}], "xhs_ssr_url_missing"),
-            ([{"urlDefault": "private-url", "width": 600, "height": 1200}],
-             "xhs_ssr_image_rejected"),
+    def test_ssr_url_missing_remains_empty(self):
+        self._assert_one_empty_category(
+            _XHSClient([_note()], _detail(items=False)), "xhs_ssr_url_missing",
+            _ssr_response(state=_ssr_state([{}])),
         )
-        for images, category in cases:
-            with self.subTest(category=category):
-                self._assert_one_empty_category(
-                    _XHSClient([_note()], _detail(items=False)), category,
-                    _ssr_response(state=_ssr_state(images)),
-                )
+
+    def test_ssr_portrait_fallback_returns_image_and_is_observable(self):
+        client = _XHSClient([_note()], _detail(items=False))
+        result, output = self._run(client, _ssr_response(state=_ssr_state([
+            {"urlDefault": "private-url", "width": 600, "height": 1200},
+        ])))
+        self.assertEqual(result, "private-url")
+        lines = _event_lines(output, "XHS_IMAGE_EVENT ")
+        self.assertEqual(len(lines), 1)
+        self.assertIn("category=xhs_ssr_portrait_fallback", lines[0])
+        self.assertNotIn("PRIVATE", output)
 
     def test_detail_failure_then_ssr_empty(self):
         self._assert_one_empty_category(
@@ -142,6 +148,19 @@ class XHSImageRootCauseTelemetryTests(unittest.TestCase):
         lines = _event_lines(output, "XHS_IMAGE_EVENT ")
         self.assertEqual(len(lines), 1)
         self.assertIn("category=xhs_ssr_success_after_detail_failed", lines[0])
+        self.assertNotIn("PRIVATE", output)
+
+    def test_detail_failure_then_ssr_portrait_fallback_is_bounded(self):
+        client = _XHSClient([_note()], detail_error=TimeoutError("PRIVATE_EXCEPTION"))
+        result, output = self._run(client, _ssr_response(state=_ssr_state([
+            {"urlDefault": "private-url", "width": 600, "height": 1200},
+        ])))
+        self.assertEqual(result, "private-url")
+        lines = _event_lines(output, "XHS_IMAGE_EVENT ")
+        self.assertEqual(len(lines), 1)
+        self.assertIn(
+            "category=xhs_ssr_portrait_fallback_after_detail_failed", lines[0],
+        )
         self.assertNotIn("PRIVATE", output)
 
 

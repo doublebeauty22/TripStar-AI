@@ -182,8 +182,15 @@ class XHSCoverSelectionTests(unittest.TestCase):
             "unknown",
         )
 
-    def test_all_reliably_portrait_candidates_return_empty(self):
+    def test_all_reliably_portrait_candidates_use_first_usable_fallback(self):
         images = [self.detail("one", 600, 1200), self.detail("two", 700, 1000)]
+        self.assertEqual(
+            xhs_service._select_cover_image(images, xhs_service._detail_image_url),
+            "one",
+        )
+
+    def test_no_usable_url_still_returns_empty(self):
+        images = [{"width": 600, "height": 1200, "info_list": []}]
         self.assertEqual(
             xhs_service._select_cover_image(images, xhs_service._detail_image_url),
             "",

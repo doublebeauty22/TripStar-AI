@@ -823,15 +823,20 @@ def _ssr_image_url(image: Dict[str, Any]) -> str:
 
 
 def _select_cover_image(images: List[Any], url_getter) -> str:
-    """Prefer a non-tall cover using validated dimensions, without inspecting content.
+    """Prefer a non-tall cover, then safely fall back to a usable portrait.
 
-    Unknown-dimension candidates preserve the provider's deterministic order. If
-    every usable candidate has reliable dimensions and is clearly portrait
-    (width / height < 0.8), no XHS cover is returned and the route may use its
-    existing placeholder fallback.
+    Unknown-dimension and portrait candidates preserve Provider order. Orientation
+    is only a ranking signal; a usable URL is never rejected solely for portrait
+    dimensions.
     """
+    return _select_cover_image_outcome(images, url_getter)[0]
+
+
+def _select_cover_image_outcome(images: List[Any], url_getter) -> tuple[str, bool]:
+    """Return ``(url, used_portrait_fallback)`` without inspecting image content."""
     balanced: List[str] = []
     unknown: List[str] = []
+    portrait: List[str] = []
     for raw_image in images:
         image = _require_mapping(raw_image)
         url = url_getter(image)
@@ -842,11 +847,15 @@ def _select_cover_image(images: List[Any], url_getter) -> str:
             unknown.append(url)
         elif width / height >= 0.8:
             balanced.append(url)
+        else:
+            portrait.append(url)
     if balanced:
-        return balanced[0]
+        return balanced[0], False
     if unknown:
-        return unknown[0]
-    return ""
+        return unknown[0], False
+    if portrait:
+        return portrait[0], True
+    return "", False
 
 
 def _cover_image_empty_category(images: List[Any], url_getter, *, stage: str) -> str:
@@ -866,10 +875,13 @@ _XHS_IMAGE_TERMINAL_CATEGORIES = {
     "xhs_no_eligible_note",
     "xhs_detail_url_missing",
     "xhs_detail_image_rejected",
+    "xhs_detail_portrait_fallback",
     "xhs_ssr_state_missing",
     "xhs_ssr_image_empty",
     "xhs_ssr_url_missing",
     "xhs_ssr_image_rejected",
+    "xhs_ssr_portrait_fallback",
+    "xhs_ssr_portrait_fallback_after_detail_failed",
     "xhs_ssr_empty_after_detail_failed",
     "xhs_ssr_success_after_detail_failed",
 }
@@ -968,8 +980,15 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                     note_card = _require_mapping(_require_mapping(detail_items[0]).get("note_card", {}))
                     image_list = _require_list(note_card.get("image_list", []))
                     if image_list:
-                        photo_url = _select_cover_image(image_list, _detail_image_url)
+                        photo_url, portrait_fallback = _select_cover_image_outcome(
+                            image_list, _detail_image_url,
+                        )
                         if photo_url:
+                            if portrait_fallback:
+                                _log_xhs_image_event(
+                                    request_id=request_id, stage="detail",
+                                    category="xhs_detail_portrait_fallback",
+                                )
                             return photo_url
                         _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
                         _log_xhs_image_event(
@@ -1006,9 +1025,19 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                     note_data = _require_mapping(note_entry.get("note", {}))
                     img_list = _require_list(note_data.get("imageList", []))
                     if img_list:
-                        photo_url = _select_cover_image(img_list, _ssr_image_url)
+                        photo_url, portrait_fallback = _select_cover_image_outcome(
+                            img_list, _ssr_image_url,
+                        )
                         if photo_url:
-                            if detail_failed:
+                            if portrait_fallback:
+                                category = (
+                                    "xhs_ssr_portrait_fallback_after_detail_failed"
+                                    if detail_failed else "xhs_ssr_portrait_fallback"
+                                )
+                                _log_xhs_image_event(
+                                    request_id=request_id, stage="ssr", category=category,
+                                )
+                            elif detail_failed:
                                 _log_xhs_image_event(
                                     request_id=request_id, stage="ssr",
                                     category="xhs_ssr_success_after_detail_failed",
