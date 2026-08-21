@@ -40,6 +40,48 @@ def _log_photo_terminal(
     )
 
 
+_GOOGLE_GROUNDING_CATEGORIES = {
+    "no_candidates", "name_mismatch", "city_mismatch", "type_mismatch",
+    "scope_conflict", "invalid_place_id", "invalid_coordinates",
+    "insufficient_multilingual_evidence", "ambiguous_candidates",
+    "provider_failure",
+}
+
+
+def _google_grounding_category(match: dict) -> str:
+    """Map existing deterministic gates to one bounded diagnostic reason."""
+    evidence = match.get("evidence") if isinstance(match, dict) else None
+    evidence = evidence if isinstance(evidence, dict) else {}
+    explicit = evidence.get("reason")
+    if explicit in {"no_candidates", "provider_failure"}:
+        return explicit
+    if evidence.get("city_consistent") is False:
+        return "city_mismatch"
+    if evidence.get("type_compatible") is False:
+        return "type_mismatch"
+    if evidence.get("scope_compatible") is False:
+        return "scope_conflict"
+    if evidence.get("place_id_valid") is False:
+        return "invalid_place_id"
+    if evidence.get("coordinate_valid") is False:
+        return "invalid_coordinates"
+    if evidence.get("name_score", 0.0) < 0.6:
+        return "name_mismatch"
+    if evidence.get("runner_up_margin", 1.0) < 0.08:
+        return "ambiguous_candidates"
+    return "insufficient_multilingual_evidence"
+
+
+def _log_google_grounding_event(*, request_id: str, category: str) -> None:
+    safe_request_id = request_id if len(request_id) == 12 and request_id.isalnum() else "unknown"
+    safe_category = category if category in _GOOGLE_GROUNDING_CATEGORIES else "no_candidates"
+    print(
+        "GOOGLE_GROUNDING_EVENT "
+        f"request_id={safe_request_id} category={safe_category} retryable=false",
+        flush=True,
+    )
+
+
 class POIDetailResponse(BaseModel):
     """POI详情响应"""
     success: bool
@@ -220,6 +262,10 @@ async def get_attraction_photo(
                     )
             else:
                 failure_reasons.append("grounding_unverified")
+                _log_google_grounding_event(
+                    request_id=request_id,
+                    category=_google_grounding_category(match),
+                )
                 _log_photo_event(
                     request_id=request_id,
                     provider="google", stage="grounding",

@@ -132,6 +132,7 @@ class GoogleMapService:
         citylimit: bool = True,
         language_code: str = "zh-CN",
         address_hint: str = "",
+        _diagnostics: Optional[Dict[str, bool]] = None,
     ) -> List[POIInfo]:
         """
         使用 Places API (New) Text Search 搜索 POI
@@ -197,6 +198,8 @@ class GoogleMapService:
                 ))
             return results
         except Exception as exc:
+            if _diagnostics is not None:
+                _diagnostics["provider_failure"] = True
             _log_http_failure("places_text_search", exc)
             return []
 
@@ -509,6 +512,7 @@ class GoogleMapService:
         languages = ("zh-CN", "ja", "en")
         aggregated: Dict[str, Dict[str, Any]] = {}
         search_calls = 0
+        diagnostics: Dict[str, bool] = {}
 
         def add_results(language: str) -> None:
             nonlocal search_calls
@@ -518,6 +522,7 @@ class GoogleMapService:
                 citylimit=True,
                 language_code=language,
                 address_hint=expected_address,
+                _diagnostics=diagnostics,
             )
             search_calls += 1
             for rank, poi in enumerate(results):
@@ -537,7 +542,13 @@ class GoogleMapService:
         if not aggregated:
             return {
                 "status": "unverified", "score": 0.0, "poi": None,
-                "evidence": {"search_calls": search_calls, "reason": "no_candidates"},
+                "evidence": {
+                    "search_calls": search_calls,
+                    "reason": (
+                        "provider_failure"
+                        if diagnostics.get("provider_failure") else "no_candidates"
+                    ),
+                },
             }
 
         def base_evidence(entry: Dict[str, Any], address_score: float = 0.0) -> Dict[str, Any]:

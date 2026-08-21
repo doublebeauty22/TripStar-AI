@@ -849,6 +849,50 @@ def _select_cover_image(images: List[Any], url_getter) -> str:
     return ""
 
 
+def _cover_image_empty_category(images: List[Any], url_getter, *, stage: str) -> str:
+    """Classify an already-empty cover selection without exposing image data."""
+    usable_url_seen = False
+    for raw_image in images:
+        image = _require_mapping(raw_image)
+        if url_getter(image):
+            usable_url_seen = True
+            break
+    suffix = "image_rejected" if usable_url_seen else "url_missing"
+    return f"xhs_{stage}_{suffix}"
+
+
+_XHS_IMAGE_TERMINAL_CATEGORIES = {
+    "xhs_search_empty",
+    "xhs_no_eligible_note",
+    "xhs_detail_url_missing",
+    "xhs_detail_image_rejected",
+    "xhs_ssr_state_missing",
+    "xhs_ssr_image_empty",
+    "xhs_ssr_url_missing",
+    "xhs_ssr_image_rejected",
+    "xhs_ssr_empty_after_detail_failed",
+    "xhs_ssr_success_after_detail_failed",
+}
+
+
+def _log_xhs_image_event(
+    *, request_id: str, stage: str, category: str, retryable: bool = False,
+) -> None:
+    """Emit bounded image-chain state without request or Provider content."""
+    safe_request_id = request_id if re.fullmatch(r"[0-9a-f]{12}", request_id or "") else "unknown"
+    safe_stage = stage if stage in {"search", "detail", "ssr"} else "ssr"
+    safe_category = (
+        category if category in _XHS_IMAGE_TERMINAL_CATEGORIES
+        else "xhs_ssr_state_missing"
+    )
+    print(
+        "XHS_IMAGE_EVENT "
+        f"request_id={safe_request_id} stage={safe_stage} "
+        f"category={safe_category} retryable={str(retryable).lower()}",
+        flush=True,
+    )
+
+
 def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
     """根据关键词从小红书搜索一张首图URL
 
@@ -888,6 +932,13 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
             _log_xhs_event(request_id=request_id, stage="parse", category="malformed_response")
             raise
 
+        if not items:
+            _log_xhs_event(request_id=request_id, stage="search", category="no_result")
+            _log_xhs_image_event(
+                request_id=request_id, stage="search", category="xhs_search_empty",
+            )
+            return ""
+
         target_note_id = None
         target_xsec_token = ""
         for note in items:
@@ -901,9 +952,13 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
 
         if not target_note_id:
             _log_xhs_event(request_id=request_id, stage="search", category="no_result")
+            _log_xhs_image_event(
+                request_id=request_id, stage="search", category="xhs_no_eligible_note",
+            )
             return ""
 
         # 方案 A: 通过原生 API 获取笔记详情和图片
+        detail_failed = False
         try:
             with timed_stage("xhs_stage_timing", "image_detail"):
                 detail_res = client.get_note_detail(target_note_id, target_xsec_token)
@@ -917,8 +972,16 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                         if photo_url:
                             return photo_url
                         _log_xhs_event(request_id=request_id, stage="detail", category="no_result")
+                        _log_xhs_image_event(
+                            request_id=request_id,
+                            stage="detail",
+                            category=_cover_image_empty_category(
+                                image_list, _detail_image_url, stage="detail",
+                            ),
+                        )
                         return ""
         except Exception as exc:
+            detail_failed = True
             _log_xhs_event(
                 request_id=request_id,
                 stage=_photo_error_stage(_photo_error_category(exc), "detail"),
@@ -945,7 +1008,19 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                     if img_list:
                         photo_url = _select_cover_image(img_list, _ssr_image_url)
                         if photo_url:
+                            if detail_failed:
+                                _log_xhs_image_event(
+                                    request_id=request_id, stage="ssr",
+                                    category="xhs_ssr_success_after_detail_failed",
+                                )
                             return photo_url
+                        terminal_category = _cover_image_empty_category(
+                            img_list, _ssr_image_url, stage="ssr",
+                        )
+                    else:
+                        terminal_category = "xhs_ssr_image_empty"
+                else:
+                    terminal_category = "xhs_ssr_state_missing"
         except Exception as exc:
             category = _photo_error_category(exc)
             _log_xhs_event(
@@ -958,6 +1033,11 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
         # The route owns stable failure classification. Never log the keyword,
         # cookie-related detail, or a raw provider response here.
         raise
+    if detail_failed:
+        terminal_category = "xhs_ssr_empty_after_detail_failed"
+    _log_xhs_image_event(
+        request_id=request_id, stage="ssr", category=terminal_category,
+    )
     _log_xhs_event(request_id=request_id, stage="ssr", category="no_result")
     return ""
 
