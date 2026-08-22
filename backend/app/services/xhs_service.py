@@ -1,6 +1,6 @@
 """小红书搜索服务 - 基于 Spider_XHS 原生签名引擎
 
-彻底替换第三方 xhs 库，使用本地 JS 签名 + 直连 edith.xiaohongshu.com API，
+彻底替换第三方 xhs 库，使用本地 JS 签名直连小红书 Search/Detail API，
 解决 300011 账号异常风控误杀问题。
 """
 
@@ -10,6 +10,7 @@ import math
 import random
 import logging
 import threading
+import uuid
 import requests
 import httpx
 from concurrent.futures import ThreadPoolExecutor
@@ -178,14 +179,21 @@ class XhsNativeClient:
     生成 x-s / x-t / x-s-common 等完整签名，彻底绕过 300011 风控。
     """
     BASE_URL = "https://edith.xiaohongshu.com"
+    SEARCH_BASE_URL = "https://so.xiaohongshu.com"
+    SEARCH_API = "/api/sns/web/v2/search/notes"
+    SEARCH_AUTHORITY = "so.xiaohongshu.com"
 
     def __init__(self, cookies_str: str):
         self.cookies_str = cookies_str
+        # Backend analogue of one browser page/search session. This value is
+        # private, process-local, never persisted, and never accepted from a
+        # caller or emitted in logs.
+        self._search_session_id = str(uuid.uuid4())
 
     def search_notes(self, keyword: str, page: int = 1, sort_type: int = 0,
                      page_size: int = 20) -> dict:
         """
-        搜索笔记 - 直连 /api/sns/web/v1/search/notes
+        搜索笔记 - 直连 /api/sns/web/v2/search/notes
         
         Args:
             keyword: 搜索关键词
@@ -196,16 +204,12 @@ class XhsNativeClient:
         Returns:
             API 响应 JSON
         """
-        sort_map = {
-            0: "general",
-            1: "time_descending",
-            2: "popularity_descending",
-            3: "comment_descending",
-            4: "collect_descending",
-        }
-        sort = sort_map.get(sort_type, "general")
+        # Retain sort_type in the internal API for caller compatibility. The
+        # evidence-supported minimal v2 contract uses general sorting; current
+        # production callers already pass the default value.
+        _ = sort_type
 
-        api = "/api/sns/web/v1/search/notes"
+        api = self.SEARCH_API
         data = {
             "keyword": keyword,
             "page": page,
@@ -214,15 +218,9 @@ class XhsNativeClient:
             "sort": "general",
             "note_type": 0,
             "ext_flags": [],
-            "filters": [
-                {"tags": [sort], "type": "sort_type"},
-                {"tags": ["不限"], "type": "filter_note_type"},
-                {"tags": ["不限"], "type": "filter_note_time"},
-                {"tags": ["不限"], "type": "filter_note_range"},
-                {"tags": ["不限"], "type": "filter_pos_distance"},
-            ],
             "geo": "",
-            "image_formats": ["jpg", "webp", "avif"],
+            "image_formats": ["jpg"],
+            "session_id": self._search_session_id,
         }
 
         # The imported PyExecJS contexts are process-global and do not document
@@ -230,8 +228,12 @@ class XhsNativeClient:
         # to overlap across the bounded research workers.
         with _XHS_SIGNING_LOCK:
             headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
+        # Header construction is shared with the unchanged Detail API and
+        # defaults to edith. Override only the trusted Search authority here.
+        headers = dict(headers)
+        headers["authority"] = self.SEARCH_AUTHORITY
         response = requests.post(
-            self.BASE_URL + api,
+            self.SEARCH_BASE_URL + api,
             headers=headers,
             data=serialized_data.encode("utf-8"),
             cookies=cookies,
