@@ -210,13 +210,74 @@ class XHSNativeClientClassificationTests(unittest.TestCase):
         self.assertNotIn("business_code=", output)
 
     def test_other_http_errors_are_classified_by_retryability(self):
-        for status, retryable in [(400, False), (422, False), (500, True), (503, True)]:
+        for status, retryable in [
+            (400, False), (404, False), (422, False),
+            (500, True), (502, True), (503, True),
+        ]:
             with self.subTest(status=status):
                 output = self._photo_for_response(_Response(status=status))
                 self.assertIn(
-                    f"stage=search category=http_error retryable={str(retryable).lower()}",
+                    f"stage=search category=http_error status={status} "
+                    f"retryable={str(retryable).lower()}",
                     output,
                 )
+
+    def test_detail_http_error_logs_status_and_keeps_ssr_fallback(self):
+        search_response = _Response(payload={"success": True, "data": {"items": [{
+            "model_type": "note", "id": "safe-note", "xsec_token": "safe-token",
+        }]}})
+        detail_response = _Response(status=503)
+        client = xhs_service.XhsNativeClient("not-logged")
+        output = io.StringIO()
+        with redirect_stdout(output), patch.object(
+            xhs_service, "get_xhs_client", return_value=client,
+        ), patch.object(
+            xhs_service, "_sign_request", return_value=({}, {}, "{}"),
+        ), patch.object(
+            xhs_service, "_new_search_id", return_value="safe",
+        ), patch.object(
+            xhs_service.requests, "post",
+            side_effect=[search_response, detail_response],
+        ) as post, patch.object(
+            xhs_service.httpx, "get", return_value=SimpleNamespace(text=""),
+        ) as ssr:
+            result = xhs_service.get_xhs_photo_sync("not-logged", request_id=REQUEST_ID)
+        self.assertEqual(result, "")
+        self.assertEqual(post.call_count, 2)
+        ssr.assert_called_once()
+        self.assertIn(
+            "stage=detail category=http_error status=503 retryable=true",
+            output.getvalue(),
+        )
+
+    def test_invalid_status_metadata_is_omitted_without_stringification(self):
+        unsafe_statuses = [None, True, "404", {"status": "secret"}, 99, 600]
+        for status in unsafe_statuses:
+            with self.subTest(status_type=type(status).__name__):
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    xhs_service._log_xhs_event(
+                        request_id=REQUEST_ID, stage="search", category="http_error",
+                        http_status=status,
+                    )
+                self.assertNotIn("status=", output.getvalue())
+                self.assertNotIn("secret", output.getvalue())
+
+                error = xhs_service.XHSRequestError(
+                    "http_error", "safe", http_status=status,
+                )
+                self.assertIsNone(error.http_status)
+
+        output = io.StringIO()
+        with redirect_stdout(output):
+            xhs_service._log_xhs_event(
+                request_id=REQUEST_ID, stage="search",
+                category="authentication_failed", http_status=401,
+            )
+        self.assertNotIn("status=", output.getvalue())
+        self.assertIsNone(xhs_service.XHSRequestError(
+            "authentication_failed", "safe", http_status=401,
+        ).http_status)
 
     def test_unknown_business_failures_are_business_rejected(self):
         cases = [

@@ -41,12 +41,18 @@ class XHSCookieExpiredError(Exception):
 class XHSRequestError(Exception):
     def __init__(
         self, reason: str, message: str, *, retryable: Optional[bool] = None,
-        business_code: Optional[str] = None,
+        business_code: Optional[str] = None, http_status: Optional[int] = None,
     ):
         super().__init__(message)
         self.reason = reason
         self.retryable = retryable
         self.business_code = business_code
+        self.http_status = (
+            http_status
+            if reason == "http_error"
+            and type(http_status) is int and 100 <= http_status <= 599
+            else None
+        )
 
 
 _XHS_RETRYABLE = {
@@ -71,6 +77,7 @@ def _log_xhs_event(
     *, request_id: str, stage: str, category: str,
     retryable_override: Optional[bool] = None,
     business_code: Optional[str] = None,
+    http_status: Optional[int] = None,
 ) -> None:
     """Emit only stable diagnostic metadata; never provider or request data."""
     safe_request_id = request_id if re.fullmatch(r"[0-9a-f]{12}", request_id or "") else "unknown"
@@ -79,10 +86,17 @@ def _log_xhs_event(
         if retryable_override is not None
         else _XHS_RETRYABLE.get(category, False)
     )
+    safe_status = (
+        http_status
+        if category == "http_error"
+        and type(http_status) is int and 100 <= http_status <= 599
+        else None
+    )
     print(
         "XHS_EVENT "
         f"request_id={safe_request_id} stage={stage} category={category} "
         f"{f'business_code={business_code} ' if business_code is not None else ''}"
+        f"{f'status={safe_status} ' if safe_status is not None else ''}"
         f"retryable={str(retryable).lower()}",
         flush=True,
     )
@@ -233,6 +247,7 @@ class XhsNativeClient:
             raise XHSRequestError(
                 "http_error", "小红书搜索 HTTP 请求失败",
                 retryable=response.status_code >= 500,
+                http_status=response.status_code,
             )
         response.raise_for_status()
         res_json = response.json()
@@ -288,6 +303,12 @@ class XhsNativeClient:
             raise XHSRequestError("permission_denied", "小红书访问被拒绝")
         if response.status_code == 429:
             raise XHSRequestError("rate_limited", "小红书请求频率受限")
+        if 400 <= response.status_code < 600:
+            raise XHSRequestError(
+                "http_error", "小红书详情 HTTP 请求失败",
+                retryable=response.status_code >= 500,
+                http_status=response.status_code,
+            )
         response.raise_for_status()
         res_json = response.json()
 
@@ -931,10 +952,14 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
             business_code = (
                 exc.business_code if isinstance(exc, XHSRequestError) else None
             )
+            http_status = (
+                exc.http_status if isinstance(exc, XHSRequestError) else None
+            )
             _log_xhs_event(
                 request_id=request_id, stage=stage, category=category,
                 retryable_override=retryable_override,
                 business_code=business_code,
+                http_status=http_status,
             )
             raise
         try:
@@ -1001,10 +1026,20 @@ def _get_xhs_photo_sync_unbounded(keyword: str, *, request_id: str = "") -> str:
                         return ""
         except Exception as exc:
             detail_failed = True
+            category = _photo_error_category(exc)
             _log_xhs_event(
                 request_id=request_id,
-                stage=_photo_error_stage(_photo_error_category(exc), "detail"),
-                category=_photo_error_category(exc),
+                stage=_photo_error_stage(category, "detail"),
+                category=category,
+                retryable_override=(
+                    exc.retryable if isinstance(exc, XHSRequestError) else None
+                ),
+                business_code=(
+                    exc.business_code if isinstance(exc, XHSRequestError) else None
+                ),
+                http_status=(
+                    exc.http_status if isinstance(exc, XHSRequestError) else None
+                ),
             )
 
         # 方案 B: 降级到 SSR 抓取
