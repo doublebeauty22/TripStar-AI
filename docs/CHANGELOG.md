@@ -72,3 +72,12 @@ This changelog tracks evidence-backed development steps from the project-memory 
 - **Result:** **COMPLETE.** The Debug/Badcase knowledge layer is initialized with one evidence-backed historical case and durable maintenance rules.
 - **Commit:** Created by STEP 2D with message `docs: add debug and badcase knowledge system`; see Git history for the resulting SHA.
 - **Notes:** No application/business logic changes. No speculative provider, grounding, async recovery, or AI hallucination history was added.
+
+## Production XHS Search v2 contract migration and validation
+
+- **Goal:** Replace the stale XHS Search browser contract while preserving existing security boundaries, fallback behavior, request counts, and provider degradation semantics.
+- **Changes:** Migrated Search from `edith.xiaohongshu.com/api/sns/web/v1/search/notes` to `so.xiaohongshu.com/api/sns/web/v2/search/notes`; added one private UUIDv4-compatible Search session identifier per `XhsNativeClient`; retained an independent per-Search `search_id`; signed the exact v2 path and minimal payload; aligned Search authority with the new host. Detail, SSR, Cookie handling, signing assets, timeouts, retries, concurrency, frontend, and public schemas were unchanged.
+- **Verification:** Focused v2 contract tests: 5 passed. Targeted regressions: 147 passed. Complete backend suite: 443 passed, 1 skipped, 0 failed. Compileall, `git diff --check`, and secret/privacy scan passed with zero real provider calls. In one controlled production trip after deployment, 4 observed `PHOTO_TERMINAL` events reported successful XHS image outcomes, and the trip completed successfully.
+- **Result:** **COMPLETE / MONITORING.** Production evidence establishes that the migrated Search chain can produce usable downstream XHS images. The supplied validation did not show the earlier deterministic Search rejection, but does not prove that business code `-100` can never recur or that the provider is universally compatible.
+- **Commit:** `a1a99cfd6bd84b2ccd864dd9502cce87fc35eb96` (`fix: migrate xhs search to v2 contract`).
+- **Notes:** The single controlled run recorded `total_trip=103201 ms`, `xhs_research=61478 ms`, and `planner=31997 ms`; performance remains a separate issue. `xhs_research success=true` is not evidence of research quality or correctness. Missing matching `XHS_EVENT` entries were not treated as additional evidence.

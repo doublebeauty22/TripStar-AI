@@ -195,3 +195,90 @@ Tests for reproducibility metadata should verify how identity is derived, not pi
 ### Resume / Interview Relevance
 
 MEDIUM — it is a well-evidenced example of protecting evaluation integrity and reproducibility, but it is test-maintenance work rather than demonstrated user or business impact.
+
+## DBG-002 — XHS Search used a stale browser contract
+
+### Status
+
+FIXED
+
+### Category
+
+Provider / Data Contract
+
+### Related STEP
+
+Production XHS Search v2 contract migration and controlled validation
+
+### Related Commit
+
+`a1a99cfd6bd84b2ccd864dd9502cce87fc35eb96`
+
+### Symptom
+
+Production XHS image fallback repeatedly reached the Search provider but received a parsed business rejection with bounded telemetry `category=business_rejected`, `business_code=-100`, and `retryable=false`. The repository does not establish the provider-specific meaning of `-100`.
+
+### User / Product Impact
+
+When Google photo retrieval could not satisfy an attraction image request, the XHS fallback could not produce usable Search results and the image path degraded to placeholders.
+
+### Investigation
+
+Repository inspection showed that TripStar sent Search to `edith.xiaohongshu.com` at `/api/sns/web/v1/search/notes`. A user-supplied, value-redacted browser capture from a successful current XHS web Search showed POST requests to `so.xiaohongshu.com` at `/api/sns/web/v2/search/notes` with a different minimal payload contract.
+
+Structural browser evidence showed that `session_id` had canonical UUID shape, remained stable across searches in the same page session, and changed after a page refresh, while `search_id` changed for each new search. No captured identifier, Cookie, signature, query, header value, or response body was stored in the repository.
+
+### Root Cause
+
+TripStar's Search adapter used a stale host, API-version path, and payload contract relative to the successful current browser Search contract. The provider-specific semantic meaning of business code `-100` remains unknown, so it is not classified more narrowly.
+
+### Fix / Mitigation
+
+Search alone was migrated to `so.xiaohongshu.com/api/sns/web/v2/search/notes`. Each `XhsNativeClient` now creates a private in-memory UUIDv4-compatible `session_id`, reuses it across that client's Search calls, and continues generating an independent `search_id` for every Search. The transmitted minimal v2 payload is signed with the exact v2 path and payload. Search authority was aligned with the new host. Detail, SSR, Cookie handling, signing assets, timeout, retry, concurrency, provider order, frontend, and public schemas were unchanged; no v1 automatic fallback was added.
+
+### Verification
+
+- Focused XHS v2 contract tests: 5 passed.
+- Targeted XHS/image/research/Planner/Google regression set: 147 passed.
+- Complete backend suite: 443 passed, 1 skipped, 0 failed.
+- Python compileall, `git diff --check`, and secret/privacy scan passed.
+- Real provider calls during offline verification: 0.
+- One controlled production trip after deployment completed successfully.
+- The supplied production evidence contained 4 observed `PHOTO_TERMINAL` events with `source=xhs`, `outcome=success`, `category=success`, and `retryable=false`.
+
+### Result
+
+The controlled production run provides direct downstream evidence that the deployed migrated Search chain can produce usable XHS image results. The previous deterministic Search rejection was not observed in the supplied validation evidence. This does not establish universal provider compatibility or prove that `-100` cannot recur.
+
+### Metrics
+
+For the single controlled production trip:
+
+- `total_trip`: 103,201 ms, success.
+- `xhs_research`: 61,478 ms, success.
+- `planner`: 31,997 ms, success.
+- `poi_enrichment`: 6,177 ms, success.
+- `weather`: 1,369 ms, success.
+- `hotel_search`: 570 ms, success.
+- `validator`: 0 ms, success.
+- `knowledge_graph`: 0 ms, success.
+- `persistence`: 3 ms, success.
+- Observed successful XHS image terminal outcomes: 4.
+
+This is a one-run production observation, not a latency benchmark or reliability rate. `xhs_research success=true` proves that the fail-open stage completed, not that XHS research quality or correctness was verified.
+
+### Evidence
+
+- `backend/app/services/xhs_service.py`
+- `backend/tests/test_xhs_v2_search_contract.py`
+- Commit `a1a99cfd6bd84b2ccd864dd9502cce87fc35eb96`
+- User-supplied structural browser-contract observations and controlled production telemetry dated 2026-08-23; raw identifiers, credentials, queries, and provider bodies were intentionally not retained.
+- `docs/CHANGELOG.md` — XHS Search v2 migration and production validation entry.
+
+### Reusable Lesson
+
+For browser-backed provider integrations, an HTTP-successful but business-rejected response can indicate contract drift. Compare current request structure without retaining secrets, sign the exact path and payload transmitted, preserve bounded failure telemetry, and validate recovery through downstream terminal outcomes rather than treating missing error logs as proof.
+
+### Resume / Interview Relevance
+
+MEDIUM — this is a production-validated provider-contract migration with explicit privacy boundaries, but the evidence is one controlled run and does not support universal reliability or performance claims.
