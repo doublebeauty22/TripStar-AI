@@ -14,6 +14,8 @@ import random
 import re
 import time
 import unicodedata
+from contextlib import contextmanager, nullcontext
+from contextvars import ContextVar
 from difflib import SequenceMatcher
 from typing import Dict, Any, List, Optional
 
@@ -23,6 +25,23 @@ from ..config import get_google_maps_server_api_key, get_settings
 from ..models.schemas import (
     Location, POIInfo, WeatherInfo, WeatherResult, has_valid_verified_coordinates,
 )
+from .timing import timed_stage
+
+
+_GROUNDING_OBSERVABILITY_CONTEXT: ContextVar[Optional[Dict[str, Any]]] = ContextVar(
+    "google_grounding_observability_context", default=None,
+)
+
+
+@contextmanager
+def observe_generation_grounding():
+    """Enable generation-only timing in the current async/thread context."""
+    diagnostics: Dict[str, Any] = {}
+    token = _GROUNDING_OBSERVABILITY_CONTEXT.set(diagnostics)
+    try:
+        yield diagnostics
+    finally:
+        _GROUNDING_OBSERVABILITY_CONTEXT.reset(token)
 
 
 def _log_http_failure(endpoint: str, exc: Exception) -> None:
@@ -173,6 +192,8 @@ class GoogleMapService:
             places = data.get("places", []) if isinstance(data, dict) else []
             if not isinstance(places, list):
                 return []
+            if _diagnostics is not None:
+                _diagnostics["raw_candidates_found"] = bool(places)
             for place in places:
                 if not isinstance(place, dict):
                     continue
@@ -180,6 +201,13 @@ class GoogleMapService:
                 display_name = place.get("displayName")
                 place_id = place.get("id")
                 name = display_name.get("text") if isinstance(display_name, dict) else ""
+                if not place_id and _diagnostics is not None:
+                    _diagnostics["invalid_place_id"] = True
+                if (
+                    (not isinstance(loc, dict) or not has_valid_verified_coordinates(loc))
+                    and _diagnostics is not None
+                ):
+                    _diagnostics["invalid_coordinates"] = True
                 if (
                     not place_id
                     or not name
@@ -559,13 +587,47 @@ class GoogleMapService:
         expected_category: str = "",
     ) -> Dict[str, Any]:
         """Evidence-based deterministic POI matching with a bounded multilingual fallback."""
+        observation = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+        observe_grounding = observation is not None
+        timer = (
+            timed_stage("google_grounding_timing", "match_total")
+            if observe_grounding else nullcontext()
+        )
+        with timer:
+            result = self._match_poi_impl(
+                name, city, expected_address, expected_category,
+                _observe_grounding=observe_grounding,
+            )
+        if observation is not None:
+            observation["terminal_category"] = self.grounding_terminal_category(
+                result, observation,
+            )
+        return result
+
+    def _match_poi_impl(
+        self,
+        name: str,
+        city: str,
+        expected_address: str = "",
+        expected_category: str = "",
+        *,
+        _observe_grounding: bool = False,
+    ) -> Dict[str, Any]:
+        """Internal matcher; split only so match_total can cover every return path."""
         del expected_category  # reserved for a later bounded type mapping; no LLM inference
         languages = ("zh-CN", "ja", "en")
         aggregated: Dict[str, Dict[str, Any]] = {}
         search_calls = 0
-        diagnostics: Dict[str, bool] = {}
+        observation = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+        diagnostics: Dict[str, Any] = observation if observation is not None else {}
         containing_places: Dict[str, set[str]] = {}
         requested_city_place_id = ""
+
+        def timing(stage: str):
+            return (
+                timed_stage("google_grounding_timing", stage)
+                if _observe_grounding else nullcontext()
+            )
 
         def add_results(language: str) -> None:
             nonlocal search_calls
@@ -594,7 +656,8 @@ class GoogleMapService:
                 if rank == 0:
                     entry["top_languages"].add(language)
 
-        add_results(languages[0])
+        with timing("initial_text_search"):
+            add_results(languages[0])
         if not aggregated:
             return {
                 "status": "unverified", "score": 0.0, "poi": None,
@@ -644,36 +707,41 @@ class GoogleMapService:
                 "ranking_score": evidence_score if gates_ok else evidence_score - 1.0,
             }
 
-        initial_ranked = sorted(
-            ((base_evidence(entry), entry) for entry in aggregated.values()),
-            key=lambda item: item[0]["name_score"],
-            reverse=True,
-        )
-        initial_evidence, initial_entry = initial_ranked[0]
-        initial_other_gates = (
-            initial_evidence["name_score"] >= 0.88
-            and initial_evidence["type_compatible"]
-            and initial_evidence["scope_compatible"]
-            and initial_evidence["place_id_valid"]
-            and initial_evidence["provider_trusted"]
-            and initial_evidence["coordinate_valid"]
-        )
+        with timing("local_scoring"):
+            initial_ranked = sorted(
+                ((base_evidence(entry), entry) for entry in aggregated.values()),
+                key=lambda item: item[0]["name_score"],
+                reverse=True,
+            )
+            initial_evidence, initial_entry = initial_ranked[0]
+            initial_other_gates = (
+                initial_evidence["name_score"] >= 0.88
+                and initial_evidence["type_compatible"]
+                and initial_evidence["scope_compatible"]
+                and initial_evidence["place_id_valid"]
+                and initial_evidence["provider_trusted"]
+                and initial_evidence["coordinate_valid"]
+            )
         if (
             not initial_evidence["city_consistent"]
             and initial_other_gates
             and initial_entry["containing_place_ids"]
         ):
-            requested_city_place_id = self._geocode_place_id(city)
-            initial_evidence = base_evidence(initial_entry)
-        if (
-            initial_evidence["name_score"] >= 0.88
-            and initial_evidence["city_consistent"]
-            and initial_evidence["type_compatible"]
-            and initial_evidence["scope_compatible"]
-            and initial_evidence["place_id_valid"]
-            and initial_evidence["provider_trusted"]
-            and initial_evidence["coordinate_valid"]
-        ):
+            with timing("city_geocode"):
+                requested_city_place_id = self._geocode_place_id(city)
+            with timing("local_scoring"):
+                initial_evidence = base_evidence(initial_entry)
+        with timing("local_scoring"):
+            initial_verified = (
+                initial_evidence["name_score"] >= 0.88
+                and initial_evidence["city_consistent"]
+                and initial_evidence["type_compatible"]
+                and initial_evidence["scope_compatible"]
+                and initial_evidence["place_id_valid"]
+                and initial_evidence["provider_trusted"]
+                and initial_evidence["coordinate_valid"]
+            )
+        if initial_verified:
             initial_evidence.update({"path": "strong_name", "search_calls": search_calls})
             return {
                 "status": "verified",
@@ -684,9 +752,14 @@ class GoogleMapService:
 
         # Ambiguous/cross-language only: two bounded additional searches and at
         # most one Geocoding request to corroborate the Planner address.
-        add_results(languages[1])
-        add_results(languages[2])
-        expected_location = self.geocode(expected_address, city) if expected_address else None
+        with timing("multilingual_text_search"):
+            add_results(languages[1])
+            add_results(languages[2])
+        if expected_address:
+            with timing("address_geocode"):
+                expected_location = self.geocode(expected_address, city)
+        else:
+            expected_location = None
 
         if not requested_city_place_id:
             needs_containment = any(
@@ -706,63 +779,101 @@ class GoogleMapService:
                 for entry in aggregated.values()
             )
             if needs_containment:
-                requested_city_place_id = self._geocode_place_id(city)
+                with timing("city_geocode"):
+                    requested_city_place_id = self._geocode_place_id(city)
 
-        ranked = []
-        for entry in aggregated.values():
-            poi = entry["poi"]
-            address_score = self._address_score(expected_address, poi.address, expected_location, poi.location)
-            evidence = base_evidence(entry, address_score)
-            ranked.append((evidence, entry))
-        ranked.sort(key=lambda item: item[0]["ranking_score"], reverse=True)
-        best_evidence, best_entry = ranked[0]
-        runner_score = ranked[1][0]["ranking_score"] if len(ranked) > 1 else 0.0
-        margin = best_evidence["ranking_score"] - runner_score
-        best_evidence.update({
-            "path": "multilingual_evidence",
-            "search_calls": search_calls,
-            "runner_up_margin": margin,
-        })
+        with timing("local_scoring"):
+            ranked = []
+            for entry in aggregated.values():
+                poi = entry["poi"]
+                address_score = self._address_score(expected_address, poi.address, expected_location, poi.location)
+                evidence = base_evidence(entry, address_score)
+                ranked.append((evidence, entry))
+            ranked.sort(key=lambda item: item[0]["ranking_score"], reverse=True)
+            best_evidence, best_entry = ranked[0]
+            runner_score = ranked[1][0]["ranking_score"] if len(ranked) > 1 else 0.0
+            margin = best_evidence["ranking_score"] - runner_score
+            best_evidence.update({
+                "path": "multilingual_evidence",
+                "search_calls": search_calls,
+                "runner_up_margin": margin,
+            })
 
-        path_a = (
-            best_evidence["name_score"] >= 0.88
-            and best_evidence["city_consistent"]
-            and best_evidence["type_compatible"]
-            and best_evidence["scope_compatible"]
-            and best_evidence["place_id_valid"]
-            and best_evidence["provider_trusted"]
-            and best_evidence["coordinate_valid"]
-        )
-        path_b = (
-            best_evidence["top_language_count"] >= 2
-            and best_evidence["address_score"] >= 0.55
-            and best_evidence["evidence_score"] >= 0.62
-            and margin >= 0.08
-            and best_evidence["city_consistent"]
-            and best_evidence["type_compatible"]
-            and best_evidence["scope_compatible"]
-            and best_evidence["place_id_valid"]
-            and best_evidence["provider_trusted"]
-            and best_evidence["coordinate_valid"]
-        )
-        if path_a or path_b:
-            status = "verified"
-            best_evidence["path"] = "strong_name" if path_a else "multilingual_consensus"
-        elif (
-            best_evidence["city_consistent"]
-            and best_evidence["type_compatible"]
-            and best_evidence["scope_compatible"]
-            and (best_evidence["name_score"] >= 0.6 or best_evidence["evidence_score"] >= 0.4)
-        ):
-            status = "partial_match"
-        else:
-            status = "unverified"
+        with timing("local_scoring"):
+            path_a = (
+                best_evidence["name_score"] >= 0.88
+                and best_evidence["city_consistent"]
+                and best_evidence["type_compatible"]
+                and best_evidence["scope_compatible"]
+                and best_evidence["place_id_valid"]
+                and best_evidence["provider_trusted"]
+                and best_evidence["coordinate_valid"]
+            )
+            path_b = (
+                best_evidence["top_language_count"] >= 2
+                and best_evidence["address_score"] >= 0.55
+                and best_evidence["evidence_score"] >= 0.62
+                and margin >= 0.08
+                and best_evidence["city_consistent"]
+                and best_evidence["type_compatible"]
+                and best_evidence["scope_compatible"]
+                and best_evidence["place_id_valid"]
+                and best_evidence["provider_trusted"]
+                and best_evidence["coordinate_valid"]
+            )
+            if path_a or path_b:
+                status = "verified"
+                best_evidence["path"] = "strong_name" if path_a else "multilingual_consensus"
+            elif (
+                best_evidence["city_consistent"]
+                and best_evidence["type_compatible"]
+                and best_evidence["scope_compatible"]
+                and (best_evidence["name_score"] >= 0.6 or best_evidence["evidence_score"] >= 0.4)
+            ):
+                status = "partial_match"
+            else:
+                status = "unverified"
         return {
             "status": status,
             "score": round(best_evidence["name_score"], 3),
             "poi": best_entry["poi"],
             "evidence": best_evidence,
         }
+
+    @staticmethod
+    def grounding_terminal_category(
+        match: Dict[str, Any], diagnostics: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Map an existing final matcher decision to one bounded telemetry category."""
+        diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+        evidence = match.get("evidence") if isinstance(match, dict) else None
+        evidence = evidence if isinstance(evidence, dict) else {}
+        explicit = evidence.get("reason")
+        if explicit == "provider_failure":
+            return "provider_failure"
+        if explicit == "no_candidates":
+            if not diagnostics.get("raw_candidates_found"):
+                return "no_candidates"
+            if diagnostics.get("invalid_place_id"):
+                return "invalid_place_id"
+            if diagnostics.get("invalid_coordinates"):
+                return "invalid_coordinates"
+            return "no_candidates"
+        if evidence.get("city_consistent") is False:
+            return "city_mismatch"
+        if evidence.get("type_compatible") is False:
+            return "type_mismatch"
+        if evidence.get("scope_compatible") is False:
+            return "scope_conflict"
+        if evidence.get("place_id_valid") is False:
+            return "invalid_place_id"
+        if evidence.get("coordinate_valid") is False:
+            return "invalid_coordinates"
+        if evidence.get("name_score", 0.0) < 0.6:
+            return "name_mismatch"
+        if evidence.get("runner_up_margin", 1.0) < 0.08:
+            return "ambiguous"
+        return "insufficient_evidence"
 
     def get_place_photo(
         self,

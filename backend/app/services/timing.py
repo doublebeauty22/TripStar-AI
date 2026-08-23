@@ -30,6 +30,10 @@ _ALLOWED_STAGES = {
         "planner_input", "planner_parse_validate", "planner_json_repair",
         "planner_schema_repair",
     },
+    "google_grounding_timing": {
+        "match_total", "initial_text_search", "multilingual_text_search",
+        "address_geocode", "city_geocode", "local_scoring",
+    },
 }
 
 

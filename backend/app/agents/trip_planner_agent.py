@@ -931,11 +931,24 @@ class MultiAgentTripPlanner:
         Partial and unverified matches retain the original display data and are
         explicitly marked so downstream route logic cannot treat them as facts.
         """
+        summary_fields = (
+            "attractions", "unique_lookups", "text_search_calls", "candidate_found",
+            "verified", "partial", "unverified", "no_candidates",
+            "provider_failure", "name_mismatch", "city_mismatch", "type_mismatch",
+            "scope_conflict", "invalid_place_id", "invalid_coordinates",
+            "insufficient_evidence", "ambiguous",
+        )
+        summary = {field: 0 for field in summary_fields}
+        summary_complete = False
         try:
-            from ..services.google_map_service import get_google_map_service
+            from ..services.google_map_service import (
+                get_google_map_service,
+                observe_generation_grounding,
+            )
 
             service = get_google_map_service()
             if service is None:
+                summary_complete = True
                 return trip_plan
 
             cache: Dict[tuple[str, str], Dict[str, Any]] = {}
@@ -946,15 +959,35 @@ class MultiAgentTripPlanner:
             for day in trip_plan.days:
                 city = day.city or trip_plan.city
                 for attraction in day.attractions:
+                    summary["attractions"] += 1
                     cache_key = (city.strip().casefold(), attraction.name.strip().casefold())
                     if cache_key not in cache:
-                        cache[cache_key] = await asyncio.to_thread(
-                            service.match_poi,
-                            attraction.name,
-                            city,
-                            attraction.address,
-                            attraction.category or "",
-                        )
+                        summary["unique_lookups"] += 1
+                        with observe_generation_grounding() as grounding_observation:
+                            cache[cache_key] = await asyncio.to_thread(
+                                service.match_poi,
+                                attraction.name,
+                                city,
+                                attraction.address,
+                                attraction.category or "",
+                            )
+                        unique_match = cache[cache_key]
+                        evidence = unique_match.get("evidence") or {}
+                        summary["text_search_calls"] += int(evidence.get("search_calls") or 0)
+                        if unique_match.get("poi") is not None:
+                            summary["candidate_found"] += 1
+                        unique_status = unique_match.get("status", "unverified")
+                        if unique_status == "verified":
+                            summary["verified"] += 1
+                        elif unique_status == "partial_match":
+                            summary["partial"] += 1
+                        else:
+                            summary["unverified"] += 1
+                            reason = grounding_observation.get("terminal_category")
+                            if reason not in summary:
+                                reason = service.grounding_terminal_category(unique_match)
+                            if reason in summary:
+                                summary[reason] += 1
 
                     match = cache[cache_key]
                     status = match.get("status", "unverified")
@@ -994,8 +1027,13 @@ class MultiAgentTripPlanner:
                 f"Google Places calls={len(cache)}, verified={verified_count}, "
                 f"partial={partial_count}, unverified={unverified_count}"
             )
+            summary_complete = True
         except Exception as exc:
             print(f"⚠️ [POI_ENRICHMENT] 地图事实补全失败，保留原计划继续: {exc}")
+        finally:
+            if summary_complete:
+                fields = " ".join(f"{field}={summary[field]}" for field in summary_fields)
+                print(f"event=poi_grounding_summary {fields}", flush=True)
 
         return trip_plan
 
