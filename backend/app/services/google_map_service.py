@@ -16,6 +16,7 @@ import time
 import unicodedata
 from contextlib import contextmanager, nullcontext
 from contextvars import ContextVar
+from dataclasses import dataclass
 from difflib import SequenceMatcher
 from typing import Dict, Any, List, Optional
 
@@ -42,6 +43,15 @@ def observe_generation_grounding():
         yield diagnostics
     finally:
         _GROUNDING_OBSERVABILITY_CONTEXT.reset(token)
+
+
+@dataclass(frozen=True)
+class _TrustedCityIdentity:
+    """Bounded Google-derived identity used only during one POI match."""
+
+    place_id: str
+    names: frozenset[str]
+    result_type: str
 
 
 def _log_http_failure(endpoint: str, exc: Exception) -> None:
@@ -274,8 +284,33 @@ class GoogleMapService:
             _log_http_failure("geocoding", exc)
         return None
 
-    def _geocode_place_id(self, place: str) -> str:
-        """Resolve one trusted Google Place ID for geographic containment checks."""
+    _TRUSTED_CITY_RESULT_TYPES = frozenset({"locality", "postal_town"})
+    _TRUSTED_CITY_COMPONENT_TYPES = frozenset({"locality", "postal_town"})
+
+    @classmethod
+    def _normalize_city_name(cls, value: str) -> str:
+        """Normalize bounded administrative wrappers without transliteration."""
+        normalized = cls._normalize_place_name_text(value)
+        if not normalized:
+            return ""
+
+        def strip_if_safe(candidate: str) -> str:
+            # City aliases participate in substring matching, so never create a
+            # generic one-character identity by removing an administrative wrapper.
+            return candidate if len(candidate) >= 2 else normalized
+
+        if normalized.startswith("cityof") and len(normalized) > len("cityof"):
+            normalized = strip_if_safe(normalized[len("cityof"):])
+        for suffix in ("metropolis", "city"):
+            if normalized.endswith(suffix) and len(normalized) > len(suffix):
+                normalized = strip_if_safe(normalized[:-len(suffix)])
+                break
+        if normalized.endswith(("市", "都", "府")):
+            normalized = strip_if_safe(normalized[:-1])
+        return normalized
+
+    def _resolve_city_identity(self, place: str) -> Optional[_TrustedCityIdentity]:
+        """Resolve one unambiguous city-level identity from trusted Geocoding data."""
         params: Dict[str, str] = {
             "address": place,
             "key": self.api_key,
@@ -286,11 +321,57 @@ class GoogleMapService:
             resp.raise_for_status()
             data = resp.json()
             results = data.get("results", []) if isinstance(data, dict) else []
-            if isinstance(results, list) and results and isinstance(results[0], dict):
-                return str(results[0].get("place_id") or "").strip()
+            if not isinstance(results, list):
+                return None
+            identities: Dict[tuple[str, str], set[str]] = {}
+            for result in results:
+                if not isinstance(result, dict):
+                    continue
+                result_types = result.get("types") or []
+                if not isinstance(result_types, list):
+                    continue
+                accepted_types = [
+                    item for item in result_types
+                    if item in self._TRUSTED_CITY_RESULT_TYPES
+                ]
+                if len(accepted_types) != 1:
+                    continue
+                place_id = str(result.get("place_id") or "").strip()
+                components = result.get("address_components") or []
+                if not place_id or not isinstance(components, list):
+                    continue
+                names: set[str] = set()
+                for component in components:
+                    if not isinstance(component, dict):
+                        continue
+                    component_types = component.get("types") or []
+                    if not isinstance(component_types, list) or not (
+                        set(component_types) & self._TRUSTED_CITY_COMPONENT_TYPES
+                    ):
+                        continue
+                    for key in ("long_name", "short_name"):
+                        normalized = self._normalize_city_name(str(component.get(key) or ""))
+                        if normalized:
+                            names.add(normalized)
+                if names:
+                    identity_key = (place_id, accepted_types[0])
+                    identities.setdefault(identity_key, set()).update(names)
+            if len(identities) != 1:
+                return None
+            (place_id, result_type), names = next(iter(identities.items()))
+            return _TrustedCityIdentity(
+                place_id=place_id,
+                names=frozenset(sorted(names)[:4]),
+                result_type=result_type,
+            )
         except Exception as exc:
             _log_http_failure("geocoding_city_containment", exc)
-        return ""
+        return None
+
+    def _geocode_place_id(self, place: str) -> str:
+        """Backward-compatible exact city Place-ID helper."""
+        identity = self._resolve_city_identity(place)
+        return identity.place_id if identity else ""
 
     # ======================== 路线规划 ========================
 
@@ -434,8 +515,10 @@ class GoogleMapService:
         *,
         containing_place_ids: Optional[set[str]] = None,
         requested_city_place_id: str = "",
+        trusted_city_names: Optional[set[str] | frozenset[str]] = None,
     ) -> bool:
         city_text = cls._normalize_place_name_text(city)
+        normalized_city = cls._normalize_city_name(city)
         address_text = cls._normalize_place_name_text(address)
         if not city_text:
             return False
@@ -444,6 +527,11 @@ class GoogleMapService:
                 if any(token in address_text for token in ("东京", "東京", "東京都", "tokyo")):
                     return True
             elif city_text in address_text:
+                return True
+            trusted_names = set(trusted_city_names or ())
+            if normalized_city:
+                trusted_names.add(normalized_city)
+            if any(name and name in address_text for name in trusted_names):
                 return True
         return bool(
             requested_city_place_id
@@ -622,6 +710,8 @@ class GoogleMapService:
         diagnostics: Dict[str, Any] = observation if observation is not None else {}
         containing_places: Dict[str, set[str]] = {}
         requested_city_place_id = ""
+        requested_city_identity: Optional[_TrustedCityIdentity] = None
+        city_identity_attempted = False
 
         def timing(stage: str):
             return (
@@ -645,6 +735,8 @@ class GoogleMapService:
                 entry = aggregated.setdefault(poi.id, {
                     "poi": poi,
                     "names": [],
+                    "addresses": [],
+                    "normalized_addresses": set(),
                     "top_languages": set(),
                     "appearances": 0,
                     "containing_place_ids": set(),
@@ -652,6 +744,15 @@ class GoogleMapService:
                 entry["containing_place_ids"].update(containing_places.get(poi.id, set()))
                 if poi.name and poi.name not in entry["names"]:
                     entry["names"].append(poi.name)
+                normalized_address = self._normalize_place_name_text(poi.address)
+                if (
+                    poi.address
+                    and normalized_address
+                    and normalized_address not in entry["normalized_addresses"]
+                    and len(entry["addresses"]) < len(languages)
+                ):
+                    entry["addresses"].append(poi.address)
+                    entry["normalized_addresses"].add(normalized_address)
                 entry["appearances"] += 1
                 if rank == 0:
                     entry["top_languages"].add(language)
@@ -674,13 +775,27 @@ class GoogleMapService:
             poi = entry["poi"]
             names = entry["names"]
             name_score = max((self._name_match_score(name, item) for item in names), default=0.0)
-            literal_city_ok = self._city_consistent(city, poi.address)
-            city_ok = literal_city_ok or self._city_consistent(
-                city,
-                poi.address,
-                containing_place_ids=entry["containing_place_ids"],
-                requested_city_place_id=requested_city_place_id,
+            addresses = entry["addresses"] or ([poi.address] if poi.address else [])
+            literal_city_ok = any(
+                self._city_consistent(city, candidate_address)
+                for candidate_address in addresses
             )
+            trusted_city_name_ok = bool(requested_city_identity) and any(
+                self._city_consistent(
+                    city,
+                    candidate_address,
+                    trusted_city_names=(
+                        requested_city_identity.names if requested_city_identity else None
+                    ),
+                )
+                for candidate_address in addresses
+            )
+            containing_place_ok = bool(
+                requested_city_place_id
+                and entry["containing_place_ids"]
+                and requested_city_place_id in entry["containing_place_ids"]
+            )
+            city_ok = literal_city_ok or trusted_city_name_ok or containing_place_ok
             type_ok = self._type_compatible(name, names, poi.type.split(",") if poi.type else [])
             scope_ok = not self._scope_conflict(name, names)
             place_id_ok = bool(str(poi.id or "").strip())
@@ -694,7 +809,8 @@ class GoogleMapService:
                 "city_consistent": city_ok,
                 "city_match_path": (
                     "literal" if literal_city_ok
-                    else "containing_place" if city_ok else "unverified"
+                    else "trusted_city_name" if trusted_city_name_ok
+                    else "containing_place" if containing_place_ok else "unverified"
                 ),
                 "type_compatible": type_ok,
                 "scope_compatible": scope_ok,
@@ -725,10 +841,13 @@ class GoogleMapService:
         if (
             not initial_evidence["city_consistent"]
             and initial_other_gates
-            and initial_entry["containing_place_ids"]
         ):
             with timing("city_geocode"):
-                requested_city_place_id = self._geocode_place_id(city)
+                city_identity_attempted = True
+                requested_city_identity = self._resolve_city_identity(city)
+                requested_city_place_id = (
+                    requested_city_identity.place_id if requested_city_identity else ""
+                )
             with timing("local_scoring"):
                 initial_evidence = base_evidence(initial_entry)
         with timing("local_scoring"):
@@ -761,10 +880,9 @@ class GoogleMapService:
         else:
             expected_location = None
 
-        if not requested_city_place_id:
-            needs_containment = any(
-                entry["containing_place_ids"]
-                and max(
+        if not city_identity_attempted:
+            needs_city_identity = any(
+                max(
                     (self._name_match_score(name, item) for item in entry["names"]),
                     default=0.0,
                 ) >= 0.6
@@ -778,9 +896,13 @@ class GoogleMapService:
                 and has_valid_verified_coordinates(entry["poi"].location)
                 for entry in aggregated.values()
             )
-            if needs_containment:
+            if needs_city_identity:
                 with timing("city_geocode"):
-                    requested_city_place_id = self._geocode_place_id(city)
+                    city_identity_attempted = True
+                    requested_city_identity = self._resolve_city_identity(city)
+                    requested_city_place_id = (
+                        requested_city_identity.place_id if requested_city_identity else ""
+                    )
 
         with timing("local_scoring"):
             ranked = []

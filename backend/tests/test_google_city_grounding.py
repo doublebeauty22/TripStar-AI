@@ -1,6 +1,7 @@
 import io
 import unittest
 from contextlib import redirect_stdout
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 from backend.app.api.routes.poi import get_attraction_photo
@@ -80,22 +81,25 @@ class GoogleCityGroundingTests(unittest.TestCase):
             def json(self):
                 return {"results": [{
                     "place_id": "trusted-parent-city-id",
-                    "formatted_address": "PRIVATE_ADDRESS",
+                    "types": ["locality", "political"],
+                    "address_components": [{
+                        "long_name": "Parent City", "short_name": "Parent City",
+                        "types": ["locality", "political"],
+                    }],
                 }]}
 
         self.service._client = type("Client", (), {
             "get": lambda *_args, **_kwargs: Response(),
             "close": lambda _self: None,
         })()
-        self.assertEqual(
-            self.service._geocode_place_id("PRIVATE_CITY"),
-            "trusted-parent-city-id",
-        )
+        identity = self.service._resolve_city_identity("PRIVATE_CITY")
+        self.assertEqual(identity.place_id, "trusted-parent-city-id")
+        self.assertEqual(identity.names, frozenset({"parent"}))
 
     def test_exact_city_match_still_verifies_without_corroboration_call(self):
         candidate = _poi(address="Parent City Region Country")
         with patch.object(self.service, "search_poi", side_effect=self._search(candidate)), patch.object(
-            self.service, "_geocode_place_id",
+            self.service, "_resolve_city_identity",
             side_effect=AssertionError("literal city match must not geocode"),
         ):
             match = self.service.match_poi("Metro Beach", "Parent City")
@@ -108,7 +112,9 @@ class GoogleCityGroundingTests(unittest.TestCase):
             self.service, "search_poi",
             side_effect=self._search(candidate, {"trusted-parent-city-id"}),
         ), patch.object(
-            self.service, "_geocode_place_id", return_value="trusted-parent-city-id",
+            self.service, "_resolve_city_identity", return_value=SimpleNamespace(
+                place_id="trusted-parent-city-id", names=frozenset({"parentcity"}),
+            ),
         ) as geocode:
             match = self.service.match_poi("Metro Beach", "Parent City")
         self.assertEqual(match["status"], "verified")
@@ -121,7 +127,9 @@ class GoogleCityGroundingTests(unittest.TestCase):
             self.service, "search_poi",
             side_effect=self._search(candidate, {"other-parent-id"}),
         ), patch.object(
-            self.service, "_geocode_place_id", return_value="trusted-parent-city-id",
+            self.service, "_resolve_city_identity", return_value=SimpleNamespace(
+                place_id="trusted-parent-city-id", names=frozenset({"parentcity"}),
+            ),
         ):
             match = self.service.match_poi("Metro Beach", "Parent City")
         self.assertEqual(match["status"], "unverified")
@@ -133,7 +141,9 @@ class GoogleCityGroundingTests(unittest.TestCase):
             self.service, "search_poi",
             side_effect=self._search(candidate, {"foreign-city-id"}),
         ), patch.object(
-            self.service, "_geocode_place_id", return_value="requested-city-id",
+            self.service, "_resolve_city_identity", return_value=SimpleNamespace(
+                place_id="requested-city-id", names=frozenset({"parentcity"}),
+            ),
         ):
             match = self.service.match_poi("Metro Beach", "Parent City")
         self.assertEqual(match["status"], "unverified")
@@ -151,7 +161,9 @@ class GoogleCityGroundingTests(unittest.TestCase):
                 self.service, "search_poi",
                 side_effect=self._search(candidate, {"trusted-parent-city-id"}),
             ), patch.object(
-                self.service, "_geocode_place_id", return_value="trusted-parent-city-id",
+                self.service, "_resolve_city_identity", return_value=SimpleNamespace(
+                    place_id="trusted-parent-city-id", names=frozenset({"parentcity"}),
+                ),
             ):
                 match = self.service.match_poi(requested_name, "Parent City")
                 self.assertNotEqual(match["status"], "verified")
@@ -169,7 +181,9 @@ class GoogleCityGroundingTests(unittest.TestCase):
             return [first, second]
 
         with patch.object(self.service, "search_poi", side_effect=search), patch.object(
-            self.service, "_geocode_place_id", return_value="trusted-parent-city-id",
+            self.service, "_resolve_city_identity", return_value=SimpleNamespace(
+                place_id="trusted-parent-city-id", names=frozenset({"parentcity"}),
+            ),
         ):
             match = self.service.match_poi("Metro Beach", "Parent City")
         self.assertNotEqual(match["status"], "verified")
