@@ -131,6 +131,43 @@ class GroundingCategoryTests(unittest.TestCase):
                 GoogleMapService.city_resolution_terminal_category(match, {})
             )
 
+    def test_identity_prerequisite_categories_follow_lookup_level_survivors(self):
+        passing = {
+            "name": True, "type": True, "scope": True, "place_id": True,
+            "provider": True, "coordinates": True,
+        }
+        cases = (
+            ([{**passing, "name": False}], "name_below_threshold"),
+            ([{**passing, "type": False}], "type_incompatible"),
+            ([{**passing, "scope": False}], "scope_conflict"),
+            ([{**passing, "place_id": False}], "invalid_place_id"),
+            ([{**passing, "provider": False}], "provider_untrusted"),
+            ([{**passing, "coordinates": False}], "invalid_coordinates"),
+            ([], "name_below_threshold"),
+        )
+        for gates, expected in cases:
+            with self.subTest(expected=expected):
+                self.assertEqual(
+                    GoogleMapService.city_identity_prerequisite_category(gates),
+                    expected,
+                )
+
+    def test_multi_candidate_category_uses_cumulative_lookup_level_gate(self):
+        candidates = [
+            {
+                "name": False, "type": True, "scope": True, "place_id": True,
+                "provider": True, "coordinates": True,
+            },
+            {
+                "name": True, "type": False, "scope": True, "place_id": True,
+                "provider": True, "coordinates": True,
+            },
+        ]
+        self.assertEqual(
+            GoogleMapService.city_identity_prerequisite_category(candidates),
+            "type_incompatible",
+        )
+
 
 class GroundingTimingTests(unittest.TestCase):
     def setUp(self):
@@ -299,6 +336,116 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "unverified")
         self.assertFalse(result["evidence"]["city_consistent"])
         self.assertEqual(diagnostics["city_resolution_category"], "identity_not_attempted")
+        self.assertEqual(
+            diagnostics["city_identity_prerequisite_category"],
+            "name_below_threshold",
+        )
+
+    def test_real_matcher_identity_not_attempted_by_type(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        candidate = _poi(name="Exact Museum", address="Other Region")
+        candidate.type = "tourist_attraction"
+        service.search_poi = Mock(return_value=[candidate])
+        with patch.object(
+            service, "_resolve_city_identity",
+            side_effect=AssertionError("identity resolution must not run"),
+        ), observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Museum", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_not_attempted")
+        self.assertEqual(
+            diagnostics["city_identity_prerequisite_category"], "type_incompatible"
+        )
+
+    def test_real_matcher_identity_not_attempted_by_scope(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(return_value=[
+            _poi(name="Exact Place Mall", address="Other Region")
+        ])
+        with patch.object(
+            service, "_resolve_city_identity",
+            side_effect=AssertionError("identity resolution must not run"),
+        ), observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_not_attempted")
+        self.assertEqual(
+            diagnostics["city_identity_prerequisite_category"], "scope_conflict"
+        )
+
+    def test_real_multi_candidate_prerequisite_uses_lookup_level_survivors(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        low_name = _poi(
+            name="Unrelated Object", address="Other Region", poi_id="low-name"
+        )
+        wrong_type = _poi(
+            name="Exact Museum", address="Other Region", poi_id="wrong-type"
+        )
+        wrong_type.type = "tourist_attraction"
+        service.search_poi = Mock(return_value=[low_name, wrong_type])
+        with patch.object(
+            service, "_resolve_city_identity",
+            side_effect=AssertionError("identity resolution must not run"),
+        ), observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Museum", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(
+            diagnostics["city_identity_prerequisite_category"], "type_incompatible"
+        )
+
+    def test_identity_prerequisite_observation_preserves_return_and_calls(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        candidate = _poi(name="Unrelated Object", address="Other Region")
+        service.search_poi = Mock(return_value=[candidate])
+        baseline = service.match_poi("Exact Place", "Safe City")
+        baseline_calls = service.search_poi.call_count
+        service.search_poi.reset_mock()
+        with observe_generation_grounding() as diagnostics:
+            observed = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(observed, baseline)
+        self.assertEqual(service.search_poi.call_count, baseline_calls)
+        self.assertEqual(
+            diagnostics["city_identity_prerequisite_category"],
+            "name_below_threshold",
+        )
+
+    async def test_concurrent_identity_prerequisite_categories_are_isolated(self):
+        low_name_service = GoogleMapService("fake-key")
+        wrong_type_service = GoogleMapService("fake-key")
+        self.addCleanup(low_name_service.close)
+        self.addCleanup(wrong_type_service.close)
+        low_name_service.search_poi = Mock(return_value=[
+            _poi(name="Unrelated Object", address="Other Region")
+        ])
+        wrong_type = _poi(name="Exact Museum", address="Other Region")
+        wrong_type.type = "tourist_attraction"
+        wrong_type_service.search_poi = Mock(return_value=[wrong_type])
+
+        async def worker(service, requested_name):
+            with observe_generation_grounding() as diagnostics:
+                result = await asyncio.to_thread(
+                    service.match_poi, requested_name, "Safe City"
+                )
+                return result, dict(diagnostics)
+
+        low_name, wrong_type_result = await asyncio.gather(
+            worker(low_name_service, "Exact Place"),
+            worker(wrong_type_service, "Exact Museum"),
+        )
+        self.assertEqual(
+            low_name[1]["city_identity_prerequisite_category"],
+            "name_below_threshold",
+        )
+        self.assertEqual(
+            wrong_type_result[1]["city_identity_prerequisite_category"],
+            "type_incompatible",
+        )
+        self.assertNotIn("type_incompatible", low_name[1].values())
+        self.assertNotIn("name_below_threshold", wrong_type_result[1].values())
 
     def test_real_matcher_identity_unresolved(self):
         service = self._service_with_identity_results([])
@@ -404,6 +551,7 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
             result = healthy.match_poi("Exact Place", "Safe City")
         self.assertEqual(result["status"], "unverified")
         self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
+        self.assertNotIn("city_identity_prerequisite_category", diagnostics)
         self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
 
     async def test_concurrent_real_matchers_keep_categories_isolated(self):
@@ -439,10 +587,14 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         with patch.object(
             service, "city_resolution_terminal_category",
             wraps=service.city_resolution_terminal_category,
-        ) as classify:
+        ) as classify, patch.object(
+            service, "_city_identity_prerequisite_gates",
+            wraps=service._city_identity_prerequisite_gates,
+        ) as prerequisite_gates:
             result = service.match_poi("Exact Place", "Safe City")
         self.assertEqual(result["status"], "unverified")
         classify.assert_not_called()
+        prerequisite_gates.assert_not_called()
         self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
 
 
@@ -542,6 +694,59 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["city_trusted_name_absent_containment_nonmatching"], 1)
         self.assertEqual(service.match_poi.call_count, 1)
 
+    async def test_identity_not_attempted_prerequisite_counter_invariant(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+
+        def search(keywords, *_args, **_kwargs):
+            if keywords == "Exact Museum":
+                candidate = _poi(name=keywords, address="Other Region", poi_id="museum")
+                candidate.type = "tourist_attraction"
+                return [candidate]
+            if keywords == "Exact Place":
+                return [_poi(
+                    name="Exact Place Mall", address="Other Region", poi_id="scope"
+                )]
+            return [_poi(
+                name="Unrelated Object", address="Other Region", poi_id="name"
+            )]
+
+        service.search_poi = Mock(side_effect=search)
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        names = ["Low Name", "Exact Museum", "Exact Place", "Low Name"]
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(names))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        prerequisite_fields = [
+            key for key in values if key.startswith("identity_not_attempted_")
+        ]
+        city_fields = [
+            key for key in values
+            if key.startswith("city_") and key != "city_mismatch"
+        ]
+        self.assertEqual(values["attractions"], 4)
+        self.assertEqual(values["unique_lookups"], 3)
+        self.assertEqual(values["city_mismatch"], 3)
+        self.assertEqual(values["city_identity_not_attempted"], 3)
+        self.assertEqual(
+            sum(values[key] for key in prerequisite_fields),
+            values["city_identity_not_attempted"],
+        )
+        self.assertEqual(sum(values[key] for key in city_fields), 3)
+        self.assertEqual(values["identity_not_attempted_name_below_threshold"], 1)
+        self.assertEqual(values["identity_not_attempted_type_incompatible"], 1)
+        self.assertEqual(values["identity_not_attempted_scope_conflict"], 1)
+        self.assertNotIn("Low Name", summary)
+        self.assertNotIn("Exact Museum", summary)
+        self.assertNotIn("Exact Place", summary)
+
     async def test_real_matcher_mixed_batch_preserves_city_counter_invariant(self):
         service = GoogleMapService("fake-key")
         self.addCleanup(service.close)
@@ -616,7 +821,11 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         values = {key: int(value) for key, value in
                   (field.split("=", 1) for field in summary.split()[1:])}
         city_fields = [key for key in values if key.startswith("city_") and key != "city_mismatch"]
+        prerequisite_fields = [
+            key for key in values if key.startswith("identity_not_attempted_")
+        ]
         self.assertEqual(sum(values[key] for key in city_fields), 0)
+        self.assertEqual(sum(values[key] for key in prerequisite_fields), 0)
 
     async def test_city_summary_contains_no_sensitive_values(self):
         service = Mock()

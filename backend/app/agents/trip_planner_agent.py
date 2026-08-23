@@ -941,6 +941,12 @@ class MultiAgentTripPlanner:
             "city_identity_conflicting",
             "city_trusted_name_absent_containment_empty",
             "city_trusted_name_absent_containment_nonmatching",
+            "identity_not_attempted_name_below_threshold",
+            "identity_not_attempted_type_incompatible",
+            "identity_not_attempted_scope_conflict",
+            "identity_not_attempted_invalid_place_id",
+            "identity_not_attempted_provider_untrusted",
+            "identity_not_attempted_invalid_coordinates",
         )
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
@@ -1009,6 +1015,32 @@ class MultiAgentTripPlanner:
                                 }.get(city_resolution)
                                 if city_counter is not None:
                                     summary[city_counter] += 1
+                                if city_resolution == "identity_not_attempted":
+                                    prerequisite = grounding_observation.get(
+                                        "city_identity_prerequisite_category"
+                                    )
+                                    prerequisite_counter = {
+                                        "name_below_threshold": (
+                                            "identity_not_attempted_name_below_threshold"
+                                        ),
+                                        "type_incompatible": (
+                                            "identity_not_attempted_type_incompatible"
+                                        ),
+                                        "scope_conflict": (
+                                            "identity_not_attempted_scope_conflict"
+                                        ),
+                                        "invalid_place_id": (
+                                            "identity_not_attempted_invalid_place_id"
+                                        ),
+                                        "provider_untrusted": (
+                                            "identity_not_attempted_provider_untrusted"
+                                        ),
+                                        "invalid_coordinates": (
+                                            "identity_not_attempted_invalid_coordinates"
+                                        ),
+                                    }.get(prerequisite)
+                                    if prerequisite_counter is not None:
+                                        summary[prerequisite_counter] += 1
 
                     match = cache[cache_key]
                     status = match.get("status", "unverified")

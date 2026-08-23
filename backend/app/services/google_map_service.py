@@ -41,6 +41,15 @@ _CITY_RESOLUTION_CATEGORIES = frozenset({
     "trusted_name_absent_containment_nonmatching",
 })
 
+_CITY_IDENTITY_PREREQUISITE_CATEGORIES = frozenset({
+    "name_below_threshold",
+    "type_incompatible",
+    "scope_conflict",
+    "invalid_place_id",
+    "provider_untrusted",
+    "invalid_coordinates",
+})
+
 
 @contextmanager
 def observe_generation_grounding():
@@ -711,6 +720,14 @@ class GoogleMapService:
             )
             if city_resolution_category is not None:
                 observation["city_resolution_category"] = city_resolution_category
+            if city_resolution_category == "identity_not_attempted":
+                prerequisite_category = observation.get(
+                    "city_identity_prerequisite_category"
+                )
+                if prerequisite_category in _CITY_IDENTITY_PREREQUISITE_CATEGORIES:
+                    observation["city_identity_prerequisite_category"] = (
+                        prerequisite_category
+                    )
         return result
 
     def _match_poi_impl(
@@ -918,6 +935,13 @@ class GoogleMapService:
                 and has_valid_verified_coordinates(entry["poi"].location)
                 for entry in aggregated.values()
             )
+            if not needs_city_identity and observation is not None:
+                prerequisite_gates = self._city_identity_prerequisite_gates(
+                    name, list(aggregated.values())
+                )
+                observation["city_identity_prerequisite_category"] = (
+                    self.city_identity_prerequisite_category(prerequisite_gates)
+                )
             if needs_city_identity:
                 with timing("city_geocode"):
                     city_identity_attempted = True
@@ -988,6 +1012,54 @@ class GoogleMapService:
             "poi": best_entry["poi"],
             "evidence": best_evidence,
         }
+
+    @staticmethod
+    def _city_identity_prerequisite_gates(
+        requested_name: str,
+        entries: List[Dict[str, Any]],
+    ) -> List[Dict[str, bool]]:
+        """Re-evaluate existing pure gates only for request-scoped diagnostics."""
+        gates_by_candidate: List[Dict[str, bool]] = []
+        for entry in entries:
+            poi = entry["poi"]
+            names = entry["names"]
+            gates_by_candidate.append({
+                "name": max(
+                    (GoogleMapService._name_match_score(requested_name, item)
+                     for item in names),
+                    default=0.0,
+                ) >= 0.6,
+                "type": GoogleMapService._type_compatible(
+                    requested_name, names, poi.type.split(",") if poi.type else [],
+                ),
+                "scope": not GoogleMapService._scope_conflict(requested_name, names),
+                "place_id": bool(str(poi.id or "").strip()),
+                "provider": poi.data_source == "google_places",
+                "coordinates": has_valid_verified_coordinates(poi.location),
+            })
+        return gates_by_candidate
+
+    @staticmethod
+    def city_identity_prerequisite_category(
+        candidate_gates: List[Dict[str, bool]],
+    ) -> str:
+        """Describe why no candidate reached the existing city-identity gate."""
+        survivors = list(candidate_gates)
+        ordered_gates = (
+            ("name", "name_below_threshold"),
+            ("type", "type_incompatible"),
+            ("scope", "scope_conflict"),
+            ("place_id", "invalid_place_id"),
+            ("provider", "provider_untrusted"),
+            ("coordinates", "invalid_coordinates"),
+        )
+        for gate, category in ordered_gates:
+            survivors = [item for item in survivors if item.get(gate) is True]
+            if not survivors:
+                return category
+        # A normally completed identity_not_attempted path cannot reach this:
+        # at least one candidate would have passed the unchanged conjunction.
+        return ""
 
     @staticmethod
     def city_resolution_terminal_category(
