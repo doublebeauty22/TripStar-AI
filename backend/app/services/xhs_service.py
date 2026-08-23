@@ -19,7 +19,7 @@ from ..config import get_settings
 from ..models.schemas import (
     XHSEvidence, XHSEvidenceSupport, XHSExtractedItem, XHSResearchResult,
 )
-from .timing import timed_stage
+from .timing import timed_locked_stage, timed_stage
 from .llm_service import (
     get_llm, log_structured_output_event, structured_output_metadata,
 )
@@ -226,45 +226,50 @@ class XhsNativeClient:
         # The imported PyExecJS contexts are process-global and do not document
         # concurrent-call safety. Serialize signing only; HTTP waits remain free
         # to overlap across the bounded research workers.
-        with _XHS_SIGNING_LOCK:
+        with timed_locked_stage(
+            _XHS_SIGNING_LOCK, "xhs_stage_timing",
+            "research_search_sign_wait", "research_search_sign",
+        ):
             headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
         # Header construction is shared with the unchanged Detail API and
         # defaults to edith. Override only the trusted Search authority here.
         headers = dict(headers)
         headers["authority"] = self.SEARCH_AUTHORITY
-        response = requests.post(
-            self.SEARCH_BASE_URL + api,
-            headers=headers,
-            data=serialized_data.encode("utf-8"),
-            cookies=cookies,
-            timeout=15,
-        )
-        if response.status_code == 401:
-            raise XHSRequestError("authentication_failed", "小红书认证失败")
-        if response.status_code == 403:
-            raise XHSRequestError("permission_denied", "小红书访问被拒绝")
-        if response.status_code == 429:
-            raise XHSRequestError("rate_limited", "小红书请求频率受限")
-        if 400 <= response.status_code < 600:
-            raise XHSRequestError(
-                "http_error", "小红书搜索 HTTP 请求失败",
-                retryable=response.status_code >= 500,
-                http_status=response.status_code,
+        with timed_stage("xhs_stage_timing", "research_search_http"):
+            response = requests.post(
+                self.SEARCH_BASE_URL + api,
+                headers=headers,
+                data=serialized_data.encode("utf-8"),
+                cookies=cookies,
+                timeout=15,
             )
-        response.raise_for_status()
-        res_json = response.json()
-
-        if not res_json.get("success"):
-            code = res_json.get("code")
-            msg = res_json.get("msg", "")
-            if code == 300011 or code == "300011" or "异常" in msg:
-                raise XHSCookieExpiredError(
-                    f"小红书 Cookie 已被风控拦截 (code={code}): {msg}。请更换 Cookie 后重试。"
+        with timed_stage("xhs_stage_timing", "research_search_parse"):
+            if response.status_code == 401:
+                raise XHSRequestError("authentication_failed", "小红书认证失败")
+            if response.status_code == 403:
+                raise XHSRequestError("permission_denied", "小红书访问被拒绝")
+            if response.status_code == 429:
+                raise XHSRequestError("rate_limited", "小红书请求频率受限")
+            if 400 <= response.status_code < 600:
+                raise XHSRequestError(
+                    "http_error", "小红书搜索 HTTP 请求失败",
+                    retryable=response.status_code >= 500,
+                    http_status=response.status_code,
                 )
-            raise XHSRequestError(
-                "business_rejected", "小红书搜索业务请求被拒绝",
-                business_code=_sanitize_xhs_business_code(code),
-            )
+            response.raise_for_status()
+            res_json = response.json()
+
+            if not res_json.get("success"):
+                code = res_json.get("code")
+                msg = res_json.get("msg", "")
+                if code == 300011 or code == "300011" or "异常" in msg:
+                    raise XHSCookieExpiredError(
+                        f"小红书 Cookie 已被风控拦截 (code={code}): {msg}。请更换 Cookie 后重试。"
+                    )
+                raise XHSRequestError(
+                    "business_rejected", "小红书搜索业务请求被拒绝",
+                    business_code=_sanitize_xhs_business_code(code),
+                )
 
         return res_json
 
@@ -290,38 +295,43 @@ class XhsNativeClient:
             "xsec_token": xsec_token,
         }
 
-        with _XHS_SIGNING_LOCK:
+        with timed_locked_stage(
+            _XHS_SIGNING_LOCK, "xhs_stage_timing",
+            "research_detail_sign_wait", "research_detail_sign",
+        ):
             headers, cookies, serialized_data = _sign_request(self.cookies_str, api, data)
-        response = requests.post(
-            self.BASE_URL + api,
-            headers=headers,
-            data=serialized_data,
-            cookies=cookies,
-            timeout=15,
-        )
-        if response.status_code == 401:
-            raise XHSRequestError("authentication_failed", "小红书认证失败")
-        if response.status_code == 403:
-            raise XHSRequestError("permission_denied", "小红书访问被拒绝")
-        if response.status_code == 429:
-            raise XHSRequestError("rate_limited", "小红书请求频率受限")
-        if 400 <= response.status_code < 600:
-            raise XHSRequestError(
-                "http_error", "小红书详情 HTTP 请求失败",
-                retryable=response.status_code >= 500,
-                http_status=response.status_code,
+        with timed_stage("xhs_stage_timing", "research_detail_http"):
+            response = requests.post(
+                self.BASE_URL + api,
+                headers=headers,
+                data=serialized_data,
+                cookies=cookies,
+                timeout=15,
             )
-        response.raise_for_status()
-        res_json = response.json()
-
-        if not res_json.get("success"):
-            code = res_json.get("code", "")
-            msg = res_json.get("msg", "")
-            if code == 300011 or "异常" in msg:
-                raise XHSCookieExpiredError(
-                    f"小红书 Cookie 已被风控拦截 (code={code}): {msg}"
+        with timed_stage("xhs_stage_timing", "research_detail_parse"):
+            if response.status_code == 401:
+                raise XHSRequestError("authentication_failed", "小红书认证失败")
+            if response.status_code == 403:
+                raise XHSRequestError("permission_denied", "小红书访问被拒绝")
+            if response.status_code == 429:
+                raise XHSRequestError("rate_limited", "小红书请求频率受限")
+            if 400 <= response.status_code < 600:
+                raise XHSRequestError(
+                    "http_error", "小红书详情 HTTP 请求失败",
+                    retryable=response.status_code >= 500,
+                    http_status=response.status_code,
                 )
-            raise XHSRequestError("detail_unavailable", f"小红书详情失败 (code={code}): {msg}")
+            response.raise_for_status()
+            res_json = response.json()
+
+            if not res_json.get("success"):
+                code = res_json.get("code", "")
+                msg = res_json.get("msg", "")
+                if code == 300011 or "异常" in msg:
+                    raise XHSCookieExpiredError(
+                        f"小红书 Cookie 已被风控拦截 (code={code}): {msg}"
+                    )
+                raise XHSRequestError("detail_unavailable", f"小红书详情失败 (code={code}): {msg}")
 
         return res_json
 
@@ -546,19 +556,20 @@ def search_xhs_attractions(city: str, keywords: str, language: str = "zh") -> XH
         if selected_notes:
             # executor.map preserves input order even when detail calls finish
             # out of order. Extraction therefore sees the same evidence order.
-            with ThreadPoolExecutor(
-                max_workers=min(2, len(selected_notes)),
-                thread_name_prefix="xhs-research-detail",
-            ) as executor:
-                note_results = executor.map(
-                    lambda indexed_note: _research_note(client, indexed_note),
-                    selected_notes,
-                )
-                for note_evidence, source_text, combined in note_results:
-                    if note_evidence is not None:
-                        evidence_source_text[note_evidence.note_id] = source_text
-                        evidence.append(note_evidence)
-                    combined_text += combined
+            with timed_stage("xhs_stage_timing", "research_detail_batch"):
+                with ThreadPoolExecutor(
+                    max_workers=min(2, len(selected_notes)),
+                    thread_name_prefix="xhs-research-detail",
+                ) as executor:
+                    note_results = executor.map(
+                        lambda indexed_note: _research_note(client, indexed_note),
+                        selected_notes,
+                    )
+                    for note_evidence, source_text, combined in note_results:
+                        if note_evidence is not None:
+                            evidence_source_text[note_evidence.note_id] = source_text
+                            evidence.append(note_evidence)
+                        combined_text += combined
 
     except XHSCookieExpiredError:
         raise
@@ -647,61 +658,67 @@ name_zh 和 name_en 将分别用于不同地图服务商(高德/Google)的地理
                 max_tokens=_XHS_EXTRACTION_MAX_TOKENS,
                 stage_max_token_exposure=_XHS_EXTRACTION_MAX_TOKENS,
             )
-        output_metadata = structured_output_metadata(
-            response, _XHS_EXTRACTION_MAX_TOKENS,
-        )
-        if output_metadata["finish_reason"] == "length":
-            log_structured_output_event(
-                stage="xhs_extraction", category="output_limit_reached",
-                metadata=output_metadata, success=False,
+        with timed_stage(
+            "xhs_stage_timing", "research_extraction_postprocess"
+        ) as postprocess_timing:
+            output_metadata = structured_output_metadata(
+                response, _XHS_EXTRACTION_MAX_TOKENS,
             )
-            return XHSResearchResult(
-                status="unavailable", verification_status="unavailable", degraded=True,
-                reason="output_truncated", evidence=evidence, context="",
-            )
-        content = response.choices[0].message.content
+            if output_metadata["finish_reason"] == "length":
+                postprocess_timing.mark_failed()
+                log_structured_output_event(
+                    stage="xhs_extraction", category="output_limit_reached",
+                    metadata=output_metadata, success=False,
+                )
+                return XHSResearchResult(
+                    status="unavailable", verification_status="unavailable", degraded=True,
+                    reason="output_truncated", evidence=evidence, context="",
+                )
+            content = response.choices[0].message.content
 
-        try:
-            json_match = re.search(r'\[.*\]', content, re.DOTALL)
-            if json_match:
-                extracted = json.loads(json_match.group())
+            try:
+                json_match = re.search(r'\[.*\]', content, re.DOTALL)
+                if json_match:
+                    extracted = json.loads(json_match.group())
+                else:
+                    extracted = json.loads(content)
+            except json.JSONDecodeError:
+                postprocess_timing.mark_failed()
+                log_structured_output_event(
+                    stage="xhs_extraction", category="json_decode_failed",
+                    metadata=output_metadata, success=False,
+                )
+                return XHSResearchResult(
+                    status="unavailable", verification_status="unavailable", degraded=True,
+                    reason="extraction_failed", evidence=evidence, context="",
+                )
+
+            extraction_candidates = []
+            if isinstance(extracted, list):
+                for raw_item in extracted:
+                    if not isinstance(raw_item, dict):
+                        extraction_candidates.append(raw_item)
+                        continue
+                    candidate = dict(raw_item)
+                    raw_support = candidate.get("evidence_support")
+                    if isinstance(raw_support, list) and not str(
+                        candidate.get("recommendation") or candidate.get("reason") or ""
+                    ).strip():
+                        candidate["recommendation"] = "；".join(
+                            str(support.get("recommendation_quote") or "").strip()
+                            for support in raw_support
+                            if isinstance(support, dict)
+                            and str(support.get("recommendation_quote") or "").strip()
+                        )
+                    extraction_candidates.append(candidate)
             else:
-                extracted = json.loads(content)
-        except json.JSONDecodeError:
-            log_structured_output_event(
-                stage="xhs_extraction", category="json_decode_failed",
-                metadata=output_metadata, success=False,
-            )
-            return XHSResearchResult(
-                status="unavailable", verification_status="unavailable", degraded=True,
-                reason="extraction_failed", evidence=evidence, context="",
+                extraction_candidates = extracted
+            validated_items = _validate_xhs_extracted_items(
+                extraction_candidates, evidence, evidence_source_text,
             )
 
         evidence_lookup = {item.note_id: item for item in evidence}
         supported_items: List[XHSExtractedItem] = []
-        extraction_candidates = []
-        if isinstance(extracted, list):
-            for raw_item in extracted:
-                if not isinstance(raw_item, dict):
-                    extraction_candidates.append(raw_item)
-                    continue
-                candidate = dict(raw_item)
-                raw_support = candidate.get("evidence_support")
-                if isinstance(raw_support, list) and not str(
-                    candidate.get("recommendation") or candidate.get("reason") or ""
-                ).strip():
-                    candidate["recommendation"] = "；".join(
-                        str(support.get("recommendation_quote") or "").strip()
-                        for support in raw_support
-                        if isinstance(support, dict)
-                        and str(support.get("recommendation_quote") or "").strip()
-                    )
-                extraction_candidates.append(candidate)
-        else:
-            extraction_candidates = extracted
-        validated_items = _validate_xhs_extracted_items(
-            extraction_candidates, evidence, evidence_source_text,
-        )
         for item in validated_items:
             name = item.get("name", "")
             valid_ids = item["evidence_ids"]

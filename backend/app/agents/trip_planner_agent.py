@@ -640,7 +640,7 @@ class MultiAgentTripPlanner:
             print("Planner 响应已返回，开始结构化校验。\n")
 
             # 解析最终计划
-            trip_plan = self._parse_response(planner_response, request)
+            trip_plan = self._parse_response_with_timing(planner_response, request)
             trip_plan = self._sanitize_external_facts(trip_plan)
             trip_plan.xhs_research = [
                 self._xhs_results.get(city, XHSResearchResult(
@@ -1055,8 +1055,9 @@ class MultiAgentTripPlanner:
             hotels: {city_name: 酒店搜索结果文本}
         """
         timeout = int(os.getenv("TRIP_PLANNER_TIMEOUT", "180"))
-        planner_query = self._build_planner_query(request, attractions, weather, hotels)
-        planner_agent = self._new_planner_agent()
+        with timed_stage("planner_stage_timing", "planner_input"):
+            planner_query = self._build_planner_query(request, attractions, weather, hotels)
+            planner_agent = self._new_planner_agent()
 
         try:
             return await asyncio.to_thread(
@@ -1587,7 +1588,8 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 errors = self._safe_schema_errors(exc)
                 self._log_schema_errors("planner_parse", errors)
 
-        repaired = self._llm_repair_schema(normalized, errors)
+        with timed_stage("planner_stage_timing", "planner_schema_repair"):
+            repaired = self._llm_repair_schema(normalized, errors)
         try:
             return TripPlan.model_validate(repaired)
         except ValidationError as exc:
@@ -1599,6 +1601,12 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 metadata=metadata, success=False,
             )
             raise ValueError("行程 schema repair validation failed") from None
+
+    def _parse_response_with_timing(self, response: str, request: TripRequest) -> TripPlan:
+        """Measure existing local Planner parsing without changing its result."""
+        with timed_stage("planner_stage_timing", "planner_parse_validate"):
+            return self._parse_response(response, request)
+
     def _parse_response(self, response: str, request: TripRequest) -> TripPlan:
         """
         解析Agent响应，带有多层容错清理
@@ -1695,7 +1703,8 @@ JSON 的 key 名称保持英文不变，只翻译 value 中的文字。"""
                 )
 
             # ====== 最终手段：LLM 修复 ======
-            llm_fixed = self._llm_repair_json(json_str)
+            with timed_stage("planner_stage_timing", "planner_json_repair"):
+                llm_fixed = self._llm_repair_json(json_str)
             llm_fixed = self._sanitize_json_str(llm_fixed)
             try:
                 data = json.loads(llm_fixed)

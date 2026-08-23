@@ -4,7 +4,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from functools import wraps
 import time
-from typing import Callable, Iterator, TypeVar
+from typing import Any, Callable, Iterator, TypeVar
 
 
 _ALLOWED_STAGES = {
@@ -19,7 +19,16 @@ _ALLOWED_STAGES = {
     "xhs_stage_timing": {
         "research_search", "research_detail", "research_ssr",
         "research_llm_extraction", "research_geocoding", "image_search",
-        "image_detail", "image_ssr",
+        "image_detail", "image_ssr", "research_search_sign_wait",
+        "research_search_sign", "research_search_http",
+        "research_search_parse", "research_detail_batch",
+        "research_detail_sign_wait", "research_detail_sign",
+        "research_detail_http", "research_detail_parse",
+        "research_extraction_postprocess",
+    },
+    "planner_stage_timing": {
+        "planner_input", "planner_parse_validate", "planner_json_repair",
+        "planner_schema_repair",
     },
 }
 
@@ -34,8 +43,10 @@ class TimingOutcome:
         self.success = False
 
 
-def _emit_timing(event: str, stage: str, started: float, success: bool) -> None:
-    duration_ms = max(0, int((time.perf_counter() - started) * 1000))
+def _emit_timing(
+    event: str, stage: str, started: float, success: bool, *, ended: float | None = None,
+) -> None:
+    duration_ms = max(0, int(((ended or time.perf_counter()) - started) * 1000))
     print(
         f"event={event} stage={stage} duration_ms={duration_ms} "
         f"success={str(success).lower()}",
@@ -57,6 +68,31 @@ def timed_stage(event: str, stage: str) -> Iterator[TimingOutcome]:
         raise
     finally:
         _emit_timing(event, stage, started, outcome.success)
+
+
+@contextmanager
+def timed_locked_stage(
+    lock: Any, event: str, wait_stage: str, work_stage: str,
+) -> Iterator[None]:
+    """Measure lock wait and protected work, emitting only after lock release."""
+    allowed = _ALLOWED_STAGES.get(event, set())
+    if wait_stage not in allowed or work_stage not in allowed:
+        raise ValueError("unsupported timing event or stage")
+    wait_started = time.perf_counter()
+    lock.acquire()
+    wait_ended = time.perf_counter()
+    work_started = wait_ended
+    success = True
+    try:
+        yield
+    except BaseException:
+        success = False
+        raise
+    finally:
+        work_ended = time.perf_counter()
+        lock.release()
+        _emit_timing(event, wait_stage, wait_started, True, ended=wait_ended)
+        _emit_timing(event, work_stage, work_started, success, ended=work_ended)
 
 
 _AsyncCallable = TypeVar("_AsyncCallable", bound=Callable)
