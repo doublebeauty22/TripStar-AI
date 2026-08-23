@@ -110,15 +110,13 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
       "city": "当天所在城市",
       "is_transfer_day": false,
       "transfer_info": "",
-      "description": "第1天行程概述",
-      "transportation": "交通方式",
-      "accommodation": "住宿类型",
+      "description": "用一句话概括当天主题",
+      "transportation": "地铁+步行",
+      "accommodation": "经济型酒店",
       "hotel": {
         "name": "酒店名称",
         "address": "酒店地址",
-        "location": {"longitude": 116.397128, "latitude": 39.916527},
         "price_range": "300-500元",
-        "rating": "4.5",
         "distance": "距离景点2公里",
         "type": "经济型酒店",
         "estimated_cost": 400
@@ -127,9 +125,9 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
         {
           "name": "景点名称",
           "address": "详细地址",
-          "location": {"longitude": 116.397128, "latitude": 39.916527},
+          "location": {"longitude": 0, "latitude": 0},
           "visit_duration": 120,
-          "description": "景点详细描述",
+          "description": "一句话说明核心游玩价值。",
           "category": "景点类别",
           "ticket_price": 60,
           "reservation_required": false,
@@ -137,25 +135,14 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
         }
       ],
       "meals": [
-        {"type": "breakfast", "name": "早餐推荐", "description": "早餐描述", "estimated_cost": 30},
-        {"type": "lunch", "name": "午餐推荐", "description": "午餐描述", "estimated_cost": 50},
-        {"type": "dinner", "name": "晚餐推荐", "description": "晚餐描述", "estimated_cost": 80}
+        {"type": "breakfast", "name": "早餐推荐", "estimated_cost": 30},
+        {"type": "lunch", "name": "午餐推荐", "estimated_cost": 50},
+        {"type": "dinner", "name": "晚餐推荐", "estimated_cost": 80}
       ]
     }
   ],
-  "weather_info": [
-    {
-      "date": "YYYY-MM-DD",
-      "city": "当天所在城市",
-      "day_weather": "晴",
-      "night_weather": "多云",
-      "day_temp": 25,
-      "night_temp": 15,
-      "wind_direction": "南风",
-      "wind_power": "1-3级"
-    }
-  ],
-  "overall_suggestions": "总体建议",
+  "weather_info": [],
+  "overall_suggestions": "最多三条简明建议",
   "budget": {
     "total_attractions": 180,
     "total_hotels": 1200,
@@ -175,20 +162,26 @@ PLANNER_AGENT_PROMPT = """你是行程规划专家。你的任务是根据景点
 - ticket_price、estimated_cost 等所有价格字段也必须是纯数字，不带单位
 
 **重要提示:**
-1. weather_info数组必须包含每一天的天气信息，每条记录必须包含 city 字段标明该天所在城市
-2. 温度必须是纯数字(不要带°C等单位)
-3. 每天安排2-3个景点(城际移动日可减少为1-2个)
+1. weather_info 必须固定输出空数组 []；权威天气由系统在 Planner 完成后确定性写入，禁止重复生成天气行
+2. 每天安排2-3个景点(城际移动日可减少为1-2个)
    - start_time 表示当天第一个主要活动预计开始时间，不是起床或早餐时间，格式必须为 HH:MM
-4. 考虑景点之间的距离和游览时间
-5. 每天必须包含早中晚三餐
-6. 提供实用的旅行建议
-7. **必须包含预算信息**:
+3. 考虑景点之间的距离和游览时间
+4. 每天必须包含早中晚三餐
+5. 提供实用的旅行建议
+6. **必须包含预算信息**:
    - 景点门票价格(ticket_price)
    - 餐饮预估费用(estimated_cost)
    - 酒店预估费用(estimated_cost)
    - 预算汇总(budget)包含各项总费用
-8. **预约信息透传**: 如果景点搜索数据中包含 reservation_required 和 reservation_tips 字段，请务必将它们完整保留在对应景点的JSON中。需要预约的景点请在 description 中也提醒游客提前预约
-9. **景点图片与地图事实**: 不要填写 image_url、place_id、poi_match_status 或 map_data_source；这些字段由系统通过地图 API 确定性补全，禁止编造。
+7. **预约信息透传**: 如果景点搜索数据中包含 reservation_required 和 reservation_tips 字段，请务必将它们完整保留在对应景点的JSON中。需要预约的景点请在 description 中也提醒游客提前预约
+8. **景点图片与地图事实**: attraction.location 固定使用 {"longitude":0,"latitude":0} 作为 schema 占位；不要填写 rating、photos、image_url、poi_id、place_id、poi_match_status 或 map_data_source。这些事实由系统通过地图 API 确定性补全，禁止编造。
+9. **紧凑文字要求**:
+    - attraction.description 尽量只写一句约20-45个中文字符的说明，保留核心游玩价值或活动类型；不要重复地址、城市、评分、票价或交通，不得编造事实
+    - day.description 只用一句话概括当天主题，不重复景点清单、天气、餐饮、酒店或交通
+    - meal.description 为可选字段，默认省略；确有必要时仅写一个极短短语。meal 的 type、name、estimated_cost 必须保留
+    - transportation 只写简短方式，如“地铁+步行”“步行”“公共交通”“出租车”；accommodation 只写简短住宿类型，不重复酒店详情
+    - 非换乘日 transfer_info 输出空字符串；换乘日仅保留交通方式建议和大致时长
+    - overall_suggestions 最多三条简明建议，不重复行程、天气表、预算表或景点描述
 10. **多城市行程要求**:
     - 每个 day 对象中必须包含 "city" 字段标明当天所在城市
     - 城市切换当天设置 "is_transfer_day": true，并在 "transfer_info" 中**仅给出交通方式建议和大致时长**（如"建议乘坐高铁，约2-3小时"），**禁止编造具体车次、班次号、出发时间、到达时间等不可验证的信息**
@@ -1196,27 +1189,12 @@ class MultiAgentTripPlanner:
 """
 
         query += """
-**要求:**
-1. 每天安排2-3个景点(城际移动日可减少为1-2个)
-   - 每个 day 必须提供 start_time（HH:MM），表示当天第一个主要活动预计开始时间，不是起床或早餐时间
-2. 每天必须包含早中晚三餐
-3. 每天推荐一个具体的酒店(从酒店信息中选择)
-4. 考虑景点之间的距离和交通方式
-5. 返回完整的JSON格式数据
-6. 景点的经纬度坐标要真实准确
-7. 只有 data_available=true 的 external weather 才能写入 weather_info；若 provider=unavailable，weather_info 必须为空。可在 overall_suggestions 中提供 source=llm_general 的季节性建议，但禁止编造具体温度、逐日晴雨、风速或实时天气
+**本次规划补充要求:**
+1. 每天从已提供的信息中选择一个具体酒店，并保留酒店名称和 estimated_cost
+2. attraction 的 name、address、category、visit_duration、ticket_price 及有证据的预约字段必须保留，顺序即实际游览顺序
+3. weather_info 固定输出 []；系统将在 Planner 完成后写入权威 Provider 天气。不得在其他字段复述天气表或编造具体温度、逐日晴雨、风速
+4. 严格返回系统提示定义的完整 JSON 结构
 """
-        if is_multi_city:
-            query += """
-**多城市特殊要求:**
-1. 每个 day 对象中必须包含 "city" 字段标明当天所在城市
-2. 城市切换当天标记 "is_transfer_day": true, 并在 "transfer_info" 中说明城际交通方式和预计时长
-3. 城际移动日的景点数量可适当减少为 1-2 个
-4. budget 中增加 "total_inter_city_transport" 字段统计城际交通费用
-5. 景点顺序要考虑同城市内的地理位置关系
-6. "cities" 数组列出所有途经城市名称
-"""
-
         if request.free_text_input:
             query += f"\n**额外要求:** {request.free_text_input}"
 
