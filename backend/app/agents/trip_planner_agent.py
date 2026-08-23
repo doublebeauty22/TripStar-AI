@@ -937,6 +937,10 @@ class MultiAgentTripPlanner:
             "provider_failure", "name_mismatch", "city_mismatch", "type_mismatch",
             "scope_conflict", "invalid_place_id", "invalid_coordinates",
             "insufficient_evidence", "ambiguous",
+            "city_identity_not_attempted", "city_identity_unresolved",
+            "city_identity_conflicting",
+            "city_trusted_name_absent_containment_empty",
+            "city_trusted_name_absent_containment_nonmatching",
         )
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
@@ -988,6 +992,23 @@ class MultiAgentTripPlanner:
                                 reason = service.grounding_terminal_category(unique_match)
                             if reason in summary:
                                 summary[reason] += 1
+                            if reason == "city_mismatch":
+                                city_resolution = grounding_observation.get(
+                                    "city_resolution_category"
+                                )
+                                city_counter = {
+                                    "identity_not_attempted": "city_identity_not_attempted",
+                                    "identity_unresolved": "city_identity_unresolved",
+                                    "identity_conflicting": "city_identity_conflicting",
+                                    "trusted_name_absent_containment_empty": (
+                                        "city_trusted_name_absent_containment_empty"
+                                    ),
+                                    "trusted_name_absent_containment_nonmatching": (
+                                        "city_trusted_name_absent_containment_nonmatching"
+                                    ),
+                                }.get(city_resolution)
+                                if city_counter is not None:
+                                    summary[city_counter] += 1
 
                     match = cache[cache_key]
                     status = match.get("status", "unverified")

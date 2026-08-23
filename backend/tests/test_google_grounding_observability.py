@@ -8,6 +8,7 @@ from backend.app.agents.trip_planner_agent import MultiAgentTripPlanner
 from backend.app.models.schemas import Attraction, DayPlan, Location, POIInfo, TripPlan
 from backend.app.services.google_map_service import (
     GoogleMapService,
+    _GROUNDING_OBSERVABILITY_CONTEXT,
     observe_generation_grounding,
 )
 from backend.app.services.timing import _ALLOWED_STAGES
@@ -96,6 +97,40 @@ class GroundingCategoryTests(unittest.TestCase):
                     expected,
                 )
 
+    def test_city_resolution_categories_are_mutually_exclusive_and_bounded(self):
+        match = {"status": "unverified", "evidence": {"city_consistent": False}}
+        cases = (
+            ({}, "identity_not_attempted"),
+            ({"city_identity_attempted": True}, "identity_unresolved"),
+            ({"city_identity_attempted": True,
+              "city_identity_resolution": "conflicting"}, "identity_conflicting"),
+            ({"city_identity_attempted": True,
+              "city_identity_resolution": "resolved",
+              "city_containment_present": False},
+             "trusted_name_absent_containment_empty"),
+            ({"city_identity_attempted": True,
+              "city_identity_resolution": "resolved",
+              "city_containment_present": True},
+             "trusted_name_absent_containment_nonmatching"),
+        )
+        for diagnostics, expected in cases:
+            with self.subTest(expected=expected):
+                self.assertEqual(
+                    GoogleMapService.city_resolution_terminal_category(match, diagnostics),
+                    expected,
+                )
+
+    def test_non_city_or_non_unverified_results_have_no_city_resolution_category(self):
+        cases = (
+            {"status": "verified", "evidence": {"city_consistent": True}},
+            {"status": "partial_match", "evidence": {"city_consistent": True}},
+            {"status": "unverified", "evidence": {"city_consistent": True}},
+        )
+        for match in cases:
+            self.assertIsNone(
+                GoogleMapService.city_resolution_terminal_category(match, {})
+            )
+
 
 class GroundingTimingTests(unittest.TestCase):
     def setUp(self):
@@ -151,6 +186,21 @@ class GroundingTimingTests(unittest.TestCase):
             self.service.match_poi("Private Name", "Private City")
         self.assertNotIn("google_grounding_timing", reset_output.getvalue())
 
+    def test_city_observation_does_not_change_return_or_provider_call_count(self):
+        candidate = _poi(name="Exact Place", address="Other Region")
+        self.service.search_poi = Mock(return_value=[candidate])
+        with patch.object(self.service, "_resolve_city_identity", return_value=None):
+            baseline = self.service.match_poi("Exact Place", "Safe City")
+            baseline_calls = self.service.search_poi.call_count
+        self.service.search_poi.reset_mock()
+        with patch.object(self.service, "_resolve_city_identity", return_value=None), \
+                observe_generation_grounding() as diagnostics:
+            observed = self.service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(observed, baseline)
+        self.assertEqual(self.service.search_poi.call_count, baseline_calls)
+        self.assertEqual(diagnostics["terminal_category"], "city_mismatch")
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
+
     def test_invalid_parsed_candidate_uses_side_channel_without_return_mutation(self):
         baseline = {"status": "unverified", "score": 0.0, "poi": None,
                     "evidence": {"search_calls": 1, "reason": "no_candidates"}}
@@ -187,8 +237,229 @@ class GroundingContextPropagationTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((first[0], second[0]), ("first", "second"))
         self.assertNotEqual(first[1], second[1])
 
+    async def test_city_resolution_metadata_propagates_to_thread(self):
+        def worker():
+            diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+            diagnostics["city_resolution_category"] = "identity_unresolved"
+
+        with observe_generation_grounding() as diagnostics:
+            await asyncio.to_thread(worker)
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
+
+
+class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
+    @staticmethod
+    def _geocode_response(results):
+        return type("Response", (), {
+            "raise_for_status": lambda _self: None,
+            "json": lambda _self: {"results": results},
+        })()
+
+    @staticmethod
+    def _identity_result(place_id, name="Trusted City"):
+        return {
+            "place_id": place_id,
+            "types": ["locality", "political"],
+            "address_components": [{
+                "long_name": name,
+                "short_name": name,
+                "types": ["locality", "political"],
+            }],
+        }
+
+    def _service_with_identity_results(self, results):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        response = self._geocode_response(results)
+        service._client = type("Client", (), {
+            "get": lambda *_args, **_kwargs: response,
+            "close": lambda _self: None,
+        })()
+        return service
+
+    @staticmethod
+    def _search(candidate, containing=()):
+        def search(*_args, _containing_places=None, **_kwargs):
+            if _containing_places is not None:
+                _containing_places[candidate.id] = set(containing)
+            return [candidate]
+        return search
+
+    def test_real_matcher_identity_not_attempted(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(return_value=[
+            _poi(name="Unrelated Object", address="Other Region")
+        ])
+        with patch.object(
+            service, "_resolve_city_identity",
+            side_effect=AssertionError("identity resolution must not run"),
+        ), observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_not_attempted")
+
+    def test_real_matcher_identity_unresolved(self):
+        service = self._service_with_identity_results([])
+        service.search_poi = Mock(side_effect=self._search(
+            _poi(name="Exact Place", address="Other Region")
+        ))
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
+
+    def test_real_matcher_identity_conflicting(self):
+        service = self._service_with_identity_results([
+            self._identity_result("city-a", "Trusted City A"),
+            self._identity_result("city-b", "Trusted City B"),
+        ])
+        service.search_poi = Mock(side_effect=self._search(
+            _poi(name="Exact Place", address="Other Region")
+        ))
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_conflicting")
+
+    def test_real_matcher_resolved_identity_with_empty_containment(self):
+        service = self._service_with_identity_results([
+            self._identity_result("trusted-city-id")
+        ])
+        service.search_poi = Mock(side_effect=self._search(
+            _poi(name="Exact Place", address="Other Region")
+        ))
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(
+            diagnostics["city_resolution_category"],
+            "trusted_name_absent_containment_empty",
+        )
+
+    def test_real_matcher_resolved_identity_with_nonmatching_containment(self):
+        service = self._service_with_identity_results([
+            self._identity_result("trusted-city-id")
+        ])
+        service.search_poi = Mock(side_effect=self._search(
+            _poi(name="Exact Place", address="Other Region"), {"other-parent-id"},
+        ))
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(
+            diagnostics["city_resolution_category"],
+            "trusted_name_absent_containment_nonmatching",
+        )
+
+    def test_multi_candidate_diagnostic_uses_final_selected_candidate(self):
+        service = self._service_with_identity_results([
+            self._identity_result("trusted-city-id")
+        ])
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected")
+        runner_up = _poi(
+            name="Very Different Place", address="Other Region", poi_id="runner-up"
+        )
+
+        def search(*_args, _containing_places=None, **_kwargs):
+            if _containing_places is not None:
+                _containing_places["selected"] = set()
+                _containing_places["runner-up"] = {"other-parent-id"}
+            return [selected, runner_up]
+
+        service.search_poi = Mock(side_effect=search)
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["poi"].id, "selected")
+        self.assertEqual(
+            diagnostics["city_resolution_category"],
+            "trusted_name_absent_containment_empty",
+        )
+
+    def test_exception_resets_context_before_next_real_match(self):
+        failing = GoogleMapService("fake-key")
+        healthy = self._service_with_identity_results([])
+        self.addCleanup(failing.close)
+        candidate = _poi(name="Exact Place", address="Other Region")
+        failing.search_poi = Mock(side_effect=self._search(candidate))
+        healthy.search_poi = Mock(side_effect=self._search(candidate))
+
+        def fail_after_touching_context(_city):
+            diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+            diagnostics["city_identity_resolution"] = "conflicting"
+            raise RuntimeError("safe-test-failure")
+
+        with self.assertRaises(RuntimeError):
+            with observe_generation_grounding():
+                with patch.object(failing, "_resolve_city_identity", side_effect=fail_after_touching_context):
+                    failing.match_poi("Exact Place", "Safe City")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+        with observe_generation_grounding() as diagnostics:
+            result = healthy.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    async def test_concurrent_real_matchers_keep_categories_isolated(self):
+        unresolved = self._service_with_identity_results([])
+        resolved = self._service_with_identity_results([
+            self._identity_result("trusted-city-id")
+        ])
+        candidate = _poi(name="Exact Place", address="Other Region")
+        unresolved.search_poi = Mock(side_effect=self._search(candidate))
+        resolved.search_poi = Mock(side_effect=self._search(candidate))
+
+        async def worker(service):
+            with observe_generation_grounding() as diagnostics:
+                result = await asyncio.to_thread(
+                    service.match_poi, "Exact Place", "Safe City"
+                )
+                return result, dict(diagnostics)
+
+        first, second = await asyncio.gather(worker(unresolved), worker(resolved))
+        self.assertEqual(first[1]["city_resolution_category"], "identity_unresolved")
+        self.assertEqual(
+            second[1]["city_resolution_category"],
+            "trusted_name_absent_containment_empty",
+        )
+        self.assertNotIn("trusted_name_absent_containment_empty", first[1].values())
+        self.assertNotIn("identity_unresolved", second[1].values())
+
+    def test_photo_stage_real_match_has_no_generation_city_diagnostic(self):
+        service = self._service_with_identity_results([])
+        service.search_poi = Mock(side_effect=self._search(
+            _poi(name="Exact Place", address="Other Region")
+        ))
+        with patch.object(
+            service, "city_resolution_terminal_category",
+            wraps=service.city_resolution_terminal_category,
+        ) as classify:
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        classify.assert_not_called()
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
 
 class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
+    @staticmethod
+    def _city_mismatch_side_effect(category):
+        def match(*_args, **_kwargs):
+            diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+            diagnostics["terminal_category"] = "city_mismatch"
+            diagnostics["city_resolution_category"] = category
+            return {
+                "status": "unverified",
+                "poi": _poi(),
+                "evidence": {"search_calls": 3, "city_consistent": False},
+            }
+        return match
+
     async def test_duplicate_cache_and_terminal_status_counts_emit_once(self):
         service = Mock()
         service.match_poi = Mock(return_value=_match("verified", search_calls=1))
@@ -247,6 +518,124 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("partial=1", summary)
         self.assertIn("unverified=1", summary)
         self.assertIn("no_candidates=1", summary)
+
+    async def test_city_resolution_counters_sum_to_city_mismatch_without_cache_duplicates(self):
+        service = Mock()
+        service.match_poi = Mock(side_effect=self._city_mismatch_side_effect(
+            "trusted_name_absent_containment_nonmatching"
+        ))
+        service.grounding_terminal_category = GoogleMapService.grounding_terminal_category
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["Private Name", "Private Name"]))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        city_fields = [key for key in values if key.startswith("city_") and key != "city_mismatch"]
+        self.assertEqual(values["city_mismatch"], 1)
+        self.assertEqual(sum(values[key] for key in city_fields), values["city_mismatch"])
+        self.assertEqual(values["city_trusted_name_absent_containment_nonmatching"], 1)
+        self.assertEqual(service.match_poi.call_count, 1)
+
+    async def test_real_matcher_mixed_batch_preserves_city_counter_invariant(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        empty_geocode = type("Response", (), {
+            "raise_for_status": lambda _self: None,
+            "json": lambda _self: {"results": []},
+        })()
+        service._client = type("Client", (), {
+            "get": lambda *_args, **_kwargs: empty_geocode,
+            "close": lambda _self: None,
+        })()
+        partial = POIInfo(
+            id="partial-id", name="Exact Partial", address="Private City",
+            type="tourist_attraction", location=Location(longitude=0, latitude=0),
+            data_source="google_places", verification_status="verified",
+        )
+
+        def search(keywords, *_args, **_kwargs):
+            if keywords == "Exact Verified":
+                return [_poi(name=keywords, address="Private City", poi_id="verified-id")]
+            if keywords == "Exact Partial":
+                return [partial]
+            if keywords == "Exact Scope":
+                return [_poi(
+                    name="Exact Scope Mall", address="Private City", poi_id="scope-id"
+                )]
+            return [_poi(name=keywords, address="Other Region", poi_id="city-failure-id")]
+
+        service.search_poi = Mock(side_effect=search)
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        names = [
+            "Exact Verified", "Exact Partial", "Exact Scope",
+            "City Failure", "City Failure",
+        ]
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(names))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        city_fields = [key for key in values if key.startswith("city_") and key != "city_mismatch"]
+        self.assertEqual(values["attractions"], 5)
+        self.assertEqual(values["unique_lookups"], 4)
+        self.assertEqual(values["verified"], 1)
+        self.assertEqual(values["partial"], 1)
+        self.assertEqual(values["scope_conflict"], 1)
+        self.assertEqual(values["city_mismatch"], 1)
+        self.assertEqual(values["city_identity_unresolved"], 1)
+        self.assertEqual(sum(values[key] for key in city_fields), values["city_mismatch"])
+
+    async def test_verified_partial_and_non_city_failures_increment_no_city_counter(self):
+        service = Mock()
+        service.match_poi = Mock(side_effect=[
+            _match("verified"),
+            _match("partial_match", search_calls=3),
+            _match("unverified", reason="no_candidates", search_calls=1, poi=False),
+        ])
+        service.grounding_terminal_category = GoogleMapService.grounding_terminal_category
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["First", "Second", "Third"]))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        city_fields = [key for key in values if key.startswith("city_") and key != "city_mismatch"]
+        self.assertEqual(sum(values[key] for key in city_fields), 0)
+
+    async def test_city_summary_contains_no_sensitive_values(self):
+        service = Mock()
+        service.match_poi = Mock(side_effect=self._city_mismatch_side_effect(
+            "identity_conflicting"
+        ))
+        service.grounding_terminal_category = GoogleMapService.grounding_terminal_category
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["Private Name"]))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        self.assertIn("city_identity_conflicting=1", summary)
+        for marker in ("Private Name", "Private City", "Private Address", "place-1", "fake-key"):
+            self.assertNotIn(marker, summary)
 
     async def test_summary_logs_no_user_or_provider_sensitive_values(self):
         markers = ["Private Name", "Private City", "Private Address",

@@ -33,6 +33,14 @@ _GROUNDING_OBSERVABILITY_CONTEXT: ContextVar[Optional[Dict[str, Any]]] = Context
     "google_grounding_observability_context", default=None,
 )
 
+_CITY_RESOLUTION_CATEGORIES = frozenset({
+    "identity_not_attempted",
+    "identity_unresolved",
+    "identity_conflicting",
+    "trusted_name_absent_containment_empty",
+    "trusted_name_absent_containment_nonmatching",
+})
+
 
 @contextmanager
 def observe_generation_grounding():
@@ -311,6 +319,9 @@ class GoogleMapService:
 
     def _resolve_city_identity(self, place: str) -> Optional[_TrustedCityIdentity]:
         """Resolve one unambiguous city-level identity from trusted Geocoding data."""
+        observation = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+        if observation is not None:
+            observation["city_identity_resolution"] = "unresolved"
         params: Dict[str, str] = {
             "address": place,
             "key": self.api_key,
@@ -357,13 +368,18 @@ class GoogleMapService:
                     identity_key = (place_id, accepted_types[0])
                     identities.setdefault(identity_key, set()).update(names)
             if len(identities) != 1:
+                if observation is not None and len(identities) > 1:
+                    observation["city_identity_resolution"] = "conflicting"
                 return None
             (place_id, result_type), names = next(iter(identities.items()))
-            return _TrustedCityIdentity(
+            identity = _TrustedCityIdentity(
                 place_id=place_id,
                 names=frozenset(sorted(names)[:4]),
                 result_type=result_type,
             )
+            if observation is not None:
+                observation["city_identity_resolution"] = "resolved"
+            return identity
         except Exception as exc:
             _log_http_failure("geocoding_city_containment", exc)
         return None
@@ -690,6 +706,11 @@ class GoogleMapService:
             observation["terminal_category"] = self.grounding_terminal_category(
                 result, observation,
             )
+            city_resolution_category = self.city_resolution_terminal_category(
+                result, observation,
+            )
+            if city_resolution_category is not None:
+                observation["city_resolution_category"] = city_resolution_category
         return result
 
     def _match_poi_impl(
@@ -844,6 +865,7 @@ class GoogleMapService:
         ):
             with timing("city_geocode"):
                 city_identity_attempted = True
+                diagnostics["city_identity_attempted"] = True
                 requested_city_identity = self._resolve_city_identity(city)
                 requested_city_place_id = (
                     requested_city_identity.place_id if requested_city_identity else ""
@@ -899,6 +921,7 @@ class GoogleMapService:
             if needs_city_identity:
                 with timing("city_geocode"):
                     city_identity_attempted = True
+                    diagnostics["city_identity_attempted"] = True
                     requested_city_identity = self._resolve_city_identity(city)
                     requested_city_place_id = (
                         requested_city_identity.place_id if requested_city_identity else ""
@@ -955,12 +978,38 @@ class GoogleMapService:
                 status = "partial_match"
             else:
                 status = "unverified"
+        if not best_evidence["city_consistent"]:
+            diagnostics["city_containment_present"] = bool(
+                best_entry["containing_place_ids"]
+            )
         return {
             "status": status,
             "score": round(best_evidence["name_score"], 3),
             "poi": best_entry["poi"],
             "evidence": best_evidence,
         }
+
+    @staticmethod
+    def city_resolution_terminal_category(
+        match: Dict[str, Any], diagnostics: Optional[Dict[str, Any]] = None,
+    ) -> Optional[str]:
+        """Classify one final city mismatch using fixed, request-scoped metadata."""
+        diagnostics = diagnostics if isinstance(diagnostics, dict) else {}
+        evidence = match.get("evidence") if isinstance(match, dict) else None
+        evidence = evidence if isinstance(evidence, dict) else {}
+        if match.get("status") != "unverified" or evidence.get("city_consistent") is not False:
+            return None
+        if not diagnostics.get("city_identity_attempted"):
+            category = "identity_not_attempted"
+        elif diagnostics.get("city_identity_resolution") == "conflicting":
+            category = "identity_conflicting"
+        elif diagnostics.get("city_identity_resolution") != "resolved":
+            category = "identity_unresolved"
+        elif diagnostics.get("city_containment_present"):
+            category = "trusted_name_absent_containment_nonmatching"
+        else:
+            category = "trusted_name_absent_containment_empty"
+        return category if category in _CITY_RESOLUTION_CATEGORIES else None
 
     @staticmethod
     def grounding_terminal_category(
