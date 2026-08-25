@@ -931,6 +931,55 @@ class MultiAgentTripPlanner:
         Partial and unverified matches retain the original display data and are
         explicitly marked so downstream route logic cannot treat them as facts.
         """
+        name_evidence_counter_maps = {
+            "best_name_score_band": {
+                "lt_020": "name_low_score_band_lt_020",
+                "020_039": "name_low_score_band_020_039",
+                "040_049": "name_low_score_band_040_049",
+                "050_059": "name_low_score_band_050_059",
+            },
+            "best_name_match_method": {
+                "exact": "name_low_method_exact",
+                "alias": "name_low_method_alias",
+                "substring": "name_low_method_substring",
+                "sequence": "name_low_method_sequence",
+                "none": "name_low_method_none",
+            },
+            "script_relationship": {
+                "same_script": "name_low_script_same",
+                "cross_script": "name_low_script_cross",
+                "mixed_script": "name_low_script_mixed",
+                "unknown": "name_low_script_unknown",
+            },
+            "best_candidate_language_count": {
+                1: "name_low_language_count_1",
+                2: "name_low_language_count_2",
+                3: "name_low_language_count_3",
+            },
+            "multilingual_same_place_id": {
+                True: "name_low_multilingual_same_place_id_true",
+                False: "name_low_multilingual_same_place_id_false",
+            },
+            "localized_name_variant_count_bucket": {
+                "1": "name_low_variant_count_1",
+                "2": "name_low_variant_count_2",
+                "3plus": "name_low_variant_count_3plus",
+            },
+            "planner_address_hint_present": {
+                True: "name_low_address_hint_present",
+                False: "name_low_address_hint_absent",
+            },
+            "candidate_count_bucket": {
+                "1": "name_low_candidate_count_1",
+                "2_3": "name_low_candidate_count_2_3",
+                "4plus": "name_low_candidate_count_4plus",
+            },
+        }
+        name_evidence_fields = tuple(
+            counter
+            for mapping in name_evidence_counter_maps.values()
+            for counter in mapping.values()
+        )
         summary_fields = (
             "attractions", "unique_lookups", "text_search_calls", "candidate_found",
             "verified", "partial", "unverified", "no_candidates",
@@ -947,7 +996,7 @@ class MultiAgentTripPlanner:
             "identity_not_attempted_invalid_place_id",
             "identity_not_attempted_provider_untrusted",
             "identity_not_attempted_invalid_coordinates",
-        )
+        ) + name_evidence_fields
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
         try:
@@ -1041,6 +1090,19 @@ class MultiAgentTripPlanner:
                                     }.get(prerequisite)
                                     if prerequisite_counter is not None:
                                         summary[prerequisite_counter] += 1
+                                    if prerequisite == "name_below_threshold":
+                                        name_evidence = grounding_observation.get(
+                                            "name_low_evidence"
+                                        )
+                                        if isinstance(name_evidence, dict):
+                                            for field, mapping in (
+                                                name_evidence_counter_maps.items()
+                                            ):
+                                                counter = mapping.get(
+                                                    name_evidence.get(field)
+                                                )
+                                                if counter is not None:
+                                                    summary[counter] += 1
 
                     match = cache[cache_key]
                     status = match.get("status", "unverified")

@@ -50,6 +50,21 @@ _CITY_IDENTITY_PREREQUISITE_CATEGORIES = frozenset({
     "invalid_coordinates",
 })
 
+_NAME_EVIDENCE_VALUES = {
+    "best_name_score_band": frozenset({
+        "lt_020", "020_039", "040_049", "050_059",
+    }),
+    "best_name_match_method": frozenset({
+        "exact", "alias", "substring", "sequence", "none",
+    }),
+    "script_relationship": frozenset({
+        "same_script", "cross_script", "mixed_script", "unknown",
+    }),
+    "best_candidate_language_count": frozenset({1, 2, 3}),
+    "localized_name_variant_count_bucket": frozenset({"1", "2", "3plus"}),
+    "candidate_count_bucket": frozenset({"1", "2_3", "4plus"}),
+}
+
 
 @contextmanager
 def observe_generation_grounding():
@@ -728,6 +743,10 @@ class GoogleMapService:
                     observation["city_identity_prerequisite_category"] = (
                         prerequisite_category
                     )
+                if prerequisite_category != "name_below_threshold":
+                    observation.pop("name_low_evidence", None)
+            else:
+                observation.pop("name_low_evidence", None)
         return result
 
     def _match_poi_impl(
@@ -776,6 +795,7 @@ class GoogleMapService:
                     "addresses": [],
                     "normalized_addresses": set(),
                     "top_languages": set(),
+                    "languages_seen": set(),
                     "appearances": 0,
                     "containing_place_ids": set(),
                 })
@@ -792,6 +812,7 @@ class GoogleMapService:
                     entry["addresses"].append(poi.address)
                     entry["normalized_addresses"].add(normalized_address)
                 entry["appearances"] += 1
+                entry["languages_seen"].add(language)
                 if rank == 0:
                     entry["top_languages"].add(language)
 
@@ -942,6 +963,13 @@ class GoogleMapService:
                 observation["city_identity_prerequisite_category"] = (
                     self.city_identity_prerequisite_category(prerequisite_gates)
                 )
+                if (
+                    observation["city_identity_prerequisite_category"]
+                    == "name_below_threshold"
+                ):
+                    observation["name_low_evidence"] = self._name_low_evidence(
+                        name, expected_address, list(aggregated.values())
+                    )
             if needs_city_identity:
                 with timing("city_geocode"):
                     city_identity_attempted = True
@@ -1011,6 +1039,141 @@ class GoogleMapService:
             "score": round(best_evidence["name_score"], 3),
             "poi": best_entry["poi"],
             "evidence": best_evidence,
+        }
+
+    @staticmethod
+    def _name_score_band(score: float) -> str:
+        if score < 0.20:
+            return "lt_020"
+        if score < 0.40:
+            return "020_039"
+        if score < 0.50:
+            return "040_049"
+        return "050_059"
+
+    @staticmethod
+    def _script_family(value: str) -> str:
+        families: set[str] = set()
+        for character in value or "":
+            codepoint = ord(character)
+            if (
+                "LATIN" in unicodedata.name(character, "")
+                and character.isalpha()
+            ):
+                families.add("latin")
+            elif 0x3040 <= codepoint <= 0x30FF:
+                families.add("kana")
+            elif 0x3400 <= codepoint <= 0x9FFF:
+                families.add("cjk")
+        if not families:
+            return "unknown"
+        if len(families) > 1:
+            return "mixed"
+        return next(iter(families))
+
+    @classmethod
+    def _script_relationship(cls, requested_name: str, candidate_name: str) -> str:
+        requested_script = cls._script_family(requested_name)
+        candidate_script = cls._script_family(candidate_name)
+        if "unknown" in {requested_script, candidate_script}:
+            return "unknown"
+        if "mixed" in {requested_script, candidate_script}:
+            return "mixed_script"
+        if requested_script == candidate_script:
+            return "same_script"
+        return "cross_script"
+
+    @classmethod
+    def _name_match_diagnostic(
+        cls, requested_name: str, candidate_name: str,
+    ) -> tuple[float, str]:
+        """Reproduce the existing score branches without changing production scoring."""
+        requested = cls._normalize_place_name(requested_name)
+        candidate = cls._normalize_place_name(candidate_name)
+        if not requested or not candidate:
+            return 0.0, "none"
+        if requested == candidate:
+            requested_raw = cls._normalize_place_name_text(requested_name)
+            candidate_raw = cls._normalize_place_name_text(candidate_name)
+            uses_reviewed_alias = bool(
+                requested_raw != candidate_raw
+                and (
+                    any(alias and alias in requested_raw for alias in cls._PLACE_NAME_ALIASES)
+                    or any(alias and alias in candidate_raw for alias in cls._PLACE_NAME_ALIASES)
+                )
+            )
+            return 1.0, "alias" if uses_reviewed_alias else "exact"
+
+        requested_raw = cls._normalize_place_name_text(requested_name)
+        candidate_raw = cls._normalize_place_name_text(candidate_name)
+        requested_alias = cls._PLACE_NAME_ALIASES.get(requested_raw)
+        candidate_alias = cls._PLACE_NAME_ALIASES.get(candidate_raw)
+        if (
+            requested_alias
+            and candidate_alias != requested_alias
+            and cls._scope_conflict(requested_name, [candidate_name])
+        ):
+            return (
+                min(0.59, SequenceMatcher(None, requested_raw, candidate_raw).ratio()),
+                "sequence",
+            )
+        if (
+            min(len(requested), len(candidate)) >= 3
+            and (requested in candidate or candidate in requested)
+        ):
+            return 0.9, "substring"
+        return SequenceMatcher(None, requested, candidate).ratio(), "sequence"
+
+    @classmethod
+    def _name_low_evidence(
+        cls,
+        requested_name: str,
+        expected_address: str,
+        entries: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """Build fixed/bucketed metadata for one lookup-wide low-name outcome."""
+        best_entry: Optional[Dict[str, Any]] = None
+        best_name = ""
+        best_score = -1.0
+        best_method = "none"
+        for entry in entries:
+            for candidate_name in entry.get("names") or []:
+                score, method = cls._name_match_diagnostic(
+                    requested_name, candidate_name
+                )
+                if score > best_score:
+                    best_entry = entry
+                    best_name = candidate_name
+                    best_score = score
+                    best_method = method
+
+        best_entry = best_entry or {}
+        language_count = min(3, max(1, len(best_entry.get("languages_seen") or ())))
+        variant_count = len(best_entry.get("names") or ())
+        candidate_count = len(entries)
+        evidence = {
+            "best_name_score_band": cls._name_score_band(max(0.0, best_score)),
+            "best_name_match_method": best_method,
+            "script_relationship": cls._script_relationship(
+                requested_name, best_name
+            ),
+            "best_candidate_language_count": language_count,
+            "multilingual_same_place_id": language_count >= 2,
+            "localized_name_variant_count_bucket": (
+                "1" if variant_count <= 1 else "2" if variant_count == 2 else "3plus"
+            ),
+            "planner_address_hint_present": bool(expected_address.strip()),
+            "candidate_count_bucket": (
+                "1" if candidate_count <= 1 else "2_3" if candidate_count <= 3 else "4plus"
+            ),
+        }
+        return {
+            key: value
+            for key, value in evidence.items()
+            if (
+                key in {"multilingual_same_place_id", "planner_address_hint_present"}
+                or value in _NAME_EVIDENCE_VALUES.get(key, ())
+            )
         }
 
     @staticmethod

@@ -169,6 +169,211 @@ class GroundingCategoryTests(unittest.TestCase):
         )
 
 
+class NameEvidenceDiagnosticTests(unittest.TestCase):
+    @staticmethod
+    def _entry(names, *, languages=("zh-CN",), poi_id="candidate"):
+        return {
+            "poi": _poi(name=names[0] if names else "", poi_id=poi_id),
+            "names": list(names),
+            "languages_seen": set(languages),
+        }
+
+    def test_score_bands_are_fixed_and_cover_low_name_range(self):
+        cases = (
+            (0.0, "lt_020"), (0.199, "lt_020"),
+            (0.20, "020_039"), (0.399, "020_039"),
+            (0.40, "040_049"), (0.499, "040_049"),
+            (0.50, "050_059"), (0.599, "050_059"),
+        )
+        for score, expected in cases:
+            with self.subTest(score=score):
+                self.assertEqual(GoogleMapService._name_score_band(score), expected)
+
+    def test_match_method_reproduces_production_score_branches(self):
+        cases = (
+            ("Exact Place", "Exact Place", "exact"),
+            ("东京晴空塔", "Tokyo Skytree", "alias"),
+            ("Central Park", "Central Park Main", "substring"),
+            ("abcdef", "abcxyz", "sequence"),
+            ("", "Candidate", "none"),
+        )
+        for requested, candidate, expected_method in cases:
+            with self.subTest(method=expected_method):
+                score, method = GoogleMapService._name_match_diagnostic(
+                    requested, candidate
+                )
+                self.assertEqual(
+                    score, GoogleMapService._name_match_score(requested, candidate)
+                )
+                self.assertEqual(method, expected_method)
+
+    def test_alias_facility_conflict_uses_capped_sequence_method(self):
+        score, method = GoogleMapService._name_match_diagnostic(
+            "东京晴空塔", "Tokyo Skytree Town"
+        )
+        self.assertEqual(
+            score,
+            GoogleMapService._name_match_score(
+                "东京晴空塔", "Tokyo Skytree Town"
+            ),
+        )
+        self.assertLessEqual(score, 0.59)
+        self.assertEqual(method, "sequence")
+
+    def test_script_relationship_categories_are_bounded(self):
+        cases = (
+            ("Alpha", "Beta", "same_script"),
+            ("景点", "公园", "same_script"),
+            ("景点", "Garden", "cross_script"),
+            ("東京タワー", "Tokyo Tower", "mixed_script"),
+            ("123", "Garden", "unknown"),
+        )
+        for requested, candidate, expected in cases:
+            with self.subTest(expected=expected):
+                self.assertEqual(
+                    GoogleMapService._script_relationship(requested, candidate),
+                    expected,
+                )
+
+    def test_unusual_unicode_is_safe_and_preserves_score_equivalence(self):
+        lone_surrogate = chr(0xD800)
+        supplementary_cjk = chr(0x20000)
+        fixtures = (
+            "😀",
+            "e\u0301",
+            "Café",
+            "ＡＢＣ１２３",
+            supplementary_cjk,
+            "A景",
+            "カナ",
+            "",
+            " \t—()!!! ",
+            lone_surrogate,
+        )
+        allowed_scripts = {"latin", "cjk", "kana", "mixed", "unknown"}
+        for value in fixtures:
+            with self.subTest(script_fixture=ascii(value)):
+                self.assertIn(
+                    GoogleMapService._script_family(value), allowed_scripts
+                )
+
+        pairs = (
+            ("😀", "😀"),
+            ("e\u0301", "é"),
+            ("Ｃｉｔｙ１２３", "city123"),
+            (f"{supplementary_cjk}園", f"{supplementary_cjk}园"),
+            ("A景", "B景"),
+            ("カナ", "かな"),
+            ("Name (East)", "Name-East"),
+            (" \t—()!!! ", ""),
+            (lone_surrogate, "A"),
+        )
+        allowed_relationships = {
+            "same_script", "cross_script", "mixed_script", "unknown",
+        }
+        for left, right in pairs:
+            with self.subTest(left=ascii(left), right=ascii(right)):
+                self.assertIn(
+                    GoogleMapService._script_relationship(left, right),
+                    allowed_relationships,
+                )
+                production_score = GoogleMapService._name_match_score(left, right)
+                diagnostic_score, _method = (
+                    GoogleMapService._name_match_diagnostic(left, right)
+                )
+                self.assertEqual(diagnostic_score, production_score)
+
+    def test_name_evidence_buckets_language_variants_address_and_candidates(self):
+        entries = [
+            self._entry(
+                ["abcxyz", "abcyyz", "abczzy"],
+                languages=("zh-CN", "ja", "en"), poi_id="best",
+            ),
+            self._entry(["unrelated"], languages=("en",), poi_id="other-1"),
+            self._entry(["different"], languages=("ja",), poi_id="other-2"),
+            self._entry(["remote"], languages=("zh-CN",), poi_id="other-3"),
+        ]
+        evidence = GoogleMapService._name_low_evidence(
+            "abcdef", "Private Address", entries
+        )
+        self.assertEqual(evidence["best_name_score_band"], "050_059")
+        self.assertEqual(evidence["best_name_match_method"], "sequence")
+        self.assertEqual(evidence["script_relationship"], "same_script")
+        self.assertEqual(evidence["best_candidate_language_count"], 3)
+        self.assertTrue(evidence["multilingual_same_place_id"])
+        self.assertEqual(evidence["localized_name_variant_count_bucket"], "3plus")
+        self.assertTrue(evidence["planner_address_hint_present"])
+        self.assertEqual(evidence["candidate_count_bucket"], "4plus")
+
+    def test_language_variant_and_candidate_buckets_cover_all_values(self):
+        for language_count in (1, 2, 3):
+            for variant_count in (1, 2, 3):
+                entries = [self._entry(
+                    ["unrelated"] * variant_count,
+                    languages=("zh-CN", "ja", "en")[:language_count],
+                )]
+                # Distinct variants are required by runtime aggregation.
+                entries[0]["names"] = [f"unrelated{index}" for index in range(variant_count)]
+                evidence = GoogleMapService._name_low_evidence("target", "", entries)
+                self.assertEqual(evidence["best_candidate_language_count"], language_count)
+                self.assertEqual(
+                    evidence["localized_name_variant_count_bucket"],
+                    "1" if variant_count == 1 else "2" if variant_count == 2 else "3plus",
+                )
+                self.assertEqual(
+                    evidence["multilingual_same_place_id"], language_count >= 2
+                )
+                self.assertFalse(evidence["planner_address_hint_present"])
+
+        for candidate_count, expected in ((1, "1"), (2, "2_3"), (3, "2_3"), (5, "4plus")):
+            entries = [
+                self._entry([f"candidate{index}"], poi_id=f"id-{index}")
+                for index in range(candidate_count)
+            ]
+            self.assertEqual(
+                GoogleMapService._name_low_evidence("target", "", entries)[
+                    "candidate_count_bucket"
+                ],
+                expected,
+            )
+
+    def test_best_candidate_uses_highest_score_and_stable_first_tie(self):
+        lower = self._entry(["zzzzzz"], languages=("zh-CN",), poi_id="lower")
+        first_tie = self._entry(["abcxxx"], languages=("zh-CN",), poi_id="first")
+        second_tie = self._entry(
+            ["abcyyy"], languages=("zh-CN", "ja", "en"), poi_id="second"
+        )
+        evidence = GoogleMapService._name_low_evidence(
+            "abcdef", "", [lower, first_tie, second_tie]
+        )
+        self.assertEqual(evidence["best_name_score_band"], "050_059")
+        self.assertEqual(evidence["best_candidate_language_count"], 1)
+        self.assertFalse(evidence["multilingual_same_place_id"])
+
+    def test_name_evidence_contains_only_fixed_or_bucketed_values(self):
+        evidence = GoogleMapService._name_low_evidence(
+            "Private Attraction",
+            "Private Address",
+            [self._entry(["Private Candidate"], poi_id="private-place-id")],
+        )
+        self.assertEqual(
+            set(evidence),
+            {
+                "best_name_score_band", "best_name_match_method",
+                "script_relationship", "best_candidate_language_count",
+                "multilingual_same_place_id",
+                "localized_name_variant_count_bucket",
+                "planner_address_hint_present", "candidate_count_bucket",
+            },
+        )
+        serialized = repr(evidence)
+        for marker in (
+            "Private Attraction", "Private Candidate", "Private Address",
+            "private-place-id",
+        ):
+            self.assertNotIn(marker, serialized)
+
+
 class GroundingTimingTests(unittest.TestCase):
     def setUp(self):
         self.service = GoogleMapService("fake-key")
@@ -340,6 +545,12 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
             diagnostics["city_identity_prerequisite_category"],
             "name_below_threshold",
         )
+        name_evidence = diagnostics["name_low_evidence"]
+        self.assertEqual(name_evidence["best_candidate_language_count"], 3)
+        self.assertTrue(name_evidence["multilingual_same_place_id"])
+        self.assertEqual(name_evidence["localized_name_variant_count_bucket"], "1")
+        self.assertFalse(name_evidence["planner_address_hint_present"])
+        self.assertEqual(name_evidence["candidate_count_bucket"], "1")
 
     def test_real_matcher_identity_not_attempted_by_type(self):
         service = GoogleMapService("fake-key")
@@ -357,6 +568,7 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(
             diagnostics["city_identity_prerequisite_category"], "type_incompatible"
         )
+        self.assertNotIn("name_low_evidence", diagnostics)
 
     def test_real_matcher_identity_not_attempted_by_scope(self):
         service = GoogleMapService("fake-key")
@@ -374,6 +586,7 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(
             diagnostics["city_identity_prerequisite_category"], "scope_conflict"
         )
+        self.assertNotIn("name_low_evidence", diagnostics)
 
     def test_real_multi_candidate_prerequisite_uses_lookup_level_survivors(self):
         service = GoogleMapService("fake-key")
@@ -412,6 +625,27 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
             diagnostics["city_identity_prerequisite_category"],
             "name_below_threshold",
         )
+        self.assertIn("name_low_evidence", diagnostics)
+
+    def test_real_multilingual_same_place_variants_are_counted(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        localized_names = iter(("Uno", "二", "サン"))
+
+        def search(*_args, **_kwargs):
+            return [_poi(
+                name=next(localized_names), address="Other Region", poi_id="same-id"
+            )]
+
+        service.search_poi = Mock(side_effect=search)
+        with observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Target Name", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        evidence = diagnostics["name_low_evidence"]
+        self.assertEqual(evidence["best_candidate_language_count"], 3)
+        self.assertTrue(evidence["multilingual_same_place_id"])
+        self.assertEqual(evidence["localized_name_variant_count_bucket"], "3plus")
+        self.assertEqual(service.search_poi.call_count, 3)
 
     async def test_concurrent_identity_prerequisite_categories_are_isolated(self):
         low_name_service = GoogleMapService("fake-key")
@@ -446,6 +680,8 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertNotIn("type_incompatible", low_name[1].values())
         self.assertNotIn("name_below_threshold", wrong_type_result[1].values())
+        self.assertIn("name_low_evidence", low_name[1])
+        self.assertNotIn("name_low_evidence", wrong_type_result[1])
 
     def test_real_matcher_identity_unresolved(self):
         service = self._service_with_identity_results([])
@@ -539,6 +775,7 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         def fail_after_touching_context(_city):
             diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
             diagnostics["city_identity_resolution"] = "conflicting"
+            diagnostics["name_low_evidence"] = {"private": "stale"}
             raise RuntimeError("safe-test-failure")
 
         with self.assertRaises(RuntimeError):
@@ -552,6 +789,7 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "unverified")
         self.assertEqual(diagnostics["city_resolution_category"], "identity_unresolved")
         self.assertNotIn("city_identity_prerequisite_category", diagnostics)
+        self.assertNotIn("name_low_evidence", diagnostics)
         self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
 
     async def test_concurrent_real_matchers_keep_categories_isolated(self):
@@ -590,11 +828,14 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         ) as classify, patch.object(
             service, "_city_identity_prerequisite_gates",
             wraps=service._city_identity_prerequisite_gates,
-        ) as prerequisite_gates:
+        ) as prerequisite_gates, patch.object(
+            service, "_name_low_evidence", wraps=service._name_low_evidence,
+        ) as name_low_evidence:
             result = service.match_poi("Exact Place", "Safe City")
         self.assertEqual(result["status"], "unverified")
         classify.assert_not_called()
         prerequisite_gates.assert_not_called()
+        name_low_evidence.assert_not_called()
         self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
 
 
@@ -743,6 +984,27 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["identity_not_attempted_name_below_threshold"], 1)
         self.assertEqual(values["identity_not_attempted_type_incompatible"], 1)
         self.assertEqual(values["identity_not_attempted_scope_conflict"], 1)
+        name_low_groups = (
+            "name_low_score_band_",
+            "name_low_method_",
+            "name_low_script_",
+            "name_low_language_count_",
+            "name_low_multilingual_same_place_id_",
+            "name_low_variant_count_",
+            "name_low_address_hint_",
+            "name_low_candidate_count_",
+        )
+        for prefix in name_low_groups:
+            with self.subTest(prefix=prefix):
+                self.assertEqual(
+                    sum(value for key, value in values.items() if key.startswith(prefix)),
+                    values["identity_not_attempted_name_below_threshold"],
+                )
+        self.assertEqual(values["name_low_language_count_3"], 1)
+        self.assertEqual(values["name_low_multilingual_same_place_id_true"], 1)
+        self.assertEqual(values["name_low_variant_count_1"], 1)
+        self.assertEqual(values["name_low_address_hint_present"], 1)
+        self.assertEqual(values["name_low_candidate_count_1"], 1)
         self.assertNotIn("Low Name", summary)
         self.assertNotIn("Exact Museum", summary)
         self.assertNotIn("Exact Place", summary)
@@ -824,8 +1086,12 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         prerequisite_fields = [
             key for key in values if key.startswith("identity_not_attempted_")
         ]
+        name_evidence_fields = [
+            key for key in values if key.startswith("name_low_")
+        ]
         self.assertEqual(sum(values[key] for key in city_fields), 0)
         self.assertEqual(sum(values[key] for key in prerequisite_fields), 0)
+        self.assertEqual(sum(values[key] for key in name_evidence_fields), 0)
 
     async def test_city_summary_contains_no_sensitive_values(self):
         service = Mock()
