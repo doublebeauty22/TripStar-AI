@@ -197,6 +197,7 @@ class GoogleMapService:
         address_hint: str = "",
         _diagnostics: Optional[Dict[str, bool]] = None,
         _containing_places: Optional[Dict[str, set[str]]] = None,
+        _returned_name_languages: Optional[Dict[str, str]] = None,
     ) -> List[POIInfo]:
         """
         使用 Places API (New) Text Search 搜索 POI
@@ -243,6 +244,10 @@ class GoogleMapService:
                 display_name = place.get("displayName")
                 place_id = place.get("id")
                 name = display_name.get("text") if isinstance(display_name, dict) else ""
+                returned_language = (
+                    display_name.get("languageCode")
+                    if isinstance(display_name, dict) else None
+                )
                 if not place_id and _diagnostics is not None:
                     _diagnostics["invalid_place_id"] = True
                 if (
@@ -257,6 +262,10 @@ class GoogleMapService:
                     or not has_valid_verified_coordinates(loc)
                 ):
                     continue
+                if _returned_name_languages is not None:
+                    _returned_name_languages[str(place_id)] = (
+                        self._returned_language_bucket(returned_language)
+                    )
                 photos = place.get("photos") or []
                 first_photo = photos[0] if photos else {}
                 if _containing_places is not None:
@@ -694,6 +703,26 @@ class GoogleMapService:
             return 0.9
         return SequenceMatcher(None, requested, candidate).ratio()
 
+    @staticmethod
+    def _returned_language_bucket(language_code: Any) -> str:
+        """Reduce Google LocalizedText language metadata to fixed safe buckets."""
+        if not isinstance(language_code, str) or not language_code.strip():
+            return "missing"
+        primary = language_code.strip().lower().split("-", 1)[0]
+        return primary if primary in {"zh", "ja", "en"} else "other"
+
+    @staticmethod
+    def _per_language_name_score_band(score: float) -> str:
+        if score < 0.20:
+            return "lt_020"
+        if score < 0.40:
+            return "020_039"
+        if score < 0.50:
+            return "040_049"
+        if score < 0.60:
+            return "050_059"
+        return "060plus"
+
     @classmethod
     def _candidate_matches_city_context(cls, poi: POIInfo, city: str) -> bool:
         """Conservative city check for photo-only partial candidates."""
@@ -778,6 +807,9 @@ class GoogleMapService:
 
         def add_results(language: str) -> None:
             nonlocal search_calls
+            returned_name_languages: Optional[Dict[str, str]] = (
+                {} if observation is not None else None
+            )
             results = self.search_poi(
                 name,
                 city,
@@ -786,6 +818,7 @@ class GoogleMapService:
                 address_hint=expected_address,
                 _diagnostics=diagnostics,
                 _containing_places=containing_places,
+                _returned_name_languages=returned_name_languages,
             )
             search_calls += 1
             for rank, poi in enumerate(results):
@@ -798,6 +831,7 @@ class GoogleMapService:
                     "languages_seen": set(),
                     "appearances": 0,
                     "containing_place_ids": set(),
+                    "language_diagnostics": {},
                 })
                 entry["containing_place_ids"].update(containing_places.get(poi.id, set()))
                 if poi.name and poi.name not in entry["names"]:
@@ -815,6 +849,18 @@ class GoogleMapService:
                 entry["languages_seen"].add(language)
                 if rank == 0:
                     entry["top_languages"].add(language)
+                if observation is not None:
+                    score = self._name_match_score(name, poi.name)
+                    entry["language_diagnostics"][language] = {
+                        "returned_language": (
+                            returned_name_languages or {}
+                        ).get(poi.id, "missing"),
+                        "script_relationship": self._script_relationship(
+                            name, poi.name
+                        ),
+                        "score_band": self._per_language_name_score_band(score),
+                        "top": rank == 0,
+                    }
 
         with timing("initial_text_search"):
             add_results(languages[0])
@@ -1167,7 +1213,7 @@ class GoogleMapService:
                 "1" if candidate_count <= 1 else "2_3" if candidate_count <= 3 else "4plus"
             ),
         }
-        return {
+        bounded = {
             key: value
             for key, value in evidence.items()
             if (
@@ -1175,6 +1221,13 @@ class GoogleMapService:
                 or value in _NAME_EVIDENCE_VALUES.get(key, ())
             )
         }
+        language_diagnostics = best_entry.get("language_diagnostics") or {}
+        bounded["per_language"] = {
+            language: dict(language_diagnostics[language])
+            for language in ("zh-CN", "ja", "en")
+            if language in language_diagnostics
+        }
+        return bounded
 
     @staticmethod
     def _city_identity_prerequisite_gates(

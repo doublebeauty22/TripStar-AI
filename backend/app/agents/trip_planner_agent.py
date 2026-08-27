@@ -980,6 +980,24 @@ class MultiAgentTripPlanner:
             for mapping in name_evidence_counter_maps.values()
             for counter in mapping.values()
         )
+        requested_language_labels = {"zh-CN": "zh", "ja": "ja", "en": "en"}
+        returned_language_values = ("zh", "ja", "en", "other", "missing")
+        script_values = ("same", "cross", "mixed", "unknown")
+        score_values = ("lt_020", "020_039", "040_049", "050_059", "060plus")
+        per_language_fields = tuple(
+            field
+            for label in requested_language_labels.values()
+            for field in (
+                f"name_low_{label}_present",
+                f"name_low_{label}_absent",
+                *(f"name_low_{label}_returned_language_{value}"
+                  for value in returned_language_values),
+                *(f"name_low_{label}_script_{value}" for value in script_values),
+                *(f"name_low_{label}_score_{value}" for value in score_values),
+                f"name_low_{label}_top_true",
+                f"name_low_{label}_top_false",
+            )
+        )
         summary_fields = (
             "attractions", "unique_lookups", "text_search_calls", "candidate_found",
             "verified", "partial", "unverified", "no_candidates",
@@ -996,7 +1014,7 @@ class MultiAgentTripPlanner:
             "identity_not_attempted_invalid_place_id",
             "identity_not_attempted_provider_untrusted",
             "identity_not_attempted_invalid_coordinates",
-        ) + name_evidence_fields
+        ) + name_evidence_fields + per_language_fields
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
         try:
@@ -1103,6 +1121,42 @@ class MultiAgentTripPlanner:
                                                 )
                                                 if counter is not None:
                                                     summary[counter] += 1
+                                            per_language = name_evidence.get(
+                                                "per_language"
+                                            )
+                                            if not isinstance(per_language, dict):
+                                                per_language = {}
+                                            for request_language, label in (
+                                                requested_language_labels.items()
+                                            ):
+                                                item = per_language.get(request_language)
+                                                if not isinstance(item, dict):
+                                                    summary[f"name_low_{label}_absent"] += 1
+                                                    continue
+                                                summary[f"name_low_{label}_present"] += 1
+                                                returned_language = item.get(
+                                                    "returned_language"
+                                                )
+                                                if returned_language not in returned_language_values:
+                                                    returned_language = "missing"
+                                                summary[
+                                                    f"name_low_{label}_returned_language_{returned_language}"
+                                                ] += 1
+                                                script = {
+                                                    "same_script": "same",
+                                                    "cross_script": "cross",
+                                                    "mixed_script": "mixed",
+                                                    "unknown": "unknown",
+                                                }.get(item.get("script_relationship"), "unknown")
+                                                summary[f"name_low_{label}_script_{script}"] += 1
+                                                score_band = item.get("score_band")
+                                                if score_band not in score_values:
+                                                    score_band = "lt_020"
+                                                summary[f"name_low_{label}_score_{score_band}"] += 1
+                                                top = item.get("top") is True
+                                                summary[
+                                                    f"name_low_{label}_top_{str(top).lower()}"
+                                                ] += 1
 
                     match = cache[cache_key]
                     status = match.get("status", "unverified")

@@ -364,6 +364,7 @@ class NameEvidenceDiagnosticTests(unittest.TestCase):
                 "multilingual_same_place_id",
                 "localized_name_variant_count_bucket",
                 "planner_address_hint_present", "candidate_count_bucket",
+                "per_language",
             },
         )
         serialized = repr(evidence)
@@ -372,6 +373,219 @@ class NameEvidenceDiagnosticTests(unittest.TestCase):
             "private-place-id",
         ):
             self.assertNotIn(marker, serialized)
+
+
+class Phase2A1LanguageDiagnosticTests(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        self.service = GoogleMapService("fake-key")
+        self.addCleanup(self.service.close)
+
+    @staticmethod
+    def _search_side_effect(by_language):
+        def search(*_args, language_code="zh-CN", _returned_name_languages=None,
+                   **_kwargs):
+            candidates = []
+            for item in by_language.get(language_code, []):
+                candidate = _poi(
+                    name=item[1], address="Other Region", poi_id=item[0]
+                )
+                candidates.append(candidate)
+                if _returned_name_languages is not None:
+                    _returned_name_languages[item[0]] = item[2]
+            return candidates
+        return search
+
+    def _observe(self, by_language, requested="Planner Target"):
+        self.service.search_poi = Mock(
+            side_effect=self._search_side_effect(by_language)
+        )
+        with patch.object(
+            self.service, "_resolve_city_identity",
+            side_effect=AssertionError("low-name path must not resolve city"),
+        ), observe_generation_grounding() as diagnostics:
+            result = self.service.match_poi(requested, "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        return result, diagnostics["name_low_evidence"]
+
+    def test_returned_language_buckets_are_bounded(self):
+        cases = (
+            ("zh-CN", "zh"), ("zh-Hant", "zh"), ("ja", "ja"),
+            ("ja-JP", "ja"), ("en", "en"), ("en-AU", "en"),
+            ("fr", "other"), ("private-value", "other"), ("", "missing"),
+            (None, "missing"), ({"unsafe": "value"}, "missing"),
+        )
+        for value, expected in cases:
+            with self.subTest(value=repr(value)):
+                self.assertEqual(
+                    GoogleMapService._returned_language_bucket(value), expected
+                )
+
+    def test_search_parser_retains_only_bucketed_localizedtext_language(self):
+        def response(language_code):
+            return type("Response", (), {
+                "raise_for_status": lambda _self: None,
+                "json": lambda _self: {"places": [{
+                    "id": "private-place-id",
+                    "displayName": {
+                        "text": "Private Candidate",
+                        "languageCode": language_code,
+                    },
+                    "formattedAddress": "Private Address",
+                    "location": {"longitude": 151.2, "latitude": -33.8},
+                    "types": ["tourist_attraction"],
+                }]},
+            })()
+
+        for raw, expected in (("zh-CN", "zh"), ("ja", "ja"), ("en", "en"),
+                              ("fr-CA", "other"), (None, "missing")):
+            with self.subTest(raw=raw):
+                self.service._client = Mock()
+                self.service._client.post.return_value = response(raw)
+                metadata = {}
+                result = self.service.search_poi(
+                    "Private Query", "Private City",
+                    _returned_name_languages=metadata,
+                )
+                self.assertEqual(len(result), 1)
+                self.assertEqual(metadata, {"private-place-id": expected})
+                self.assertNotIn(str(raw), repr(metadata)) if raw not in {
+                    "zh-CN", "ja", "en", None
+                } else None
+
+    def test_same_place_all_languages_records_per_language_metadata(self):
+        _, evidence = self._observe({
+            "zh-CN": [("same-id", "无关名称", "zh")],
+            "ja": [("same-id", "無関係", "ja")],
+            "en": [("same-id", "Unrelated", "en")],
+        })
+        per_language = evidence["per_language"]
+        self.assertEqual(set(per_language), {"zh-CN", "ja", "en"})
+        self.assertEqual(per_language["zh-CN"]["returned_language"], "zh")
+        self.assertEqual(per_language["ja"]["returned_language"], "ja")
+        self.assertEqual(per_language["en"]["returned_language"], "en")
+        self.assertTrue(all(item["top"] for item in per_language.values()))
+
+    def test_fallback_missing_other_and_absent_language_are_distinguished(self):
+        _, evidence = self._observe({
+            "zh-CN": [("same-id", "abcxxx", "en")],
+            "ja": [("same-id", "abcxxx", "other")],
+            "en": [("different-id", "Remote", "missing")],
+        }, requested="abcdef")
+        per_language = evidence["per_language"]
+        self.assertEqual(per_language["zh-CN"]["returned_language"], "en")
+        self.assertEqual(per_language["ja"]["returned_language"], "other")
+        self.assertNotIn("en", per_language)
+
+    def test_top_score_and_script_are_language_specific(self):
+        _, evidence = self._observe({
+            "zh-CN": [
+                ("other-id", "qqqqqq", "en"),
+                ("same-id", "abcxxx", "en"),
+            ],
+            "ja": [("same-id", "別物", "ja")],
+            "en": [("same-id", "Remote", "en")],
+        }, requested="abcdef")
+        per_language = evidence["per_language"]
+        self.assertFalse(per_language["zh-CN"]["top"])
+        self.assertTrue(per_language["ja"]["top"])
+        self.assertEqual(per_language["zh-CN"]["script_relationship"], "same_script")
+        self.assertEqual(per_language["ja"]["script_relationship"], "cross_script")
+        self.assertNotEqual(
+            per_language["zh-CN"]["score_band"],
+            per_language["en"]["score_band"],
+        )
+
+    def test_same_raw_name_and_two_variants_are_retained_only_as_buckets(self):
+        for by_language, expected_variants in (
+            ({language: [("same-id", "Remote", "en")]
+              for language in ("zh-CN", "ja", "en")}, "1"),
+            ({
+                "zh-CN": [("same-id", "Remote", "en")],
+                "ja": [("same-id", "別物", "ja")],
+                "en": [("same-id", "Remote", "en")],
+            }, "2"),
+        ):
+            with self.subTest(expected_variants=expected_variants):
+                _, evidence = self._observe(by_language)
+                self.assertEqual(
+                    evidence["localized_name_variant_count_bucket"], expected_variants
+                )
+                serialized = repr(evidence)
+                for marker in ("Remote", "別物", "same-id", "Planner Target"):
+                    self.assertNotIn(marker, serialized)
+
+    def test_best_candidate_selection_uses_existing_stable_score_order(self):
+        _, evidence = self._observe({
+            language: [
+                ("stable-first", "abcxxx", "en"),
+                ("stable-second", "abcyyy", "en"),
+            ]
+            for language in ("zh-CN", "ja", "en")
+        }, requested="abcdef")
+        self.assertTrue(evidence["per_language"]["zh-CN"]["top"])
+        self.assertEqual(evidence["best_name_score_band"], "050_059")
+
+    def test_observation_does_not_change_result_or_provider_call_count(self):
+        by_language = {
+            language: [("same-id", "Unrelated", "en")]
+            for language in ("zh-CN", "ja", "en")
+        }
+        self.service.search_poi = Mock(
+            side_effect=self._search_side_effect(by_language)
+        )
+        baseline = self.service.match_poi("Planner Target", "Safe City")
+        baseline_calls = self.service.search_poi.call_count
+        self.service.search_poi.reset_mock()
+        with observe_generation_grounding() as diagnostics:
+            observed = self.service.match_poi("Planner Target", "Safe City")
+        self.assertEqual(observed, baseline)
+        self.assertEqual(self.service.search_poi.call_count, baseline_calls)
+        self.assertIn("per_language", diagnostics["name_low_evidence"])
+
+    def test_non_low_name_and_photo_stage_do_not_retain_language_diagnostics(self):
+        self.service.search_poi = Mock(return_value=[
+            _poi(name="Exact Place", address="Safe City")
+        ])
+        with observe_generation_grounding() as diagnostics:
+            result = self.service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "verified")
+        self.assertNotIn("name_low_evidence", diagnostics)
+
+        result = self.service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "verified")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    async def test_concurrent_and_sequential_contexts_do_not_leak_metadata(self):
+        async def worker(candidate_name):
+            service = GoogleMapService("fake-key")
+            self.addCleanup(service.close)
+            service.search_poi = Mock(return_value=[
+                _poi(name=candidate_name, address="Other Region")
+            ])
+            with observe_generation_grounding() as diagnostics:
+                await asyncio.to_thread(
+                    service.match_poi, "Planner Target", "Safe City"
+                )
+                return dict(diagnostics)
+
+        first, second = await asyncio.gather(worker("Latin"), worker("別物"))
+        self.assertIsNot(first["name_low_evidence"], second["name_low_evidence"])
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    def test_exception_resets_phase2a_metadata(self):
+        self.service.search_poi = Mock(side_effect=RuntimeError("private failure"))
+        with self.assertRaises(RuntimeError):
+            with observe_generation_grounding():
+                self.service.match_poi("Private Name", "Private City")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    def test_per_language_score_band_allowlist_includes_sixty_plus(self):
+        cases = ((0.0, "lt_020"), (0.2, "020_039"), (0.4, "040_049"),
+                 (0.5, "050_059"), (0.6, "060plus"), (1.0, "060plus"))
+        for score, expected in cases:
+            self.assertEqual(
+                GoogleMapService._per_language_name_score_band(score), expected
+            )
 
 
 class GroundingTimingTests(unittest.TestCase):
@@ -1008,6 +1222,120 @@ class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("Low Name", summary)
         self.assertNotIn("Exact Museum", summary)
         self.assertNotIn("Exact Place", summary)
+
+    async def test_phase2a1_per_language_counter_invariants_and_privacy(self):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+
+        def search(*_args, language_code="zh-CN", _returned_name_languages=None,
+                   **_kwargs):
+            names = {"zh-CN": "无关名称", "ja": "別物", "en": "Remote"}
+            returned = {"zh-CN": "zh", "ja": "ja", "en": "en"}
+            candidate = _poi(
+                name=names[language_code], address="Other Region",
+                poi_id="private-place-id",
+            )
+            if _returned_name_languages is not None:
+                _returned_name_languages[candidate.id] = returned[language_code]
+            return [candidate]
+
+        service.search_poi = Mock(side_effect=search)
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["Private Planner Name"]))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        self.assertEqual(values["identity_not_attempted_name_below_threshold"], 1)
+        dimensions = {
+            "returned_language": ("zh", "ja", "en", "other", "missing"),
+            "script": ("same", "cross", "mixed", "unknown"),
+            "score": ("lt_020", "020_039", "040_049", "050_059", "060plus"),
+            "top": ("true", "false"),
+        }
+        for label in ("zh", "ja", "en"):
+            with self.subTest(language=label):
+                present = values[f"name_low_{label}_present"]
+                absent = values[f"name_low_{label}_absent"]
+                self.assertEqual(present + absent, 1)
+                self.assertEqual(present, 1)
+                for dimension, buckets in dimensions.items():
+                    self.assertEqual(
+                        sum(values[f"name_low_{label}_{dimension}_{bucket}"]
+                            for bucket in buckets),
+                        present,
+                    )
+        for marker in (
+            "Private Planner Name", "无关名称", "別物", "Remote",
+            "private-place-id", "Other Region", "fake-key",
+        ):
+            self.assertNotIn(marker, summary)
+
+    async def test_phase2a1_absent_language_has_no_dimension_increment(self):
+        service = Mock()
+
+        def match(*_args, **_kwargs):
+            diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+            diagnostics.update({
+                "terminal_category": "city_mismatch",
+                "city_resolution_category": "identity_not_attempted",
+                "city_identity_prerequisite_category": "name_below_threshold",
+                "name_low_evidence": {
+                    "best_name_score_band": "lt_020",
+                    "best_name_match_method": "sequence",
+                    "script_relationship": "cross_script",
+                    "best_candidate_language_count": 2,
+                    "multilingual_same_place_id": True,
+                    "localized_name_variant_count_bucket": "1",
+                    "planner_address_hint_present": True,
+                    "candidate_count_bucket": "1",
+                    "per_language": {
+                        "zh-CN": {
+                            "returned_language": "zh",
+                            "script_relationship": "cross_script",
+                            "score_band": "lt_020", "top": True,
+                        },
+                        "en": {
+                            "returned_language": "en",
+                            "script_relationship": "same_script",
+                            "score_band": "020_039", "top": False,
+                        },
+                    },
+                },
+            })
+            return {
+                "status": "unverified", "poi": _poi(),
+                "evidence": {"search_calls": 3, "city_consistent": False},
+            }
+
+        service.match_poi = Mock(side_effect=match)
+        service.grounding_terminal_category = GoogleMapService.grounding_terminal_category
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["Private Name"]))
+        summary = next(line for line in output.getvalue().splitlines()
+                       if line.startswith("event=poi_grounding_summary"))
+        values = {key: int(value) for key, value in
+                  (field.split("=", 1) for field in summary.split()[1:])}
+        self.assertEqual(values["name_low_ja_present"], 0)
+        self.assertEqual(values["name_low_ja_absent"], 1)
+        self.assertEqual(
+            sum(value for key, value in values.items()
+                if key.startswith("name_low_ja_returned_language_")
+                or key.startswith("name_low_ja_script_")
+                or key.startswith("name_low_ja_score_")
+                or key.startswith("name_low_ja_top_")),
+            0,
+        )
 
     async def test_real_matcher_mixed_batch_preserves_city_counter_invariant(self):
         service = GoogleMapService("fake-key")
