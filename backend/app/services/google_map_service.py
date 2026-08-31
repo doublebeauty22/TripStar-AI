@@ -167,6 +167,7 @@ class GoogleMapService:
 
     # --------------- 基础常量 ---------------
     PLACES_BASE = "https://places.googleapis.com/v1/places"
+    PLACES_AUTOCOMPLETE_URL = "https://places.googleapis.com/v1/places:autocomplete"
     GEOCODING_BASE = "https://maps.googleapis.com/maps/api/geocode/json"
     DIRECTIONS_BASE = "https://maps.googleapis.com/maps/api/directions/json"
     WEATHER_BASE = "https://weather.googleapis.com/v1/currentConditions"
@@ -299,6 +300,70 @@ class GoogleMapService:
                 _diagnostics["provider_failure"] = True
             _log_http_failure("places_text_search", exc)
             return []
+
+    def _autocomplete_shadow_prediction(self, name: str, city: str) -> Dict[str, Any]:
+        """Fetch one bounded PlacePrediction for generation-only shadow evidence."""
+        headers = {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": self.api_key,
+            "X-Goog-FieldMask": (
+                "suggestions.placePrediction.placeId,"
+                "suggestions.placePrediction.structuredFormat.mainText.text,"
+                "suggestions.placePrediction.types"
+            ),
+        }
+        query = " ".join(part.strip() for part in (name, city) if part and part.strip())[:256]
+        body = {
+            "input": query,
+            "languageCode": "zh-CN",
+            "includeQueryPredictions": False,
+        }
+        try:
+            response = self._client.post(
+                self.PLACES_AUTOCOMPLETE_URL,
+                headers=headers,
+                json=body,
+                timeout=2.0,
+            )
+            response.raise_for_status()
+        except Exception as exc:
+            _log_http_failure("places_autocomplete_shadow", exc)
+            return {"state": "provider_failure"}
+
+        try:
+            payload = response.json()
+            if not isinstance(payload, dict) or not isinstance(payload.get("suggestions"), list):
+                return {"state": "malformed"}
+            for suggestion in payload["suggestions"]:
+                if not isinstance(suggestion, dict) or "placePrediction" not in suggestion:
+                    continue
+                prediction = suggestion.get("placePrediction")
+                if not isinstance(prediction, dict):
+                    return {"state": "malformed"}
+                place_id = prediction.get("placeId")
+                structured = prediction.get("structuredFormat")
+                if structured is not None and not isinstance(structured, dict):
+                    return {"state": "malformed"}
+                main = structured.get("mainText") if isinstance(structured, dict) else None
+                if main is not None and not isinstance(main, dict):
+                    return {"state": "malformed"}
+                main_text = main.get("text") if isinstance(main, dict) else None
+                if main_text is not None and not isinstance(main_text, str):
+                    return {"state": "malformed"}
+                types = prediction.get("types", [])
+                if not isinstance(place_id, str) or not isinstance(types, list):
+                    return {"state": "malformed"}
+                if any(not isinstance(item, str) for item in types):
+                    return {"state": "malformed"}
+                return {
+                    "state": "prediction",
+                    "place_id": place_id.strip(),
+                    "main_text": main_text.strip() if isinstance(main_text, str) else "",
+                    "types": types,
+                }
+            return {"state": "no_prediction"}
+        except Exception:
+            return {"state": "malformed"}
 
     # ======================== 地理编码 ========================
 
@@ -1076,6 +1141,17 @@ class GoogleMapService:
                 status = "partial_match"
             else:
                 status = "unverified"
+
+        self._observe_autocomplete_shadow(
+            requested_name=name,
+            city=city,
+            status=status,
+            best_evidence=best_evidence,
+            best_entry=best_entry,
+            aggregated=aggregated,
+            city_identity_attempted=city_identity_attempted,
+            observation=observation,
+        )
         if not best_evidence["city_consistent"]:
             diagnostics["city_containment_present"] = bool(
                 best_entry["containing_place_ids"]
@@ -1086,6 +1162,89 @@ class GoogleMapService:
             "poi": best_entry["poi"],
             "evidence": best_evidence,
         }
+
+    def _observe_autocomplete_shadow(
+        self,
+        *,
+        requested_name: str,
+        city: str,
+        status: str,
+        best_evidence: Dict[str, Any],
+        best_entry: Dict[str, Any],
+        aggregated: Dict[str, Dict[str, Any]],
+        city_identity_attempted: bool,
+        observation: Optional[Dict[str, Any]],
+    ) -> None:
+        """Evaluate Phase 2B.1 evidence without changing the match decision."""
+        if observation is None:
+            return
+        poi = best_entry.get("poi")
+        names = best_entry.get("names") or []
+        name_score = float(best_evidence.get("name_score") or 0.0)
+        exact_failure_shape = (
+            status == "unverified"
+            and best_evidence.get("city_consistent") is False
+            and not city_identity_attempted
+            and name_score < 0.60
+            and self._script_relationship(
+                requested_name,
+                max(names, key=lambda item: self._name_match_score(requested_name, item), default=""),
+            ) == "cross_script"
+            and len(aggregated) == 1
+            and poi is not None
+            and bool(str(poi.id or "").strip())
+            and poi.data_source == "google_places"
+            and has_valid_verified_coordinates(poi.location)
+            and bool(best_evidence.get("type_compatible"))
+            and bool(best_evidence.get("scope_compatible"))
+        )
+        if not exact_failure_shape:
+            return
+
+        shadow: Dict[str, Any] = {"attempted": True}
+        observation["autocomplete_shadow"] = shadow
+        try:
+            prediction = self._autocomplete_shadow_prediction(requested_name, city)
+        except Exception:
+            prediction = {"state": "provider_failure"}
+        state = prediction.get("state")
+        if state == "provider_failure":
+            shadow["outcome"] = "provider_failure"
+            return
+        if state == "malformed":
+            shadow["outcome"] = "malformed"
+            return
+        if state != "prediction":
+            shadow["outcome"] = "no_prediction"
+            return
+
+        place_id_match = prediction.get("place_id") == str(poi.id or "").strip()
+        shadow["place_id_match"] = place_id_match
+        if not place_id_match:
+            shadow["outcome"] = "place_id_mismatch"
+            return
+        main_text = prediction.get("main_text") or ""
+        if not main_text:
+            shadow["outcome"] = "main_text_missing"
+            return
+        score = self._name_match_score(requested_name, main_text)
+        shadow["score_band"] = (
+            "lt020" if score < 0.20 else "020_039" if score < 0.40
+            else "040_059" if score < 0.60 else "060_087" if score < 0.88
+            else "088plus"
+        )
+        shadow["name_strong"] = score >= 0.88
+        if score < 0.88:
+            shadow["outcome"] = "name_weak"
+            return
+        type_compatible = self._type_compatible(
+            requested_name, [main_text], prediction.get("types") or [],
+        )
+        shadow["type_compatible"] = type_compatible
+        if not type_compatible:
+            shadow["outcome"] = "type_incompatible"
+            return
+        shadow["outcome"] = "eligible"
 
     @staticmethod
     def _name_score_band(score: float) -> str:

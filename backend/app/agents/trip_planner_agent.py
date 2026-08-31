@@ -1014,6 +1014,23 @@ class MultiAgentTripPlanner:
             "identity_not_attempted_invalid_place_id",
             "identity_not_attempted_provider_untrusted",
             "identity_not_attempted_invalid_coordinates",
+            "autocomplete_shadow_attempted",
+            "autocomplete_shadow_provider_failure",
+            "autocomplete_shadow_malformed",
+            "autocomplete_shadow_no_prediction",
+            "autocomplete_shadow_place_id_match",
+            "autocomplete_shadow_place_id_mismatch",
+            "autocomplete_shadow_main_text_missing",
+            "autocomplete_shadow_name_strong",
+            "autocomplete_shadow_name_weak",
+            "autocomplete_shadow_type_compatible",
+            "autocomplete_shadow_type_incompatible",
+            "autocomplete_shadow_eligible",
+            "autocomplete_shadow_score_band_lt020",
+            "autocomplete_shadow_score_band_020_039",
+            "autocomplete_shadow_score_band_040_059",
+            "autocomplete_shadow_score_band_060_087",
+            "autocomplete_shadow_score_band_088plus",
         ) + name_evidence_fields + per_language_fields
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
@@ -1054,6 +1071,36 @@ class MultiAgentTripPlanner:
                         if unique_match.get("poi") is not None:
                             summary["candidate_found"] += 1
                         unique_status = unique_match.get("status", "unverified")
+                        shadow = grounding_observation.get("autocomplete_shadow")
+                        if isinstance(shadow, dict) and shadow.get("attempted") is True:
+                            summary["autocomplete_shadow_attempted"] += 1
+                            outcome_counter = {
+                                "provider_failure": "autocomplete_shadow_provider_failure",
+                                "malformed": "autocomplete_shadow_malformed",
+                                "no_prediction": "autocomplete_shadow_no_prediction",
+                                "place_id_mismatch": "autocomplete_shadow_place_id_mismatch",
+                                "main_text_missing": "autocomplete_shadow_main_text_missing",
+                                "name_weak": "autocomplete_shadow_name_weak",
+                                "type_incompatible": "autocomplete_shadow_type_incompatible",
+                                "eligible": "autocomplete_shadow_eligible",
+                            }.get(shadow.get("outcome"))
+                            if outcome_counter is not None:
+                                summary[outcome_counter] += 1
+                            if shadow.get("place_id_match") is True:
+                                summary["autocomplete_shadow_place_id_match"] += 1
+                            if shadow.get("name_strong") is True:
+                                summary["autocomplete_shadow_name_strong"] += 1
+                            if shadow.get("type_compatible") is True:
+                                summary["autocomplete_shadow_type_compatible"] += 1
+                            score_counter = {
+                                "lt020": "autocomplete_shadow_score_band_lt020",
+                                "020_039": "autocomplete_shadow_score_band_020_039",
+                                "040_059": "autocomplete_shadow_score_band_040_059",
+                                "060_087": "autocomplete_shadow_score_band_060_087",
+                                "088plus": "autocomplete_shadow_score_band_088plus",
+                            }.get(shadow.get("score_band"))
+                            if score_counter is not None:
+                                summary[score_counter] += 1
                         if unique_status == "verified":
                             summary["verified"] += 1
                         elif unique_status == "partial_match":
