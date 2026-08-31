@@ -172,4 +172,7 @@ class BridgeTests(unittest.TestCase):
         self.assertEqual(result.total_latency_ms, 321)
 
 
-if __name__ == "__main__": unittest.main()
+if __name__ == "__main__":
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()

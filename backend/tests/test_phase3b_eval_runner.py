@@ -152,4 +152,7 @@ class Phase3BEvalRunnerTests(unittest.TestCase):
         self.assertIn("Release decision", markdown)
 
 
-if __name__ == "__main__": unittest.main()
+if __name__ == "__main__":
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()

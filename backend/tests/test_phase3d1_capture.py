@@ -227,4 +227,7 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaises(Exception): CapturedValue(status="not_applicable", value=False, reason="n/a")
 
 
-if __name__ == "__main__": unittest.main()
+if __name__ == "__main__":
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()

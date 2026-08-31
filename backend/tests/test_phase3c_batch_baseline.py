@@ -130,4 +130,7 @@ class Phase3CBatchTests(unittest.TestCase):
         self.assertIn("baseline measurement, not an optimization result", markdown)
 
 
-if __name__ == "__main__": unittest.main()
+if __name__ == "__main__":
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()

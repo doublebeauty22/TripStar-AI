@@ -161,4 +161,6 @@ class PlannerStructuredOutputTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()

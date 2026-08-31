@@ -131,4 +131,7 @@ class FailureManifestTests(unittest.TestCase):
         with self.assertRaises(Exception): CaptureFailureManifest.model_validate(value)
 
 
-if __name__ == "__main__": unittest.main()
+if __name__ == "__main__":
+    from network_guard import guarded_unittest_main
+
+    guarded_unittest_main()
