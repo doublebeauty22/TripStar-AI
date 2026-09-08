@@ -1031,6 +1031,14 @@ class MultiAgentTripPlanner:
             "autocomplete_shadow_score_band_040_059",
             "autocomplete_shadow_score_band_060_087",
             "autocomplete_shadow_score_band_088plus",
+            "autocomplete_shadow_not_attempted_script_not_cross",
+            "autocomplete_shadow_not_attempted_multiple_candidates",
+            "autocomplete_shadow_not_attempted_invalid_place_id",
+            "autocomplete_shadow_not_attempted_provider_untrusted",
+            "autocomplete_shadow_not_attempted_invalid_coordinates",
+            "autocomplete_shadow_not_attempted_type_incompatible",
+            "autocomplete_shadow_not_attempted_scope_conflict",
+            "autocomplete_shadow_not_attempted_other",
         ) + name_evidence_fields + per_language_fields
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
@@ -1101,6 +1109,37 @@ class MultiAgentTripPlanner:
                             }.get(shadow.get("score_band"))
                             if score_counter is not None:
                                 summary[score_counter] += 1
+                        else:
+                            rejection_counter = {
+                                "script_not_cross": (
+                                    "autocomplete_shadow_not_attempted_script_not_cross"
+                                ),
+                                "multiple_candidates": (
+                                    "autocomplete_shadow_not_attempted_multiple_candidates"
+                                ),
+                                "invalid_place_id": (
+                                    "autocomplete_shadow_not_attempted_invalid_place_id"
+                                ),
+                                "provider_untrusted": (
+                                    "autocomplete_shadow_not_attempted_provider_untrusted"
+                                ),
+                                "invalid_coordinates": (
+                                    "autocomplete_shadow_not_attempted_invalid_coordinates"
+                                ),
+                                "type_incompatible": (
+                                    "autocomplete_shadow_not_attempted_type_incompatible"
+                                ),
+                                "scope_conflict": (
+                                    "autocomplete_shadow_not_attempted_scope_conflict"
+                                ),
+                                "other": "autocomplete_shadow_not_attempted_other",
+                            }.get(
+                                grounding_observation.get(
+                                    "autocomplete_shadow_not_attempted_reason"
+                                )
+                            )
+                            if rejection_counter is not None:
+                                summary[rejection_counter] += 1
                         if unique_status == "verified":
                             summary["verified"] += 1
                         elif unique_status == "partial_match":

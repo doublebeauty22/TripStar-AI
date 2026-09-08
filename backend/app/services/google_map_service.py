@@ -1181,24 +1181,52 @@ class GoogleMapService:
         poi = best_entry.get("poi")
         names = best_entry.get("names") or []
         name_score = float(best_evidence.get("name_score") or 0.0)
-        exact_failure_shape = (
+        cohort_matches = (
             status == "unverified"
             and best_evidence.get("city_consistent") is False
             and not city_identity_attempted
             and name_score < 0.60
-            and self._script_relationship(
-                requested_name,
-                max(names, key=lambda item: self._name_match_score(requested_name, item), default=""),
-            ) == "cross_script"
-            and len(aggregated) == 1
-            and poi is not None
-            and bool(str(poi.id or "").strip())
-            and poi.data_source == "google_places"
-            and has_valid_verified_coordinates(poi.location)
-            and bool(best_evidence.get("type_compatible"))
-            and bool(best_evidence.get("scope_compatible"))
         )
-        if not exact_failure_shape:
+        if not cohort_matches:
+            return
+
+        record_rejection = (
+            observation.get("city_identity_prerequisite_category")
+            == "name_below_threshold"
+        )
+
+        def reject(reason: str) -> None:
+            if record_rejection:
+                observation["autocomplete_shadow_not_attempted_reason"] = reason
+
+        best_name = max(
+            names,
+            key=lambda item: self._name_match_score(requested_name, item),
+            default="",
+        )
+        if self._script_relationship(requested_name, best_name) != "cross_script":
+            reject("script_not_cross")
+            return
+        if len(aggregated) != 1:
+            reject("multiple_candidates")
+            return
+        if poi is None:
+            reject("other")
+            return
+        if not bool(str(poi.id or "").strip()):
+            reject("invalid_place_id")
+            return
+        if poi.data_source != "google_places":
+            reject("provider_untrusted")
+            return
+        if not has_valid_verified_coordinates(poi.location):
+            reject("invalid_coordinates")
+            return
+        if not bool(best_evidence.get("type_compatible")):
+            reject("type_incompatible")
+            return
+        if not bool(best_evidence.get("scope_compatible")):
+            reject("scope_conflict")
             return
 
         shadow: Dict[str, Any] = {"attempted": True}

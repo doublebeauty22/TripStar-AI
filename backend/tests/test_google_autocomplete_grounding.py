@@ -146,6 +146,168 @@ class AutocompleteShadowMatchingTests(unittest.TestCase):
             "type_incompatible",
         )
 
+    def test_not_attempted_first_blocker_categories_and_precedence(self):
+        def classify(
+            *,
+            requested_name="涩谷十字路口",
+            names=None,
+            candidate_count=1,
+            poi=None,
+            evidence=None,
+        ):
+            poi = poi if poi is not None else _poi()
+            entry = {"poi": poi, "names": names or ["Unrelated English Label"]}
+            aggregated = {
+                f"candidate-{index}": entry for index in range(candidate_count)
+            }
+            observation = {
+                "city_identity_prerequisite_category": "name_below_threshold"
+            }
+            autocomplete = Mock(return_value=_prediction())
+            self.service._autocomplete_shadow_prediction = autocomplete
+            self.service._observe_autocomplete_shadow(
+                requested_name=requested_name,
+                city="Safe City",
+                status="unverified",
+                best_evidence={
+                    "name_score": 0.1,
+                    "city_consistent": False,
+                    "type_compatible": True,
+                    "scope_compatible": True,
+                    **(evidence or {}),
+                },
+                best_entry=entry,
+                aggregated=aggregated,
+                city_identity_attempted=False,
+                observation=observation,
+            )
+            autocomplete.assert_not_called()
+            return observation["autocomplete_shadow_not_attempted_reason"]
+
+        self.assertEqual(
+            classify(requested_name="Alpha", names=["Omega"]),
+            "script_not_cross",
+        )
+        self.assertEqual(classify(candidate_count=2), "multiple_candidates")
+
+        invalid_id = _poi()
+        invalid_id.id = ""
+        untrusted = _poi()
+        untrusted.data_source = "amap"
+        invalid_coordinates = _poi()
+        invalid_coordinates.location = Location(longitude=0, latitude=0)
+        cases = (
+            ("invalid_place_id", {"poi": invalid_id}),
+            ("provider_untrusted", {"poi": untrusted}),
+            ("invalid_coordinates", {"poi": invalid_coordinates}),
+            ("type_incompatible", {"evidence": {"type_compatible": False}}),
+            ("scope_conflict", {"evidence": {"scope_compatible": False}}),
+        )
+        for expected, kwargs in cases:
+            with self.subTest(expected=expected):
+                self.assertEqual(classify(**kwargs), expected)
+
+        # Script is evaluated before candidate cardinality.
+        self.assertEqual(
+            classify(requested_name="Alpha", names=["Omega"], candidate_count=2),
+            "script_not_cross",
+        )
+
+    def test_real_match_flow_reports_reachable_eligibility_blockers(self):
+        type_incompatible = _poi(
+            name="Unrelated English Label", poi_id="type-incompatible"
+        )
+        type_incompatible.type = "train_station"
+        cases = (
+            (
+                "script_not_cross",
+                "Alpha",
+                [_poi(name="Omega", poi_id="same-script")],
+            ),
+            (
+                "multiple_candidates",
+                "涩谷十字路口",
+                [
+                    _poi(name="Unrelated English Label", poi_id="candidate-one"),
+                    _poi(name="Different English Label", poi_id="candidate-two"),
+                ],
+            ),
+            (
+                "type_incompatible",
+                "合成博物馆",
+                [type_incompatible],
+            ),
+            (
+                "scope_conflict",
+                "合成景点",
+                [_poi(name="Unrelated English East Tower", poi_id="scope-conflict")],
+            ),
+        )
+        for expected, requested, candidates in cases:
+            with self.subTest(expected=expected):
+                self.service.search_poi = Mock(return_value=candidates)
+                self.service._autocomplete_shadow_prediction = Mock(
+                    return_value=_prediction()
+                )
+                with observe_generation_grounding() as observation:
+                    result = self.service.match_poi(requested, "Safe City")
+                self.assertEqual(result["status"], "unverified")
+                self.assertEqual(
+                    observation["autocomplete_shadow_not_attempted_reason"],
+                    expected,
+                )
+                self.service._autocomplete_shadow_prediction.assert_not_called()
+
+    def test_structurally_unexpected_missing_poi_uses_bounded_other(self):
+        entry = {"poi": None, "names": ["Unrelated English Label"]}
+        observation = {
+            "city_identity_prerequisite_category": "name_below_threshold"
+        }
+        self.service._autocomplete_shadow_prediction = Mock(return_value=_prediction())
+        self.service._observe_autocomplete_shadow(
+            requested_name="涩谷十字路口",
+            city="Safe City",
+            status="unverified",
+            best_evidence={
+                "name_score": 0.1,
+                "city_consistent": False,
+                "type_compatible": True,
+                "scope_compatible": True,
+            },
+            best_entry=entry,
+            aggregated={"synthetic": entry},
+            city_identity_attempted=False,
+            observation=observation,
+        )
+        self.assertEqual(
+            observation["autocomplete_shadow_not_attempted_reason"], "other"
+        )
+        self.service._autocomplete_shadow_prediction.assert_not_called()
+
+    def test_rejection_reason_is_limited_to_name_below_threshold_cohort(self):
+        entry = {"poi": _poi(), "names": ["Omega"]}
+        observation = {
+            "city_identity_prerequisite_category": "type_incompatible"
+        }
+        self.service._autocomplete_shadow_prediction = Mock(return_value=_prediction())
+        self.service._observe_autocomplete_shadow(
+            requested_name="Alpha",
+            city="Safe City",
+            status="unverified",
+            best_evidence={
+                "name_score": 0.1,
+                "city_consistent": False,
+                "type_compatible": False,
+                "scope_compatible": True,
+            },
+            best_entry=entry,
+            aggregated={"synthetic": entry},
+            city_identity_attempted=False,
+            observation=observation,
+        )
+        self.assertNotIn("autocomplete_shadow_not_attempted_reason", observation)
+        self.service._autocomplete_shadow_prediction.assert_not_called()
+
     def test_verified_partial_and_containment_empty_never_call_autocomplete(self):
         autocomplete = Mock(return_value=_prediction())
         self.service._autocomplete_shadow_prediction = autocomplete
@@ -473,6 +635,191 @@ class NetworkEgressGuardTests(unittest.TestCase):
 
 
 class AutocompleteSummaryTests(unittest.IsolatedAsyncioTestCase):
+    async def test_real_enrichment_reports_type_and_scope_rejection_counters(self):
+        cases = (
+            (
+                "type_incompatible",
+                "合成博物馆",
+                "autocomplete_shadow_not_attempted_type_incompatible",
+            ),
+            (
+                "scope_conflict",
+                "合成景点",
+                "autocomplete_shadow_not_attempted_scope_conflict",
+            ),
+        )
+        rejection_fields = (
+            "autocomplete_shadow_not_attempted_script_not_cross",
+            "autocomplete_shadow_not_attempted_multiple_candidates",
+            "autocomplete_shadow_not_attempted_invalid_place_id",
+            "autocomplete_shadow_not_attempted_provider_untrusted",
+            "autocomplete_shadow_not_attempted_invalid_coordinates",
+            "autocomplete_shadow_not_attempted_type_incompatible",
+            "autocomplete_shadow_not_attempted_scope_conflict",
+            "autocomplete_shadow_not_attempted_other",
+        )
+        for reason, requested_name, expected_counter in cases:
+            with self.subTest(reason=reason):
+                planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+                service = GoogleMapService("fake-key")
+                self.addCleanup(service.close)
+                candidate = _poi(
+                    name=(
+                        "Unrelated English Label"
+                        if reason == "type_incompatible"
+                        else "Unrelated English East Tower"
+                    ),
+                    poi_id=f"{reason}-place",
+                )
+                if reason == "type_incompatible":
+                    candidate.type = "train_station"
+                service.search_poi = Mock(return_value=[candidate])
+                service._autocomplete_shadow_prediction = Mock(
+                    return_value=_prediction()
+                )
+                plan = TripPlan(
+                    city="Safe City",
+                    start_date="2026-09-01",
+                    end_date="2026-09-01",
+                    days=[DayPlan(
+                        date="2026-09-01",
+                        day_index=0,
+                        city="Safe City",
+                        description="",
+                        transportation="",
+                        accommodation="",
+                        attractions=[Attraction(
+                            name=requested_name,
+                            address="",
+                            category="",
+                            location=Location(longitude=0, latitude=0),
+                            visit_duration=60,
+                            description="",
+                        )],
+                        meals=[],
+                    )],
+                    weather_info=[],
+                    overall_suggestions="",
+                )
+                output = io.StringIO()
+                with patch(
+                    "backend.app.services.google_map_service.get_google_map_service",
+                    return_value=service,
+                ), redirect_stdout(output):
+                    result = await planner._enrich_trip_plan_pois(plan)
+                summary = next(
+                    line for line in output.getvalue().splitlines()
+                    if line.startswith("event=poi_grounding_summary")
+                )
+                values = {
+                    field: int(value)
+                    for field, value in (
+                        token.split("=", 1) for token in summary.split()[1:]
+                    )
+                }
+                self.assertEqual(values["autocomplete_shadow_attempted"], 0)
+                for field in rejection_fields:
+                    self.assertEqual(values[field], int(field == expected_counter))
+                self.assertEqual(service._autocomplete_shadow_prediction.call_count, 0)
+                self.assertEqual(
+                    result.days[0].attractions[0].poi_match_status,
+                    "unverified",
+                )
+
+    async def test_attempt_rejection_cohort_invariant_and_duplicate_cache(self):
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+
+        type_incompatible = _poi(
+            name="Unrelated English Label", poi_id="type-incompatible"
+        )
+        type_incompatible.type = "train_station"
+        candidates = {
+            "涩谷十字路口": [_poi()],
+            "Alpha": [_poi(name="Omega", poi_id="same-script")],
+            "合成多候选": [
+                _poi(name="Unrelated English Label", poi_id="candidate-one"),
+                _poi(name="Different English Label", poi_id="candidate-two"),
+            ],
+            "合成博物馆": [type_incompatible],
+            "合成景点": [
+                _poi(name="Unrelated English East Tower", poi_id="scope-conflict")
+            ],
+        }
+
+        def search(keywords, *_args, **_kwargs):
+            return candidates[keywords]
+
+        service.search_poi = Mock(side_effect=search)
+        service._autocomplete_shadow_prediction = Mock(return_value=_prediction())
+        attraction_names = (
+            "涩谷十字路口",
+            "Alpha",
+            "合成多候选",
+            "合成博物馆",
+            "合成景点",
+            "Alpha",
+        )
+        plan = TripPlan(
+            city="Safe City", start_date="2026-09-01", end_date="2026-09-01",
+            days=[DayPlan(
+                date="2026-09-01", day_index=0, city="Safe City",
+                description="", transportation="", accommodation="",
+                attractions=[Attraction(
+                    name=name, address="", category="",
+                    location=Location(longitude=0, latitude=0), visit_duration=60,
+                    description="",
+                ) for name in attraction_names], meals=[],
+            )], weather_info=[], overall_suggestions="",
+        )
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(plan)
+        summary = next(
+            line for line in output.getvalue().splitlines()
+            if line.startswith("event=poi_grounding_summary")
+        )
+        values = {
+            field: int(value)
+            for field, value in (
+                token.split("=", 1) for token in summary.split()[1:]
+            )
+        }
+        rejection_fields = tuple(
+            field for field in values
+            if field.startswith("autocomplete_shadow_not_attempted_")
+        )
+        self.assertEqual(values["identity_not_attempted_name_below_threshold"], 5)
+        self.assertEqual(values["autocomplete_shadow_attempted"], 1)
+        self.assertEqual(
+            values["autocomplete_shadow_not_attempted_script_not_cross"], 1
+        )
+        self.assertEqual(
+            values["autocomplete_shadow_not_attempted_multiple_candidates"], 1
+        )
+        self.assertEqual(
+            values["autocomplete_shadow_not_attempted_type_incompatible"], 1
+        )
+        self.assertEqual(
+            values["autocomplete_shadow_not_attempted_scope_conflict"], 1
+        )
+        self.assertEqual(
+            sum(values[field] for field in rejection_fields), 4
+        )
+        self.assertEqual(
+            values["autocomplete_shadow_attempted"]
+            + sum(values[field] for field in rejection_fields),
+            values["identity_not_attempted_name_below_threshold"],
+        )
+        self.assertEqual(service.search_poi.call_count, 15)
+        self.assertEqual(service._autocomplete_shadow_prediction.call_count, 1)
+        for private in attraction_names:
+            self.assertNotIn(private, summary)
+
     async def test_duplicate_attractions_emit_one_attempt_and_one_terminal_outcome(self):
         planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
         service = GoogleMapService("fake-key")
@@ -631,3 +978,8 @@ class AutocompleteSummaryTests(unittest.IsolatedAsyncioTestCase):
         observed_result, _ = await asyncio.gather(observed(), plain())
         self.assertIn("autocomplete_shadow", observed_result)
         self.assertEqual(service._autocomplete_shadow_prediction.call_count, 1)
+
+        with self.assertRaises(RuntimeError):
+            with observe_generation_grounding():
+                raise RuntimeError("synthetic cleanup")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
