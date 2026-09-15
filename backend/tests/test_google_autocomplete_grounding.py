@@ -495,6 +495,12 @@ class AutocompleteContractTests(unittest.TestCase):
         self.assertFalse(kwargs["json"]["includeQueryPredictions"])
         self.assertNotIn("sessionToken", kwargs["json"])
         self.assertEqual(kwargs["timeout"], 2.0)
+        self.assertEqual(
+            kwargs["headers"]["X-Goog-FieldMask"],
+            "suggestions.placePrediction.placeId,"
+            "suggestions.placePrediction.structuredFormat.mainText.text,"
+            "suggestions.placePrediction.types",
+        )
 
     def test_query_prediction_is_ignored_and_first_place_prediction_is_parsed(self):
         self.service._client = Mock(post=Mock(return_value=self.Response({
@@ -513,10 +519,13 @@ class AutocompleteContractTests(unittest.TestCase):
 
     def test_malformed_and_timeout_are_bounded_and_secret_safe(self):
         for response, expected in (
-            (self.Response(ValueError("private-body")), "malformed"),
-            (httpx.TimeoutException("private-query"), "provider_failure"),
+            (
+                self.Response(ValueError("private-body")),
+                {"state": "malformed", "malformed_reason": "invalid_json"},
+            ),
+            (httpx.TimeoutException("private-query"), {"state": "provider_failure"}),
         ):
-            with self.subTest(expected=expected):
+            with self.subTest(expected=expected["state"]):
                 client = Mock()
                 if isinstance(response, Exception):
                     client.post.side_effect = response
@@ -528,13 +537,94 @@ class AutocompleteContractTests(unittest.TestCase):
                     result = self.service._autocomplete_shadow_prediction(
                         "Private Planner Name", "Private City"
                     )
-                self.assertEqual(result["state"], expected)
+                self.assertEqual(result, expected)
                 rendered = output.getvalue()
                 for private in (
                     "Private Planner Name", "Private City", "private-body",
                     "private-query", "fake-key",
                 ):
                     self.assertNotIn(private, rendered)
+
+    def test_every_existing_malformed_branch_has_one_bounded_subreason(self):
+        class ExplodingPayload(dict):
+            def __getitem__(self, key):
+                raise RuntimeError("private-parser-state")
+
+        valid_main = {"mainText": {"text": "Safe"}}
+        cases = (
+            ("invalid_json", ValueError("private-json")),
+            ("root_shape", []),
+            ("suggestions_missing", {}),
+            ("suggestions_type", {"suggestions": {}}),
+            ("prediction_shape", {"suggestions": [{"placePrediction": []}]}),
+            ("place_id_shape", {"suggestions": [{"placePrediction": {
+                "structuredFormat": valid_main, "types": [],
+            }}]}),
+            ("structured_format_shape", {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": [], "types": [],
+            }}]}),
+            ("main_text_shape", {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": {"mainText": []},
+                "types": [],
+            }}]}),
+            ("main_text_shape", {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id",
+                "structuredFormat": {"mainText": {"text": []}}, "types": [],
+            }}]}),
+            ("types_shape", {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": valid_main, "types": {},
+            }}]}),
+            ("types_shape", {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": valid_main, "types": [1],
+            }}]}),
+            ("unexpected_parse_error", ExplodingPayload(suggestions=[])),
+        )
+        for expected, payload in cases:
+            with self.subTest(expected=expected):
+                client = Mock()
+                client.post.return_value = self.Response(payload)
+                self.service._client = client
+                result = self.service._autocomplete_shadow_prediction(
+                    "Synthetic", "City"
+                )
+                self.assertEqual(result, {
+                    "state": "malformed", "malformed_reason": expected,
+                })
+                client.post.assert_called_once()
+
+    def test_non_malformed_and_http_failures_keep_existing_states(self):
+        cases = (
+            ({"suggestions": []}, 200, {"state": "no_prediction"}),
+            (
+                {"suggestions": [{"queryPrediction": {"text": {"text": "Safe"}}}]},
+                200,
+                {"state": "no_prediction"},
+            ),
+            ({"error": {}}, 400, {"state": "provider_failure"}),
+            ({"error": {}}, 500, {"state": "provider_failure"}),
+        )
+        for payload, status, expected in cases:
+            with self.subTest(status=status, expected=expected["state"]):
+                client = Mock()
+                client.post.return_value = self.Response(payload, status=status)
+                self.service._client = client
+                result = self.service._autocomplete_shadow_prediction(
+                    "Synthetic", "City"
+                )
+                self.assertEqual(result, expected)
+                client.post.assert_called_once()
+
+        client = Mock()
+        client.post.return_value = self.Response({"suggestions": [{
+            "placePrediction": {"placeId": "safe-id", "types": []}
+        }]})
+        self.service._client = client
+        result = self.service._autocomplete_shadow_prediction("Synthetic", "City")
+        self.assertEqual(result, {
+            "state": "prediction", "place_id": "safe-id",
+            "main_text": "", "types": [],
+        })
+        self.assertNotIn("malformed_reason", result)
 
     def test_missing_and_malformed_prediction_fields_fail_closed(self):
         cases = (
@@ -567,7 +657,9 @@ class AutocompleteContractTests(unittest.TestCase):
             ]
         })))
         result = self.service._autocomplete_shadow_prediction("Synthetic", "City")
-        self.assertEqual(result, {"state": "malformed"})
+        self.assertEqual(result, {
+            "state": "malformed", "malformed_reason": "place_id_shape",
+        })
 
 
 class NetworkEgressGuardTests(unittest.TestCase):
@@ -635,6 +727,112 @@ class NetworkEgressGuardTests(unittest.TestCase):
 
 
 class AutocompleteSummaryTests(unittest.IsolatedAsyncioTestCase):
+    async def test_real_malformed_summary_invariant_and_subreason_counters(self):
+        class ExplodingPayload(dict):
+            def __getitem__(self, key):
+                raise RuntimeError("private-parser-state")
+
+        valid_main = {"mainText": {"text": "Safe"}}
+        malformed_payloads = {
+            "invalid_json": ValueError("private-json"),
+            "root_shape": [],
+            "suggestions_missing": {},
+            "suggestions_type": {"suggestions": {}},
+            "prediction_shape": {"suggestions": [{"placePrediction": []}]},
+            "place_id_shape": {"suggestions": [{"placePrediction": {
+                "structuredFormat": valid_main, "types": [],
+            }}]},
+            "structured_format_shape": {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": [], "types": [],
+            }}]},
+            "main_text_shape": {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": {"mainText": []},
+                "types": [],
+            }}]},
+            "types_shape": {"suggestions": [{"placePrediction": {
+                "placeId": "safe-id", "structuredFormat": valid_main, "types": {},
+            }}]},
+            "unexpected_parse_error": ExplodingPayload(suggestions=[]),
+        }
+        malformed_fields = tuple(
+            f"autocomplete_shadow_malformed_{reason}"
+            for reason in malformed_payloads
+        )
+        terminal_fields = (
+            "autocomplete_shadow_provider_failure",
+            "autocomplete_shadow_malformed",
+            "autocomplete_shadow_no_prediction",
+            "autocomplete_shadow_place_id_mismatch",
+            "autocomplete_shadow_main_text_missing",
+            "autocomplete_shadow_name_weak",
+            "autocomplete_shadow_type_incompatible",
+            "autocomplete_shadow_eligible",
+        )
+        for reason, payload in malformed_payloads.items():
+            with self.subTest(reason=reason):
+                planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+                service = GoogleMapService("fake-key")
+                self.addCleanup(service.close)
+                service.search_poi = Mock(return_value=[_poi()])
+                client = Mock()
+                client.post.return_value = AutocompleteContractTests.Response(payload)
+                service._client = client
+                plan = TripPlan(
+                    city="Safe City",
+                    start_date="2026-09-01",
+                    end_date="2026-09-01",
+                    days=[DayPlan(
+                        date="2026-09-01", day_index=0, city="Safe City",
+                        description="", transportation="", accommodation="",
+                        attractions=[Attraction(
+                            name="涩谷十字路口", address="", category="",
+                            location=Location(longitude=0, latitude=0),
+                            visit_duration=60, description="",
+                        )],
+                        meals=[],
+                    )],
+                    weather_info=[],
+                    overall_suggestions="",
+                )
+                output = io.StringIO()
+                with patch(
+                    "backend.app.services.google_map_service.get_google_map_service",
+                    return_value=service,
+                ), redirect_stdout(output):
+                    result = await planner._enrich_trip_plan_pois(plan)
+                summary = next(
+                    line for line in output.getvalue().splitlines()
+                    if line.startswith("event=poi_grounding_summary")
+                )
+                values = {
+                    field: int(value)
+                    for field, value in (
+                        token.split("=", 1) for token in summary.split()[1:]
+                    )
+                }
+                self.assertEqual(values["autocomplete_shadow_attempted"], 1)
+                self.assertEqual(values["autocomplete_shadow_malformed"], 1)
+                self.assertEqual(
+                    sum(values[field] for field in malformed_fields),
+                    values["autocomplete_shadow_malformed"],
+                )
+                for field in malformed_fields:
+                    self.assertEqual(
+                        values[field],
+                        int(field == f"autocomplete_shadow_malformed_{reason}"),
+                    )
+                self.assertEqual(
+                    sum(values[field] for field in terminal_fields),
+                    values["autocomplete_shadow_attempted"],
+                )
+                self.assertEqual(client.post.call_count, 1)
+                self.assertEqual(
+                    result.days[0].attractions[0].poi_match_status,
+                    "unverified",
+                )
+                for private in ("涩谷十字路口", "private-json", "private-parser-state"):
+                    self.assertNotIn(private, summary)
+
     async def test_real_enrichment_reports_type_and_scope_rejection_counters(self):
         cases = (
             (
@@ -877,6 +1075,13 @@ class AutocompleteSummaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values["autocomplete_shadow_place_id_mismatch"], 0)
         self.assertEqual(values["autocomplete_shadow_name_weak"], 0)
         self.assertEqual(values["autocomplete_shadow_type_incompatible"], 0)
+        self.assertEqual(
+            sum(
+                value for field, value in values.items()
+                if field.startswith("autocomplete_shadow_malformed_")
+            ),
+            0,
+        )
         self.assertEqual(service._autocomplete_shadow_prediction.call_count, 1)
         self.assertTrue(all(item.poi_match_status == "unverified"
                             for item in result.days[0].attractions))

@@ -1017,6 +1017,16 @@ class MultiAgentTripPlanner:
             "autocomplete_shadow_attempted",
             "autocomplete_shadow_provider_failure",
             "autocomplete_shadow_malformed",
+            "autocomplete_shadow_malformed_invalid_json",
+            "autocomplete_shadow_malformed_root_shape",
+            "autocomplete_shadow_malformed_suggestions_missing",
+            "autocomplete_shadow_malformed_suggestions_type",
+            "autocomplete_shadow_malformed_prediction_shape",
+            "autocomplete_shadow_malformed_place_id_shape",
+            "autocomplete_shadow_malformed_structured_format_shape",
+            "autocomplete_shadow_malformed_main_text_shape",
+            "autocomplete_shadow_malformed_types_shape",
+            "autocomplete_shadow_malformed_unexpected_parse_error",
             "autocomplete_shadow_no_prediction",
             "autocomplete_shadow_place_id_match",
             "autocomplete_shadow_place_id_mismatch",
@@ -1094,6 +1104,43 @@ class MultiAgentTripPlanner:
                             }.get(shadow.get("outcome"))
                             if outcome_counter is not None:
                                 summary[outcome_counter] += 1
+                            if shadow.get("outcome") == "malformed":
+                                malformed_counter = {
+                                    "invalid_json": (
+                                        "autocomplete_shadow_malformed_invalid_json"
+                                    ),
+                                    "root_shape": (
+                                        "autocomplete_shadow_malformed_root_shape"
+                                    ),
+                                    "suggestions_missing": (
+                                        "autocomplete_shadow_malformed_suggestions_missing"
+                                    ),
+                                    "suggestions_type": (
+                                        "autocomplete_shadow_malformed_suggestions_type"
+                                    ),
+                                    "prediction_shape": (
+                                        "autocomplete_shadow_malformed_prediction_shape"
+                                    ),
+                                    "place_id_shape": (
+                                        "autocomplete_shadow_malformed_place_id_shape"
+                                    ),
+                                    "structured_format_shape": (
+                                        "autocomplete_shadow_malformed_structured_format_shape"
+                                    ),
+                                    "main_text_shape": (
+                                        "autocomplete_shadow_malformed_main_text_shape"
+                                    ),
+                                    "types_shape": (
+                                        "autocomplete_shadow_malformed_types_shape"
+                                    ),
+                                    "unexpected_parse_error": (
+                                        "autocomplete_shadow_malformed_unexpected_parse_error"
+                                    ),
+                                }.get(
+                                    shadow.get("malformed_reason"),
+                                    "autocomplete_shadow_malformed_unexpected_parse_error",
+                                )
+                                summary[malformed_counter] += 1
                             if shadow.get("place_id_match") is True:
                                 summary["autocomplete_shadow_place_id_match"] += 1
                             if shadow.get("name_strong") is True:

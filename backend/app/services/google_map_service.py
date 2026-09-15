@@ -65,6 +65,19 @@ _NAME_EVIDENCE_VALUES = {
     "candidate_count_bucket": frozenset({"1", "2_3", "4plus"}),
 }
 
+_AUTOCOMPLETE_MALFORMED_REASONS = frozenset({
+    "invalid_json",
+    "root_shape",
+    "suggestions_missing",
+    "suggestions_type",
+    "prediction_shape",
+    "place_id_shape",
+    "structured_format_shape",
+    "main_text_shape",
+    "types_shape",
+    "unexpected_parse_error",
+})
+
 
 @contextmanager
 def observe_generation_grounding():
@@ -332,29 +345,45 @@ class GoogleMapService:
 
         try:
             payload = response.json()
-            if not isinstance(payload, dict) or not isinstance(payload.get("suggestions"), list):
-                return {"state": "malformed"}
+        except Exception:
+            return {"state": "malformed", "malformed_reason": "invalid_json"}
+
+        try:
+            if not isinstance(payload, dict):
+                return {"state": "malformed", "malformed_reason": "root_shape"}
+            if "suggestions" not in payload:
+                return {
+                    "state": "malformed",
+                    "malformed_reason": "suggestions_missing",
+                }
+            if not isinstance(payload.get("suggestions"), list):
+                return {"state": "malformed", "malformed_reason": "suggestions_type"}
             for suggestion in payload["suggestions"]:
                 if not isinstance(suggestion, dict) or "placePrediction" not in suggestion:
                     continue
                 prediction = suggestion.get("placePrediction")
                 if not isinstance(prediction, dict):
-                    return {"state": "malformed"}
+                    return {"state": "malformed", "malformed_reason": "prediction_shape"}
                 place_id = prediction.get("placeId")
                 structured = prediction.get("structuredFormat")
                 if structured is not None and not isinstance(structured, dict):
-                    return {"state": "malformed"}
+                    return {
+                        "state": "malformed",
+                        "malformed_reason": "structured_format_shape",
+                    }
                 main = structured.get("mainText") if isinstance(structured, dict) else None
                 if main is not None and not isinstance(main, dict):
-                    return {"state": "malformed"}
+                    return {"state": "malformed", "malformed_reason": "main_text_shape"}
                 main_text = main.get("text") if isinstance(main, dict) else None
                 if main_text is not None and not isinstance(main_text, str):
-                    return {"state": "malformed"}
+                    return {"state": "malformed", "malformed_reason": "main_text_shape"}
                 types = prediction.get("types", [])
-                if not isinstance(place_id, str) or not isinstance(types, list):
-                    return {"state": "malformed"}
+                if not isinstance(place_id, str):
+                    return {"state": "malformed", "malformed_reason": "place_id_shape"}
+                if not isinstance(types, list):
+                    return {"state": "malformed", "malformed_reason": "types_shape"}
                 if any(not isinstance(item, str) for item in types):
-                    return {"state": "malformed"}
+                    return {"state": "malformed", "malformed_reason": "types_shape"}
                 return {
                     "state": "prediction",
                     "place_id": place_id.strip(),
@@ -363,7 +392,10 @@ class GoogleMapService:
                 }
             return {"state": "no_prediction"}
         except Exception:
-            return {"state": "malformed"}
+            return {
+                "state": "malformed",
+                "malformed_reason": "unexpected_parse_error",
+            }
 
     # ======================== 地理编码 ========================
 
@@ -1240,6 +1272,12 @@ class GoogleMapService:
             shadow["outcome"] = "provider_failure"
             return
         if state == "malformed":
+            malformed_reason = prediction.get("malformed_reason")
+            shadow["malformed_reason"] = (
+                malformed_reason
+                if malformed_reason in _AUTOCOMPLETE_MALFORMED_REASONS
+                else "unexpected_parse_error"
+            )
             shadow["outcome"] = "malformed"
             return
         if state != "prediction":
