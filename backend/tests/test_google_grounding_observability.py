@@ -1053,6 +1053,512 @@ class CityResolutionRealFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
 
 
+class ContainmentRawStateObservabilityTests(unittest.IsolatedAsyncioTestCase):
+    _LANGUAGES = ("zh-CN", "ja", "en")
+    _STATES = (
+        "candidate_absent",
+        "field_missing",
+        "field_null",
+        "field_empty",
+        "field_malformed",
+        "entries_name_only",
+        "entries_unusable",
+        "usable_ids_present",
+    )
+
+    @staticmethod
+    def _trusted_identity():
+        return type("Identity", (), {
+            "place_id": "trusted-city-id",
+            "names": frozenset({"trustedcity"}),
+        })()
+
+    @classmethod
+    def _resolve_identity(cls, _city):
+        diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+        if diagnostics is not None:
+            diagnostics["city_identity_resolution"] = "resolved"
+        return cls._trusted_identity()
+
+    @staticmethod
+    def _search_by_language(by_language):
+        def search(
+            _keywords,
+            _city,
+            *,
+            language_code="zh-CN",
+            _containing_places=None,
+            _containing_place_states=None,
+            **_kwargs,
+        ):
+            results = []
+            for poi, raw_state, containing_ids in by_language.get(language_code, []):
+                if _containing_places is not None:
+                    _containing_places[poi.id] = set(containing_ids)
+                if _containing_place_states is not None:
+                    _containing_place_states[poi.id] = raw_state
+                results.append(poi)
+            return results
+
+        return search
+
+    @staticmethod
+    def _place_payload(raw_marker):
+        place = {
+            "id": "selected-id",
+            "displayName": {"text": "Exact Place", "languageCode": "en"},
+            "formattedAddress": "Other Region",
+            "location": {"longitude": 151.2, "latitude": -33.8},
+            "types": ["tourist_attraction"],
+        }
+        if raw_marker is not ...:
+            place["containingPlaces"] = raw_marker
+        return place
+
+    def _run_real_match(self, by_language):
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(side_effect=self._search_by_language(by_language))
+        with patch.object(
+            service, "_resolve_city_identity", side_effect=self._resolve_identity
+        ) as resolve, patch.object(
+            service, "_autocomplete_shadow_prediction"
+        ) as autocomplete, observe_generation_grounding() as diagnostics:
+            result = service.match_poi("Exact Place", "Safe City")
+        return service, resolve, autocomplete, result, diagnostics
+
+    def test_raw_parser_classifies_every_bounded_state_without_changing_id_parsing(self):
+        cases = (
+            ("field_missing", ..., set(), True),
+            ("field_null", None, set(), True),
+            ("field_empty", [], set(), True),
+            ("field_malformed", {"id": "not-a-list"}, set(), False),
+            ("entries_name_only", [{"name": "places/opaque-resource"}], set(), True),
+            ("entries_unusable", [{}, "invalid-entry"], set(), True),
+            ("usable_ids_present", [{"id": "trusted-parent-id"}],
+             {"trusted-parent-id"}, True),
+        )
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        for expected_state, raw_value, expected_ids, parser_entry_present in cases:
+            response = Mock()
+            response.raise_for_status.return_value = None
+            response.json.return_value = {
+                "places": [self._place_payload(raw_value)]
+            }
+            service._client.post = Mock(return_value=response)
+            raw_states = {}
+            parsed = {}
+            with self.subTest(expected_state=expected_state):
+                results = service.search_poi(
+                    "Private Query",
+                    "Private City",
+                    _containing_places=parsed,
+                    _containing_place_states=raw_states,
+                )
+                self.assertEqual(len(results), 1)
+                self.assertEqual(raw_states, {"selected-id": expected_state})
+                self.assertEqual(
+                    parsed.get("selected-id") if parser_entry_present else None,
+                    expected_ids if parser_entry_present else None,
+                )
+
+    def test_selected_candidate_has_exactly_one_state_per_requested_language(self):
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        by_language = {
+            "zh-CN": [(selected, "field_missing", set())],
+            "ja": [(selected, "field_null", set())],
+            "en": [(selected, "field_empty", set())],
+        }
+        service, resolve, autocomplete, result, diagnostics = self._run_real_match(
+            by_language
+        )
+        self.assertEqual(result["status"], "unverified")
+        self.assertFalse(result["evidence"]["city_consistent"])
+        self.assertEqual(result["evidence"]["search_calls"], 3)
+        self.assertEqual(service.search_poi.call_count, 3)
+        resolve.assert_called_once()
+        autocomplete.assert_not_called()
+        self.assertEqual(
+            diagnostics["city_resolution_category"],
+            "trusted_name_absent_containment_empty",
+        )
+        self.assertEqual(
+            diagnostics["selected_containment_states"],
+            {"zh-CN": "field_missing", "ja": "field_null", "en": "field_empty"},
+        )
+
+    def test_selected_candidate_absent_and_ranked_out_candidate_are_distinct(self):
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        losing = _poi(name="Unrelated Object", address="Other Region", poi_id="losing-id")
+        by_language = {
+            "zh-CN": [(selected, "field_empty", set())],
+            "ja": [(losing, "usable_ids_present", {"unrelated-parent"})],
+            "en": [(selected, "field_empty", set())],
+        }
+        _, _, _, result, diagnostics = self._run_real_match(by_language)
+        self.assertEqual(result["poi"].id, "selected-id")
+        self.assertEqual(
+            diagnostics["selected_containment_states"],
+            {"zh-CN": "field_empty", "ja": "candidate_absent", "en": "field_empty"},
+        )
+        self.assertNotIn(
+            "usable_ids_present", diagnostics["selected_containment_states"].values()
+        )
+
+    def test_selected_candidate_preserves_malformed_name_only_and_unusable_states(self):
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        by_language = {
+            "zh-CN": [(selected, "field_malformed", set())],
+            "ja": [(selected, "entries_name_only", set())],
+            "en": [(selected, "entries_unusable", set())],
+        }
+        _, _, _, result, diagnostics = self._run_real_match(by_language)
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(
+            diagnostics["selected_containment_states"],
+            {
+                "zh-CN": "field_malformed",
+                "ja": "entries_name_only",
+                "en": "entries_unusable",
+            },
+        )
+
+    def test_cross_language_union_survives_later_empty_states(self):
+        first = _poi(name="Exact Site", address="Other Region", poi_id="selected-id")
+        exact = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        by_language = {
+            "zh-CN": [(first, "usable_ids_present", {"trusted-city-id"})],
+            "ja": [(exact, "field_empty", set())],
+            "en": [(exact, "field_missing", set())],
+        }
+        service, resolve, _, result, diagnostics = self._run_real_match(by_language)
+        self.assertEqual(service.search_poi.call_count, 3)
+        resolve.assert_called_once()
+        self.assertEqual(result["status"], "verified")
+        self.assertEqual(result["evidence"]["city_match_path"], "containing_place")
+        self.assertNotIn("selected_containment_states", diagnostics)
+
+    def test_observed_and_unobserved_results_and_provider_counts_are_equal(self):
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        by_language = {
+            language: [(selected, "field_empty", set())]
+            for language in self._LANGUAGES
+        }
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(side_effect=self._search_by_language(by_language))
+        with patch.object(
+            service, "_resolve_city_identity", side_effect=self._resolve_identity
+        ) as resolve, patch.object(
+            service, "_autocomplete_shadow_prediction"
+        ) as autocomplete:
+            baseline = service.match_poi("Exact Place", "Safe City")
+            baseline_search_calls = service.search_poi.call_count
+            baseline_geocode_calls = resolve.call_count
+            baseline_autocomplete_calls = autocomplete.call_count
+            service.search_poi.reset_mock()
+            resolve.reset_mock()
+            autocomplete.reset_mock()
+            with observe_generation_grounding() as diagnostics:
+                observed = service.match_poi("Exact Place", "Safe City")
+            observed_search_calls = service.search_poi.call_count
+            observed_geocode_calls = resolve.call_count
+            observed_autocomplete_calls = autocomplete.call_count
+        self.assertEqual(observed, baseline)
+        self.assertEqual(observed_search_calls, baseline_search_calls)
+        self.assertEqual(observed_geocode_calls, baseline_geocode_calls)
+        self.assertEqual(observed_autocomplete_calls, baseline_autocomplete_calls)
+        self.assertEqual(diagnostics["selected_containment_states"]["zh-CN"], "field_empty")
+
+    async def test_summary_is_selected_only_fixed_cardinality_and_cache_safe(self):
+        selected = _poi(name="Private Name", address="Other Region", poi_id="selected-id")
+        losing = _poi(name="Unrelated Object", address="Other Region", poi_id="losing-id")
+        by_language = {
+            "zh-CN": [(selected, "field_missing", set())],
+            "ja": [
+                (selected, "field_null", set()),
+                (losing, "usable_ids_present", {"private-parent-id"}),
+            ],
+            "en": [(selected, "field_empty", set())],
+        }
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(side_effect=self._search_by_language(by_language))
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch.object(
+            service, "_resolve_city_identity", side_effect=self._resolve_identity
+        ), patch.object(
+            service, "geocode", return_value=None
+        ), patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(_plan(["Private Name", "Private Name"]))
+        summary = next(
+            line for line in output.getvalue().splitlines()
+            if line.startswith("event=poi_grounding_summary")
+        )
+        values = {
+            key: int(value)
+            for key, value in (field.split("=", 1) for field in summary.split()[1:])
+        }
+        self.assertEqual(values["unique_lookups"], 1)
+        self.assertEqual(values["city_trusted_name_absent_containment_empty"], 1)
+        expected = {"zh": "field_missing", "ja": "field_null", "en": "field_empty"}
+        for label, selected_state in expected.items():
+            counters = [
+                values[f"containment_selected_{label}_{state}"]
+                for state in self._STATES
+            ]
+            self.assertEqual(sum(counters), 1)
+            self.assertEqual(
+                values[f"containment_selected_{label}_{selected_state}"], 1
+            )
+        self.assertEqual(values["containment_selected_ja_usable_ids_present"], 0)
+        self.assertEqual(service.search_poi.call_count, 3)
+        for marker in (
+            "Private Name", "Private City", "Private Address", "selected-id",
+            "losing-id", "private-parent-id", "fake-key",
+        ):
+            self.assertNotIn(marker, summary)
+
+    async def test_full_chain_real_parser_to_summary_preserves_language_states(self):
+        class FakeResponse:
+            def __init__(self, payload):
+                self._payload = payload
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return self._payload
+
+        class FakeGoogleClient:
+            def __init__(self):
+                self.post_languages = []
+                self.get_languages = []
+
+            @staticmethod
+            def _place(language):
+                place = {
+                    "id": "synthetic-selected-id",
+                    "displayName": {
+                        "text": "Private Name",
+                        "languageCode": language,
+                    },
+                    "formattedAddress": "Other Region",
+                    "location": {"longitude": 151.2, "latitude": -33.8},
+                    "types": ["tourist_attraction"],
+                }
+                if language == "ja":
+                    place["containingPlaces"] = []
+                elif language == "en":
+                    place["containingPlaces"] = [
+                        {}, {"name": "invalid-resource-form"},
+                    ]
+                return place
+
+            def post(self, _url, *, headers, json):
+                del headers
+                language = json["languageCode"]
+                self.post_languages.append(language)
+                return FakeResponse({"places": [self._place(language)]})
+
+            def get(self, _url, *, params):
+                language = params["language"]
+                self.get_languages.append(language)
+                if language == "en":
+                    return FakeResponse({
+                        "results": [{
+                            "place_id": "synthetic-city-id",
+                            "types": ["locality", "political"],
+                            "address_components": [{
+                                "long_name": "Trusted City",
+                                "short_name": "Trusted City",
+                                "types": ["locality", "political"],
+                            }],
+                        }],
+                    })
+                return FakeResponse({"results": []})
+
+            def close(self):
+                return None
+
+        service = GoogleMapService("fake-key")
+        service.close()
+        fake_client = FakeGoogleClient()
+        service._client = fake_client
+        self.addCleanup(service.close)
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            result = await planner._enrich_trip_plan_pois(_plan(["Private Name"]))
+
+        self.assertEqual(fake_client.post_languages, ["zh-CN", "ja", "en"])
+        self.assertEqual(fake_client.get_languages.count("en"), 1)
+        self.assertEqual(fake_client.get_languages.count("zh-CN"), 1)
+        self.assertEqual(result.days[0].attractions[0].poi_match_status, "unverified")
+        summary = next(
+            line for line in output.getvalue().splitlines()
+            if line.startswith("event=poi_grounding_summary")
+        )
+        values = {
+            key: int(value)
+            for key, value in (field.split("=", 1) for field in summary.split()[1:])
+        }
+        self.assertEqual(values["unique_lookups"], 1)
+        self.assertEqual(values["text_search_calls"], 3)
+        self.assertEqual(values["candidate_found"], 1)
+        self.assertEqual(values["city_mismatch"], 1)
+        self.assertEqual(values["city_identity_unresolved"], 0)
+        self.assertEqual(values["city_trusted_name_absent_containment_empty"], 1)
+        expected = {"zh": "field_missing", "ja": "field_empty", "en": "entries_unusable"}
+        for label, selected_state in expected.items():
+            counters = {
+                state: values[f"containment_selected_{label}_{state}"]
+                for state in self._STATES
+            }
+            self.assertEqual(sum(counters.values()), 1)
+            self.assertEqual(counters[selected_state], 1)
+            self.assertTrue(all(
+                value == 0
+                for state, value in counters.items()
+                if state != selected_state
+            ))
+        for marker in (
+            "Private Name", "Private City", "Private Address",
+            "synthetic-selected-id", "synthetic-city-id", "invalid-resource-form",
+            "fake-key",
+        ):
+            self.assertNotIn(marker, summary)
+
+    async def test_non_target_cohorts_leave_all_containment_counters_zero(self):
+        service = Mock()
+        cases = iter((
+            ("verified", None),
+            ("partial_match", None),
+            ("unverified", "identity_not_attempted"),
+            ("unverified", "trusted_name_absent_containment_nonmatching"),
+        ))
+
+        def match(*_args, **_kwargs):
+            status, city_resolution = next(cases)
+            diagnostics = _GROUNDING_OBSERVABILITY_CONTEXT.get()
+            diagnostics["selected_containment_states"] = {
+                language: "usable_ids_present" for language in self._LANGUAGES
+            }
+            if city_resolution is not None:
+                diagnostics["terminal_category"] = "city_mismatch"
+                diagnostics["city_resolution_category"] = city_resolution
+            return _match(status)
+
+        service.match_poi = Mock(side_effect=match)
+        service.grounding_terminal_category = GoogleMapService.grounding_terminal_category
+        planner = MultiAgentTripPlanner.__new__(MultiAgentTripPlanner)
+        output = io.StringIO()
+        with patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=service,
+        ), redirect_stdout(output):
+            await planner._enrich_trip_plan_pois(
+                _plan(["First Private", "Second Private", "Third Private", "Fourth Private"])
+            )
+        summary = next(
+            line for line in output.getvalue().splitlines()
+            if line.startswith("event=poi_grounding_summary")
+        )
+        values = {
+            key: int(value)
+            for key, value in (field.split("=", 1) for field in summary.split()[1:])
+        }
+        containment_values = [
+            value for key, value in values.items()
+            if key.startswith("containment_selected_")
+        ]
+        self.assertEqual(len(containment_values), 24)
+        self.assertEqual(sum(containment_values), 0)
+
+    async def test_concurrent_selected_states_are_isolated_and_context_cleans_up(self):
+        async def worker(state):
+            selected = _poi(
+                name="Exact Place", address="Other Region", poi_id=f"{state}-id"
+            )
+            service = GoogleMapService("fake-key")
+            self.addCleanup(service.close)
+            service.search_poi = Mock(side_effect=self._search_by_language({
+                language: [(selected, state, set())] for language in self._LANGUAGES
+            }))
+            with patch.object(
+                service, "_resolve_city_identity", side_effect=self._resolve_identity
+            ), observe_generation_grounding() as diagnostics:
+                await asyncio.to_thread(
+                    service.match_poi, "Exact Place", "Safe City"
+                )
+                return dict(diagnostics)
+
+        first, second = await asyncio.gather(
+            worker("field_null"), worker("entries_unusable")
+        )
+        self.assertEqual(set(first["selected_containment_states"].values()), {"field_null"})
+        self.assertEqual(
+            set(second["selected_containment_states"].values()), {"entries_unusable"}
+        )
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+        with self.assertRaises(RuntimeError):
+            with observe_generation_grounding():
+                raise RuntimeError("synthetic-safe-failure")
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    def test_photo_style_unobserved_match_does_not_capture_raw_states(self):
+        selected = _poi(name="Exact Place", address="Other Region", poi_id="selected-id")
+        seen_state_maps = []
+
+        def search(*args, _containing_place_states=None, **kwargs):
+            seen_state_maps.append(_containing_place_states)
+            return self._search_by_language({
+                language: [(selected, "field_empty", set())]
+                for language in self._LANGUAGES
+            })(*args, _containing_place_states=_containing_place_states, **kwargs)
+
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service.search_poi = Mock(side_effect=search)
+        with patch.object(
+            service, "_resolve_city_identity", side_effect=self._resolve_identity
+        ):
+            result = service.match_poi("Exact Place", "Safe City")
+        self.assertEqual(result["status"], "unverified")
+        self.assertEqual(seen_state_maps, [None, None, None])
+        self.assertIsNone(_GROUNDING_OBSERVABILITY_CONTEXT.get())
+
+    def test_duplicate_same_id_in_one_response_documents_existing_overwrite_edge(self):
+        first = self._place_payload([{"id": "trusted-parent-id"}])
+        second = self._place_payload([])
+        response = Mock()
+        response.raise_for_status.return_value = None
+        response.json.return_value = {"places": [first, second]}
+        service = GoogleMapService("fake-key")
+        self.addCleanup(service.close)
+        service._client.post = Mock(return_value=response)
+        raw_states = {}
+        parsed = {}
+        results = service.search_poi(
+            "Private Query",
+            "Private City",
+            _containing_places=parsed,
+            _containing_place_states=raw_states,
+        )
+        self.assertEqual(len(results), 2)
+        self.assertEqual(raw_states["selected-id"], "field_empty")
+        self.assertEqual(parsed["selected-id"], set())
+
+
 class GroundingSummaryTests(unittest.IsolatedAsyncioTestCase):
     @staticmethod
     def _city_mismatch_side_effect(category):

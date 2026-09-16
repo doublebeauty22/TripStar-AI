@@ -998,6 +998,21 @@ class MultiAgentTripPlanner:
                 f"name_low_{label}_top_false",
             )
         )
+        containment_states = (
+            "candidate_absent",
+            "field_missing",
+            "field_null",
+            "field_empty",
+            "field_malformed",
+            "entries_name_only",
+            "entries_unusable",
+            "usable_ids_present",
+        )
+        containment_fields = tuple(
+            f"containment_selected_{language}_{state}"
+            for language in ("zh", "ja", "en")
+            for state in containment_states
+        )
         summary_fields = (
             "attractions", "unique_lookups", "text_search_calls", "candidate_found",
             "verified", "partial", "unverified", "no_candidates",
@@ -1049,7 +1064,7 @@ class MultiAgentTripPlanner:
             "autocomplete_shadow_not_attempted_type_incompatible",
             "autocomplete_shadow_not_attempted_scope_conflict",
             "autocomplete_shadow_not_attempted_other",
-        ) + name_evidence_fields + per_language_fields
+        ) + name_evidence_fields + per_language_fields + containment_fields
         summary = {field: 0 for field in summary_fields}
         summary_complete = False
         try:
@@ -1215,6 +1230,25 @@ class MultiAgentTripPlanner:
                                 }.get(city_resolution)
                                 if city_counter is not None:
                                     summary[city_counter] += 1
+                                if (
+                                    city_resolution
+                                    == "trusted_name_absent_containment_empty"
+                                ):
+                                    selected_states = grounding_observation.get(
+                                        "selected_containment_states"
+                                    )
+                                    if not isinstance(selected_states, dict):
+                                        selected_states = {}
+                                    for request_language, label in (
+                                        ("zh-CN", "zh"),
+                                        ("ja", "ja"),
+                                        ("en", "en"),
+                                    ):
+                                        state = selected_states.get(request_language)
+                                        if state in containment_states:
+                                            summary[
+                                                f"containment_selected_{label}_{state}"
+                                            ] += 1
                                 if city_resolution == "identity_not_attempted":
                                     prerequisite = grounding_observation.get(
                                         "city_identity_prerequisite_category"

@@ -78,6 +78,17 @@ _AUTOCOMPLETE_MALFORMED_REASONS = frozenset({
     "unexpected_parse_error",
 })
 
+_CONTAINMENT_RAW_STATES = frozenset({
+    "candidate_absent",
+    "field_missing",
+    "field_null",
+    "field_empty",
+    "field_malformed",
+    "entries_name_only",
+    "entries_unusable",
+    "usable_ids_present",
+})
+
 
 @contextmanager
 def observe_generation_grounding():
@@ -211,6 +222,7 @@ class GoogleMapService:
         address_hint: str = "",
         _diagnostics: Optional[Dict[str, bool]] = None,
         _containing_places: Optional[Dict[str, set[str]]] = None,
+        _containing_place_states: Optional[Dict[str, str]] = None,
         _returned_name_languages: Optional[Dict[str, str]] = None,
     ) -> List[POIInfo]:
         """
@@ -282,6 +294,10 @@ class GoogleMapService:
                     )
                 photos = place.get("photos") or []
                 first_photo = photos[0] if photos else {}
+                if _containing_place_states is not None:
+                    _containing_place_states[str(place_id)] = (
+                        self._containment_raw_state(place)
+                    )
                 if _containing_places is not None:
                     raw_containing = place.get("containingPlaces") or []
                     if isinstance(raw_containing, list):
@@ -313,6 +329,34 @@ class GoogleMapService:
                 _diagnostics["provider_failure"] = True
             _log_http_failure("places_text_search", exc)
             return []
+
+    @staticmethod
+    def _containment_raw_state(place: Dict[str, Any]) -> str:
+        """Classify containment structure without trusting or retaining its values."""
+        if "containingPlaces" not in place:
+            return "field_missing"
+        raw_containing = place.get("containingPlaces")
+        if raw_containing is None:
+            return "field_null"
+        if not isinstance(raw_containing, list):
+            return "field_malformed"
+        if not raw_containing:
+            return "field_empty"
+        usable_ids = {
+            str(item.get("id") or "").strip()
+            for item in raw_containing
+            if isinstance(item, dict) and str(item.get("id") or "").strip()
+        }
+        if usable_ids:
+            return "usable_ids_present"
+        has_resource_name = any(
+            isinstance(item, dict)
+            and isinstance(item.get("name"), str)
+            and re.fullmatch(r"places/[^/\s]{1,256}", item["name"].strip())
+            is not None
+            for item in raw_containing
+        )
+        return "entries_name_only" if has_resource_name else "entries_unusable"
 
     def _autocomplete_shadow_prediction(self, name: str, city: str) -> Dict[str, Any]:
         """Fetch one bounded PlacePrediction for generation-only shadow evidence."""
@@ -892,6 +936,7 @@ class GoogleMapService:
         observation = _GROUNDING_OBSERVABILITY_CONTEXT.get()
         diagnostics: Dict[str, Any] = observation if observation is not None else {}
         containing_places: Dict[str, set[str]] = {}
+        requested_languages: set[str] = set()
         requested_city_place_id = ""
         requested_city_identity: Optional[_TrustedCityIdentity] = None
         city_identity_attempted = False
@@ -904,7 +949,11 @@ class GoogleMapService:
 
         def add_results(language: str) -> None:
             nonlocal search_calls
+            requested_languages.add(language)
             returned_name_languages: Optional[Dict[str, str]] = (
+                {} if observation is not None else None
+            )
+            containing_place_states: Optional[Dict[str, str]] = (
                 {} if observation is not None else None
             )
             results = self.search_poi(
@@ -915,6 +964,7 @@ class GoogleMapService:
                 address_hint=expected_address,
                 _diagnostics=diagnostics,
                 _containing_places=containing_places,
+                _containing_place_states=containing_place_states,
                 _returned_name_languages=returned_name_languages,
             )
             search_calls += 1
@@ -928,9 +978,14 @@ class GoogleMapService:
                     "languages_seen": set(),
                     "appearances": 0,
                     "containing_place_ids": set(),
+                    "containment_raw_states": {},
                     "language_diagnostics": {},
                 })
                 entry["containing_place_ids"].update(containing_places.get(poi.id, set()))
+                if observation is not None:
+                    entry["containment_raw_states"][language] = (
+                        (containing_place_states or {}).get(poi.id, "field_missing")
+                    )
                 if poi.name and poi.name not in entry["names"]:
                     entry["names"].append(poi.name)
                 normalized_address = self._normalize_place_name_text(poi.address)
@@ -1188,6 +1243,25 @@ class GoogleMapService:
             diagnostics["city_containment_present"] = bool(
                 best_entry["containing_place_ids"]
             )
+        if (
+            observation is not None
+            and status == "unverified"
+            and best_evidence["city_consistent"] is False
+            and city_identity_attempted
+            and diagnostics.get("city_identity_resolution") == "resolved"
+            and not best_entry["containing_place_ids"]
+        ):
+            raw_states = best_entry.get("containment_raw_states") or {}
+            observation["selected_containment_states"] = {
+                language: (
+                    raw_states.get(language, "candidate_absent")
+                    if raw_states.get(language, "candidate_absent")
+                    in _CONTAINMENT_RAW_STATES
+                    else "entries_unusable"
+                )
+                for language in languages
+                if language in requested_languages
+            }
         return {
             "status": status,
             "score": round(best_evidence["name_score"], 3),
