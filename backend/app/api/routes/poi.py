@@ -1,12 +1,16 @@
 """POI相关API路由"""
 
 import asyncio
+from collections import OrderedDict
+from dataclasses import dataclass, field
 import threading
+import time
+from typing import List, Literal, Optional
 import uuid
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+
 from ...services.amap_service import get_amap_service
 from ...services.timing import timed_async_stage, timed_stage
 
@@ -15,6 +19,64 @@ router = APIRouter(prefix="/poi", tags=["POI"])
 # Image requests arrive concurrently from the result page. Bound only the
 # fallback Text Search matcher; trusted Place Details/Photo calls stay outside.
 _GOOGLE_PHOTO_GROUNDING_SEMAPHORE = threading.Semaphore(2)
+_PHOTO_CLIENT_EVENT_TTL_SECONDS = 15 * 60
+_PHOTO_CLIENT_EVENT_MAX_TICKETS = 2048
+_PHOTO_CLIENT_EVENT_LOCK = threading.Lock()
+
+
+@dataclass
+class _PhotoClientEventTicket:
+    source: str
+    expires_at: float
+    seen_surfaces: set[str] = field(default_factory=set)
+
+
+_PHOTO_CLIENT_EVENT_TICKETS: OrderedDict[str, _PhotoClientEventTicket] = OrderedDict()
+
+
+def _prune_photo_client_event_tickets(now: float) -> None:
+    """Drop expired/oldest tickets; caller must hold the ticket lock."""
+    while _PHOTO_CLIENT_EVENT_TICKETS:
+        request_id, ticket = next(iter(_PHOTO_CLIENT_EVENT_TICKETS.items()))
+        if (
+            ticket.expires_at > now
+            and len(_PHOTO_CLIENT_EVENT_TICKETS) <= _PHOTO_CLIENT_EVENT_MAX_TICKETS
+        ):
+            break
+        _PHOTO_CLIENT_EVENT_TICKETS.pop(request_id, None)
+
+
+def _register_photo_client_event_ticket(*, request_id: str, source: str) -> None:
+    """Issue one bounded, process-local ticket for a returned remote image."""
+    now = time.monotonic()
+    with _PHOTO_CLIENT_EVENT_LOCK:
+        _prune_photo_client_event_tickets(now)
+        _PHOTO_CLIENT_EVENT_TICKETS[request_id] = _PhotoClientEventTicket(
+            source=source,
+            expires_at=now + _PHOTO_CLIENT_EVENT_TTL_SECONDS,
+        )
+        _PHOTO_CLIENT_EVENT_TICKETS.move_to_end(request_id)
+        _prune_photo_client_event_tickets(now)
+
+
+def _consume_photo_client_event_ticket(
+    *, request_id: str, source: str, surface: str,
+) -> bool:
+    """Accept at most one result per surface for an issued source/request pair."""
+    now = time.monotonic()
+    with _PHOTO_CLIENT_EVENT_LOCK:
+        _prune_photo_client_event_tickets(now)
+        ticket = _PHOTO_CLIENT_EVENT_TICKETS.get(request_id)
+        if (
+            ticket is None
+            or ticket.source != source
+            or surface in ticket.seen_surfaces
+        ):
+            return False
+        ticket.seen_surfaces.add(surface)
+        if ticket.seen_surfaces == {"overview", "day"}:
+            _PHOTO_CLIENT_EVENT_TICKETS.pop(request_id, None)
+        return True
 
 
 def _match_poi_for_photo(service, *args):
@@ -93,6 +155,18 @@ def _log_photo_terminal(
     )
 
 
+def _log_photo_client_event(
+    *, request_id: str, source: str, outcome: str, surface: str,
+) -> None:
+    """Emit a bounded browser-render outcome linked to one photo request."""
+    print(
+        "PHOTO_CLIENT_EVENT "
+        f"request_id={request_id} source={source} outcome={outcome} "
+        f"surface={surface}",
+        flush=True,
+    )
+
+
 _GOOGLE_GROUNDING_CATEGORIES = {
     "no_candidates", "name_mismatch", "city_mismatch", "type_mismatch",
     "scope_conflict", "invalid_place_id", "invalid_coordinates",
@@ -140,6 +214,37 @@ class POIDetailResponse(BaseModel):
     success: bool
     message: str
     data: Optional[dict] = None
+
+
+class PhotoClientEventRequest(BaseModel):
+    """Privacy-safe browser image outcome; raw request data is forbidden."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    request_id: str = Field(pattern=r"^[0-9a-f]{12}$")
+    source: Literal["google_places", "xhs"]
+    outcome: Literal["load_success", "load_error"]
+    surface: Literal["overview", "day"]
+
+
+@router.post(
+    "/photo/client-event",
+    summary="记录浏览器图片加载结果",
+    description="仅记录固定枚举和匿名图片请求 ID，不接收景点名、URL 或用户信息",
+)
+async def record_photo_client_event(event: PhotoClientEventRequest):
+    if _consume_photo_client_event_ticket(
+        request_id=event.request_id,
+        source=event.source,
+        surface=event.surface,
+    ):
+        _log_photo_client_event(
+            request_id=event.request_id,
+            source=event.source,
+            outcome=event.outcome,
+            surface=event.surface,
+        )
+    return {"success": True}
 
 
 @router.get(
@@ -336,6 +441,9 @@ async def get_attraction_photo(
             resolved_place_id = google_photo.get("place_id") or ""
             if google_photo.get("photo_url"):
                 match_status = google_photo.get("match_status") or match_status
+                _register_photo_client_event_ticket(
+                    request_id=request_id, source="google_places",
+                )
                 emit_terminal(
                     outcome="success", source="google_places",
                     category="success", retryable=False,
@@ -346,6 +454,7 @@ async def get_attraction_photo(
                     "degraded": google_photo.get("match_status") != "verified",
                     "data": {
                         "name": name,
+                        "photo_request_id": request_id,
                         "place_id": resolved_place_id,
                         "photo_url": google_photo["photo_url"],
                         "source": "google_places",
@@ -389,6 +498,9 @@ async def get_attraction_photo(
                 f"{name} 风景", request_id=request_id
             )
         if photo_url:
+            _register_photo_client_event_ticket(
+                request_id=request_id, source="xhs",
+            )
             emit_terminal(
                 outcome="success", source="xhs",
                 category="success", retryable=False,
@@ -399,6 +511,7 @@ async def get_attraction_photo(
                 "degraded": True,
                 "data": {
                     "name": name,
+                    "photo_request_id": request_id,
                     "place_id": resolved_place_id,
                     "photo_url": photo_url,
                     "source": "xhs",
@@ -438,6 +551,7 @@ async def get_attraction_photo(
         "degraded": True,
         "data": {
             "name": name,
+            "photo_request_id": request_id,
             "place_id": resolved_place_id,
             "photo_url": "",
             "source": "placeholder",

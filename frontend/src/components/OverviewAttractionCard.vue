@@ -1,7 +1,13 @@
 <template>
   <div class="swiper-slide" :class="{ 'swiper-slide-active': active }" @mouseenter="emit('hover')" @focusin="emit('hover')">
     <div class="swiper-slide-img">
-      <img :src="imageSrc" :alt="item.name" loading="lazy" @error="emit('image-error', $event)" />
+      <img
+        :src="imageSrc"
+        :alt="item.name"
+        loading="lazy"
+        @load="emit('image-load', $event)"
+        @error="emit('image-error', $event)"
+      />
       <div v-if="imageAttributions.length" class="photo-attribution">
         <a
           v-for="credit in imageAttributions"
@@ -56,6 +62,7 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'hover'): void
   (e: 'select-day', dayArrayIndex: number): void
+  (e: 'image-load', event: Event): void
   (e: 'image-error', event: Event): void
 }>()
 

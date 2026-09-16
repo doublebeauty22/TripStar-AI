@@ -1,10 +1,23 @@
 import io
 import re
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import redirect_stdout
 from unittest.mock import AsyncMock, patch
 
-from backend.app.api.routes.poi import get_attraction_photo
+from pydantic import ValidationError
+
+from backend.app.api.routes.poi import (
+    _PHOTO_CLIENT_EVENT_LOCK,
+    _PHOTO_CLIENT_EVENT_MAX_TICKETS,
+    _PHOTO_CLIENT_EVENT_TICKETS,
+    _PHOTO_CLIENT_EVENT_TTL_SECONDS,
+    PhotoClientEventRequest,
+    _consume_photo_client_event_ticket,
+    _register_photo_client_event_ticket,
+    get_attraction_photo,
+    record_photo_client_event,
+)
 from backend.app.models.schemas import Location
 
 
@@ -64,6 +77,10 @@ class PoiPhotoFallbackTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(_field(terminals[0], "outcome"), "success")
         self.assertEqual(_field(terminals[0], "source"), "google_places")
         self.assertEqual(_field(terminals[0], "category"), "success")
+        self.assertEqual(
+            result["data"]["photo_request_id"],
+            _field(terminals[0], "request_id"),
+        )
 
     async def test_full_context_is_forwarded_to_photo_grounding(self):
         service = _GooglePhotoService("https://google.example/photo")
@@ -113,6 +130,10 @@ class PoiPhotoFallbackTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(terminals), 1)
         self.assertEqual(_field(terminals[0], "source"), "xhs")
         self.assertEqual(_field(terminals[0], "outcome"), "success")
+        self.assertEqual(
+            result["data"]["photo_request_id"],
+            _field(terminals[0], "request_id"),
+        )
 
     async def test_partial_google_candidate_is_labeled_photo_only(self):
         service = _GooglePhotoService("https://google.example/partial", "partial_match")
@@ -151,6 +172,10 @@ class PoiPhotoFallbackTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(_field(terminals[0], "outcome"), "placeholder")
         self.assertEqual(_field(terminals[0], "source"), "placeholder")
         self.assertEqual(_field(terminals[0], "category"), "xhs_no_result")
+        self.assertEqual(
+            result["data"]["photo_request_id"],
+            _field(terminals[0], "request_id"),
+        )
 
     async def test_unverified_grounding_xhs_success_has_one_terminal(self):
         service = _GooglePhotoService(match_status="unverified")
@@ -243,6 +268,186 @@ class PoiPhotoFallbackTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["data"]["source"], "placeholder")
         self.assertNotEqual(result["data"].get("match_status"), "verified")
         self.assertIn("grounding_unverified", result["data"]["failure_reasons"])
+
+
+class PhotoClientTelemetryTests(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        with _PHOTO_CLIENT_EVENT_LOCK:
+            _PHOTO_CLIENT_EVENT_TICKETS.clear()
+
+    def tearDown(self):
+        with _PHOTO_CLIENT_EVENT_LOCK:
+            _PHOTO_CLIENT_EVENT_TICKETS.clear()
+
+    async def test_xhs_response_and_browser_outcome_share_only_the_safe_request_id(self):
+        output = io.StringIO()
+        with redirect_stdout(output), patch(
+            "backend.app.services.google_map_service.get_google_map_service",
+            return_value=None,
+        ), patch(
+            "backend.app.services.xhs_service.get_photo_from_xhs",
+            new=AsyncMock(return_value="https://private.example/photo"),
+        ):
+            result = await get_attraction_photo(
+                "Private Attraction", "Private City",
+            )
+            request_id = result["data"]["photo_request_id"]
+            await record_photo_client_event(PhotoClientEventRequest(
+                request_id=request_id,
+                source="xhs",
+                outcome="load_error",
+                surface="day",
+            ))
+
+        terminal = _terminal_lines(output.getvalue())
+        client = [
+            line for line in output.getvalue().splitlines()
+            if line.startswith("PHOTO_CLIENT_EVENT ")
+        ]
+        self.assertEqual(len(terminal), 1)
+        self.assertEqual(len(client), 1)
+        self.assertEqual(_field(terminal[0], "request_id"), request_id)
+        self.assertEqual(_field(client[0], "request_id"), request_id)
+        for private_value in (
+            "Private Attraction", "Private City", "https://private.example/photo",
+        ):
+            self.assertNotIn(private_value, output.getvalue())
+
+    async def test_fixed_client_event_is_logged_without_request_content(self):
+        output = io.StringIO()
+        _register_photo_client_event_ticket(
+            request_id="abcdef123456", source="xhs",
+        )
+        event = PhotoClientEventRequest(
+            request_id="abcdef123456",
+            source="xhs",
+            outcome="load_error",
+            surface="overview",
+        )
+        with redirect_stdout(output):
+            result = await record_photo_client_event(event)
+
+        self.assertEqual(result, {"success": True})
+        self.assertEqual(
+            output.getvalue().strip(),
+            "PHOTO_CLIENT_EVENT request_id=abcdef123456 source=xhs "
+            "outcome=load_error surface=overview",
+        )
+
+    async def test_unissued_mismatched_and_duplicate_events_are_not_logged(self):
+        output = io.StringIO()
+        _register_photo_client_event_ticket(
+            request_id="abcdef123456", source="xhs",
+        )
+        events = (
+            PhotoClientEventRequest(
+                request_id="000000000000", source="xhs",
+                outcome="load_error", surface="overview",
+            ),
+            PhotoClientEventRequest(
+                request_id="abcdef123456", source="google_places",
+                outcome="load_error", surface="overview",
+            ),
+            PhotoClientEventRequest(
+                request_id="abcdef123456", source="xhs",
+                outcome="load_success", surface="overview",
+            ),
+            PhotoClientEventRequest(
+                request_id="abcdef123456", source="xhs",
+                outcome="load_error", surface="overview",
+            ),
+        )
+        with redirect_stdout(output):
+            for event in events:
+                self.assertEqual(
+                    await record_photo_client_event(event), {"success": True},
+                )
+
+        lines = [
+            line for line in output.getvalue().splitlines()
+            if line.startswith("PHOTO_CLIENT_EVENT ")
+        ]
+        self.assertEqual(len(lines), 1)
+        self.assertIn(
+            "request_id=abcdef123456 source=xhs outcome=load_success "
+            "surface=overview",
+            lines[0],
+        )
+
+    async def test_expired_ticket_is_not_logged(self):
+        output = io.StringIO()
+        with patch(
+            "backend.app.api.routes.poi.time.monotonic",
+            side_effect=(100.0, 100.0 + _PHOTO_CLIENT_EVENT_TTL_SECONDS + 1.0),
+        ):
+            _register_photo_client_event_ticket(
+                request_id="abcdef123456", source="xhs",
+            )
+            with redirect_stdout(output):
+                result = await record_photo_client_event(PhotoClientEventRequest(
+                    request_id="abcdef123456",
+                    source="xhs",
+                    outcome="load_error",
+                    surface="overview",
+                ))
+
+        self.assertEqual(result, {"success": True})
+        self.assertEqual(output.getvalue(), "")
+        self.assertEqual(len(_PHOTO_CLIENT_EVENT_TICKETS), 0)
+
+    def test_ticket_registry_evicts_the_oldest_entry_at_capacity(self):
+        for index in range(_PHOTO_CLIENT_EVENT_MAX_TICKETS + 1):
+            _register_photo_client_event_ticket(
+                request_id=f"{index:012x}", source="xhs",
+            )
+
+        self.assertEqual(
+            len(_PHOTO_CLIENT_EVENT_TICKETS),
+            _PHOTO_CLIENT_EVENT_MAX_TICKETS,
+        )
+        self.assertNotIn("000000000000", _PHOTO_CLIENT_EVENT_TICKETS)
+        self.assertIn(
+            f"{_PHOTO_CLIENT_EVENT_MAX_TICKETS:012x}",
+            _PHOTO_CLIENT_EVENT_TICKETS,
+        )
+
+    def test_concurrent_duplicate_surface_is_consumed_once(self):
+        _register_photo_client_event_ticket(
+            request_id="abcdef123456", source="xhs",
+        )
+
+        def consume_once(_index):
+            return _consume_photo_client_event_ticket(
+                request_id="abcdef123456",
+                source="xhs",
+                surface="overview",
+            )
+
+        with ThreadPoolExecutor(max_workers=16) as executor:
+            results = list(executor.map(consume_once, range(32)))
+
+        self.assertEqual(results.count(True), 1)
+        self.assertEqual(results.count(False), 31)
+
+    def test_client_event_schema_rejects_unbounded_or_private_fields(self):
+        valid = {
+            "request_id": "abcdef123456",
+            "source": "google_places",
+            "outcome": "load_success",
+            "surface": "day",
+        }
+        invalid_payloads = (
+            {**valid, "request_id": "unsafe"},
+            {**valid, "source": "placeholder"},
+            {**valid, "outcome": "raw-browser-error"},
+            {**valid, "surface": "export"},
+            {**valid, "name": "private-attraction"},
+            {**valid, "url": "https://private.example/image"},
+        )
+        for payload in invalid_payloads:
+            with self.subTest(fields=tuple(sorted(payload))):
+                with self.assertRaises(ValidationError):
+                    PhotoClientEventRequest.model_validate(payload)
 
 
 if __name__ == "__main__":

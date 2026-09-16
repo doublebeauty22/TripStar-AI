@@ -90,7 +90,8 @@
                   :photo-source="attractionPhotoSources[item.name] || 'placeholder'"
                   :active="activeOverviewCard === index"
                   @hover="setActiveOverviewCard(index)"
-                  @image-error="handleImageError"
+                  @image-load="handleImageLoad($event, 'overview')"
+                  @image-error="handleImageError($event, 'overview')"
                   @select-day="goToDayFromOverview"
                 />
               </div>
@@ -386,7 +387,8 @@
                           :src="getAttractionImage(item.name, index)"
                           :alt="item.name"
                           class="attraction-image"
-                          @error="handleImageError"
+                          @load="handleImageLoad($event, 'day')"
+                          @error="handleImageError($event, 'day')"
                         />
                         <div class="attraction-badge">
                           <span class="badge-number">{{ index + 1 }}</span>
@@ -672,6 +674,14 @@ import {
   pollTaskStatus,
   RUNTIME_SETTINGS_UPDATED_EVENT,
 } from '@/services/api'
+import {
+  clearFailedPhotoState,
+  isPhotoRequestId,
+  isRemotePhotoSource,
+  reportPhotoClientEvent,
+  type PhotoRenderOutcome,
+  type PhotoSurface,
+} from '@/services/photoTelemetry'
 
 const router = useRouter()
 const route = useRoute()
@@ -686,6 +696,7 @@ const originalPlan = ref<TripPlan | null>(null)
 const attractionPhotos = ref<Record<string, string>>({})
 const attractionPhotoAttributions = ref<Record<string, PhotoAttribution[]>>({})
 const attractionPhotoSources = ref<Record<string, 'google_places' | 'xhs' | 'placeholder'>>({})
+const attractionPhotoRequestIds = ref<Record<string, string>>({})
 type AttractionPhotoReason =
   | 'grounding_unverified'
   | 'google_no_photo'
@@ -695,6 +706,7 @@ type AttractionPhotoReason =
   | 'image_request_error'
   | 'browser_load_error'
 const attractionPhotoReasons = ref<Record<string, AttractionPhotoReason | undefined>>({})
+const reportedPhotoClientEvents = new Set<string>()
 const activeSection = ref('overview')
 const activeDays = ref<number[]>([0]) // 默认展开第一天
 const activeOverviewCard = ref(1)
@@ -1109,6 +1121,7 @@ const applyTripPlanPayload = async (payload: {
     attractionPhotos.value = {}
     attractionPhotoAttributions.value = {}
     attractionPhotoSources.value = {}
+    attractionPhotoRequestIds.value = {}
     attractionPhotoReasons.value = {}
   }
   if (activeSection.value === 'map') await ensureMapReady()
@@ -2035,8 +2048,17 @@ const loadAttractionPhotos = async () => {
           `${apiBase}/api/poi/photo?name=${encodeURIComponent(attraction.name)}&city=${encodeURIComponent(attraction.city)}${placeIdParam}${addressParam}${categoryParam}${planIdParam}`
         )
         const data = await response.json()
-        attractionPhotoSources.value[attraction.name] = data?.data?.source || 'placeholder'
+        const photoSource = data?.data?.source
+        attractionPhotoSources.value[attraction.name] = isRemotePhotoSource(photoSource)
+          ? photoSource
+          : 'placeholder'
         attractionPhotoReasons.value[attraction.name] = data?.data?.reason
+        const photoRequestId = data?.data?.photo_request_id
+        if (isPhotoRequestId(photoRequestId)) {
+          attractionPhotoRequestIds.value[attraction.name] = photoRequestId
+        } else {
+          delete attractionPhotoRequestIds.value[attraction.name]
+        }
         if (data.success && data.data.photo_url) {
           attractionPhotos.value[attraction.name] = data.data.photo_url
           attractionPhotoAttributions.value[attraction.name] = data.data.attributions || []
@@ -2075,13 +2097,53 @@ const getAttractionImage = (name: string, _index: number): string => {
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
 }
 
-// 图片加载失败时的处理
-const handleImageError = (event: Event) => {
+const reportImageOutcome = (
+  event: Event,
+  surface: PhotoSurface,
+  outcome: PhotoRenderOutcome,
+) => {
   const img = event.target as HTMLImageElement
+  const name = img.alt
+  const source = attractionPhotoSources.value[name]
+  const requestId = attractionPhotoRequestIds.value[name]
+  const expectedUrl = attractionPhotos.value[name]
+  if (!name || !expectedUrl || !isRemotePhotoSource(source) || !isPhotoRequestId(requestId)) {
+    return
+  }
+
+  const renderedUrl = img.currentSrc || img.src
+  let normalizedExpectedUrl = expectedUrl
+  try {
+    normalizedExpectedUrl = new URL(expectedUrl, window.location.href).href
+  } catch {
+    // A malformed remote URL must not prevent the error path from clearing it.
+  }
+  if (renderedUrl && renderedUrl !== normalizedExpectedUrl) return
+
+  void reportPhotoClientEvent(
+    getRuntimeApiBaseUrl(),
+    { request_id: requestId, source, outcome, surface },
+    reportedPhotoClientEvents,
+  )
+}
+
+const handleImageLoad = (event: Event, surface: PhotoSurface) => {
+  reportImageOutcome(event, surface, 'load_success')
+}
+
+// 图片加载失败时的处理
+const handleImageError = (event: Event, surface: PhotoSurface) => {
+  const img = event.target as HTMLImageElement
+  reportImageOutcome(event, surface, 'load_error')
   img.onerror = null
   if (img.alt) {
-    attractionPhotoSources.value[img.alt] = 'placeholder'
-    attractionPhotoReasons.value[img.alt] = 'browser_load_error'
+    clearFailedPhotoState(
+      img.alt,
+      attractionPhotos.value,
+      attractionPhotoAttributions.value,
+      attractionPhotoSources.value,
+      attractionPhotoReasons.value,
+    )
   }
   // 使用深色占位图
   const label = encodeURIComponent(t('result.imageLoadFailed'))
