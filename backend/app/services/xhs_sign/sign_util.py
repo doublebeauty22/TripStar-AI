@@ -50,11 +50,12 @@ print("[XHS_SIGN] signature JS engine loaded")
 # ---------- Cookie 工具 ----------
 def trans_cookies(cookies_str: str) -> dict:
     """将 Cookie 字符串转为字典"""
-    sep = "; " if "; " in cookies_str else ";"
     ck = {}
-    for item in cookies_str.split(sep):
+    if not isinstance(cookies_str, str):
+        return ck
+    for item in cookies_str.split(";"):
         parts = item.split("=", 1)
-        if len(parts) == 2:
+        if len(parts) == 2 and parts[0].strip():
             ck[parts[0].strip()] = parts[1].strip()
     return ck
 
@@ -71,9 +72,9 @@ def generate_xray_traceid() -> str:
     return _xray_js.call("traceId")
 
 
-def generate_xs_xs_common(a1: str, api: str, data="", method="POST"):
+def generate_xs_xs_common(cookies: dict, api: str, data="", method="POST"):
     """调用签名 JS 生成 x-s, x-t, x-s-common"""
-    ret = _xs_js.call("get_request_headers_params", api, data, a1, method)
+    ret = _xs_js.call("get_request_headers_params", api, data, cookies, method)
     return ret["xs"], ret["xt"], ret["xs_common"]
 
 
@@ -104,9 +105,9 @@ def _get_request_headers_template() -> dict:
     }
 
 
-def generate_headers(a1: str, api: str, data="", method="POST"):
+def generate_headers(cookies: dict, api: str, data="", method="POST"):
     """生成带完整签名的请求头，返回 (headers, serialized_data)"""
-    xs, xt, xs_common = generate_xs_xs_common(a1, api, data, method)
+    xs, xt, xs_common = generate_xs_xs_common(cookies, api, data, method)
     headers = _get_request_headers_template()
     headers["x-s"] = xs
     headers["x-t"] = str(xt)
@@ -133,8 +134,9 @@ def generate_request_params(cookies_str: str, api: str, data="", method="POST"):
         (headers, cookies_dict, serialized_data)
     """
     cookies = trans_cookies(cookies_str)
-    a1 = cookies.get("a1", "")
-    headers, data = generate_headers(a1, api, data, method)
+    if not cookies.get("a1", "").strip():
+        raise ValueError("XHS signing requires a non-empty a1 cookie")
+    headers, data = generate_headers(cookies, api, data, method)
     return headers, cookies, data
 
 
