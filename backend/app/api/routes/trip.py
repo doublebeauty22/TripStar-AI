@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 import json
+import math
 import traceback
 import uuid
 from datetime import datetime
@@ -13,7 +14,8 @@ from fastapi import APIRouter, HTTPException, Request, WebSocket, WebSocketDisco
 
 from ...agents.trip_planner_agent import get_trip_planner_agent
 from ...models.schemas import (
-    TripPatchRequest, TripPatchResult, TripPlan, TripPlanResponse, TripRequest,
+    PreferenceProfile, TripCostDisplay, TripPatchRequest, TripPatchResult,
+    TripPlan, TripPlanResponse, TripRequest,
 )
 from ...services.knowledge_graph_service import build_knowledge_graph
 from ...services.llm_service import (
@@ -74,6 +76,43 @@ def _serialize_result(result: Any) -> Any:
     if hasattr(result, "model_dump"):
         return result.model_dump(mode="json")
     return result
+
+
+def _cost_display_from_request_payload(payload: Any) -> TripCostDisplay | None:
+    """Keep missing legacy data distinct from an explicitly unset budget."""
+    if not isinstance(payload, dict):
+        return None
+    profile = payload.get("preference_profile")
+    if not isinstance(profile, dict) or "budget_cny" not in profile:
+        return None
+    budget = profile["budget_cny"]
+    if budget is not None:
+        if isinstance(budget, bool) or not isinstance(budget, (int, float)):
+            return None
+        try:
+            if not math.isfinite(budget) or budget <= 0:
+                return None
+        except OverflowError:
+            return None
+    try:
+        PreferenceProfile.model_validate(profile)
+    except ValueError:
+        return None
+    return TripCostDisplay(budget_cny=budget)
+
+
+def _serialize_task_result(task_id: str, task: Dict[str, Any]) -> Any:
+    """Bind display metadata to this task, ignoring model or cached metadata."""
+    result = _serialize_result(task.get("result"))
+    if not isinstance(result, dict):
+        return result
+    serialized = dict(result)
+    serialized["plan_id"] = task_id
+    serialized.pop("cost_display", None)
+    cost_display = _cost_display_from_request_payload(task.get("request_payload"))
+    if cost_display is not None:
+        serialized["cost_display"] = cost_display.model_dump(mode="json")
+    return serialized
 
 
 def _sanitize_request_payload_for_persistence(payload: Any) -> Any:
@@ -220,7 +259,7 @@ def _persist_task_state(task_id: str, task: Dict[str, Any]) -> bool:
             "stage": task.get("stage", ""),
             "progress": task.get("progress", 0),
             "message": task.get("message", ""),
-            "result": _serialize_result(task.get("result")),
+            "result": _serialize_task_result(task_id, task),
             "error": task.get("error"),
             "request_payload": _sanitize_request_payload_for_persistence(
                 task.get("request_payload")
@@ -375,7 +414,7 @@ def _build_task_event(task_id: str, task: Dict[str, Any], include_result: bool =
     if task.get("status") == "failed" and task.get("request_payload") is not None:
         event["request_payload"] = task["request_payload"]
     if include_result and task.get("result") is not None:
-        event["result"] = _serialize_result(task["result"])
+        event["result"] = _serialize_task_result(task_id, task)
     return event
 
 
@@ -485,6 +524,8 @@ async def plan_trip(request: TripRequest, http_request: Request = None):
     _tasks[task_id]["generation_id"] = generation_id
     _tasks[task_id]["request_fingerprint"] = fingerprint
     _tasks[task_id]["request_payload"] = request.model_dump(mode="json")
+    if request.preference_profile and "budget_cny" not in request.preference_profile.model_fields_set:
+        _tasks[task_id]["request_payload"]["preference_profile"].pop("budget_cny", None)
     _active_trip_fingerprints[fingerprint] = task_id
     _persist_task_state(task_id, _tasks[task_id])
 
@@ -764,7 +805,7 @@ async def get_task_status(task_id: str):
             "task_id": task_id,
             "plan_id": task.get("plan_id", task_id),
             "status": "completed",
-            "result": _serialize_result(task.get("result")),
+            "result": _serialize_task_result(task_id, task),
         }
     if task["status"] == "failed":
         error_message = (

@@ -198,7 +198,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (event: 'plan-updated', plan: TripPlan, graph?: KnowledgeGraphData | null): void
+  (event: 'plan-updated', plan: TripPlan, graph: KnowledgeGraphData | null | undefined, sourcePlanId: string): void
 }>()
 
 const { t } = useI18n()
@@ -297,8 +297,9 @@ const sendChatMessage = async () => {
   try {
     if (patchMode.value) {
       patchStatusText.value = t('result.chat.understandingEdit')
+      const requestedPlanId = props.planId
       const result = await patchTripPlan(
-        props.planId,
+        requestedPlanId,
         text,
         Number(props.tripPlan.plan_version),
         newPatchRequestId(),
@@ -310,7 +311,7 @@ const sendChatMessage = async () => {
         })
       } else if (result.success && result.updated_plan) {
         patchStatusText.value = t('result.chat.revalidatingEdit')
-        emit('plan-updated', result.updated_plan, result.graph_data)
+        emit('plan-updated', result.updated_plan, result.graph_data, requestedPlanId)
         const summary = result.change_summary?.length
           ? result.change_summary.join('\n')
           : t('result.chat.patchSuccess')

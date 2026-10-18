@@ -45,7 +45,7 @@ test('missing task or version keeps edit entry visible but disabled with reason'
 test('successful patch emits updated plan, graph and deterministic summary', () => {
   const chat = read('src/components/AIChat.vue')
   assert.match(chat, /result\.change_summary/)
-  assert.match(chat, /emit\('plan-updated', result\.updated_plan, result\.graph_data\)/)
+  assert.match(chat, /emit\('plan-updated', result\.updated_plan, result\.graph_data, requestedPlanId\)/)
   assert.match(chat, /requires_regeneration/)
 })
 
@@ -58,7 +58,7 @@ test('Result supplies task identity and consumes patched plan', () => {
 test('Result refreshes canonical backend plan before legacy sessionStorage', () => {
   const result = read('src/views/Result.vue')
   const canonicalComment = result.indexOf('A task ID makes the backend result canonical')
-  const backendFetch = result.indexOf('await pollTaskStatus(planId.value)', canonicalComment)
+  const backendFetch = result.indexOf('await pollTaskStatus(requestedPlanId)', canonicalComment)
   const cacheApply = result.indexOf('if (data && canUseCachedData)', backendFetch)
   assert.ok(canonicalComment >= 0)
   assert.ok(backendFetch > canonicalComment)

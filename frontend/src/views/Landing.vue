@@ -477,6 +477,7 @@
 </template>
 
 <script setup lang="ts">
+import { cacheTaskCostDisplay } from '@/utils/costDisplay'
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -872,6 +873,7 @@ const saveCompletedTrip = async (response: any, fallbackPlanId = '') => {
   loadingProgress.value = 100
   loadingStatus.value = t('home.loading.done')
   sessionStorage.setItem('tripPlan', JSON.stringify(response.data))
+  cacheTaskCostDisplay(sessionStorage, response)
   if (response.graph_data) {
     sessionStorage.setItem('graphData', JSON.stringify(response.graph_data))
   } else {

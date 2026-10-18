@@ -65,7 +65,12 @@
             <div><span>{{ t('result.summary.dates') }}</span><strong>{{ tripPlan.start_date }} – {{ tripPlan.end_date }}</strong></div>
             <div><span>{{ t('result.summary.travelers') }}</span><strong>{{ travelerSummary }}</strong></div>
             <div><span>{{ t('result.summary.pace') }}</span><strong>{{ paceStatusLabel }}</strong></div>
-            <div v-if="tripPlan.budget"><span>{{ t('result.summary.budget') }}</span><strong>¥{{ formatBudgetAmount(tripPlan.budget.total) }}</strong></div>
+            <div class="cost-overview">
+              <strong>{{ costOverview.cap }}</strong>
+              <strong v-if="tripPlan.budget">{{ costOverview.total }}</strong>
+              <small>{{ t('result.cost.totalDisclaimer') }}</small>
+              <small v-if="costOverview.comparison">{{ costOverview.comparison }}</small>
+            </div>
           </section>
           <section class="confidence-strip" aria-label="Evidence and itinerary status">
             <div :class="['confidence-item', evidenceTone]">
@@ -189,7 +194,10 @@
                       {{ item.dayNumber ? t('common.dayNumber', { day: item.dayNumber }) : '--' }}
                     </span>
                     <span class="budget-detail-name">{{ item.name }}</span>
-                    <span class="budget-detail-amount">¥{{ formatBudgetAmount(item.amount) }}</span>
+                    <span class="budget-detail-amount">
+                      <strong v-if="item.type === 'hotel'">{{ t('result.cost.hotelPending') }}</strong>
+                      <small>{{ referenceCost(item.amount, t, item.type === 'hotel') }}</small>
+                    </span>
                     <span class="budget-action-wrap">
                       <button
                         type="button"
@@ -221,30 +229,32 @@
 
           <div class="right-budget-summary" v-show="activeSection === 'budget' && !!tripPlan.budget">
             <div class="budget-summary-panel">
-              <div class="budget-summary-title">{{ t('result.budget.title') }}</div>
+              <div class="budget-summary-title">{{ costOverview.cap }}</div>
               <div class="budget-summary-total-wrap">
-                <span class="budget-summary-currency">¥</span>
-                <span class="budget-summary-total-value">{{ formatBudgetAmount(tripPlan.budget?.total ?? 0) }}</span>
+                <span class="budget-summary-total-value cost-reference-total">{{ costOverview.total }}</span>
               </div>
+              <p class="cost-note">{{ t('result.cost.totalDisclaimer') }}</p>
+              <p v-if="costOverview.comparison" class="cost-note">{{ costOverview.comparison }}</p>
+              <p class="cost-note">{{ t('result.cost.categoryNote') }}</p>
               <div class="budget-summary-sub-grid">
                 <div class="budget-summary-sub-item">
-                  <div class="budget-summary-sub-value">¥{{ formatBudgetAmount(tripPlan.budget?.total_attractions ?? 0) }}</div>
+                  <div class="budget-summary-sub-value">{{ referenceCost(tripPlan.budget?.total_attractions, t) }}</div>
                   <div class="budget-summary-sub-label">{{ t('result.budget.attraction') }}</div>
                 </div>
                 <div class="budget-summary-sub-item">
-                  <div class="budget-summary-sub-value">¥{{ formatBudgetAmount(tripPlan.budget?.total_hotels ?? 0) }}</div>
+                  <div class="budget-summary-sub-value">{{ referenceCost(tripPlan.budget?.total_hotels, t) }}</div>
                   <div class="budget-summary-sub-label">{{ t('result.budget.hotel') }}</div>
                 </div>
                 <div class="budget-summary-sub-item">
-                  <div class="budget-summary-sub-value">¥{{ formatBudgetAmount(tripPlan.budget?.total_meals ?? 0) }}</div>
+                  <div class="budget-summary-sub-value">{{ referenceCost(tripPlan.budget?.total_meals, t) }}</div>
                   <div class="budget-summary-sub-label">{{ t('result.budget.meal') }}</div>
                 </div>
                 <div class="budget-summary-sub-item">
-                  <div class="budget-summary-sub-value">¥{{ formatBudgetAmount(tripPlan.budget?.total_transportation ?? 0) }}</div>
+                  <div class="budget-summary-sub-value">{{ referenceCost(tripPlan.budget?.total_transportation, t) }}</div>
                   <div class="budget-summary-sub-label">{{ t('result.budget.transport') }}</div>
                 </div>
                 <div v-if="tripPlan.budget?.total_inter_city_transport" class="budget-summary-sub-item">
-                  <div class="budget-summary-sub-value">¥{{ formatBudgetAmount(tripPlan.budget.total_inter_city_transport) }}</div>
+                  <div class="budget-summary-sub-value">{{ referenceCost(tripPlan.budget.total_inter_city_transport, t) }}</div>
                   <div class="budget-summary-sub-label">{{ t('result.interCityTransport') }}</div>
                 </div>
               </div>
@@ -393,9 +403,7 @@
                         <div class="attraction-badge">
                           <span class="badge-number">{{ index + 1 }}</span>
                         </div>
-                        <div v-if="item.ticket_price" class="price-tag">
-                          ¥{{ item.ticket_price }}
-                        </div>
+                        <div class="price-tag">{{ referenceCost(item.ticket_price, t) }}</div>
                         <div v-if="attractionPhotoAttributions[item.name]?.length" class="photo-attribution">
                           <a
                             v-for="credit in attractionPhotoAttributions[item.name]"
@@ -445,9 +453,14 @@
                 <a-descriptions :column="2" size="small">
                   <a-descriptions-item :label="t('result.fieldAddress')">{{ day.hotel.address }}</a-descriptions-item>
                   <a-descriptions-item :label="t('result.fieldType')">{{ day.hotel.type }}</a-descriptions-item>
-                  <a-descriptions-item :label="t('result.fieldPriceRange')">{{ day.hotel.price_range }}</a-descriptions-item>
+                  <a-descriptions-item :label="t('result.budget.detailAmount')" :span="2">
+                    <div class="hotel-cost-display">
+                      <strong>{{ t('result.cost.hotelPending') }}</strong>
+                      <small>{{ referenceCost(day.hotel.estimated_cost, t, true) }}</small>
+                    </div>
+                  </a-descriptions-item>
                   <a-descriptions-item :label="t('result.fieldRating')">{{ day.hotel.rating }}</a-descriptions-item>
-                  <a-descriptions-item :label="t('result.fieldDistance')" :span="2">{{ day.hotel.distance }}</a-descriptions-item>
+                  <a-descriptions-item :label="t('result.fieldDistance')">{{ day.hotel.distance }}</a-descriptions-item>
                 </a-descriptions>
               </a-card>
 
@@ -461,6 +474,7 @@
                 >
                   {{ meal.name }}
                   <span v-if="meal.description"> - {{ meal.description }}</span>
+                  <small class="cost-inline-note">{{ referenceCost(meal.estimated_cost, t) }}</small>
                 </a-descriptions-item>
               </a-descriptions>
             </a-collapse-panel>
@@ -644,6 +658,7 @@
     </a-back-top>
 
     <AIChat v-if="!isExample"
+      :key="planId"
       :trip-plan="tripPlan"
       :plan-id="planId"
       @plan-updated="handlePatchedPlan"
@@ -667,6 +682,8 @@ import OverviewAttractionCard from '@/components/OverviewAttractionCard.vue'
 import AIChat from '@/components/AIChat.vue'
 import type { TripPlan, TripPlanResponse, PortfolioExampleTrip, KnowledgeGraphData, GraphCategory, Attraction, Meal, Hotel, WeatherInfo, RiskItem } from '@/types'
 import { getWeatherUnavailableDescription } from '@/utils/weatherAvailability'
+import { budgetOverview, referenceCost, cacheTaskCostDisplay, readTaskCostDisplay, responseTaskCostDisplay } from '@/utils/costDisplay'
+import type { TaskCostDisplay } from '@/types'
 import {
   getExampleTrip,
   getRuntimeApiBaseUrl,
@@ -689,6 +706,8 @@ const { t, locale } = useI18n()
 const GOOGLE_MAPS_BROWSER_KEY = String(import.meta.env.VITE_GOOGLE_MAPS_BROWSER_KEY ?? '').trim()
 const tripPlan = ref<TripPlan | null>(null)
 const planId = ref('')
+const taskCostDisplay = ref<TaskCostDisplay | null>(null)
+const costOverview = computed(() => budgetOverview(taskCostDisplay.value, tripPlan.value?.budget?.total, t))
 const exampleMeta = ref<PortfolioExampleTrip | null>(null)
 const isExample = computed(() => route.query.example === '1' || Boolean(exampleMeta.value?.example))
 const editMode = ref(false)
@@ -1130,7 +1149,9 @@ const applyTripPlanPayload = async (payload: {
 }
 
 const restoreTripPlanFromResponse = async (response?: TripPlanResponse | null) => {
-  if (!response?.data) return false
+  if (!response?.data || (response.plan_id && response.plan_id !== planId.value)) return false
+  taskCostDisplay.value = responseTaskCostDisplay(planId.value, response)
+  cacheTaskCostDisplay(sessionStorage, response)
   await applyTripPlanPayload({
     plan: response.data,
     graph: response.graph_data || null,
@@ -1139,7 +1160,8 @@ const restoreTripPlanFromResponse = async (response?: TripPlanResponse | null) =
   return true
 }
 
-const handlePatchedPlan = async (plan: TripPlan, graph?: KnowledgeGraphData | null) => {
+const handlePatchedPlan = async (plan: TripPlan, graph: KnowledgeGraphData | null | undefined, sourcePlanId: string) => {
+  if (!sourcePlanId || sourcePlanId !== planId.value) return
   await applyTripPlanPayload({
     plan,
     graph: graph || null,
@@ -1426,10 +1448,14 @@ const buildKgBoundaryPositionMap = (
   return positionMap
 }
 
-onMounted(async () => {
-  if (typeof window !== 'undefined') {
-    window.addEventListener(RUNTIME_SETTINGS_UPDATED_EVENT, handleRuntimeSettingsUpdated)
-  }
+let resultLoadVersion = 0
+const loadResultPlan = async () => {
+  const loadVersion = ++resultLoadVersion
+  taskCostDisplay.value = null
+  tripPlan.value = null
+  editMode.value = false
+  originalPlan.value = null
+  pendingBudgetItems.value = []
   if (route.query.example === '1') {
     try {
       const cachedMeta = sessionStorage.getItem('tripstar.exampleMeta')
@@ -1448,9 +1474,6 @@ onMounted(async () => {
   }
   const storedPlanId = String(sessionStorage.getItem('planId') || '')
   planId.value = String(route.query.plan_id || storedPlanId || '')
-  if (planId.value) {
-    sessionStorage.setItem('planId', planId.value)
-  }
 
   const cachedPlanId = storedPlanId
   const data = sessionStorage.getItem('tripPlan')
@@ -1459,7 +1482,9 @@ onMounted(async () => {
   // contain a pre-Phase-2C plan without plan_version, so refresh it first.
   if (planId.value) {
     try {
-      const task = await pollTaskStatus(planId.value)
+      const requestedPlanId = planId.value
+      const task = await pollTaskStatus(requestedPlanId)
+      if (loadVersion !== resultLoadVersion || planId.value !== requestedPlanId) return
       if (task?.status === 'completed' && task.result) {
         const restored = await restoreTripPlanFromResponse(task.result)
         if (restored) return
@@ -1468,14 +1493,17 @@ onMounted(async () => {
         message.error(task.error || t('result.noTripPlanDesc'))
       }
     } catch (error) {
+      if (loadVersion !== resultLoadVersion) return
       console.error('结果页从后端回补旅行计划失败:', error)
     }
   }
 
+  if (loadVersion !== resultLoadVersion) return
   const canUseCachedData = Boolean(data) && (
     !planId.value || Boolean(cachedPlanId && cachedPlanId === planId.value)
   )
   if (data && canUseCachedData) {
+    taskCostDisplay.value = readTaskCostDisplay(sessionStorage, planId.value)
     const gd = sessionStorage.getItem('graphData')
     await applyTripPlanPayload({
       plan: JSON.parse(data),
@@ -1483,6 +1511,15 @@ onMounted(async () => {
       planId: planId.value || cachedPlanId,
     })
   }
+}
+
+onMounted(async () => {
+  window.addEventListener(RUNTIME_SETTINGS_UPDATED_EVENT, handleRuntimeSettingsUpdated)
+  await loadResultPlan()
+})
+
+watch(() => route.query.plan_id, async () => {
+  await loadResultPlan()
 })
 
 watch(activeSection, async (section) => {
@@ -1702,7 +1739,6 @@ const budgetItems = computed<BudgetDetailItem[]>(() => {
 
     day.attractions.forEach((attraction, attractionIndex) => {
       const amount = roundBudgetAmount(toBudgetNumber(attraction.ticket_price))
-      if (amount <= 0) return
       items.push({
         id: `attraction-${dayIndex}-${attractionIndex}`,
         type: 'attraction',
@@ -1716,21 +1752,18 @@ const budgetItems = computed<BudgetDetailItem[]>(() => {
 
     if (day.hotel) {
       const amount = roundBudgetAmount(toBudgetNumber(day.hotel.estimated_cost))
-      if (amount > 0) {
-        items.push({
-          id: `hotel-${dayIndex}`,
-          type: 'hotel',
-          dayIndex,
-          dayNumber,
-          name: day.hotel.name,
-          amount,
-        })
-      }
+      items.push({
+        id: `hotel-${dayIndex}`,
+        type: 'hotel',
+        dayIndex,
+        dayNumber,
+        name: day.hotel.name,
+        amount,
+      })
     }
 
     day.meals.forEach((meal, mealIndex) => {
       const amount = roundBudgetAmount(toBudgetNumber(meal.estimated_cost))
-      if (amount <= 0) return
       items.push({
         id: `meal-${dayIndex}-${mealIndex}`,
         type: 'meal',
@@ -1806,9 +1839,9 @@ const editBudgetItemAmount = (item: BudgetDetailItem) => {
   const input = window.prompt(
     t('result.budget.editPrompt', {
       name: item.name,
-      amount: formatBudgetAmount(item.amount),
+      current: referenceCost(item.amount, t, item.type === 'hotel'),
     }),
-    formatBudgetAmount(item.amount)
+    item.amount > 0 ? formatBudgetAmount(item.amount) : ''
   )
 
   if (input === null) return
@@ -2186,7 +2219,7 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
           ${imgTag}
           <h4 style="margin:0 0 6px;font-size:17px;color:#1a1a1a;">${ai + 1}. ${a.name}</h4>
           <p style="margin:2px 0;font-size:14px;color:#555;">${a.address || '—'}</p>
-          <p style="margin:2px 0;font-size:14px;color:#555;">${durationText}${a.ticket_price ? `  |  ¥${a.ticket_price}` : ''}</p>
+          <p style="margin:2px 0;font-size:14px;color:#555;">${durationText}  |  ${referenceCost(a.ticket_price, t)}</p>
           <p style="margin:4px 0;font-size:14px;color:#666;">${a.description || ''}</p>
         </div>`
     })
@@ -2196,7 +2229,7 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
     if (day.meals && day.meals.length) {
       mealsHTML = `<div style="margin-top:10px;"><strong style="color:#333;">${t('result.export.mealTitle')}</strong><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;">`
       day.meals.forEach(m => {
-        mealsHTML += `<div style="background:#fffbe6;padding:8px 14px;border-radius:8px;font-size:12px;color:#333;"><b>${mealLabels[m.type] || m.type}</b>: ${m.name || t('result.export.noMealRecommendation')}${m.estimated_cost ? ` (¥${m.estimated_cost})` : ''}</div>`
+        mealsHTML += `<div style="background:#fffbe6;padding:8px 14px;border-radius:8px;font-size:12px;color:#333;"><b>${mealLabels[m.type] || m.type}</b>: ${m.name || t('result.export.noMealRecommendation')} (${referenceCost(m.estimated_cost, t)})</div>`
       })
       mealsHTML += '</div></div>'
     }
@@ -2208,33 +2241,36 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
           ${attractionsHTML}
         </div>
         ${mealsHTML}
+        ${day.hotel ? `<div style="margin-top:12px;color:#333;"><b>${day.hotel.name}</b><p>${t('result.cost.hotelPending')}</p><small>${referenceCost(day.hotel.estimated_cost, t, true)}</small></div>` : ''}
       </div>`
   })
 
   // 预算 HTML
-  let budgetHTML = ''
+  let budgetHTML = `<div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:18px;">
+    <h3>${costOverview.value.cap}</h3><p>${costOverview.value.total}</p>
+    <p>${t('result.cost.totalDisclaimer')}</p>
+  </div>`
   if (tp.budget) {
     const b = tp.budget
     budgetHTML = `
       <div style="background:#ffffff;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,0.06);">
-        <h3 style="margin:0 0 14px;color:#667eea;">${t('result.budget.title')}</h3>
+        <h3 style="margin:0 0 14px;color:#667eea;">${costOverview.value.cap}</h3><p>${t('result.cost.totalDisclaimer')}</p><p>${costOverview.value.comparison}</p><p>${t('result.cost.categoryNote')}</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
           <div style="flex:1;min-width:120px;background:#f5f7fa;padding:14px;border-radius:10px;text-align:center;">
-            <div style="font-size:12px;color:#888;">${t('result.budget.attraction')}</div><div style="font-size:20px;font-weight:bold;color:#333;">¥${b.total_attractions || 0}</div>
+            <div style="font-size:12px;color:#888;">${t('result.budget.attraction')}</div><div style="font-size:20px;font-weight:bold;color:#333;">${referenceCost(b.total_attractions, t)}</div>
           </div>
           <div style="flex:1;min-width:120px;background:#f5f7fa;padding:14px;border-radius:10px;text-align:center;">
-            <div style="font-size:12px;color:#888;">${t('result.budget.hotel')}</div><div style="font-size:20px;font-weight:bold;color:#333;">¥${b.total_hotels || 0}</div>
+            <div style="font-size:12px;color:#888;">${t('result.budget.hotel')}</div><div style="font-size:20px;font-weight:bold;color:#333;">${referenceCost(b.total_hotels, t)}</div>
           </div>
           <div style="flex:1;min-width:120px;background:#f5f7fa;padding:14px;border-radius:10px;text-align:center;">
-            <div style="font-size:12px;color:#888;">${t('result.budget.meal')}</div><div style="font-size:20px;font-weight:bold;color:#333;">¥${b.total_meals || 0}</div>
+            <div style="font-size:12px;color:#888;">${t('result.budget.meal')}</div><div style="font-size:20px;font-weight:bold;color:#333;">${referenceCost(b.total_meals, t)}</div>
           </div>
           <div style="flex:1;min-width:120px;background:#f5f7fa;padding:14px;border-radius:10px;text-align:center;">
-            <div style="font-size:12px;color:#888;">${t('result.budget.transport')}</div><div style="font-size:20px;font-weight:bold;color:#333;">¥${b.total_transportation || 0}</div>
+            <div style="font-size:12px;color:#888;">${t('result.budget.transport')}</div><div style="font-size:20px;font-weight:bold;color:#333;">${referenceCost(b.total_transportation, t)}</div>
           </div>
         </div>
         <div style="background:#667eea;color:#fff;padding:16px 20px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:16px;">${t('result.budget.total')}</span>
-          <span style="font-size:26px;font-weight:bold;">¥${b.total || 0}</span>
+          <span style="font-size:20px;font-weight:bold;">${costOverview.value.total}</span>
         </div>
       </div>`
   }
@@ -2298,7 +2334,7 @@ const buildExportHTML = (mapDataUrl: string = ''): string => {
     tp.hotel_recommendations.forEach((h) => {
       hotelItems += `<div style="background:#e3f2fd;padding:12px 16px;border-radius:10px;margin-bottom:8px;">
         <b style="color:#1565c0;">${h.name || t('result.export.hotelFallback')}</b>
-        ${h.price ? `<span style="float:right;color:#e65100;font-weight:bold;">¥${h.price}${t('result.export.perNight')}</span>` : ''}
+        <p>${t('result.cost.hotelPending')}</p>
         ${h.address ? `<p style="margin:4px 0 0;font-size:12px;color:#555;">${h.address}</p>` : ''}
       </div>`
     })
@@ -3253,7 +3289,7 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 
 .trip-summary-card {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -3269,6 +3305,16 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 .confidence-item span { display: block; color: rgba(225, 237, 246, .65); font-size: 12px; }
 .trip-summary-card strong,
 .confidence-item strong { display: block; margin-top: 5px; color: #f6fbff; line-height: 1.35; }
+.cost-overview { grid-column: 1 / -1; }
+.cost-overview small, .hotel-cost-display small, .cost-inline-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.cost-overview small, .cost-note { color: #e9cfb5; }
+.hotel-cost-display small { color: inherit; opacity: .8; }
+.cost-note { margin: 0; font-size: 13px; line-height: 1.6; }
 .confidence-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
 .confidence-item { border-left-width: 4px; }
 .confidence-item.is-good { border-left-color: #5dc89f; }
@@ -3496,6 +3542,9 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(215, 110, 66, 0.3);
   backdrop-filter: blur(10px);
+  max-width: calc(100% - 65px);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 /* 预约提醒样式 */
@@ -4277,6 +4326,7 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 .budget-detail-day,
 .budget-detail-name,
 .budget-detail-amount {
+  overflow-wrap: anywhere;
   color: rgba(255, 255, 255, 0.86);
   font-size: 13px;
 }
@@ -4291,6 +4341,9 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   font-weight: 600;
   color: #ffd5c6;
 }
+.budget-detail-amount strong, .budget-detail-amount small { display: block; }
+.budget-detail-amount strong { font-size: 12px; }
+.budget-detail-amount small { margin-top: 4px; font-size: 12px; font-weight: 400; }
 
 .budget-action-wrap {
   display: inline-flex;
@@ -4349,10 +4402,10 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 
 .budget-summary-title {
   color: rgba(255, 255, 255, 0.92);
-  font-size: 34px;
+  font-size: 20px;
   font-weight: 300;
   letter-spacing: 0.02em;
-  line-height: 1;
+  line-height: 1.45;
 }
 
 .budget-summary-total-wrap {
@@ -4374,6 +4427,7 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   color: rgba(255, 255, 255, 0.96);
   letter-spacing: 0.01em;
 }
+.budget-summary-total-value.cost-reference-total { font-size: 28px; line-height: 1.4; }
 
 .budget-summary-sub-grid {
   margin-top: 6px;
@@ -4388,8 +4442,9 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 }
 
 .budget-summary-sub-value {
-  font-size: 32px;
-  line-height: 1;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
   color: #ffd4c3;
 }
 
@@ -4858,7 +4913,7 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   }
 
   .budget-summary-title {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   .budget-summary-total-value {
@@ -4866,7 +4921,7 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   }
 
   .budget-summary-sub-value {
-    font-size: 24px;
+    font-size: 13px;
   }
 
   .overview-meta {

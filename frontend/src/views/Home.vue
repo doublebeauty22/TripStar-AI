@@ -195,6 +195,7 @@
 </template>
 
 <script setup lang="ts">
+import { cacheTaskCostDisplay } from '@/utils/costDisplay'
 import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -337,6 +338,7 @@ const handleSubmit = async () => {
       const planId = response.plan_id || ''
       // 保存到sessionStorage
       sessionStorage.setItem('tripPlan', JSON.stringify(response.data))
+      cacheTaskCostDisplay(sessionStorage, response)
       // 保存知识图谱数据
       if (response.graph_data) {
         sessionStorage.setItem('graphData', JSON.stringify(response.graph_data))

@@ -226,6 +226,12 @@ export interface TripPlanResponse {
   plan_id?: string
   data?: TripPlan
   graph_data?: KnowledgeGraphData
+  cost_display?: TaskCostDisplay | null
+}
+
+// Copied by the server from this task's confirmed request; absent means unknown.
+export interface TaskCostDisplay {
+  budget_cny: number | null
 }
 
 export interface PortfolioExampleTrip {

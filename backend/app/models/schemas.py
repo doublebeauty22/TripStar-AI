@@ -590,6 +590,14 @@ class KnowledgeGraphData(BaseModel):
     categories: List[GraphCategory] = Field(default=[], description="分类列表")
 
 
+class TripCostDisplay(BaseModel):
+    """Display-only metadata copied from the task's confirmed request."""
+
+    budget_cny: Optional[float] = Field(
+        ..., gt=0, description="用户确认的人民币预算上限；null 表示明确未设置",
+    )
+
+
 class TripPlanResponse(BaseModel):
     """旅行计划响应"""
     success: bool = Field(..., description="是否成功")
@@ -597,6 +605,9 @@ class TripPlanResponse(BaseModel):
     plan_id: Optional[str] = Field(default=None, description="计划ID（与后端任务ID对齐）")
     data: Optional[TripPlan] = Field(default=None, description="旅行计划数据")
     graph_data: Optional[KnowledgeGraphData] = Field(default=None, description="知识图谱数据")
+    cost_display: Optional[TripCostDisplay] = Field(
+        default=None, description="来自原始任务请求的费用展示信息；旧记录可能缺失",
+    )
 
 
 class POIInfo(BaseModel):
